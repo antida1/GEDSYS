@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.sucomunicacion_gedsys-core_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.sucomunicacion.gedsys.entities.Acl</class>
+    <class>com.sucomunicacion.gedsys.entities.Anexo</class>
+    <class>com.sucomunicacion.gedsys.entities.Cargo</class>
+    <class>com.sucomunicacion.gedsys.entities.Configuracion</class>
+    <class>com.sucomunicacion.gedsys.entities.Consecutivo</class>
+    <class>com.sucomunicacion.gedsys.entities.Corregimientos</class>
+    <class>com.sucomunicacion.gedsys.entities.Departamentos</class>
+    <class>com.sucomunicacion.gedsys.entities.DiaFestivo</class>
+    <class>com.sucomunicacion.gedsys.entities.Documento</class>
+    <class>com.sucomunicacion.gedsys.entities.FlujoDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Log</class>
+    <class>com.sucomunicacion.gedsys.entities.Modulo</class>
+    <class>com.sucomunicacion.gedsys.entities.Municipios</class>
+    <class>com.sucomunicacion.gedsys.entities.Pais</class>
+    <class>com.sucomunicacion.gedsys.entities.Seccion</class>
+    <class>com.sucomunicacion.gedsys.entities.Serie</class>
+    <class>com.sucomunicacion.gedsys.entities.SignaturaTopografica</class>
+    <class>com.sucomunicacion.gedsys.entities.SubSeccion</class>
+    <class>com.sucomunicacion.gedsys.entities.SubSerie</class>
+    <class>com.sucomunicacion.gedsys.entities.TipoDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Usuario</class>
+    <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://HELIOS:1433;databaseName=gedsys"/>
+      <property name="javax.persistence.jdbc.user" value="sa"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.password" value="b4s316.c0"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <f:event type="preRenderView" listener="#{departamentoBean.listar()}" />
+                <f:event type="preRenderView" listener="#{paisBean.listar()}" />
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Departamentos</h3>
+                    <p:menubar>
+                        <p:menuitem oncomplete="PF('departamentoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{departamentoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        </p:menuitem>
+                    </p:menubar>
+                    <p:separator/>
+                    <p:dataTable id="lstDepartamentos" var="departamento" value="#{departamentoBean.departamentos}" style="margin-bottom:0">
+                         <p:column headerText="Pais">
+                             <h:outputText value="#{departamento.pais.nombre}" />
+                        </p:column>
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{departamento.codigo}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{departamento.nombre}" />
+                        </p:column>
+                        <p:column headerText="Fecha Creación">
+                            <h:outputText value="#{departamento.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="Fecha Modificación">
+                            <h:outputText value="#{departamento.fechaModificacion}" />
+                        </p:column>
+                        <p:column headerText="Creado Por">
+                            <h:outputText value="#{departamento.creadoPor}" />
+                        </p:column>
+                        <p:column headerText="Modificado Por">
+                            <h:outputText value="#{departamento.modificadoPor}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{departamentoBean.getSubSeccionById(departamento)}" 
+                                             update=":dlgDetalle" oncomplete="PF('departamentoDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{departamentoBean.eliminar(departamento)}" 
+                                             update=":form:lstDepartamentos messages"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="SubSección" widgetVar="departamentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <h:form>
+                        <h:inputHidden id="id" value="#{departamentoBean.departamento.id}" />
+                        <div class="form-group row">
+                            <p:outputLabel value="Sección" for="seccion" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:selectOneMenu id="seccion" value="#{departamentoBean.departamento.pais}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
+                                    <f:selectItems value="#{paisBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="Nombre" required="true" value="#{departamentoBean.departamento.nombre}" class="form-control" />
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div> 
+                            <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}" oncomplete="PF('departamentoDialog').hide()" />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>    
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

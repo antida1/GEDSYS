@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
+                <f:event type="preRenderView" listener="#{subSerieBean.listar()}" />
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Unidades Documentales</h3>
+                    <p:menubar>
+                        <p:menuitem oncomplete="PF('unidadDocumentalDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{unidadDocumentalBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        </p:menuitem>
+                    </p:menubar>
+                    <p:separator/>
+                    <p:dataTable id="lstUnidadesDocumentales" var="ud" value="#{unidadDocumentalBean.unidadesDocumentales}" style="margin-bottom:0">
+                         <p:column headerText="Sub Serie">
+                             <h:outputText value="#{ud.subSerie.nombre}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{ud.nombre}" />
+                        </p:column>
+                        <p:column headerText="Fecha Creación">
+                            <h:outputText value="#{ud.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="Fecha Modificación">
+                            <h:outputText value="#{ud.fechaModificacion}" />
+                        </p:column>
+                        <p:column headerText="Creado Por">
+                            <h:outputText value="#{ud.creadoPor}" />
+                        </p:column>
+                        <p:column headerText="Modificado Por">
+                            <h:outputText value="#{ud.modificadoPor}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{unidadDocumentalBean.getUnidadDocumentalById(ud)}" 
+                                             update=":dlgDetalle" oncomplete="PF('unidadDocumentalDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{unidadDocumentalBean.eliminar(ud)}" 
+                                             update=":form:lstUnidadesDocumentales messages"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="Sección" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <h:form>
+                        <h:inputHidden id="id" value="#{unidadDocumentalBean.unidadDocumental.id}" />
+                         <div class="form-group row">
+                            <p:outputLabel value="Sub Serie" for="SubSerie" class="col-xs-3 col-form-label"/>
+                            <div class="col-xs-9">
+                                <p:selectOneMenu id="SubSerie" value="#{unidadDocumentalBean.unidadDocumental.subSerie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                                    <f:selectItems value="#{subSerieBean.subSeries}" var="subserie" itemLabel="#{subserie.nombre}" itemValue="#{subserie}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Nombre" required="true" value="#{unidadDocumentalBean.unidadDocumental.nombre}" />
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div> 
+                            <p:commandButton update=":form:lstUnidadesDocumentales messages" icon="ui-icon-disk" value="#{unidadDocumentalBean.accion}" actionListener="#{unidadDocumentalBean.procesar()}" oncomplete="PF('unidadDocumentalDialog').hide()" />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('unidadDocumentalDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

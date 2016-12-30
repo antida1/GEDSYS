@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Usuarios</h3>
+                    <p:menubar>
+                        <p:menuitem oncomplete="PF('usuarioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{usuarioBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        </p:menuitem>
+                    </p:menubar>
+                    <p:separator/>
+                    <p:dataTable id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0">
+                         <p:column headerText="Nombres">
+                             <h:outputText value="#{usuario.nombres}" />
+                        </p:column>
+                        <p:column headerText="Apellidos">
+                            <h:outputText value="#{usuario.apelidos}" />
+                        </p:column>
+                        <p:column headerText="Correo Electronico">
+                            <h:outputText value="#{usuario.email}" />
+                        </p:column>
+                        <p:column headerText="Teléfono">
+                            <h:outputText value="#{usuario.telefono}" />
+                        </p:column>
+                        <p:column headerText="Celular">
+                            <h:outputText value="#{usuario.celular}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
+                                             update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{usuarioBean.eliminar(usuario)}" 
+                                             update=":form:lstUsuarios messages"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <h:form enctype="multipart/form-data">
+                        <h:inputHidden id="id" value="#{usuarioBean.usuario.id}" />
+                        <div class="form-group row">
+                            <p:outputLabel value="Nombres" for="Nombres" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Nombres" required="true" value="#{usuarioBean.usuario.nombres}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Apellidos" for="Apellidos" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Apellidos" required="true" value="#{usuarioBean.usuario.apelidos}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Correo Electronico" for="email" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="email" required="true" value="#{usuarioBean.usuario.email}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Teléfono" for="telefono" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="telefono" required="true" value="#{usuarioBean.usuario.telefono}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Celular" for="celular" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="celular" required="true" value="#{usuarioBean.usuario.celular}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class=" col-md-3">Foto</label>
+                            <div class="col-md-8">
+                                <p:fileUpload value="#{usuarioBean.photoFile}" mode="simple" skinSimple="true" />
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div class="form-group row">
+                            <p:outputLabel value="Usuario" for="Usuario" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Usuario" required="true" value="#{usuarioBean.usuario.usuario}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Contraseña" for="password" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:password id="password" required="true" value="#{usuarioBean.usuario.clave}" match="password2" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Confirmacion de Contraseña" for="password" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:password id="password2" required="true" value="#{usuarioBean.usuario.clave}" />
+                            </div>
+                        </div>
+                        <div> 
+                            <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

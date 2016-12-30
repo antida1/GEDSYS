@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:dataScroller value="#{documentsView.documents}" var="doc" chunkSize="10">
+                    <f:facet name="header">
+                        Desplace al final para cargar mas documentos
+                    </f:facet>
+                    <h:panelGrid columns="2" style="width: 100%" columnClasses="doctype, detail"> 
+                        <p:graphicImage name=""/>
+                        <p:outputPanel>
+                            <h:outputText value="Asunto:" />
+                            <h:outputText value="#{doc.asunto}" style="font-weight: bold"/>
+                        </p:outputPanel>
+                    </h:panelGrid>
+                </p:dataScroller>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
