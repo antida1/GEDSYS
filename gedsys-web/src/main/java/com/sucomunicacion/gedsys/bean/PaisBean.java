@@ -122,15 +122,15 @@ public class PaisBean implements Serializable {
         }
     }
     
-    public void getSessionById(Pais sec){
+    public void getPaisById(Pais pais){
         PaisJpaController sJpa;
-        Pais secTemp;
+        Pais paisTemp;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
             sJpa = new PaisJpaController(emf);
-            secTemp = sJpa.findPais(sec.getId());
-            if(secTemp != null){
-                this.pais = secTemp;
+            paisTemp = sJpa.findPais(pais.getId());
+            if(paisTemp != null){
+                this.pais = paisTemp;
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
