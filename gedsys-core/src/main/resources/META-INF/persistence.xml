@@ -25,7 +25,7 @@
     <class>com.sucomunicacion.gedsys.entities.Usuario</class>
     <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://HELIOS:1433;databaseName=gedsys"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>
       <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="javax.persistence.jdbc.password" value="b4s316.c0"/>

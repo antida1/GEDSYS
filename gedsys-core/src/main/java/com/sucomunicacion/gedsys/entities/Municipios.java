@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -45,6 +47,7 @@ public class Municipios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private Integer id;
     @Column(name = "Codigo", length = 50)
@@ -59,9 +62,8 @@ public class Municipios implements Serializable {
     private Date fechaModificacion;
     @Column(name = "CreadoPor", length = 36)
     private String creadoPor;
-    @Column(name = "ModificadoPor")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modificadoPor;
+    @Column(name = "ModificadoPor", length = 36)
+    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @OneToMany(mappedBy = "municipio")
@@ -125,11 +127,11 @@ public class Municipios implements Serializable {
         this.creadoPor = creadoPor;
     }
 
-    public Date getModificadoPor() {
+    public String getModificadoPor() {
         return modificadoPor;
     }
 
-    public void setModificadoPor(Date modificadoPor) {
+    public void setModificadoPor(String modificadoPor) {
         this.modificadoPor = modificadoPor;
     }
 
