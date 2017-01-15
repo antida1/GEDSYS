@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class TipoDocumentalBean implements Serializable {
+public class TipoDocumentalBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +77,7 @@ public class TipoDocumentalBean implements Serializable {
     private void crear() throws Exception {
         TipoDocumentalJpaController tpJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             tpJpa = new TipoDocumentalJpaController(emf);
             this.tipoDocumental.setFechaCreacion(new Date());
             this.tipoDocumental.setFechaModificacion(new Date());
@@ -93,7 +93,7 @@ public class TipoDocumentalBean implements Serializable {
     private void modificar() throws Exception {
         TipoDocumentalJpaController tpJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             tpJpa = new TipoDocumentalJpaController(emf);
             this.tipoDocumental.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +108,7 @@ public class TipoDocumentalBean implements Serializable {
     public void eliminar(TipoDocumental TipoDocumental) throws Exception{
         TipoDocumentalJpaController tpJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             tpJpa = new TipoDocumentalJpaController(emf);
             tpJpa.destroy(TipoDocumental.getId());
             this.listar();
@@ -120,7 +120,7 @@ public class TipoDocumentalBean implements Serializable {
     public void listar() throws Exception {
         TipoDocumentalJpaController tpJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             tpJpa = new TipoDocumentalJpaController(emf);
             tiposDocumentales = tpJpa.findTipoDocumentalEntities();
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class TipoDocumentalBean implements Serializable {
         TipoDocumentalJpaController tpJpa;
         TipoDocumental tdTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             tpJpa = new TipoDocumentalJpaController(emf);
             tdTemp = tpJpa.findTipoDocumental(unidadDocumetal.getId());
             if(tdTemp !=null){

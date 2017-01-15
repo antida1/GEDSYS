@@ -11,12 +11,15 @@ import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.DepartamentosJpaController;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 
 /**
@@ -25,7 +28,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class DepartamentoBean implements Serializable {
+public class DepartamentoBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +80,7 @@ public class DepartamentoBean implements Serializable {
     private void crear() throws Exception {
         DepartamentosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new DepartamentosJpaController(emf);
             this.departamento.setFechaCreacion(new Date());
             this.departamento.setFechaModificacion(new Date());
@@ -93,7 +96,7 @@ public class DepartamentoBean implements Serializable {
     private void modificar() throws Exception {
         DepartamentosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new DepartamentosJpaController(emf);
             this.departamento.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +111,7 @@ public class DepartamentoBean implements Serializable {
     public void eliminar(Departamentos departamento) throws Exception{
         DepartamentosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new DepartamentosJpaController(emf);
             ssJpa.destroy(departamento.getId());
             this.listar();
@@ -120,7 +123,7 @@ public class DepartamentoBean implements Serializable {
     public void listar() throws Exception {
         DepartamentosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new DepartamentosJpaController(emf);
             departamentos = ssJpa.findDepartamentosEntities();
         } catch (Exception e) {
@@ -132,7 +135,7 @@ public class DepartamentoBean implements Serializable {
         DepartamentosJpaController ssJpa;
         Departamentos departamentoTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new DepartamentosJpaController(emf);
             departamentoTemp = ssJpa.findDepartamentos(departamento.getId());
             if(departamentoTemp !=null){

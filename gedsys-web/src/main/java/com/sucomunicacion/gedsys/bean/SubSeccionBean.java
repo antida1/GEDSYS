@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class SubSeccionBean implements Serializable {
+public class SubSeccionBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +77,7 @@ public class SubSeccionBean implements Serializable {
     private void crear() throws Exception {
         SubSeccionJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SubSeccionJpaController(emf);
             this.subseccion.setFechaCreacion(new Date());
             this.subseccion.setFechaModificacion(new Date());
@@ -93,7 +93,7 @@ public class SubSeccionBean implements Serializable {
     private void modificar() throws Exception {
         SubSeccionJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SubSeccionJpaController(emf);
             this.subseccion.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +108,7 @@ public class SubSeccionBean implements Serializable {
     public void eliminar(SubSeccion subseccion) throws Exception{
         SubSeccionJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SubSeccionJpaController(emf);
             ssJpa.destroy(subseccion.getId());
             this.listar();
@@ -120,7 +120,7 @@ public class SubSeccionBean implements Serializable {
     public void listar() throws Exception {
         SubSeccionJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SubSeccionJpaController(emf);
             subsecciones = ssJpa.findSubSeccionEntities();
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class SubSeccionBean implements Serializable {
         SubSeccionJpaController ssJpa;
         SubSeccion subsecTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SubSeccionJpaController(emf);
             subsecTemp = ssJpa.findSubSeccion(subsec.getId());
             if(subsecTemp !=null){

@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean(name = "login")
 @SessionScoped
-public class LoginBean implements Serializable {
+public class LoginBean extends BaseBean implements Serializable {
     
     private static final long serialVersionUID = 1094801825228386363L;
     private String username;
@@ -68,7 +68,7 @@ public class LoginBean implements Serializable {
        
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
-        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         UsuarioJpaController uJpa = new UsuarioJpaController(emf);
         String password = Authentication.md5(this.clave);
         usuario = uJpa.autheticate(this.username, password);

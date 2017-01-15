@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class SerieBean implements Serializable {
+public class SerieBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +77,7 @@ public class SerieBean implements Serializable {
     private void crear() throws Exception {
         SerieJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SerieJpaController(emf);
             this.serie.setFechaCreacion(new Date());
             this.serie.setFechaModificacion(new Date());
@@ -93,7 +93,7 @@ public class SerieBean implements Serializable {
     private void modificar() throws Exception {
         SerieJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SerieJpaController(emf);
             this.serie.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +108,7 @@ public class SerieBean implements Serializable {
     public void eliminar(Serie serie) throws Exception{
         SerieJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SerieJpaController(emf);
             ssJpa.destroy(serie.getId());
             this.listar();
@@ -120,7 +120,7 @@ public class SerieBean implements Serializable {
     public void listar() throws Exception {
         SerieJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SerieJpaController(emf);
             series = ssJpa.findSerieEntities();
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class SerieBean implements Serializable {
         SerieJpaController ssJpa;
         Serie serieTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new SerieJpaController(emf);
             serieTemp = ssJpa.findSerie(serie.getId());
             if(serieTemp !=null){

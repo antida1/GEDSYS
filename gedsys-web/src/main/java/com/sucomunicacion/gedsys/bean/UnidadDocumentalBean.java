@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class UnidadDocumentalBean implements Serializable {
+public class UnidadDocumentalBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +77,7 @@ public class UnidadDocumentalBean implements Serializable {
     private void crear() throws Exception {
         UnidadDocumentalJpaController udJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             udJpa = new UnidadDocumentalJpaController(emf);
             this.unidadDocumental.setFechaCreacion(new Date());
             this.unidadDocumental.setFechaModificacion(new Date());
@@ -93,7 +93,7 @@ public class UnidadDocumentalBean implements Serializable {
     private void modificar() throws Exception {
         UnidadDocumentalJpaController udJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             udJpa = new UnidadDocumentalJpaController(emf);
             this.unidadDocumental.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +108,7 @@ public class UnidadDocumentalBean implements Serializable {
     public void eliminar(UnidadDocumental unidadDocumental) throws Exception{
         UnidadDocumentalJpaController udJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             udJpa = new UnidadDocumentalJpaController(emf);
             udJpa.destroy(unidadDocumental.getId());
             this.listar();
@@ -120,7 +120,7 @@ public class UnidadDocumentalBean implements Serializable {
     public void listar() throws Exception {
         UnidadDocumentalJpaController udJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             udJpa = new UnidadDocumentalJpaController(emf);
             UnidadesDocumentales = udJpa.findUnidadDocumentalEntities();
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class UnidadDocumentalBean implements Serializable {
         UnidadDocumentalJpaController udJpa;
         UnidadDocumental udTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             udJpa = new UnidadDocumentalJpaController(emf);
             udTemp = udJpa.findUnidadDocumental(unidadDocumetal.getId());
             if(udTemp !=null){

@@ -25,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean
 @ViewScoped
-public class MunicipioBean implements Serializable {
+public class MunicipioBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -77,7 +77,7 @@ public class MunicipioBean implements Serializable {
     private void crear() throws Exception {
         MunicipiosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new MunicipiosJpaController(emf);
             this.municipio.setFechaCreacion(new Date());
             this.municipio.setFechaModificacion(new Date());
@@ -93,7 +93,7 @@ public class MunicipioBean implements Serializable {
     private void modificar() throws Exception {
         MunicipiosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new MunicipiosJpaController(emf);
             this.municipio.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -108,7 +108,7 @@ public class MunicipioBean implements Serializable {
     public void eliminar(Municipios municipio) throws Exception{
         MunicipiosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new MunicipiosJpaController(emf);
             ssJpa.destroy(municipio.getId());
             this.listar();
@@ -120,7 +120,7 @@ public class MunicipioBean implements Serializable {
     public void listar() throws Exception {
         MunicipiosJpaController ssJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new MunicipiosJpaController(emf);
             municipios = ssJpa.findMunicipiosEntities();
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class MunicipioBean implements Serializable {
         MunicipiosJpaController ssJpa;
         Municipios municipioTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             ssJpa = new MunicipiosJpaController(emf);
             municipioTemp = ssJpa.findMunicipios(municipio.getId());
             if(municipioTemp !=null){

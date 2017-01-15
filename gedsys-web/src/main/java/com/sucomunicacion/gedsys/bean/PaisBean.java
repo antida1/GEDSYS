@@ -20,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 
 @ManagedBean
 @ViewScoped
-public class PaisBean implements Serializable {
+public class PaisBean extends BaseBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -69,7 +69,7 @@ public class PaisBean implements Serializable {
     private void crear() throws Exception{
         PaisJpaController sJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -87,7 +87,7 @@ public class PaisBean implements Serializable {
     private void modificar() throws Exception{
         PaisJpaController sJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             this.pais.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -102,7 +102,7 @@ public class PaisBean implements Serializable {
     public void eliminar(Pais pais){
         PaisJpaController sJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             sJpa.destroy(pais.getId());
             this.listar();
@@ -114,7 +114,7 @@ public class PaisBean implements Serializable {
     public void listar(){
         PaisJpaController sJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             Paises = sJpa.findPaisEntities();
         } catch (Exception e) {
@@ -126,7 +126,7 @@ public class PaisBean implements Serializable {
         PaisJpaController sJpa;
         Pais paisTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             paisTemp = sJpa.findPais(pais.getId());
             if(paisTemp != null){

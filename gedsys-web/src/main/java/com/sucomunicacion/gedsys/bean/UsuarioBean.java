@@ -39,7 +39,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @ViewScoped
-public class UsuarioBean implements Serializable {
+public class UsuarioBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -100,7 +100,7 @@ public class UsuarioBean implements Serializable {
     private void crear() throws Exception {
         UsuarioJpaController usrJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             //this.usuario.setFechaCreacion(new Date());
             //this.usuario.setFechaModificacion(new Date());
@@ -119,7 +119,7 @@ public class UsuarioBean implements Serializable {
     private void modificar() throws Exception {
         UsuarioJpaController usrJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             //this.usuario.setFechaModificacion(new Date());
             //Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -136,7 +136,7 @@ public class UsuarioBean implements Serializable {
     public void eliminar(Usuario usuario) throws Exception{
         UsuarioJpaController usrJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             usrJpa.destroy(usuario.getId());
             this.listar();
@@ -148,7 +148,7 @@ public class UsuarioBean implements Serializable {
     public void listar() throws Exception {
         UsuarioJpaController usrJpa;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             usuarios = usrJpa.findUsuarioEntities();
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class UsuarioBean implements Serializable {
         UsuarioJpaController usrJpa;
         Usuario usrTemp;
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory();
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             usrTemp = usrJpa.findUsuario(unidadDocumetal.getId());
             if(usrTemp !=null){
