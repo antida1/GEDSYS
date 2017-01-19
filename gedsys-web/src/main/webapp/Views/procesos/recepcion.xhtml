@@ -10,191 +10,246 @@
 
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <p:growl id="messages"  showDetail="true" />
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Recepción de Documento<small>Digitalización o Carga</small></h2>
-                        <div class="clearfix"></div>
+                        <div class="clear"></div>
                     </div>
                     <div class="x_content">
                         <h:form>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="first-name">Tipo Documento Externo<span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="tipoDocumentoExterno">Tipo Documento Externo<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="tipoDocumentoExterno" var="" value="" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}" />
+                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="last-name">Fecha <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:calendar id="fechaRecepcion" value="#{recepcionBean.documento.fechaCreacion}" showOn="button" locale="es" style="width: 100%"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Fecha <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="last-name">Remitente <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        <p:selectOneMenu id="remitente" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un remitente" itemValue="#{null}" />
+                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <p:button icon="ui-icon-pencil" title="Nuevo Remitente"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Consecutivo Radicado Externo <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="last-name">Destinatario <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="Destinatario" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un destinatario" itemValue="#{null}" />
+                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4">Cargo <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:outputLabel id="cargo" value="#{usuario.cargo.nombre}" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Remitente <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="conCopia">Con Copia a <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50">
+                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usrCopia" itemLabel="#{usrCopia.nombres}" itemValue="#{usrCopia}"/>
+                                            <p:column>
+                                                <h:outputText value="#{u.nombres} #{u.apelidos}"/>
+                                            </p:column>
+                                        </p:selectManyMenu>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="entidad">Entidad <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        <p:selectOneMenu id="entidad" var="" filter="true" filterMatchMode="contains" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione una entidad" itemValue="#{null}" />
+                                            <f:selectItems value="" var="" itemLabel="" itemValue=""/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <p:button icon="ui-icon-pencil" title="Nueva Entidad"/>
+                                    </div>
+                                </div>
 
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Destinatario <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="last-name">Requiere Respuesta <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputSwitch value=""/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Cargo <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="direccion">Direccion <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputText id="direccion" value="" style="width: 100%"/>
+                                    </div>
+                                </div>  
                             </div>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="pais">Pais <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="pais" value="#{recepcionBean.paisId}" 
+                                                         filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                            <p:ajax listener="#{recepcionBean.onPaisChange}" update="departamento" />
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un pais" itemValue="#{null}" />
+                                            <f:selectItems value="#{recepcionBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais.id}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
 
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Con Copia a <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="departamento">Departamento/Estado <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="departamento" value="#{recepcionBean.departamentoId}" filter="true" 
+                                                         filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un departamento" itemValue="#{null}" />
+                                            <f:selectItems value="#{recepcionBean.depatamentos}" var="departamento" itemLabel="#{departamento.name}" itemValue="#{departamento.id}" />
+                                            <p:ajax update="municipio" listener="#{recepcionBean.onDepartamentoChange}" />
+                                        </p:selectOneMenu>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Entidad <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="municipio">Municipio <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="municipio" value="#{recepcionBean.municipioId}" filter="true" 
+                                                         filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un municipio" itemValue="#{null}" />
+                                            <f:selectItems value="#{recepcionBean.municipios}" var="municipio" itemLabel="#{municipio.nombre}" itemValue="#{municipio.id}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="codigoPostal">Codigo Postal<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputText id="codigoPostal" style="width: 100%"/>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Requiere Respuesta <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="anexos">Anexos <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputSwitch id="anexos" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="folios">Folios <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputNumber id="folios" decimalPlaces="0" minValue="0" style="width: 100%"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Direccion <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div  class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="libros">Libros <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputNumber id="libros" decimalPlaces="0" minValue="0" style="width: 100%"/>
+                                    </div>
                                 </div>
-                            </div>  
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Pais <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Departamento/Estado <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="medioEnvio">Medio de Envio <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:selectOneMenu id="medioEnvio" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un medio de envio" itemValue="#{null}" />
+                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                        </p:selectOneMenu>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Municipio <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class="col-md-4" for="tercero">Empresa/Tercero <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-7">
+                                        <p:selectOneMenu id="tercero" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione una Empresa/Tercero " itemValue="#{null}" />
+                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                        </p:selectOneMenu>
+                                        
+                                    </div>
+                                    <div class="col-md-1">
+                                        <p:button icon="ui-icon-pencil" title="Nuevo Tercero"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-offset-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4">Documentos</label>
+                                    <div class="col-md-8">
+                                        <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" style="width: 100%"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Codigo Postal<span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4" for="asunto">Asunto <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <p:inputText id="asunto" style="width: 100%"/>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Asunto <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Detalle <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Anexos <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Folios <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Libros <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4" for="last-name">Medio de Envio <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 form-group">
-                                <label class="col-md-4" for="last-name">Empresa/Tercero <span class="required">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-md-offset-6"></div>
-
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4">Digitalizar</label>
-                                <div class="col-md-8">
-                                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12"></input>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-md-offset-6"></div>
                             
-                            <div class="col-xs-6 form-group">
-                                <label class=" col-md-4">Documentos</label>
-                                <div class="col-md-8">
-                                    <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                <div class="col-xs-6 col-md-offset-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 form-group">
+                                    <label class=" col-md-2" for="detalle">Detalle <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-10">
+                                        <p:inputTextarea id="detalle" rows="6" cols="220" style="width: 100%" counter="counter" maxlength="600" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <h:outputText id="counter" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
                             <div class="form-group">
-                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                    <button type="submit" class="btn btn-primary">Cancel</button>
-                                    <button type="submit" class="btn btn-success">Enviar</button>
+                                <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-9">
+                                    <p:commandButton  value="Radicar" icon="ui-icon-disk"  />
+                                    <p:commandButton value="Cancelar" immediate="true" ></p:commandButton>
                                 </div>
                             </div>
                         </h:form>

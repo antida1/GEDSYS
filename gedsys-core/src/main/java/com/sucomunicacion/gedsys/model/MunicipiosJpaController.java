@@ -222,4 +222,29 @@ public class MunicipiosJpaController implements Serializable {
         }
     }
     
+    public List<Municipios> findMunicipiosByDepartamento(Departamentos departamento) {
+        return findMunicipiosByDepartamento(departamento, true, -1, -1);
+    }
+    
+    public List<Municipios> findMunicipiosByDepartamento(Departamentos departamento, int maxResults, int firstResult) {
+        return findMunicipiosByDepartamento(departamento, false, maxResults, firstResult);
+    }
+    
+    private List<Municipios> findMunicipiosByDepartamento(Departamentos departamento, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Municipios.class));
+            Query q = em.createNamedQuery("Municipios.findByDepartamento", Municipios.class)
+                    .setParameter("departamento", departamento);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }

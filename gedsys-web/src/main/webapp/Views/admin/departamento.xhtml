@@ -29,7 +29,7 @@
                             <h:outputText value="#{departamento.codigo}" />
                         </p:column>
                         <p:column headerText="Nombre">
-                            <h:outputText value="#{departamento.nombre}" />
+                            <h:outputText value="#{departamento.name}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
                             <h:outputText value="#{departamento.fechaCreacion}" />
@@ -44,7 +44,7 @@
                             <h:outputText value="#{departamento.modificadoPor}" />
                         </p:column>
                         <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{departamentoBean.getSubSeccionById(departamento)}" 
+                            <p:commandButton actionListener="#{departamentoBean.getDepartamentoById(departamento)}" 
                                              update=":dlgDetalle" oncomplete="PF('departamentoDialog').show()" 
                                              icon="ui-icon-pencil" title="Editar">
                             </p:commandButton>
@@ -57,22 +57,28 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="SubSección" widgetVar="departamentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="Departamentos" widgetVar="departamentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
                     <h:form>
                         <h:inputHidden id="id" value="#{departamentoBean.departamento.id}" />
                         <div class="form-group row">
-                            <p:outputLabel value="Sección" for="seccion" class="col-xs-2 col-form-label"/>
+                            <p:outputLabel value="Pais" for="pais" class="col-xs-2 col-form-label"/>
                             <div class="col-xs-10">
-                                <p:selectOneMenu id="seccion" value="#{departamentoBean.departamento.pais}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="pais" value="#{departamentoBean.departamento.pais}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
-                                    <f:selectItems value="#{paisBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}"/>
+                                    <f:selectItems value="#{paisBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}" />
                                 </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Codigo" for="codigo" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="codigo" required="true" value="#{departamentoBean.departamento.codigo}" style="width: 100%"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
                             <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{departamentoBean.departamento.nombre}" class="form-control" />
+                                <p:inputText id="Nombre" required="true" value="#{departamentoBean.departamento.name}" style="width: 100%"/>
                             </div>
                         </div>
                         <p:spacer/>

@@ -222,4 +222,29 @@ public class DepartamentosJpaController implements Serializable {
         }
     }
     
+    public List<Departamentos> findDepartamentosByPais(Pais pais) {
+        return findDepartamentosByPais(pais, -1, -1);
+    }
+
+    public List<Departamentos> findDepartamentosByPais(Pais pais, int maxResults, int firstResult) {
+        return findDepartamentosByPais(pais, true, maxResults, firstResult);
+    }
+    
+    private List<Departamentos> findDepartamentosByPais( Pais pais ,boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Departamentos.class));
+            Query q = em.createNamedQuery("Departamentos.findByPais", Departamentos.class)
+                    .setParameter("pais", pais);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }

@@ -5,6 +5,7 @@
  */
 package com.sucomunicacion.gedsys.bean;
 
+import com.sucomunicacion.gedsys.entities.Departamentos;
 import com.sucomunicacion.gedsys.utils.JpaUtils;
 import com.sucomunicacion.gedsys.entities.Municipios;
 import com.sucomunicacion.gedsys.entities.Usuario;
@@ -139,6 +140,18 @@ public class MunicipioBean extends BaseBean implements Serializable {
                 this.municipio = municipioTemp;
                 this.accion = "Modificar";
             }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    
+    public void getMunicipiosByDepartamento(Departamentos departamento) throws Exception {
+        MunicipiosJpaController ssJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            ssJpa = new MunicipiosJpaController(emf);
+            municipios = ssJpa.findMunicipiosByDepartamento(departamento);
         } catch (Exception e) {
             throw e;
         }

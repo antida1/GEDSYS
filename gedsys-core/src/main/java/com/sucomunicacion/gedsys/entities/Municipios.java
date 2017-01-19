@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "Municipios", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Municipios.findAll", query = "SELECT m FROM Municipios m")
+    @NamedQuery(name = "Municipios.findByDepartamento", query = "SELECT m FROM Municipios m where m.departamento = :departamento")
+    , @NamedQuery(name = "Municipios.findAll", query = "SELECT m FROM Municipios m")
     , @NamedQuery(name = "Municipios.findById", query = "SELECT m FROM Municipios m WHERE m.id = :id")
     , @NamedQuery(name = "Municipios.findByCodigo", query = "SELECT m FROM Municipios m WHERE m.codigo = :codigo")
     , @NamedQuery(name = "Municipios.findByNombre", query = "SELECT m FROM Municipios m WHERE m.nombre = :nombre")

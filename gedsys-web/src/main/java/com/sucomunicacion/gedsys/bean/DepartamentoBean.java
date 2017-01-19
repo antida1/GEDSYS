@@ -7,6 +7,7 @@ package com.sucomunicacion.gedsys.bean;
 
 import com.sucomunicacion.gedsys.utils.JpaUtils;
 import com.sucomunicacion.gedsys.entities.Departamentos;
+import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.DepartamentosJpaController;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
@@ -48,7 +49,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
         return departamentos;
     }
 
-    public void setDepartamentoes(List<Departamentos> departamentos) {
+    public void setDepartamentos(List<Departamentos> departamentos) {
         this.departamentos = departamentos;
     }
 
@@ -142,6 +143,17 @@ public class DepartamentoBean extends BaseBean implements Serializable {
                 this.departamento = departamentoTemp;
                 this.accion = "Modificar";
             }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public void getDepartamentosByPais(Pais pais) throws Exception {
+        DepartamentosJpaController ssJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            ssJpa = new DepartamentosJpaController(emf);
+            departamentos = ssJpa.findDepartamentosByPais(pais);
         } catch (Exception e) {
             throw e;
         }

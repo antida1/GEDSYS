@@ -22,7 +22,7 @@
                     </p:menubar>
                     <p:separator/>
                     <p:dataTable id="lstMunicipios" var="municipio" value="#{municipioBean.municipios}" style="margin-bottom:0">
-                         <p:column headerText="Pais">
+                         <p:column headerText="Departamento">
                              <h:outputText value="#{municipio.departamento.name}" />
                         </p:column>
                         <p:column headerText="Codigo">
@@ -61,9 +61,9 @@
                     <h:form>
                         <h:inputHidden id="id" value="#{municipioBean.municipio.id}" />
                         <div class="form-group row">
-                            <p:outputLabel value="Depratamento" for="departamento" class="col-xs-2 col-form-label"/>
+                            <p:outputLabel value="Depatamento" for="departamento" class="col-xs-2 col-form-label"/>
                             <div class="col-xs-10">
-                                <p:selectOneMenu id="departamento" value="#{municipioBean.municipio.departamento}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="departamento" value="#{municipioBean.municipio.departamento}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
                                     <f:selectItems value="#{departamentoBean.departamentos}" var="departamento" itemLabel="#{departamento.name}" itemValue="#{departamento}"/>
                                 </p:selectOneMenu>
@@ -72,13 +72,13 @@
                         <div class="form-group row">
                             <p:outputLabel value="Codigo" for="Codigo" class="col-xs-2 col-form-label" />
                             <div class="col-xs-10">
-                                <p:inputText id="Codigo" required="true" value="#{municipioBean.municipio.codigo}" class="form-control" />
+                                <p:inputText id="Codigo" required="true" value="#{municipioBean.municipio.codigo}" style="width: 100%"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
                             <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{municipioBean.municipio.nombre}" class="form-control" />
+                                <p:inputText id="Nombre" required="true" value="#{municipioBean.municipio.nombre}" style="width: 100%"/>
                             </div>
                         </div>
                         <p:spacer/>

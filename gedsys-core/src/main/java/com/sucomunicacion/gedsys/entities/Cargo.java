@@ -7,16 +7,22 @@ package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -36,9 +42,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Cargo.findByBorrado", query = "SELECT c FROM Cargo c WHERE c.borrado = :borrado")})
 public class Cargo implements Serializable {
 
+    @OneToMany(mappedBy = "cargo")
+    private List<Usuario> usuarioList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private Integer id;
     @Column(name = "Nombre", length = 50)
@@ -142,6 +152,16 @@ public class Cargo implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Cargo[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
     
 }
