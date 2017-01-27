@@ -7,76 +7,65 @@ package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
-@Table(name = "Departamentos", catalog = "gedsys", schema = "dbo")
+@Table(name = "Grupo", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "Departamentos.findByPais", query = "SELECT D FROM Departamentos d where d.pais = :pais")
-    , @NamedQuery(name = "Departamentos.findAll", query = "SELECT d FROM Departamentos d")
-    , @NamedQuery(name = "Departamentos.findById", query = "SELECT d FROM Departamentos d WHERE d.id = :id")
-    , @NamedQuery(name = "Departamentos.findByCode", query = "SELECT d FROM Departamentos d WHERE d.codigo = :codigo")
-    , @NamedQuery(name = "Departamentos.findByName", query = "SELECT d FROM Departamentos d WHERE d.name = :name")
-    , @NamedQuery(name = "Departamentos.findByFechaCreacion", query = "SELECT d FROM Departamentos d WHERE d.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Departamentos.findByFechaModificacion", query = "SELECT d FROM Departamentos d WHERE d.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Departamentos.findByCreadoPor", query = "SELECT d FROM Departamentos d WHERE d.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Departamentos.findByModificadoPor", query = "SELECT d FROM Departamentos d WHERE d.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Departamentos.findByBorrado", query = "SELECT d FROM Departamentos d WHERE d.borrado = :borrado")})
-public class Departamentos implements Serializable {
+    @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g")
+    , @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")
+    , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")
+    , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Grupo.findByFechaModificacion", query = "SELECT g FROM Grupo g WHERE g.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Grupo.findByCreadoPor", query = "SELECT g FROM Grupo g WHERE g.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Grupo.findByModificadoPor", query = "SELECT g FROM Grupo g WHERE g.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "Grupo.findByBorrado", query = "SELECT g FROM Grupo g WHERE g.borrado = :borrado")
+    , @NamedQuery(name = "Grupo.findByEstado", query = "SELECT g FROM Grupo g WHERE g.estado = :estado")})
+public class Grupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Codigo", length = 50)
-    private String codigo;
-    @Column(name = "Name", length = 100)
-    private String name;
+    @Column(name = "Nombre")
+    private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
+    @Column(name = "CreadoPor")
     private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
+    @Column(name = "ModificadoPor")
     private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
-    @JoinColumn(name = "Pais", referencedColumnName = "Id")
-    @ManyToOne
-    private Pais pais;
-    @OneToMany(mappedBy = "departamento")
-    private List<Municipios> municipiosList;
+    @Column(name = "Estado")
+    private Boolean estado;
 
-    public Departamentos() {
+    public Grupo() {
     }
 
-    public Departamentos(Integer id) {
+    public Grupo(Integer id) {
         this.id = id;
     }
 
@@ -88,20 +77,12 @@ public class Departamentos implements Serializable {
         this.id = id;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Date getFechaCreacion() {
@@ -144,21 +125,12 @@ public class Departamentos implements Serializable {
         this.borrado = borrado;
     }
 
-    public Pais getPais() {
-        return pais;
+    public Boolean getEstado() {
+        return estado;
     }
 
-    public void setPais(Pais pais) {
-        this.pais = pais;
-    }
-
-    @XmlTransient
-    public List<Municipios> getMunicipiosList() {
-        return municipiosList;
-    }
-
-    public void setMunicipiosList(List<Municipios> municipiosList) {
-        this.municipiosList = municipiosList;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -171,10 +143,10 @@ public class Departamentos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Departamentos)) {
+        if (!(object instanceof Grupo)) {
             return false;
         }
-        Departamentos other = (Departamentos) object;
+        Grupo other = (Grupo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -183,6 +155,7 @@ public class Departamentos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Departamentos[ id=" + id + " ]";
+        return "com.sucomunicacion.gedsys.entities.Grupo[ id=" + id + " ]";
     }
+    
 }

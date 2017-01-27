@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Tipos de Documentos</h3>
+                    <p:menubar>
+                        <p:menuitem oncomplete="PF('tipoDocumentoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{tipoDocumentoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        </p:menuitem>
+                    </p:menubar>
+                    <p:separator/>
+                    <p:dataTable id="lstPaises" var="tipoDocumento" value="#{tipoDocumentoBean.tipoDocumentos}" style="margin-bottom:0">
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{tipoDocumento.nombre}" />
+                        </p:column>
+                        <p:column headerText="Fecha Creación">
+                            <h:outputText value="#{tipoDocumento.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="Fecha Modificación">
+                            <h:outputText value="#{tipoDocumento.fechaModificacion}" />
+                        </p:column>
+                        <p:column headerText="Creado Por">
+                            <h:outputText value="#{tipoDocumento.creadoPor}" />
+                        </p:column>
+                        <p:column headerText="Modificado Por">
+                            <h:outputText value="#{tipoDocumento.modificadoPor}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{tipoDocumentoBean.getTipoDocumentoById(tipoDocumento)}" 
+                                             update=":dlgDetalle" oncomplete="PF('tipoDocumentoDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{tipoDocumentoBean.eliminar(tipoDocumento)}" 
+                                             update=":form:lstPaises messages"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="Tipos de Documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <h:form>
+                        <h:inputHidden id="id" value="#{tipoDocumentoBean.tipoDocumento.id}" />
+                        <div class="form-group row">
+                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="Nombre" required="true" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control"/>
+                            </div>
+                        </div>
+                        <p:spacer/>
+                        <div> 
+                            <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" oncomplete="PF('tipoDocumentoDialog').hide()" />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentoDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

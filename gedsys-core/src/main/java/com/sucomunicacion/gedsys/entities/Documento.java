@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -41,6 +42,47 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Documento.findByCreadoPor", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor")
     , @NamedQuery(name = "Documento.findByModificadoPor", query = "SELECT d FROM Documento d WHERE d.modificadoPor = :modificadoPor")})
 public class Documento implements Serializable {
+
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
+
+    @Column(name = "Consecutivo")
+    private String consecutivo;
+    @Column(name = "Direccion")
+    private String direccion;
+    @Column(name = "FechaDocumento")
+    @Temporal(TemporalType.DATE)
+    private Date fechaDocumento;
+    @Column(name = "Remitente")
+    private String remitente;
+    @Column(name = "Destinatario")
+    private Integer destinatario;
+    @Column(name = "CodigoPostal")
+    private String codigoPostal;
+    @Column(name = "Anexos")
+    private Boolean anexos;
+    @Column(name = "Folios")
+    private Integer folios;
+    @Column(name = "Libros")
+    private Integer libros;
+    @Column(name = "MedioEnvio")
+    private String medioEnvio;
+    @Lob
+    @Column(name = "Detalle")
+    private String detalle;
+    @JoinColumn(name = "Corregimiento", referencedColumnName = "Id")
+    @ManyToOne
+    private Corregimientos corregimiento;
+    @JoinColumn(name = "Entidad", referencedColumnName = "id")
+    @ManyToOne
+    private Entidad entidad;
+    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
+    @ManyToOne
+    private Municipios municipio;
+    @JoinColumn(name = "Transportador", referencedColumnName = "Id")
+    @ManyToOne
+    private Transportador transportador;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -235,6 +277,134 @@ public class Documento implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Documento[ id=" + id + " ]";
+    }
+
+    public String getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(String consecutivo) {
+        this.consecutivo = consecutivo;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Date getFechaDocumento() {
+        return fechaDocumento;
+    }
+
+    public void setFechaDocumento(Date fechaDocumento) {
+        this.fechaDocumento = fechaDocumento;
+    }
+
+    public String getRemitente() {
+        return remitente;
+    }
+
+    public void setRemitente(String remitente) {
+        this.remitente = remitente;
+    }
+
+    public Integer getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(Integer destinatario) {
+        this.destinatario = destinatario;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public Boolean getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(Boolean anexos) {
+        this.anexos = anexos;
+    }
+
+    public Integer getFolios() {
+        return folios;
+    }
+
+    public void setFolios(Integer folios) {
+        this.folios = folios;
+    }
+
+    public Integer getLibros() {
+        return libros;
+    }
+
+    public void setLibros(Integer libros) {
+        this.libros = libros;
+    }
+
+    public String getMedioEnvio() {
+        return medioEnvio;
+    }
+
+    public void setMedioEnvio(String medioEnvio) {
+        this.medioEnvio = medioEnvio;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public Corregimientos getCorregimiento() {
+        return corregimiento;
+    }
+
+    public void setCorregimiento(Corregimientos corregimiento) {
+        this.corregimiento = corregimiento;
+    }
+
+    public Entidad getEntidad() {
+        return entidad;
+    }
+
+    public void setEntidad(Entidad entidad) {
+        this.entidad = entidad;
+    }
+
+    public Municipios getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(Municipios municipio) {
+        this.municipio = municipio;
+    }
+
+    public Transportador getTransportador() {
+        return transportador;
+    }
+
+    public void setTransportador(Transportador transportador) {
+        this.transportador = transportador;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
     
 }

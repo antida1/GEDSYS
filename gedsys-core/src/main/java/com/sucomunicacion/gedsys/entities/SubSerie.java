@@ -44,6 +44,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "SubSerie.findByNombre", query = "SELECT s FROM SubSerie s WHERE s.nombre = :nombre")})
 public class SubSerie implements Serializable {
 
+    @OneToMany(mappedBy = "subSerie")
+    private List<Documento> documentoList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -174,6 +177,16 @@ public class SubSerie implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.SubSerie[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Documento> getDocumentoList() {
+        return documentoList;
+    }
+
+    public void setDocumentoList(List<Documento> documentoList) {
+        this.documentoList = documentoList;
     }
     
 }

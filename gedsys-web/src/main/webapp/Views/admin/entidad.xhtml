@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Entidades</h3>
+                    <p:menubar>
+                        <p:menuitem oncomplete="PF('entidadDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{entidadBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        </p:menuitem>
+                    </p:menubar>
+                    <p:separator/>
+                    <p:dataTable id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0">
+                         <p:column headerText="Tipo de Documento">
+                             <h:outputText value="#{entidad.tipoDocumento}" />
+                        </p:column>
+                        <p:column headerText="Número de Documento">
+                            <h:outputText value="#{entidad.numeroDocumento}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{entidad.nombre}" />
+                        </p:column>
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{entidad.direccion}" />
+                        </p:column>
+                        <p:column headerText="Teléfono">
+                            <h:outputText value="#{entidad.telefono}" />
+                        </p:column>
+                        <p:column headerText="Email">
+                            <h:outputText value="#{entidad.email}" />
+                        </p:column>
+                        <p:column headerText="Fecha de Creación">
+                            <h:outputText value="#{entidad.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{entidadBean.getPaisById(entidad)}" 
+                                             update=":dlgDetalle" oncomplete="PF('entidadDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{entidadBean.eliminar(entidad)}" 
+                                             update=":form:lstEntidades messages"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="Entidades" widgetVar="entidadDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <h:form>
+                        <h:inputHidden id="id" value="#{entidadBean.entidad.id}" />
+                        <div class="form-group row">
+                            <p:outputLabel value="Tipo de Documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:selectOneMenu id="tipoDocumento" value="#{entidadBean.entidad.tipoDocumento}">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
+                                    <f:selectItem itemLabel="Nit" itemValue="Nit"/>
+                                    <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
+                                    <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte"/>
+                                    <f:selectItem itemLabel="Cédula de Extranjeria" itemValue="Cédula de Extranjeria"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Número de Documento" for="numeroDocumento" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:inputText id="numeroDocumento" required="true" value="#{entidadBean.entidad.numeroDocumento}" class="form-control" />
+                            </div>
+                        </div>
+                         <div class="form-group row">
+                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="Nombre" required="true" value="#{entidadBean.entidad.nombre}" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Dirección" for="direccion" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:inputText id="direccion" required="true" value="#{entidadBean.entidad.direccion}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Teléfono" for="telefono" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:inputText id="telefono" required="true" value="#{entidadBean.entidad.telefono}" class="form-control" />
+                            </div>
+                        </div>
+                         <div class="form-group row">
+                            <p:outputLabel value="Email" for="email" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:inputText id="email" required="true" value="#{entidadBean.entidad.email}" class="form-control" />
+                            </div>
+                        </div>
+                       
+                        <p:spacer/>
+                        <div> 
+                            <p:commandButton update=":form:lstEntidades messages" icon="ui-icon-disk" value="#{entidadBean.accion}" actionListener="#{entidadBean.procesar()}" oncomplete="PF('entidadDialog').hide()" />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('entidadDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

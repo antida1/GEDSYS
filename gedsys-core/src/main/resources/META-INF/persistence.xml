@@ -24,6 +24,11 @@
     <class>com.sucomunicacion.gedsys.entities.TipoDocumental</class>
     <class>com.sucomunicacion.gedsys.entities.Usuario</class>
     <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.PlantillaDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Transportador</class>
+    <class>com.sucomunicacion.gedsys.entities.Entidad</class>
+    <class>com.sucomunicacion.gedsys.entities.Grupo</class>
+    <class>com.sucomunicacion.gedsys.entities.TipoDocumento</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

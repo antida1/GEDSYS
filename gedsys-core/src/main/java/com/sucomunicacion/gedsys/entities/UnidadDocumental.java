@@ -7,6 +7,7 @@ package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +18,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -39,6 +43,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "UnidadDocumental.findByModificadoPor", query = "SELECT u FROM UnidadDocumental u WHERE u.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "UnidadDocumental.findByNombre", query = "SELECT u FROM UnidadDocumental u WHERE u.nombre = :nombre")})
 public class UnidadDocumental implements Serializable {
+
+    @OneToMany(mappedBy = "unidadDocumental")
+    private List<Documento> documentoList;
+    @OneToMany(mappedBy = "unidadDocumental")
+    private List<TipoDocumental> tipoDocumentalList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -158,6 +167,26 @@ public class UnidadDocumental implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.UnidadDocumental[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Documento> getDocumentoList() {
+        return documentoList;
+    }
+
+    public void setDocumentoList(List<Documento> documentoList) {
+        this.documentoList = documentoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<TipoDocumental> getTipoDocumentalList() {
+        return tipoDocumentalList;
+    }
+
+    public void setTipoDocumentalList(List<TipoDocumental> tipoDocumentalList) {
+        this.tipoDocumentalList = tipoDocumentalList;
     }
     
 }

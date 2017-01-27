@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,36 +26,29 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
-@Table(name = "Municipios", catalog = "gedsys", schema = "dbo")
+@Table(name = "TipoDocumento", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Municipios.findByDepartamento", query = "SELECT m FROM Municipios m where m.departamento = :departamento")
-    , @NamedQuery(name = "Municipios.findAll", query = "SELECT m FROM Municipios m")
-    , @NamedQuery(name = "Municipios.findById", query = "SELECT m FROM Municipios m WHERE m.id = :id")
-    , @NamedQuery(name = "Municipios.findByCodigo", query = "SELECT m FROM Municipios m WHERE m.codigo = :codigo")
-    , @NamedQuery(name = "Municipios.findByNombre", query = "SELECT m FROM Municipios m WHERE m.nombre = :nombre")
-    , @NamedQuery(name = "Municipios.findByFechaCreacion", query = "SELECT m FROM Municipios m WHERE m.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Municipios.findByFechaModificacion", query = "SELECT m FROM Municipios m WHERE m.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Municipios.findByCreadoPor", query = "SELECT m FROM Municipios m WHERE m.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Municipios.findByModificadoPor", query = "SELECT m FROM Municipios m WHERE m.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Municipios.findByBorrado", query = "SELECT m FROM Municipios m WHERE m.borrado = :borrado")})
-public class Municipios implements Serializable {
-
-    @OneToMany(mappedBy = "municipio")
-    private List<Documento> documentoList;
+    @NamedQuery(name = "TipoDocumento.findAll", query = "SELECT t FROM TipoDocumento t")
+    , @NamedQuery(name = "TipoDocumento.findById", query = "SELECT t FROM TipoDocumento t WHERE t.id = :id")
+    , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")
+    , @NamedQuery(name = "TipoDocumento.findByFechaCreacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "TipoDocumento.findByFechaModificacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "TipoDocumento.findByCreadoPor", query = "SELECT t FROM TipoDocumento t WHERE t.creadoPor = :creadoPor")
+    , @NamedQuery(name = "TipoDocumento.findByModificadoPor", query = "SELECT t FROM TipoDocumento t WHERE t.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "TipoDocumento.findByBorrado", query = "SELECT t FROM TipoDocumento t WHERE t.borrado = :borrado")})
+public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "Codigo", length = 50)
-    private String codigo;
-    @Column(name = "Nombre", length = 100)
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,22 +56,19 @@ public class Municipios implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
+    @Column(name = "CreadoPor")
     private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
+    @Column(name = "ModificadoPor")
     private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
-    @OneToMany(mappedBy = "municipio")
-    private List<Corregimientos> corregimientosList;
-    @JoinColumn(name = "Departamento", referencedColumnName = "Id")
-    @ManyToOne
-    private Departamentos departamento;
+    @OneToMany(mappedBy = "tipoDocumento")
+    private List<Documento> documentoList;
 
-    public Municipios() {
+    public TipoDocumento() {
     }
 
-    public Municipios(Integer id) {
+    public TipoDocumento(Integer id) {
         this.id = id;
     }
 
@@ -90,14 +78,6 @@ public class Municipios implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -149,20 +129,13 @@ public class Municipios implements Serializable {
     }
 
     @XmlTransient
-    public List<Corregimientos> getCorregimientosList() {
-        return corregimientosList;
+    @JsonIgnore
+    public List<Documento> getDocumentoList() {
+        return documentoList;
     }
 
-    public void setCorregimientosList(List<Corregimientos> corregimientosList) {
-        this.corregimientosList = corregimientosList;
-    }
-
-    public Departamentos getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamentos departamento) {
-        this.departamento = departamento;
+    public void setDocumentoList(List<Documento> documentoList) {
+        this.documentoList = documentoList;
     }
 
     @Override
@@ -175,10 +148,10 @@ public class Municipios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Municipios)) {
+        if (!(object instanceof TipoDocumento)) {
             return false;
         }
-        Municipios other = (Municipios) object;
+        TipoDocumento other = (TipoDocumento) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -187,17 +160,7 @@ public class Municipios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Municipios[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public List<Documento> getDocumentoList() {
-        return documentoList;
-    }
-
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+        return "com.sucomunicacion.gedsys.entities.TipoDocumento[ id=" + id + " ]";
     }
     
 }

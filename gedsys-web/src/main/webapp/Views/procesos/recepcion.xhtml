@@ -7,7 +7,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <p:growl id="messages"  showDetail="true" />
@@ -39,13 +38,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
-                                    <label class=" col-md-4" for="last-name">Remitente <span class="required">*</span>
+                                    <label class=" col-md-4" for="remitente">Remitente <span class="required">*</span>
                                     </label>
                                     <div class="col-md-7">
-                                        <p:selectOneMenu id="remitente" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
-                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione un remitente" itemValue="#{null}" />
-                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
-                                        </p:selectOneMenu>
+                                        <p:inputText value="#{recepcionBean.documento.remitente}" id="remitente"/>
                                     </div>
                                     <div class="col-md-1">
                                         <p:button icon="ui-icon-pencil" title="Nuevo Remitente"/>
@@ -57,17 +53,10 @@
                                     <label class=" col-md-4" for="last-name">Destinatario <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:selectOneMenu id="Destinatario" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                        <p:selectOneMenu id="Destinatario" value="#{recepcionBean.documento.destinatario}" filter="true" filterMatchMode="startsWith" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione un destinatario" itemValue="#{null}" />
-                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos} - #{usuario.cargo.nombre}" itemValue="#{usuario.id}" />
                                         </p:selectOneMenu>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 form-group">
-                                    <label class=" col-md-4">Cargo <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-8">
-                                        <p:outputLabel id="cargo" value="#{usuario.cargo.nombre}" />
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +68,7 @@
                                         <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50">
                                             <f:selectItems value="#{recepcionBean.usuarios}" var="usrCopia" itemLabel="#{usrCopia.nombres}" itemValue="#{usrCopia}"/>
                                             <p:column>
-                                                <h:outputText value="#{u.nombres} #{u.apelidos}"/>
+                                                <h:outputText value="#{u.nombres} #{u.apelidos} - #{u.cargo.nombre}"/>
                                             </p:column>
                                         </p:selectManyMenu>
                                     </div>
@@ -90,9 +79,9 @@
                                     <label class=" col-md-4" for="entidad">Entidad <span class="required">*</span>
                                     </label>
                                     <div class="col-md-7">
-                                        <p:selectOneMenu id="entidad" var="" filter="true" filterMatchMode="contains" style="width: 100%">
+                                        <p:selectOneMenu id="entidad" var="#{recepcionBean.documento.entidad}" filter="true" filterMatchMode="contains" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione una entidad" itemValue="#{null}" />
-                                            <f:selectItems value="" var="" itemLabel="" itemValue=""/>
+                                            <f:selectItems value="#{entidadBean.entidades}" var="entidad" itemLabel="#{entidad.nombre}" itemValue="#{entidad}"/>
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="col-md-1">
@@ -104,7 +93,7 @@
                                     <label class=" col-md-4" for="last-name">Requiere Respuesta <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputSwitch value=""/>
+                                        <p:inputSwitch value="#{recepcionBean.documento.requiereRespuesta}"/>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +102,7 @@
                                     <label class=" col-md-4" for="direccion">Direccion <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputText id="direccion" value="" style="width: 100%"/>
+                                        <p:inputText id="direccion" value="#{recepcionBean.documento.direccion}" style="width: 100%"/>
                                     </div>
                                 </div>  
                             </div>
@@ -160,7 +149,7 @@
                                     <label class=" col-md-4" for="codigoPostal">Codigo Postal<span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputText id="codigoPostal" style="width: 100%"/>
+                                        <p:inputText id="codigoPostal" value="#{recepcionBean.documento.codigoPostal}" style="width: 100%"/>
                                     </div>
                                 </div>
                             </div>
@@ -169,14 +158,14 @@
                                     <label class=" col-md-4" for="anexos">Anexos <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputSwitch id="anexos" />
+                                        <p:inputSwitch id="anexos" value="#{recepcionBean.documento.anexos}" />
                                     </div>
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-md-4" for="folios">Folios <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputNumber id="folios" decimalPlaces="0" minValue="0" style="width: 100%"/>
+                                        <p:inputNumber id="folios" value="#{recepcionBean.documento.folios}" decimalPlaces="0" minValue="0" style="width: 100%"/>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +174,7 @@
                                     <label class=" col-md-4" for="libros">Libros <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputNumber id="libros" decimalPlaces="0" minValue="0" style="width: 100%"/>
+                                        <p:inputNumber id="libros" value="#{recepcionBean.documento.libros}" decimalPlaces="0" minValue="0" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 form-group">
@@ -194,7 +183,10 @@
                                     <div class="col-md-8">
                                         <p:selectOneMenu id="medioEnvio" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione un medio de envio" itemValue="#{null}" />
-                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                            <f:selectItem itemLabel="Correo Electrónico" itemValue="Correo Electrónico" />
+                                            <f:selectItem itemLabel="Correo Certificado" itemValue="Correo Certificado" />
+                                            <f:selectItem itemLabel="Entrega Directa" itemValue="Entrega Directa" />
+                                            
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -204,9 +196,9 @@
                                     <label class="col-md-4" for="tercero">Empresa/Tercero <span class="required">*</span>
                                     </label>
                                     <div class="col-md-7">
-                                        <p:selectOneMenu id="tercero" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                        <p:selectOneMenu id="tercero" value="#{recepcionBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione una Empresa/Tercero " itemValue="#{null}" />
-                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                            <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                                         </p:selectOneMenu>
                                         
                                     </div>
@@ -229,7 +221,7 @@
                                     <label class=" col-md-4" for="asunto">Asunto <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:inputText id="asunto" style="width: 100%"/>
+                                        <p:inputText id="asunto" value="#{recepcionBean.documento.asunto}" style="width: 100%"/>
                                     </div>
                                 </div>
                             
@@ -240,7 +232,7 @@
                                     <label class=" col-md-2" for="detalle">Detalle <span class="required">*</span>
                                     </label>
                                     <div class="col-md-10">
-                                        <p:inputTextarea id="detalle" rows="6" cols="220" style="width: 100%" counter="counter" maxlength="600" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <p:inputTextarea id="detalle" value="#{recepcionBean.documento.detalle}" rows="6" cols="220" style="width: 100%" counter="counter" maxlength="600" counterTemplate="{0} characters remaining." autoResize="false" />
                                         <h:outputText id="counter" />
                                     </div>
                                 </div>

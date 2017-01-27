@@ -7,74 +7,69 @@ package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
-@Table(name = "Corregimientos", catalog = "gedsys", schema = "dbo")
+@Table(name = "PlantillaDocumental", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Corregimientos.findAll", query = "SELECT c FROM Corregimientos c")
-    , @NamedQuery(name = "Corregimientos.findById", query = "SELECT c FROM Corregimientos c WHERE c.id = :id")
-    , @NamedQuery(name = "Corregimientos.findByCodigo", query = "SELECT c FROM Corregimientos c WHERE c.codigo = :codigo")
-    , @NamedQuery(name = "Corregimientos.findByNombre", query = "SELECT c FROM Corregimientos c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Corregimientos.findByFechaCreacion", query = "SELECT c FROM Corregimientos c WHERE c.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Corregimientos.findByFechaModificacion", query = "SELECT c FROM Corregimientos c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Corregimientos.findByCreadoPor", query = "SELECT c FROM Corregimientos c WHERE c.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Corregimientos.findByModificadoPor", query = "SELECT c FROM Corregimientos c WHERE c.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Corregimientos.findByBorrado", query = "SELECT c FROM Corregimientos c WHERE c.borrado = :borrado")})
-public class Corregimientos implements Serializable {
-
-    @OneToMany(mappedBy = "corregimiento")
-    private List<Documento> documentoList;
+    @NamedQuery(name = "PlantillaDocumental.findAll", query = "SELECT p FROM PlantillaDocumental p")
+    , @NamedQuery(name = "PlantillaDocumental.findById", query = "SELECT p FROM PlantillaDocumental p WHERE p.id = :id")
+    , @NamedQuery(name = "PlantillaDocumental.findBySubSerie", query = "SELECT p FROM PlantillaDocumental p WHERE p.subSerie = :subSerie")
+    , @NamedQuery(name = "PlantillaDocumental.findByNombre", query = "SELECT p FROM PlantillaDocumental p WHERE p.nombre = :nombre")
+    , @NamedQuery(name = "PlantillaDocumental.findByFechaCreacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "PlantillaDocumental.findByFechaModificacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "PlantillaDocumental.findByCreadoPor", query = "SELECT p FROM PlantillaDocumental p WHERE p.creadoPor = :creadoPor")
+    , @NamedQuery(name = "PlantillaDocumental.findByModificadoPor", query = "SELECT p FROM PlantillaDocumental p WHERE p.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "PlantillaDocumental.findByBorrado", query = "SELECT p FROM PlantillaDocumental p WHERE p.borrado = :borrado")
+    , @NamedQuery(name = "PlantillaDocumental.findByEstado", query = "SELECT p FROM PlantillaDocumental p WHERE p.estado = :estado")})
+public class PlantillaDocumental implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Codigo", length = 50)
-    private String codigo;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "SubSerie")
+    private Integer subSerie;
+    @Column(name = "Nombre")
     private String nombre;
+    @Lob
+    @Column(name = "Texto")
+    private String texto;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
+    @Column(name = "CreadoPor")
     private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
+    @Column(name = "ModificadoPor")
     private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
-    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
-    @ManyToOne
-    private Municipios municipio;
+    @Column(name = "Estado")
+    private Boolean estado;
 
-    public Corregimientos() {
+    public PlantillaDocumental() {
     }
 
-    public Corregimientos(Integer id) {
+    public PlantillaDocumental(Integer id) {
         this.id = id;
     }
 
@@ -86,12 +81,12 @@ public class Corregimientos implements Serializable {
         this.id = id;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public Integer getSubSerie() {
+        return subSerie;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setSubSerie(Integer subSerie) {
+        this.subSerie = subSerie;
     }
 
     public String getNombre() {
@@ -100,6 +95,14 @@ public class Corregimientos implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Date getFechaCreacion() {
@@ -142,12 +145,12 @@ public class Corregimientos implements Serializable {
         this.borrado = borrado;
     }
 
-    public Municipios getMunicipio() {
-        return municipio;
+    public Boolean getEstado() {
+        return estado;
     }
 
-    public void setMunicipio(Municipios municipio) {
-        this.municipio = municipio;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -160,10 +163,10 @@ public class Corregimientos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Corregimientos)) {
+        if (!(object instanceof PlantillaDocumental)) {
             return false;
         }
-        Corregimientos other = (Corregimientos) object;
+        PlantillaDocumental other = (PlantillaDocumental) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -172,17 +175,7 @@ public class Corregimientos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Corregimientos[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public List<Documento> getDocumentoList() {
-        return documentoList;
-    }
-
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+        return "com.sucomunicacion.gedsys.entities.PlantillaDocumental[ id=" + id + " ]";
     }
     
 }
