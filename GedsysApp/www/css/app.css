@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 10/02/2017, 11:53:02 PM
+    Author     : rober
+*/
+
+/* Change html headers color */
+h1,h2,h3,h4,h5 {
+    color:#0071bc;
+}
+h2.mc-text-danger,
+h3.mc-text-danger  {
+    color:red;
+}
+/* Change border radius of icon buttons */
+.ui-btn-icon-notext.ui-corner-all {
+    -webkit-border-radius: .3125em;
+    border-radius: .3125em;
+}
+/* Change color of jQuery Mobile page headers */
+.ui-title {
+    color:#fff;
+}
+/* Center-aligned text */
+.mc-text-center {
+    text-align:center;
+}
+/* Top margin for some elements */
+.mc-top-margin-1-5 {
+    margin-top:1.5em;
+}
+
+[data-role=page]{height: 100% !important; position:relative !important;}
+[data-role=footer]{bottom:0; position:absolute !important; top: auto !important; width:100%;}

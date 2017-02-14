@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" href="./js/libs/jquery-mobile/jquery.mobile.min.css"/>
+        <link href="js/libs/jquery-mobile/jquery.mobile.structure.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/app.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="./js/libs/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="./js/libs/jquery-mobile/jquery.mobile.min.js"></script>
+
+        <title>GEDSYS - Notificaciones</title>
+    </head>
+    <body>
+        <div data-role="page" id="notificaciones">
+            <div data-role="header">
+                <h1>Documentos</h1>
+            </div>
+
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" data-filter="true">
+                    <li><a href="#notif" rel="external" data-transition="pop"><em>Hoy se vence el plazo para la entrega del reporte</em>, Seccional</a></li>
+                    <li><a href="#notif" rel="external" data-transition="pop"><em>Entrega de Pliegos Proyecto</em>, Gerencia</a></li>
+                    <li><a href="#notif" rel="external" data-transition="pop"><em>Hoy vence el plazo: Queja Nro 22056948</em>, Sin responder</a></li>
+                    <li><a href="#notif" rel="external" data-transition="pop"><em>Mantenimiento de Equipos sin realizar !!!</em>, Departamento Médico</a></li>
+                    <li><a href="#notif" rel="external" data-transition="pop"><em>Vence el plazo de respuesta al Derecho de Petición 201701300095</em>, Juridoco</a></li>
+                </ul>
+            </div>
+
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="documentos.html" data-direction="reverse" data-transition="pop" >Documentos</a></li>
+                        <li><a href="notificaciones.html" data-transition="pop" class="ui-btn-active">Notificaciones</a></li>
+                        <li><a href="config.html" data-transition="pop">Configuración</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div data-role="page" id="notif">
+            <div data-role="header">
+                <h1>Notificación</h1>
+            </div>
+
+            <div data-role="main" class="ui-content">
+                
+            </div>
+
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="documentos.html" data-direction="reverse" data-transition="pop">Documentos</a></li>
+                        <li><a href="notificaciones.html" data-transition="pop" class="ui-btn-active">Notificaciones</a></li>
+                        <li><a href="config.html" data-transition="pop">Configuración</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
