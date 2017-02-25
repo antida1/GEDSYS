@@ -19,12 +19,12 @@
                         <h:form>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
-                                    <label class=" col-md-4" for="tipoDocumentoExterno">Tipo Documento Externo<span class="required">*</span>
+                                    <label class=" col-md-4" for="tipoDocumentoExterno">Tipo Documento<span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:selectOneMenu id="tipoDocumentoExterno" var="" value="" style="width: 100%">
+                                        <p:selectOneMenu id="tipoDocumentoExterno" var="" value="#{recepcionBean.documento.tipoDocumento}" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}" />
-                                            <f:selectItems value="" var="" itemLabel="" itemValue="" />
+                                            <f:selectItems value="#{recepcionBean.tipoDocumentos}" var="tipoDocumento" itemLabel="#{tipoDocumento.nombre}" itemValue="#{tipoDocumento.id}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -99,8 +99,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
-                                    <label class=" col-md-4" for="direccion">Direccion <span class="required">*</span>
-                                    </label>
+                                    <label class=" col-md-4" for="direccion">Direccion <span class="required">*</span></label>
                                     <div class="col-md-8">
                                         <p:inputText id="direccion" value="#{recepcionBean.documento.direccion}" style="width: 100%"/>
                                     </div>
@@ -186,7 +185,7 @@
                                             <f:selectItem itemLabel="Correo Electrónico" itemValue="Correo Electrónico" />
                                             <f:selectItem itemLabel="Correo Certificado" itemValue="Correo Certificado" />
                                             <f:selectItem itemLabel="Entrega Directa" itemValue="Entrega Directa" />
-                                            
+
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -200,7 +199,7 @@
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione una Empresa/Tercero " itemValue="#{null}" />
                                             <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                                         </p:selectOneMenu>
-                                        
+
                                     </div>
                                     <div class="col-md-1">
                                         <p:button icon="ui-icon-pencil" title="Nuevo Tercero"/>
@@ -210,9 +209,15 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
-                                    <label class=" col-md-4">Documentos</label>
+                                    <label class=" col-md-4">Adjuntar Documento</label>
                                     <div class="col-md-8">
-                                        <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" style="width: 100%"/>
+                                        <p:fileUpload fileUploadListener="#{recepcionBean.documentFile}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label class=" col-md-4">Adjuntar Folios</label>
+                                    <div class="col-md-8">
+                                        <p:fileUpload fileUploadListener="#{recepcionBean.foliosFile}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +229,7 @@
                                         <p:inputText id="asunto" value="#{recepcionBean.documento.asunto}" style="width: 100%"/>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-xs-6 col-md-offset-6"></div>
                             </div>
                             <div class="row">

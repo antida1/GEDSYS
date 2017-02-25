@@ -9,8 +9,15 @@ import com.sucomunicacion.gedsys.entities.Departamentos;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Municipios;
 import com.sucomunicacion.gedsys.entities.Pais;
+import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.model.DocumentoJpaController;
+import com.sucomunicacion.gedsys.model.SeccionJpaController;
+import com.sucomunicacion.gedsys.utils.JpaUtils;
+import com.sucomunicacion.gedsys.web.utils.SessionUtils;
+import com.sucomunicacion.utils.UploadDocument;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,6 +25,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.persistence.EntityManagerFactory;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -35,11 +44,18 @@ public class RecepcionBean extends BaseBean implements Serializable {
     private List<Municipios> municipios;
     private List<Documento> documentos;
     private List<Usuario> usuarios;
+    private List<TipoDocumento> tipoDocumentos;
+
+    
     private String accion;
     
     private int PaisId;
     private int DepartamentoId;
     private int MunicipioId;
+    
+    private UploadedFile documentFile;
+
+   
     
     @PostConstruct
     public void init(){
@@ -51,6 +67,11 @@ public class RecepcionBean extends BaseBean implements Serializable {
             UsuarioBean ub = new UsuarioBean();
             ub.listar();
             this.usuarios = ub.getUsuarios();
+            
+            TipoDocumentoBean tdoc= new TipoDocumentoBean();
+            tdoc.listar();
+            this.tipoDocumentos = tdoc.getTipoDocumentos();
+            
         } catch (Exception ex) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,6 +158,21 @@ public class RecepcionBean extends BaseBean implements Serializable {
         this.MunicipioId = MunicipioId;
     }
     
+    public List<TipoDocumento> getTipoDocumentos() {
+        return tipoDocumentos;
+    }
+
+    public void setTipoDocumentos(List<TipoDocumento> tipoDocumentos) {
+        this.tipoDocumentos = tipoDocumentos;
+    }
+    
+    public UploadedFile getDocumentFile() {
+        return documentFile;
+    }
+
+    public void setDocumentFile(UploadedFile documentFile) {
+        this.documentFile = documentFile;
+    }
     
     public void onPaisChange(){
         try {
@@ -165,6 +201,26 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 municipios = mb.getMunicipios();
             }
         } catch (Exception e) {
+        }
+    }
+    
+     private void crear() throws Exception{
+         DocumentoJpaController sJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            sJpa = new DocumentoJpaController(emf);
+            
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            
+            this.documento.setFechaCreacion(new Date());
+            this.documento.setFechaModificacion(new Date());
+            this.documento.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            UploadDocument uDoc = new UploadDocument();
+            uDoc.upload(documentFile);
+            this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
+            sJpa.create(documento);
+        } catch (Exception e) {
+            throw e;
         }
     }
     
