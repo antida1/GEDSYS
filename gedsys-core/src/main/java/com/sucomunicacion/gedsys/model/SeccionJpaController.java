@@ -10,19 +10,21 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Seccion;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import com.sucomunicacion.gedsys.entities.SubSeccion;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class SeccionJpaController implements Serializable {
 
@@ -36,45 +38,63 @@ public class SeccionJpaController implements Serializable {
     }
 
     public void create(Seccion seccion) throws PreexistingEntityException, Exception {
-        if (seccion.getDocumentoList() == null) {
-            seccion.setDocumentoList(new ArrayList<Documento>());
+        if (seccion.getDocumentoCollection() == null) {
+            seccion.setDocumentoCollection(new ArrayList<Documento>());
         }
-        if (seccion.getSubSeccionList() == null) {
-            seccion.setSubSeccionList(new ArrayList<SubSeccion>());
+        if (seccion.getSubSeccionCollection() == null) {
+            seccion.setSubSeccionCollection(new ArrayList<SubSeccion>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Documento> attachedDocumentoList = new ArrayList<Documento>();
-            for (Documento documentoListDocumentoToAttach : seccion.getDocumentoList()) {
-                documentoListDocumentoToAttach = em.getReference(documentoListDocumentoToAttach.getClass(), documentoListDocumentoToAttach.getId());
-                attachedDocumentoList.add(documentoListDocumentoToAttach);
+            Usuario creadoPor = seccion.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                seccion.setCreadoPor(creadoPor);
             }
-            seccion.setDocumentoList(attachedDocumentoList);
-            List<SubSeccion> attachedSubSeccionList = new ArrayList<SubSeccion>();
-            for (SubSeccion subSeccionListSubSeccionToAttach : seccion.getSubSeccionList()) {
-                subSeccionListSubSeccionToAttach = em.getReference(subSeccionListSubSeccionToAttach.getClass(), subSeccionListSubSeccionToAttach.getId());
-                attachedSubSeccionList.add(subSeccionListSubSeccionToAttach);
+            Usuario modificadoPor = seccion.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                seccion.setModificadoPor(modificadoPor);
             }
-            seccion.setSubSeccionList(attachedSubSeccionList);
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : seccion.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            seccion.setDocumentoCollection(attachedDocumentoCollection);
+            Collection<SubSeccion> attachedSubSeccionCollection = new ArrayList<SubSeccion>();
+            for (SubSeccion subSeccionCollectionSubSeccionToAttach : seccion.getSubSeccionCollection()) {
+                subSeccionCollectionSubSeccionToAttach = em.getReference(subSeccionCollectionSubSeccionToAttach.getClass(), subSeccionCollectionSubSeccionToAttach.getId());
+                attachedSubSeccionCollection.add(subSeccionCollectionSubSeccionToAttach);
+            }
+            seccion.setSubSeccionCollection(attachedSubSeccionCollection);
             em.persist(seccion);
-            for (Documento documentoListDocumento : seccion.getDocumentoList()) {
-                Seccion oldSessionOfDocumentoListDocumento = documentoListDocumento.getSession();
-                documentoListDocumento.setSession(seccion);
-                documentoListDocumento = em.merge(documentoListDocumento);
-                if (oldSessionOfDocumentoListDocumento != null) {
-                    oldSessionOfDocumentoListDocumento.getDocumentoList().remove(documentoListDocumento);
-                    oldSessionOfDocumentoListDocumento = em.merge(oldSessionOfDocumentoListDocumento);
+            if (creadoPor != null) {
+                creadoPor.getSeccionCollection().add(seccion);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getSeccionCollection().add(seccion);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Documento documentoCollectionDocumento : seccion.getDocumentoCollection()) {
+                Seccion oldSessionOfDocumentoCollectionDocumento = documentoCollectionDocumento.getSession();
+                documentoCollectionDocumento.setSession(seccion);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldSessionOfDocumentoCollectionDocumento != null) {
+                    oldSessionOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldSessionOfDocumentoCollectionDocumento = em.merge(oldSessionOfDocumentoCollectionDocumento);
                 }
             }
-            for (SubSeccion subSeccionListSubSeccion : seccion.getSubSeccionList()) {
-                Seccion oldSeccionOfSubSeccionListSubSeccion = subSeccionListSubSeccion.getSeccion();
-                subSeccionListSubSeccion.setSeccion(seccion);
-                subSeccionListSubSeccion = em.merge(subSeccionListSubSeccion);
-                if (oldSeccionOfSubSeccionListSubSeccion != null) {
-                    oldSeccionOfSubSeccionListSubSeccion.getSubSeccionList().remove(subSeccionListSubSeccion);
-                    oldSeccionOfSubSeccionListSubSeccion = em.merge(oldSeccionOfSubSeccionListSubSeccion);
+            for (SubSeccion subSeccionCollectionSubSeccion : seccion.getSubSeccionCollection()) {
+                Seccion oldSeccionOfSubSeccionCollectionSubSeccion = subSeccionCollectionSubSeccion.getSeccion();
+                subSeccionCollectionSubSeccion.setSeccion(seccion);
+                subSeccionCollectionSubSeccion = em.merge(subSeccionCollectionSubSeccion);
+                if (oldSeccionOfSubSeccionCollectionSubSeccion != null) {
+                    oldSeccionOfSubSeccionCollectionSubSeccion.getSubSeccionCollection().remove(subSeccionCollectionSubSeccion);
+                    oldSeccionOfSubSeccionCollectionSubSeccion = em.merge(oldSeccionOfSubSeccionCollectionSubSeccion);
                 }
             }
             em.getTransaction().commit();
@@ -96,56 +116,84 @@ public class SeccionJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Seccion persistentSeccion = em.find(Seccion.class, seccion.getId());
-            List<Documento> documentoListOld = persistentSeccion.getDocumentoList();
-            List<Documento> documentoListNew = seccion.getDocumentoList();
-            List<SubSeccion> subSeccionListOld = persistentSeccion.getSubSeccionList();
-            List<SubSeccion> subSeccionListNew = seccion.getSubSeccionList();
-            List<Documento> attachedDocumentoListNew = new ArrayList<Documento>();
-            for (Documento documentoListNewDocumentoToAttach : documentoListNew) {
-                documentoListNewDocumentoToAttach = em.getReference(documentoListNewDocumentoToAttach.getClass(), documentoListNewDocumentoToAttach.getId());
-                attachedDocumentoListNew.add(documentoListNewDocumentoToAttach);
+            Usuario creadoPorOld = persistentSeccion.getCreadoPor();
+            Usuario creadoPorNew = seccion.getCreadoPor();
+            Usuario modificadoPorOld = persistentSeccion.getModificadoPor();
+            Usuario modificadoPorNew = seccion.getModificadoPor();
+            Collection<Documento> documentoCollectionOld = persistentSeccion.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = seccion.getDocumentoCollection();
+            Collection<SubSeccion> subSeccionCollectionOld = persistentSeccion.getSubSeccionCollection();
+            Collection<SubSeccion> subSeccionCollectionNew = seccion.getSubSeccionCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                seccion.setCreadoPor(creadoPorNew);
             }
-            documentoListNew = attachedDocumentoListNew;
-            seccion.setDocumentoList(documentoListNew);
-            List<SubSeccion> attachedSubSeccionListNew = new ArrayList<SubSeccion>();
-            for (SubSeccion subSeccionListNewSubSeccionToAttach : subSeccionListNew) {
-                subSeccionListNewSubSeccionToAttach = em.getReference(subSeccionListNewSubSeccionToAttach.getClass(), subSeccionListNewSubSeccionToAttach.getId());
-                attachedSubSeccionListNew.add(subSeccionListNewSubSeccionToAttach);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                seccion.setModificadoPor(modificadoPorNew);
             }
-            subSeccionListNew = attachedSubSeccionListNew;
-            seccion.setSubSeccionList(subSeccionListNew);
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            seccion.setDocumentoCollection(documentoCollectionNew);
+            Collection<SubSeccion> attachedSubSeccionCollectionNew = new ArrayList<SubSeccion>();
+            for (SubSeccion subSeccionCollectionNewSubSeccionToAttach : subSeccionCollectionNew) {
+                subSeccionCollectionNewSubSeccionToAttach = em.getReference(subSeccionCollectionNewSubSeccionToAttach.getClass(), subSeccionCollectionNewSubSeccionToAttach.getId());
+                attachedSubSeccionCollectionNew.add(subSeccionCollectionNewSubSeccionToAttach);
+            }
+            subSeccionCollectionNew = attachedSubSeccionCollectionNew;
+            seccion.setSubSeccionCollection(subSeccionCollectionNew);
             seccion = em.merge(seccion);
-            for (Documento documentoListOldDocumento : documentoListOld) {
-                if (!documentoListNew.contains(documentoListOldDocumento)) {
-                    documentoListOldDocumento.setSession(null);
-                    documentoListOldDocumento = em.merge(documentoListOldDocumento);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getSeccionCollection().remove(seccion);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getSeccionCollection().add(seccion);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getSeccionCollection().remove(seccion);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getSeccionCollection().add(seccion);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setSession(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (Documento documentoListNewDocumento : documentoListNew) {
-                if (!documentoListOld.contains(documentoListNewDocumento)) {
-                    Seccion oldSessionOfDocumentoListNewDocumento = documentoListNewDocumento.getSession();
-                    documentoListNewDocumento.setSession(seccion);
-                    documentoListNewDocumento = em.merge(documentoListNewDocumento);
-                    if (oldSessionOfDocumentoListNewDocumento != null && !oldSessionOfDocumentoListNewDocumento.equals(seccion)) {
-                        oldSessionOfDocumentoListNewDocumento.getDocumentoList().remove(documentoListNewDocumento);
-                        oldSessionOfDocumentoListNewDocumento = em.merge(oldSessionOfDocumentoListNewDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    Seccion oldSessionOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getSession();
+                    documentoCollectionNewDocumento.setSession(seccion);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldSessionOfDocumentoCollectionNewDocumento != null && !oldSessionOfDocumentoCollectionNewDocumento.equals(seccion)) {
+                        oldSessionOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldSessionOfDocumentoCollectionNewDocumento = em.merge(oldSessionOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
-            for (SubSeccion subSeccionListOldSubSeccion : subSeccionListOld) {
-                if (!subSeccionListNew.contains(subSeccionListOldSubSeccion)) {
-                    subSeccionListOldSubSeccion.setSeccion(null);
-                    subSeccionListOldSubSeccion = em.merge(subSeccionListOldSubSeccion);
+            for (SubSeccion subSeccionCollectionOldSubSeccion : subSeccionCollectionOld) {
+                if (!subSeccionCollectionNew.contains(subSeccionCollectionOldSubSeccion)) {
+                    subSeccionCollectionOldSubSeccion.setSeccion(null);
+                    subSeccionCollectionOldSubSeccion = em.merge(subSeccionCollectionOldSubSeccion);
                 }
             }
-            for (SubSeccion subSeccionListNewSubSeccion : subSeccionListNew) {
-                if (!subSeccionListOld.contains(subSeccionListNewSubSeccion)) {
-                    Seccion oldSeccionOfSubSeccionListNewSubSeccion = subSeccionListNewSubSeccion.getSeccion();
-                    subSeccionListNewSubSeccion.setSeccion(seccion);
-                    subSeccionListNewSubSeccion = em.merge(subSeccionListNewSubSeccion);
-                    if (oldSeccionOfSubSeccionListNewSubSeccion != null && !oldSeccionOfSubSeccionListNewSubSeccion.equals(seccion)) {
-                        oldSeccionOfSubSeccionListNewSubSeccion.getSubSeccionList().remove(subSeccionListNewSubSeccion);
-                        oldSeccionOfSubSeccionListNewSubSeccion = em.merge(oldSeccionOfSubSeccionListNewSubSeccion);
+            for (SubSeccion subSeccionCollectionNewSubSeccion : subSeccionCollectionNew) {
+                if (!subSeccionCollectionOld.contains(subSeccionCollectionNewSubSeccion)) {
+                    Seccion oldSeccionOfSubSeccionCollectionNewSubSeccion = subSeccionCollectionNewSubSeccion.getSeccion();
+                    subSeccionCollectionNewSubSeccion.setSeccion(seccion);
+                    subSeccionCollectionNewSubSeccion = em.merge(subSeccionCollectionNewSubSeccion);
+                    if (oldSeccionOfSubSeccionCollectionNewSubSeccion != null && !oldSeccionOfSubSeccionCollectionNewSubSeccion.equals(seccion)) {
+                        oldSeccionOfSubSeccionCollectionNewSubSeccion.getSubSeccionCollection().remove(subSeccionCollectionNewSubSeccion);
+                        oldSeccionOfSubSeccionCollectionNewSubSeccion = em.merge(oldSeccionOfSubSeccionCollectionNewSubSeccion);
                     }
                 }
             }
@@ -178,15 +226,25 @@ public class SeccionJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The seccion with id " + id + " no longer exists.", enfe);
             }
-            List<Documento> documentoList = seccion.getDocumentoList();
-            for (Documento documentoListDocumento : documentoList) {
-                documentoListDocumento.setSession(null);
-                documentoListDocumento = em.merge(documentoListDocumento);
+            Usuario creadoPor = seccion.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getSeccionCollection().remove(seccion);
+                creadoPor = em.merge(creadoPor);
             }
-            List<SubSeccion> subSeccionList = seccion.getSubSeccionList();
-            for (SubSeccion subSeccionListSubSeccion : subSeccionList) {
-                subSeccionListSubSeccion.setSeccion(null);
-                subSeccionListSubSeccion = em.merge(subSeccionListSubSeccion);
+            Usuario modificadoPor = seccion.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getSeccionCollection().remove(seccion);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Documento> documentoCollection = seccion.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setSession(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+            }
+            Collection<SubSeccion> subSeccionCollection = seccion.getSubSeccionCollection();
+            for (SubSeccion subSeccionCollectionSubSeccion : subSeccionCollection) {
+                subSeccionCollectionSubSeccion.setSeccion(null);
+                subSeccionCollectionSubSeccion = em.merge(subSeccionCollectionSubSeccion);
             }
             em.remove(seccion);
             em.getTransaction().commit();

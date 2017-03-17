@@ -76,7 +76,7 @@ public class SeccionBean extends BaseBean implements Serializable {
             
             this.seccion.setFechaCreacion(new Date());
             this.seccion.setFechaModificacion(new Date());
-            this.seccion.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.seccion.setCreadoPor(usuario);
             sJpa.create(seccion);
             this.listar();
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class SeccionBean extends BaseBean implements Serializable {
             sJpa = new SeccionJpaController(emf);
             this.seccion.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.seccion.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.seccion.setModificadoPor(usuario);
             sJpa.edit(seccion);
             this.listar();
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class SeccionBean extends BaseBean implements Serializable {
     public void limpiar(){
         this.seccion.setCodigo("");
         this.seccion.setNombre("");
-        this.seccion.setCreadoPor("");
+        this.seccion.setCreadoPor(null);
         this.seccion.setId(0);
     }
             

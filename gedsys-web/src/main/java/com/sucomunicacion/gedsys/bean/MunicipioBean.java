@@ -5,11 +5,11 @@
  */
 package com.sucomunicacion.gedsys.bean;
 
-import com.sucomunicacion.gedsys.entities.Departamentos;
+import com.sucomunicacion.gedsys.entities.Departamento;
 import com.sucomunicacion.gedsys.utils.JpaUtils;
-import com.sucomunicacion.gedsys.entities.Municipios;
+import com.sucomunicacion.gedsys.entities.Municipio;
 import com.sucomunicacion.gedsys.entities.Usuario;
-import com.sucomunicacion.gedsys.model.MunicipiosJpaController;
+import com.sucomunicacion.gedsys.model.MunicipioJpaController;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
@@ -30,23 +30,23 @@ public class MunicipioBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
-    private Municipios municipio = new Municipios();
-    private List<Municipios> municipios;
+    private Municipio municipio = new Municipio();
+    private List<Municipio> municipios;
     private String accion;
 
-    public Municipios getMunicipio() {
+    public Municipio getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(Municipios municipio) {
+    public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
     }
 
-    public List<Municipios> getMunicipios() {
+    public List<Municipio> getMunicipios() {
         return municipios;
     }
 
-    public void setMunicipioes(List<Municipios> municipios) {
+    public void setMunicipioes(List<Municipio> municipios) {
         this.municipios = municipios;
     }
 
@@ -76,14 +76,14 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
     
     private void crear() throws Exception {
-        MunicipiosJpaController ssJpa;
+        MunicipioJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
+            ssJpa = new MunicipioJpaController(emf);
             this.municipio.setFechaCreacion(new Date());
             this.municipio.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.municipio.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.municipio.setCreadoPor(usuario);
             ssJpa.create(municipio);
             this.listar();
         } catch (Exception e) {
@@ -92,13 +92,13 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
     
     private void modificar() throws Exception {
-        MunicipiosJpaController ssJpa;
+        MunicipioJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
+            ssJpa = new MunicipioJpaController(emf);
             this.municipio.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.municipio.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.municipio.setModificadoPor(usuario);
             ssJpa.edit(municipio);
             this.listar();
         } catch (Exception e) {
@@ -106,11 +106,11 @@ public class MunicipioBean extends BaseBean implements Serializable {
         }
     }
     
-    public void eliminar(Municipios municipio) throws Exception{
-        MunicipiosJpaController ssJpa;
+    public void eliminar(Municipio municipio) throws Exception{
+        MunicipioJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
+            ssJpa = new MunicipioJpaController(emf);
             ssJpa.destroy(municipio.getId());
             this.listar();
         } catch (Exception e) {
@@ -119,23 +119,23 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
     
     public void listar() throws Exception {
-        MunicipiosJpaController ssJpa;
+        MunicipioJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
-            municipios = ssJpa.findMunicipiosEntities();
+            ssJpa = new MunicipioJpaController(emf);
+            municipios = ssJpa.findMunicipioEntities();
         } catch (Exception e) {
             throw e;
         }
     }
     
-    public void getMunicipioById(Municipios municipio) throws Exception {
-        MunicipiosJpaController ssJpa;
-        Municipios municipioTemp;
+    public void getMunicipioById(Municipio municipio) throws Exception {
+        MunicipioJpaController ssJpa;
+        Municipio municipioTemp;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
-            municipioTemp = ssJpa.findMunicipios(municipio.getId());
+            ssJpa = new MunicipioJpaController(emf);
+            municipioTemp = ssJpa.findMunicipio(municipio.getId());
             if(municipioTemp !=null){
                 this.municipio = municipioTemp;
                 this.accion = "Modificar";
@@ -146,15 +146,23 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
     
     
-    public void getMunicipiosByDepartamento(Departamentos departamento) throws Exception {
-        MunicipiosJpaController ssJpa;
+    public void getMunicipiosByDepartamento(Departamento departamento) throws Exception {
+        MunicipioJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new MunicipiosJpaController(emf);
+            ssJpa = new MunicipioJpaController(emf);
             municipios = ssJpa.findMunicipiosByDepartamento(departamento);
         } catch (Exception e) {
             throw e;
         }
     }
     
+    public void limpiar(){
+        this.municipio.setCodigo("");
+        this.municipio.setCreadoPor(null);
+        this.municipio.setModificadoPor(null);
+        this.municipio.setNombre("");
+        this.municipio.setFechaCreacion(new Date());
+        this.municipio.setFechaModificacion(new Date());
+    }
 }

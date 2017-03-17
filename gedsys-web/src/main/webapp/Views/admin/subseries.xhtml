@@ -35,10 +35,10 @@
                             <h:outputText value="#{subser.fechaModificacion}" />
                         </p:column>
                         <p:column headerText="Creado Por">
-                            <h:outputText value="#{subser.creadoPor}" />
+                            <h:outputText value="#{subser.creadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Modificado Por">
-                            <h:outputText value="#{subser.modificadoPor}" />
+                            <h:outputText value="#{subser.modificadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Editar">
                             <p:commandButton actionListener="#{subSerieBean.getSubSerieById(subser)}" 

@@ -6,14 +6,16 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -43,12 +45,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Transportador.findByCelular", query = "SELECT t FROM Transportador t WHERE t.celular = :celular")
     , @NamedQuery(name = "Transportador.findByFechaCreacion", query = "SELECT t FROM Transportador t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Transportador.findByFechaModificacion", query = "SELECT t FROM Transportador t WHERE t.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Transportador.findByCreadoPor", query = "SELECT t FROM Transportador t WHERE t.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Transportador.findByModificadoPor", query = "SELECT t FROM Transportador t WHERE t.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Transportador.findByBorrado", query = "SELECT t FROM Transportador t WHERE t.borrado = :borrado")})
 public class Transportador implements Serializable {
-
-    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -76,14 +74,16 @@ public class Transportador implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private String creadoPor;
-    @Column(name = "ModificadoPor")
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
     @OneToMany(mappedBy = "transportador")
-    private List<Documento> documentoList;
+    private Collection<Documento> documentoCollection;
 
     public Transportador() {
     }
@@ -172,14 +172,6 @@ public class Transportador implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -188,14 +180,30 @@ public class Transportador implements Serializable {
         this.borrado = borrado;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<Documento> getDocumentoList() {
-        return documentoList;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @Override
@@ -221,14 +229,6 @@ public class Transportador implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Transportador[ id=" + id + " ]";
-    }
-
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
     }
     
 }

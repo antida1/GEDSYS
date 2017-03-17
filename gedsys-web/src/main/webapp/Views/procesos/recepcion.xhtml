@@ -9,24 +9,31 @@
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Recepción de Documento<small>Digitalización o Carga</small></h2>
+                        <h2>Recepción de Documentos<small>Digitalización o Carga</small></h2>
                         <div class="clear"></div>
                     </div>
                     <div class="x_content">
-                        <h:form>
+                        <h:form enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-md-4" for="tipoDocumentoExterno">Tipo Documento<span class="required">*</span>
                                     </label>
-                                    <div class="col-md-8">
-                                        <p:selectOneMenu id="tipoDocumentoExterno" var="" value="#{recepcionBean.documento.tipoDocumento}" style="width: 100%">
+                                    <div class="col-md-7">
+                                        <p:selectOneMenu id="tipoDocumento" value="#{recepcionBean.documento.tipoDocumento}" filter="true" filterMatchMode="startsWith" converter="omnifaces.SelectItemsConverter" style="width: 100%" required="true">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}" />
-                                            <f:selectItems value="#{recepcionBean.tipoDocumentos}" var="tipoDocumento" itemLabel="#{tipoDocumento.nombre}" itemValue="#{tipoDocumento.id}" />
+                                            <f:selectItems value="#{tipoDocumentoBean.tipoDocumentos}" var="tipoDocumento" itemLabel="#{tipoDocumento.nombre}" itemValue="#{tipoDocumento}" />
                                         </p:selectOneMenu>
                                     </div>
+                                    <div class="col-md-1">
+                                        <p:commandButton icon="ui-icon-pencil" type="button" title="Generar Radicado" onclick="PF('denRadicado').show"></p:commandButton>
+                                    </div>
+                                    <p:dialog header="Radicado" widgetVar="denRadicado" minHeight="800" >
+                                        Hello!!!
+                                    </p:dialog>
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-md-4" for="last-name">Fecha <span class="required">*</span>
@@ -53,9 +60,9 @@
                                     <label class=" col-md-4" for="last-name">Destinatario <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:selectOneMenu id="Destinatario" value="#{recepcionBean.documento.destinatario}" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                        <p:selectOneMenu id="Destinatario" value="#{recepcionBean.documento.destinatario}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione un destinatario" itemValue="#{null}" />
-                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos} - #{usuario.cargo.nombre}" itemValue="#{usuario.id}" />
+                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos} - #{usuario.cargo.nombre}" itemValue="#{usuario}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -65,7 +72,7 @@
                                     <label class=" col-md-4" for="conCopia">Con Copia a <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50">
+                                        <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
                                             <f:selectItems value="#{recepcionBean.usuarios}" var="usrCopia" itemLabel="#{usrCopia.nombres}" itemValue="#{usrCopia}"/>
                                             <p:column>
                                                 <h:outputText value="#{u.nombres} #{u.apelidos} - #{u.cargo.nombre}"/>
@@ -180,12 +187,11 @@
                                     <label class=" col-md-4" for="medioEnvio">Medio de Envio <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <p:selectOneMenu id="medioEnvio" value="" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                        <p:selectOneMenu id="medioEnvio" value="#{recepcionBean.documento.medioEnvio}" filter="true" filterMatchMode="startsWith" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione un medio de envio" itemValue="#{null}" />
                                             <f:selectItem itemLabel="Correo Electrónico" itemValue="Correo Electrónico" />
                                             <f:selectItem itemLabel="Correo Certificado" itemValue="Correo Certificado" />
                                             <f:selectItem itemLabel="Entrega Directa" itemValue="Entrega Directa" />
-
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -195,7 +201,7 @@
                                     <label class="col-md-4" for="tercero">Empresa/Tercero <span class="required">*</span>
                                     </label>
                                     <div class="col-md-7">
-                                        <p:selectOneMenu id="tercero" value="#{recepcionBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%">
+                                        <p:selectOneMenu id="tercero" value="#{recepcionBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione una Empresa/Tercero " itemValue="#{null}" />
                                             <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                                         </p:selectOneMenu>
@@ -245,8 +251,8 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-9">
-                                    <p:commandButton  value="Radicar" icon="ui-icon-disk"  />
-                                    <p:commandButton value="Cancelar" immediate="true" ></p:commandButton>
+                                    <p:commandButton update="messages"  value="Radicar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" />
+                                    <p:commandButton value="Cancelar" immediate="true"></p:commandButton>
                                 </div>
                             </div>
                         </h:form>

@@ -10,18 +10,20 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.Departamentos;
+import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.Departamento;
 import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class PaisJpaController implements Serializable {
 
@@ -35,27 +37,45 @@ public class PaisJpaController implements Serializable {
     }
 
     public void create(Pais pais) throws PreexistingEntityException, Exception {
-        if (pais.getDepartamentosList() == null) {
-            pais.setDepartamentosList(new ArrayList<Departamentos>());
+        if (pais.getDepartamentoCollection() == null) {
+            pais.setDepartamentoCollection(new ArrayList<Departamento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Departamentos> attachedDepartamentosList = new ArrayList<Departamentos>();
-            for (Departamentos departamentosListDepartamentosToAttach : pais.getDepartamentosList()) {
-                departamentosListDepartamentosToAttach = em.getReference(departamentosListDepartamentosToAttach.getClass(), departamentosListDepartamentosToAttach.getId());
-                attachedDepartamentosList.add(departamentosListDepartamentosToAttach);
+            Usuario creadoPor = pais.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                pais.setCreadoPor(creadoPor);
             }
-            pais.setDepartamentosList(attachedDepartamentosList);
+            Usuario modificadoPor = pais.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                pais.setModificadoPor(modificadoPor);
+            }
+            Collection<Departamento> attachedDepartamentoCollection = new ArrayList<Departamento>();
+            for (Departamento departamentoCollectionDepartamentoToAttach : pais.getDepartamentoCollection()) {
+                departamentoCollectionDepartamentoToAttach = em.getReference(departamentoCollectionDepartamentoToAttach.getClass(), departamentoCollectionDepartamentoToAttach.getId());
+                attachedDepartamentoCollection.add(departamentoCollectionDepartamentoToAttach);
+            }
+            pais.setDepartamentoCollection(attachedDepartamentoCollection);
             em.persist(pais);
-            for (Departamentos departamentosListDepartamentos : pais.getDepartamentosList()) {
-                Pais oldPaisOfDepartamentosListDepartamentos = departamentosListDepartamentos.getPais();
-                departamentosListDepartamentos.setPais(pais);
-                departamentosListDepartamentos = em.merge(departamentosListDepartamentos);
-                if (oldPaisOfDepartamentosListDepartamentos != null) {
-                    oldPaisOfDepartamentosListDepartamentos.getDepartamentosList().remove(departamentosListDepartamentos);
-                    oldPaisOfDepartamentosListDepartamentos = em.merge(oldPaisOfDepartamentosListDepartamentos);
+            if (creadoPor != null) {
+                creadoPor.getPaisCollection().add(pais);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getPaisCollection().add(pais);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Departamento departamentoCollectionDepartamento : pais.getDepartamentoCollection()) {
+                Pais oldPaisOfDepartamentoCollectionDepartamento = departamentoCollectionDepartamento.getPais();
+                departamentoCollectionDepartamento.setPais(pais);
+                departamentoCollectionDepartamento = em.merge(departamentoCollectionDepartamento);
+                if (oldPaisOfDepartamentoCollectionDepartamento != null) {
+                    oldPaisOfDepartamentoCollectionDepartamento.getDepartamentoCollection().remove(departamentoCollectionDepartamento);
+                    oldPaisOfDepartamentoCollectionDepartamento = em.merge(oldPaisOfDepartamentoCollectionDepartamento);
                 }
             }
             em.getTransaction().commit();
@@ -77,30 +97,58 @@ public class PaisJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Pais persistentPais = em.find(Pais.class, pais.getId());
-            List<Departamentos> departamentosListOld = persistentPais.getDepartamentosList();
-            List<Departamentos> departamentosListNew = pais.getDepartamentosList();
-            List<Departamentos> attachedDepartamentosListNew = new ArrayList<Departamentos>();
-            for (Departamentos departamentosListNewDepartamentosToAttach : departamentosListNew) {
-                departamentosListNewDepartamentosToAttach = em.getReference(departamentosListNewDepartamentosToAttach.getClass(), departamentosListNewDepartamentosToAttach.getId());
-                attachedDepartamentosListNew.add(departamentosListNewDepartamentosToAttach);
+            Usuario creadoPorOld = persistentPais.getCreadoPor();
+            Usuario creadoPorNew = pais.getCreadoPor();
+            Usuario modificadoPorOld = persistentPais.getModificadoPor();
+            Usuario modificadoPorNew = pais.getModificadoPor();
+            Collection<Departamento> departamentoCollectionOld = persistentPais.getDepartamentoCollection();
+            Collection<Departamento> departamentoCollectionNew = pais.getDepartamentoCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                pais.setCreadoPor(creadoPorNew);
             }
-            departamentosListNew = attachedDepartamentosListNew;
-            pais.setDepartamentosList(departamentosListNew);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                pais.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Departamento> attachedDepartamentoCollectionNew = new ArrayList<Departamento>();
+            for (Departamento departamentoCollectionNewDepartamentoToAttach : departamentoCollectionNew) {
+                departamentoCollectionNewDepartamentoToAttach = em.getReference(departamentoCollectionNewDepartamentoToAttach.getClass(), departamentoCollectionNewDepartamentoToAttach.getId());
+                attachedDepartamentoCollectionNew.add(departamentoCollectionNewDepartamentoToAttach);
+            }
+            departamentoCollectionNew = attachedDepartamentoCollectionNew;
+            pais.setDepartamentoCollection(departamentoCollectionNew);
             pais = em.merge(pais);
-            for (Departamentos departamentosListOldDepartamentos : departamentosListOld) {
-                if (!departamentosListNew.contains(departamentosListOldDepartamentos)) {
-                    departamentosListOldDepartamentos.setPais(null);
-                    departamentosListOldDepartamentos = em.merge(departamentosListOldDepartamentos);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getPaisCollection().remove(pais);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getPaisCollection().add(pais);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getPaisCollection().remove(pais);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getPaisCollection().add(pais);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Departamento departamentoCollectionOldDepartamento : departamentoCollectionOld) {
+                if (!departamentoCollectionNew.contains(departamentoCollectionOldDepartamento)) {
+                    departamentoCollectionOldDepartamento.setPais(null);
+                    departamentoCollectionOldDepartamento = em.merge(departamentoCollectionOldDepartamento);
                 }
             }
-            for (Departamentos departamentosListNewDepartamentos : departamentosListNew) {
-                if (!departamentosListOld.contains(departamentosListNewDepartamentos)) {
-                    Pais oldPaisOfDepartamentosListNewDepartamentos = departamentosListNewDepartamentos.getPais();
-                    departamentosListNewDepartamentos.setPais(pais);
-                    departamentosListNewDepartamentos = em.merge(departamentosListNewDepartamentos);
-                    if (oldPaisOfDepartamentosListNewDepartamentos != null && !oldPaisOfDepartamentosListNewDepartamentos.equals(pais)) {
-                        oldPaisOfDepartamentosListNewDepartamentos.getDepartamentosList().remove(departamentosListNewDepartamentos);
-                        oldPaisOfDepartamentosListNewDepartamentos = em.merge(oldPaisOfDepartamentosListNewDepartamentos);
+            for (Departamento departamentoCollectionNewDepartamento : departamentoCollectionNew) {
+                if (!departamentoCollectionOld.contains(departamentoCollectionNewDepartamento)) {
+                    Pais oldPaisOfDepartamentoCollectionNewDepartamento = departamentoCollectionNewDepartamento.getPais();
+                    departamentoCollectionNewDepartamento.setPais(pais);
+                    departamentoCollectionNewDepartamento = em.merge(departamentoCollectionNewDepartamento);
+                    if (oldPaisOfDepartamentoCollectionNewDepartamento != null && !oldPaisOfDepartamentoCollectionNewDepartamento.equals(pais)) {
+                        oldPaisOfDepartamentoCollectionNewDepartamento.getDepartamentoCollection().remove(departamentoCollectionNewDepartamento);
+                        oldPaisOfDepartamentoCollectionNewDepartamento = em.merge(oldPaisOfDepartamentoCollectionNewDepartamento);
                     }
                 }
             }
@@ -133,10 +181,20 @@ public class PaisJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pais with id " + id + " no longer exists.", enfe);
             }
-            List<Departamentos> departamentosList = pais.getDepartamentosList();
-            for (Departamentos departamentosListDepartamentos : departamentosList) {
-                departamentosListDepartamentos.setPais(null);
-                departamentosListDepartamentos = em.merge(departamentosListDepartamentos);
+            Usuario creadoPor = pais.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getPaisCollection().remove(pais);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = pais.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getPaisCollection().remove(pais);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Departamento> departamentoCollection = pais.getDepartamentoCollection();
+            for (Departamento departamentoCollectionDepartamento : departamentoCollection) {
+                departamentoCollectionDepartamento.setPais(null);
+                departamentoCollectionDepartamento = em.merge(departamentoCollectionDepartamento);
             }
             em.remove(pais);
             em.getTransaction().commit();

@@ -76,7 +76,7 @@ public class PaisBean extends BaseBean implements Serializable {
             
             this.pais.setFechaCreacion(new Date());
             this.pais.setFechaModificacion(new Date());
-            this.pais.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.pais.setCreadoPor(usuario);
             sJpa.create(pais);
             this.listar();
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class PaisBean extends BaseBean implements Serializable {
             sJpa = new PaisJpaController(emf);
             this.pais.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.pais.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.pais.setModificadoPor(usuario);
             sJpa.edit(pais);
             this.listar();
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class PaisBean extends BaseBean implements Serializable {
     public void limpiar(){
         this.pais.setCodigo("");
         this.pais.setNombre("");
-        this.pais.setCreadoPor("");
+        this.pais.setCreadoPor(null);
         this.pais.setId(0);
     }
 }

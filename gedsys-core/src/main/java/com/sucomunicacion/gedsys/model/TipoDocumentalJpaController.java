@@ -10,18 +10,21 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.UnidadDocumental;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.TipoDocumental;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class TipoDocumentalJpaController implements Serializable {
 
@@ -35,27 +38,54 @@ public class TipoDocumentalJpaController implements Serializable {
     }
 
     public void create(TipoDocumental tipoDocumental) throws PreexistingEntityException, Exception {
-        if (tipoDocumental.getDocumentoList() == null) {
-            tipoDocumental.setDocumentoList(new ArrayList<Documento>());
+        if (tipoDocumental.getDocumentoCollection() == null) {
+            tipoDocumental.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Documento> attachedDocumentoList = new ArrayList<Documento>();
-            for (Documento documentoListDocumentoToAttach : tipoDocumental.getDocumentoList()) {
-                documentoListDocumentoToAttach = em.getReference(documentoListDocumentoToAttach.getClass(), documentoListDocumentoToAttach.getId());
-                attachedDocumentoList.add(documentoListDocumentoToAttach);
+            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
+            if (unidadDocumental != null) {
+                unidadDocumental = em.getReference(unidadDocumental.getClass(), unidadDocumental.getId());
+                tipoDocumental.setUnidadDocumental(unidadDocumental);
             }
-            tipoDocumental.setDocumentoList(attachedDocumentoList);
+            Usuario creadoPor = tipoDocumental.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                tipoDocumental.setCreadoPor(creadoPor);
+            }
+            Usuario modificadoPor = tipoDocumental.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                tipoDocumental.setModificadoPor(modificadoPor);
+            }
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : tipoDocumental.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            tipoDocumental.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(tipoDocumental);
-            for (Documento documentoListDocumento : tipoDocumental.getDocumentoList()) {
-                TipoDocumental oldTipoDocumentalOfDocumentoListDocumento = documentoListDocumento.getTipoDocumental();
-                documentoListDocumento.setTipoDocumental(tipoDocumental);
-                documentoListDocumento = em.merge(documentoListDocumento);
-                if (oldTipoDocumentalOfDocumentoListDocumento != null) {
-                    oldTipoDocumentalOfDocumentoListDocumento.getDocumentoList().remove(documentoListDocumento);
-                    oldTipoDocumentalOfDocumentoListDocumento = em.merge(oldTipoDocumentalOfDocumentoListDocumento);
+            if (unidadDocumental != null) {
+                unidadDocumental.getTipoDocumentalCollection().add(tipoDocumental);
+                unidadDocumental = em.merge(unidadDocumental);
+            }
+            if (creadoPor != null) {
+                creadoPor.getTipoDocumentalCollection().add(tipoDocumental);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getTipoDocumentalCollection().add(tipoDocumental);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Documento documentoCollectionDocumento : tipoDocumental.getDocumentoCollection()) {
+                TipoDocumental oldTipoDocumentalOfDocumentoCollectionDocumento = documentoCollectionDocumento.getTipoDocumental();
+                documentoCollectionDocumento.setTipoDocumental(tipoDocumental);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldTipoDocumentalOfDocumentoCollectionDocumento != null) {
+                    oldTipoDocumentalOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldTipoDocumentalOfDocumentoCollectionDocumento = em.merge(oldTipoDocumentalOfDocumentoCollectionDocumento);
                 }
             }
             em.getTransaction().commit();
@@ -77,30 +107,72 @@ public class TipoDocumentalJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             TipoDocumental persistentTipoDocumental = em.find(TipoDocumental.class, tipoDocumental.getId());
-            List<Documento> documentoListOld = persistentTipoDocumental.getDocumentoList();
-            List<Documento> documentoListNew = tipoDocumental.getDocumentoList();
-            List<Documento> attachedDocumentoListNew = new ArrayList<Documento>();
-            for (Documento documentoListNewDocumentoToAttach : documentoListNew) {
-                documentoListNewDocumentoToAttach = em.getReference(documentoListNewDocumentoToAttach.getClass(), documentoListNewDocumentoToAttach.getId());
-                attachedDocumentoListNew.add(documentoListNewDocumentoToAttach);
+            UnidadDocumental unidadDocumentalOld = persistentTipoDocumental.getUnidadDocumental();
+            UnidadDocumental unidadDocumentalNew = tipoDocumental.getUnidadDocumental();
+            Usuario creadoPorOld = persistentTipoDocumental.getCreadoPor();
+            Usuario creadoPorNew = tipoDocumental.getCreadoPor();
+            Usuario modificadoPorOld = persistentTipoDocumental.getModificadoPor();
+            Usuario modificadoPorNew = tipoDocumental.getModificadoPor();
+            Collection<Documento> documentoCollectionOld = persistentTipoDocumental.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = tipoDocumental.getDocumentoCollection();
+            if (unidadDocumentalNew != null) {
+                unidadDocumentalNew = em.getReference(unidadDocumentalNew.getClass(), unidadDocumentalNew.getId());
+                tipoDocumental.setUnidadDocumental(unidadDocumentalNew);
             }
-            documentoListNew = attachedDocumentoListNew;
-            tipoDocumental.setDocumentoList(documentoListNew);
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                tipoDocumental.setCreadoPor(creadoPorNew);
+            }
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                tipoDocumental.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            tipoDocumental.setDocumentoCollection(documentoCollectionNew);
             tipoDocumental = em.merge(tipoDocumental);
-            for (Documento documentoListOldDocumento : documentoListOld) {
-                if (!documentoListNew.contains(documentoListOldDocumento)) {
-                    documentoListOldDocumento.setTipoDocumental(null);
-                    documentoListOldDocumento = em.merge(documentoListOldDocumento);
+            if (unidadDocumentalOld != null && !unidadDocumentalOld.equals(unidadDocumentalNew)) {
+                unidadDocumentalOld.getTipoDocumentalCollection().remove(tipoDocumental);
+                unidadDocumentalOld = em.merge(unidadDocumentalOld);
+            }
+            if (unidadDocumentalNew != null && !unidadDocumentalNew.equals(unidadDocumentalOld)) {
+                unidadDocumentalNew.getTipoDocumentalCollection().add(tipoDocumental);
+                unidadDocumentalNew = em.merge(unidadDocumentalNew);
+            }
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getTipoDocumentalCollection().remove(tipoDocumental);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getTipoDocumentalCollection().add(tipoDocumental);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getTipoDocumentalCollection().remove(tipoDocumental);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getTipoDocumentalCollection().add(tipoDocumental);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setTipoDocumental(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (Documento documentoListNewDocumento : documentoListNew) {
-                if (!documentoListOld.contains(documentoListNewDocumento)) {
-                    TipoDocumental oldTipoDocumentalOfDocumentoListNewDocumento = documentoListNewDocumento.getTipoDocumental();
-                    documentoListNewDocumento.setTipoDocumental(tipoDocumental);
-                    documentoListNewDocumento = em.merge(documentoListNewDocumento);
-                    if (oldTipoDocumentalOfDocumentoListNewDocumento != null && !oldTipoDocumentalOfDocumentoListNewDocumento.equals(tipoDocumental)) {
-                        oldTipoDocumentalOfDocumentoListNewDocumento.getDocumentoList().remove(documentoListNewDocumento);
-                        oldTipoDocumentalOfDocumentoListNewDocumento = em.merge(oldTipoDocumentalOfDocumentoListNewDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    TipoDocumental oldTipoDocumentalOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getTipoDocumental();
+                    documentoCollectionNewDocumento.setTipoDocumental(tipoDocumental);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldTipoDocumentalOfDocumentoCollectionNewDocumento != null && !oldTipoDocumentalOfDocumentoCollectionNewDocumento.equals(tipoDocumental)) {
+                        oldTipoDocumentalOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldTipoDocumentalOfDocumentoCollectionNewDocumento = em.merge(oldTipoDocumentalOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -133,10 +205,25 @@ public class TipoDocumentalJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tipoDocumental with id " + id + " no longer exists.", enfe);
             }
-            List<Documento> documentoList = tipoDocumental.getDocumentoList();
-            for (Documento documentoListDocumento : documentoList) {
-                documentoListDocumento.setTipoDocumental(null);
-                documentoListDocumento = em.merge(documentoListDocumento);
+            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
+            if (unidadDocumental != null) {
+                unidadDocumental.getTipoDocumentalCollection().remove(tipoDocumental);
+                unidadDocumental = em.merge(unidadDocumental);
+            }
+            Usuario creadoPor = tipoDocumental.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getTipoDocumentalCollection().remove(tipoDocumental);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = tipoDocumental.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getTipoDocumentalCollection().remove(tipoDocumental);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Documento> documentoCollection = tipoDocumental.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setTipoDocumental(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(tipoDocumental);
             em.getTransaction().commit();

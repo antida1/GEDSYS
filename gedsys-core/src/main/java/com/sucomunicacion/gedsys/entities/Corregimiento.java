@@ -6,11 +6,13 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,34 +28,30 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
-@Table(name = "Corregimientos", catalog = "gedsys", schema = "dbo")
+@Table(name = "Corregimiento", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Corregimientos.findAll", query = "SELECT c FROM Corregimientos c")
-    , @NamedQuery(name = "Corregimientos.findById", query = "SELECT c FROM Corregimientos c WHERE c.id = :id")
-    , @NamedQuery(name = "Corregimientos.findByCodigo", query = "SELECT c FROM Corregimientos c WHERE c.codigo = :codigo")
-    , @NamedQuery(name = "Corregimientos.findByNombre", query = "SELECT c FROM Corregimientos c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Corregimientos.findByFechaCreacion", query = "SELECT c FROM Corregimientos c WHERE c.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Corregimientos.findByFechaModificacion", query = "SELECT c FROM Corregimientos c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Corregimientos.findByCreadoPor", query = "SELECT c FROM Corregimientos c WHERE c.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Corregimientos.findByModificadoPor", query = "SELECT c FROM Corregimientos c WHERE c.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Corregimientos.findByBorrado", query = "SELECT c FROM Corregimientos c WHERE c.borrado = :borrado")})
-public class Corregimientos implements Serializable {
-
-    @OneToMany(mappedBy = "corregimiento")
-    private List<Documento> documentoList;
+    @NamedQuery(name = "Corregimiento.findAll", query = "SELECT c FROM Corregimiento c")
+    , @NamedQuery(name = "Corregimiento.findById", query = "SELECT c FROM Corregimiento c WHERE c.id = :id")
+    , @NamedQuery(name = "Corregimiento.findByCodigo", query = "SELECT c FROM Corregimiento c WHERE c.codigo = :codigo")
+    , @NamedQuery(name = "Corregimiento.findByNombre", query = "SELECT c FROM Corregimiento c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Corregimiento.findByFechaCreacion", query = "SELECT c FROM Corregimiento c WHERE c.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Corregimiento.findByFechaModificacion", query = "SELECT c FROM Corregimiento c WHERE c.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Corregimiento.findByBorrado", query = "SELECT c FROM Corregimiento c WHERE c.borrado = :borrado")})
+public class Corregimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Codigo", length = 50)
+    @Column(name = "Codigo")
     private String codigo;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -61,20 +59,24 @@ public class Corregimientos implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @JoinColumn(name = "Municipio", referencedColumnName = "Id")
     @ManyToOne
-    private Municipios municipio;
+    private Municipio municipio;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
+    @OneToMany(mappedBy = "corregimiento")
+    private Collection<Documento> documentoCollection;
 
-    public Corregimientos() {
+    public Corregimiento() {
     }
 
-    public Corregimientos(Integer id) {
+    public Corregimiento(Integer id) {
         this.id = id;
     }
 
@@ -118,22 +120,6 @@ public class Corregimientos implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -142,12 +128,38 @@ public class Corregimientos implements Serializable {
         this.borrado = borrado;
     }
 
-    public Municipios getMunicipio() {
+    public Municipio getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(Municipios municipio) {
+    public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @Override
@@ -160,10 +172,10 @@ public class Corregimientos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Corregimientos)) {
+        if (!(object instanceof Corregimiento)) {
             return false;
         }
-        Corregimientos other = (Corregimientos) object;
+        Corregimiento other = (Corregimiento) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -172,17 +184,7 @@ public class Corregimientos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Corregimientos[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public List<Documento> getDocumentoList() {
-        return documentoList;
-    }
-
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+        return "com.sucomunicacion.gedsys.entities.Corregimiento[ id=" + id + " ]";
     }
     
 }

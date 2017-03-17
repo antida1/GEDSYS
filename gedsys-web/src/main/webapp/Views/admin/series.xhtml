@@ -34,10 +34,10 @@
                             <h:outputText value="#{ser.fechaModificacion}" />
                         </p:column>
                         <p:column headerText="Creado Por">
-                            <h:outputText value="#{ser.creadoPor}" />
+                            <h:outputText value="#{ser.creadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Modificado Por">
-                            <h:outputText value="#{ser.modificadoPor}" />
+                            <h:outputText value="#{ser.modificadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Editar">
                             <p:commandButton actionListener="#{serieBean.getSerieById(ser)}" 

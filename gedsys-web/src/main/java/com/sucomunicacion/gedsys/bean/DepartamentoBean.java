@@ -6,10 +6,10 @@
 package com.sucomunicacion.gedsys.bean;
 
 import com.sucomunicacion.gedsys.utils.JpaUtils;
-import com.sucomunicacion.gedsys.entities.Departamentos;
+import com.sucomunicacion.gedsys.entities.Departamento;
 import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.entities.Usuario;
-import com.sucomunicacion.gedsys.model.DepartamentosJpaController;
+import com.sucomunicacion.gedsys.model.DepartamentoJpaController;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.net.URL;
@@ -33,23 +33,23 @@ public class DepartamentoBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
-    private Departamentos departamento = new Departamentos();
-    private List<Departamentos> departamentos;
+    private Departamento departamento = new Departamento();
+    private List<Departamento> departamentos;
     private String accion;
 
-    public Departamentos getDepartamento() {
+    public Departamento getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamentos departamento) {
+    public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
 
-    public List<Departamentos> getDepartamentos() {
+    public List<Departamento> getDepartamentos() {
         return departamentos;
     }
 
-    public void setDepartamentos(List<Departamentos> departamentos) {
+    public void setDepartamentos(List<Departamento> departamentos) {
         this.departamentos = departamentos;
     }
 
@@ -79,14 +79,14 @@ public class DepartamentoBean extends BaseBean implements Serializable {
     }
     
     private void crear() throws Exception {
-        DepartamentosJpaController ssJpa;
+        DepartamentoJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
+            ssJpa = new DepartamentoJpaController(emf);
             this.departamento.setFechaCreacion(new Date());
             this.departamento.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.departamento.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.departamento.setCreadoPor(usuario);
             ssJpa.create(departamento);
             this.listar();
         } catch (Exception e) {
@@ -95,13 +95,13 @@ public class DepartamentoBean extends BaseBean implements Serializable {
     }
     
     private void modificar() throws Exception {
-        DepartamentosJpaController ssJpa;
+        DepartamentoJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
+            ssJpa = new DepartamentoJpaController(emf);
             this.departamento.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.departamento.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.departamento.setModificadoPor(usuario);
             ssJpa.edit(departamento);
             this.listar();
         } catch (Exception e) {
@@ -109,11 +109,11 @@ public class DepartamentoBean extends BaseBean implements Serializable {
         }
     }
     
-    public void eliminar(Departamentos departamento) throws Exception{
-        DepartamentosJpaController ssJpa;
+    public void eliminar(Departamento departamento) throws Exception{
+        DepartamentoJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
+            ssJpa = new DepartamentoJpaController(emf);
             ssJpa.destroy(departamento.getId());
             this.listar();
         } catch (Exception e) {
@@ -122,23 +122,23 @@ public class DepartamentoBean extends BaseBean implements Serializable {
     }
     
     public void listar() throws Exception {
-        DepartamentosJpaController ssJpa;
+        DepartamentoJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
-            departamentos = ssJpa.findDepartamentosEntities();
+            ssJpa = new DepartamentoJpaController(emf);
+            departamentos = ssJpa.findDepartamentoEntities();
         } catch (Exception e) {
             throw e;
         }
     }
     
-    public void getDepartamentoById(Departamentos departamento) throws Exception {
-        DepartamentosJpaController ssJpa;
-        Departamentos departamentoTemp;
+    public void getDepartamentoById(Departamento departamento) throws Exception {
+        DepartamentoJpaController ssJpa;
+        Departamento departamentoTemp;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
-            departamentoTemp = ssJpa.findDepartamentos(departamento.getId());
+            ssJpa = new DepartamentoJpaController(emf);
+            departamentoTemp = ssJpa.findDepartamento(departamento.getId());
             if(departamentoTemp !=null){
                 this.departamento = departamentoTemp;
                 this.accion = "Modificar";
@@ -149,10 +149,10 @@ public class DepartamentoBean extends BaseBean implements Serializable {
     }
     
     public void getDepartamentosByPais(Pais pais) throws Exception {
-        DepartamentosJpaController ssJpa;
+        DepartamentoJpaController ssJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            ssJpa = new DepartamentosJpaController(emf);
+            ssJpa = new DepartamentoJpaController(emf);
             departamentos = ssJpa.findDepartamentosByPais(pais);
         } catch (Exception e) {
             throw e;

@@ -6,14 +6,16 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,8 +44,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Entidad.findByEmail", query = "SELECT e FROM Entidad e WHERE e.email = :email")
     , @NamedQuery(name = "Entidad.findByFechaCreacion", query = "SELECT e FROM Entidad e WHERE e.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Entidad.findByFechaModificacion", query = "SELECT e FROM Entidad e WHERE e.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Entidad.findByCreadoPor", query = "SELECT e FROM Entidad e WHERE e.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Entidad.findByModificadoPor", query = "SELECT e FROM Entidad e WHERE e.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Entidad.findByBorrado", query = "SELECT e FROM Entidad e WHERE e.borrado = :borrado")})
 public class Entidad implements Serializable {
 
@@ -71,14 +71,16 @@ public class Entidad implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private String creadoPor;
-    @Column(name = "ModificadoPor")
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
     @OneToMany(mappedBy = "entidad")
-    private List<Documento> documentoList;
+    private Collection<Documento> documentoCollection;
 
     public Entidad() {
     }
@@ -159,22 +161,6 @@ public class Entidad implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -183,14 +169,30 @@ public class Entidad implements Serializable {
         this.borrado = borrado;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<Documento> getDocumentoList() {
-        return documentoList;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @Override

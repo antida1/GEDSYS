@@ -76,7 +76,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             
             this.tipoDocumento.setFechaCreacion(new Date());
             this.tipoDocumento.setFechaModificacion(new Date());
-            this.tipoDocumento.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.tipoDocumento.setCreadoPor(usuario);
             sJpa.create(tipoDocumento);
             this.listar();
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             sJpa = new TipoDocumentoJpaController(emf);
             this.tipoDocumento.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.tipoDocumento.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.tipoDocumento.setModificadoPor(usuario);
             sJpa.edit(tipoDocumento);
             this.listar();
         } catch (Exception e) {

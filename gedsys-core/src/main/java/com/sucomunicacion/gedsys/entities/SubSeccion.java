@@ -6,8 +6,8 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,10 +24,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "SubSeccion", catalog = "gedsys", schema = "dbo")
@@ -38,18 +39,16 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "SubSeccion.findByNombre", query = "SELECT s FROM SubSeccion s WHERE s.nombre = :nombre")
     , @NamedQuery(name = "SubSeccion.findByFechaCreacion", query = "SELECT s FROM SubSeccion s WHERE s.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "SubSeccion.findByFechaModificacion", query = "SELECT s FROM SubSeccion s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "SubSeccion.findByCreadoPor", query = "SELECT s FROM SubSeccion s WHERE s.creadoPor = :creadoPor")
-    , @NamedQuery(name = "SubSeccion.findByModificadoPor", query = "SELECT s FROM SubSeccion s WHERE s.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "SubSeccion.findByBorrado", query = "SELECT s FROM SubSeccion s WHERE s.borrado = :borrado")})
 public class SubSeccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -57,19 +56,21 @@ public class SubSeccion implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @OneToMany(mappedBy = "subSeccion")
-    private List<Documento> documentoList;
+    private Collection<Serie> serieCollection;
     @OneToMany(mappedBy = "subSeccion")
-    private List<Serie> serieList;
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "Seccion", referencedColumnName = "Id")
     @ManyToOne
     private Seccion seccion;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
 
     public SubSeccion() {
     }
@@ -110,22 +111,6 @@ public class SubSeccion implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -135,21 +120,23 @@ public class SubSeccion implements Serializable {
     }
 
     @XmlTransient
-    public List<Documento> getDocumentoList() {
-        return documentoList;
+    @JsonIgnore
+    public Collection<Serie> getSerieCollection() {
+        return serieCollection;
     }
 
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
+    public void setSerieCollection(Collection<Serie> serieCollection) {
+        this.serieCollection = serieCollection;
     }
 
     @XmlTransient
-    public List<Serie> getSerieList() {
-        return serieList;
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setSerieList(List<Serie> serieList) {
-        this.serieList = serieList;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     public Seccion getSeccion() {
@@ -158,6 +145,22 @@ public class SubSeccion implements Serializable {
 
     public void setSeccion(Seccion seccion) {
         this.seccion = seccion;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     @Override

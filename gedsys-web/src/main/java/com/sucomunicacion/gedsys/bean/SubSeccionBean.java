@@ -82,7 +82,7 @@ public class SubSeccionBean extends BaseBean implements Serializable {
             this.subseccion.setFechaCreacion(new Date());
             this.subseccion.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.subseccion.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.subseccion.setCreadoPor(usuario);
             ssJpa.create(subseccion);
             this.listar();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class SubSeccionBean extends BaseBean implements Serializable {
             ssJpa = new SubSeccionJpaController(emf);
             this.subseccion.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.subseccion.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.subseccion.setModificadoPor(usuario);
             ssJpa.edit(subseccion);
             this.listar();
         } catch (Exception e) {

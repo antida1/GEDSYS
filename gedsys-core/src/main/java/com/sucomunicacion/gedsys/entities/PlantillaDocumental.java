@@ -10,8 +10,12 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,12 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PlantillaDocumental.findAll", query = "SELECT p FROM PlantillaDocumental p")
     , @NamedQuery(name = "PlantillaDocumental.findById", query = "SELECT p FROM PlantillaDocumental p WHERE p.id = :id")
-    , @NamedQuery(name = "PlantillaDocumental.findBySubSerie", query = "SELECT p FROM PlantillaDocumental p WHERE p.subSerie = :subSerie")
     , @NamedQuery(name = "PlantillaDocumental.findByNombre", query = "SELECT p FROM PlantillaDocumental p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "PlantillaDocumental.findByFechaCreacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "PlantillaDocumental.findByFechaModificacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "PlantillaDocumental.findByCreadoPor", query = "SELECT p FROM PlantillaDocumental p WHERE p.creadoPor = :creadoPor")
-    , @NamedQuery(name = "PlantillaDocumental.findByModificadoPor", query = "SELECT p FROM PlantillaDocumental p WHERE p.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "PlantillaDocumental.findByBorrado", query = "SELECT p FROM PlantillaDocumental p WHERE p.borrado = :borrado")
     , @NamedQuery(name = "PlantillaDocumental.findByEstado", query = "SELECT p FROM PlantillaDocumental p WHERE p.estado = :estado")})
 public class PlantillaDocumental implements Serializable {
@@ -42,10 +43,9 @@ public class PlantillaDocumental implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "SubSerie")
-    private Integer subSerie;
     @Column(name = "Nombre")
     private String nombre;
     @Lob
@@ -57,14 +57,19 @@ public class PlantillaDocumental implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private String creadoPor;
-    @Column(name = "ModificadoPor")
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @Column(name = "Estado")
     private Boolean estado;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
 
     public PlantillaDocumental() {
     }
@@ -79,14 +84,6 @@ public class PlantillaDocumental implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSubSerie() {
-        return subSerie;
-    }
-
-    public void setSubSerie(Integer subSerie) {
-        this.subSerie = subSerie;
     }
 
     public String getNombre() {
@@ -121,22 +118,6 @@ public class PlantillaDocumental implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -151,6 +132,30 @@ public class PlantillaDocumental implements Serializable {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     @Override

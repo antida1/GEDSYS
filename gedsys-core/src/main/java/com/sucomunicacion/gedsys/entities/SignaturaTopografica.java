@@ -6,11 +6,13 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,10 +24,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "SignaturaTopografica", catalog = "gedsys", schema = "dbo")
@@ -36,18 +39,18 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "SignaturaTopografica.findByNombre", query = "SELECT s FROM SignaturaTopografica s WHERE s.nombre = :nombre")
     , @NamedQuery(name = "SignaturaTopografica.findByFechaCracion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaCracion = :fechaCracion")
     , @NamedQuery(name = "SignaturaTopografica.findByFechaModificacion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "SignaturaTopografica.findByCreadoPor", query = "SELECT s FROM SignaturaTopografica s WHERE s.creadoPor = :creadoPor")
-    , @NamedQuery(name = "SignaturaTopografica.findByModificadoPor", query = "SELECT s FROM SignaturaTopografica s WHERE s.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "SignaturaTopografica.findByBorrado", query = "SELECT s FROM SignaturaTopografica s WHERE s.borrado = :borrado")
-    , @NamedQuery(name = "SignaturaTopografica.findByNivel", query = "SELECT s FROM SignaturaTopografica s WHERE s.nivel = :nivel")})
+    , @NamedQuery(name = "SignaturaTopografica.findByNivel", query = "SELECT s FROM SignaturaTopografica s WHERE s.nivel = :nivel")
+    , @NamedQuery(name = "SignaturaTopografica.findByCodigo", query = "SELECT s FROM SignaturaTopografica s WHERE s.codigo = :codigo")})
 public class SignaturaTopografica implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
-    private Integer id;
-    @Column(name = "Nombre", length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
+    private Long id;
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCracion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,32 +58,38 @@ public class SignaturaTopografica implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @Column(name = "Nivel")
     private Integer nivel;
+    @Column(name = "Codigo")
+    private String codigo;
     @OneToMany(mappedBy = "dependeDe")
-    private List<SignaturaTopografica> signaturaTopograficaList;
+    private Collection<SignaturaTopografica> signaturaTopograficaCollection;
     @JoinColumn(name = "DependeDe", referencedColumnName = "Id")
     @ManyToOne
     private SignaturaTopografica dependeDe;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
+    @OneToMany(mappedBy = "signaturaTopografica")
+    private Collection<Documento> documentoCollection;
 
     public SignaturaTopografica() {
     }
 
-    public SignaturaTopografica(Integer id) {
+    public SignaturaTopografica(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -108,22 +117,6 @@ public class SignaturaTopografica implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -140,13 +133,22 @@ public class SignaturaTopografica implements Serializable {
         this.nivel = nivel;
     }
 
-    @XmlTransient
-    public List<SignaturaTopografica> getSignaturaTopograficaList() {
-        return signaturaTopograficaList;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setSignaturaTopograficaList(List<SignaturaTopografica> signaturaTopograficaList) {
-        this.signaturaTopograficaList = signaturaTopograficaList;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<SignaturaTopografica> getSignaturaTopograficaCollection() {
+        return signaturaTopograficaCollection;
+    }
+
+    public void setSignaturaTopograficaCollection(Collection<SignaturaTopografica> signaturaTopograficaCollection) {
+        this.signaturaTopograficaCollection = signaturaTopograficaCollection;
     }
 
     public SignaturaTopografica getDependeDe() {
@@ -155,6 +157,32 @@ public class SignaturaTopografica implements Serializable {
 
     public void setDependeDe(SignaturaTopografica dependeDe) {
         this.dependeDe = dependeDe;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @Override

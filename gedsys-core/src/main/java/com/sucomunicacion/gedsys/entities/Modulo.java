@@ -6,12 +6,16 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,10 +24,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "Modulo", catalog = "gedsys", schema = "dbo")
@@ -35,8 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Modulo.findByDescripcion", query = "SELECT m FROM Modulo m WHERE m.descripcion = :descripcion")
     , @NamedQuery(name = "Modulo.findByFechaCreacion", query = "SELECT m FROM Modulo m WHERE m.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Modulo.findByFechaModificacion", query = "SELECT m FROM Modulo m WHERE m.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Modulo.findByCreadoPor", query = "SELECT m FROM Modulo m WHERE m.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Modulo.findByModificadoPor", query = "SELECT m FROM Modulo m WHERE m.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Modulo.findByBorrado", query = "SELECT m FROM Modulo m WHERE m.borrado = :borrado")
     , @NamedQuery(name = "Modulo.findByOculto", query = "SELECT m FROM Modulo m WHERE m.oculto = :oculto")})
 public class Modulo implements Serializable {
@@ -44,11 +47,12 @@ public class Modulo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre")
     private String nombre;
-    @Column(name = "Descripcion", length = 250)
+    @Column(name = "Descripcion")
     private String descripcion;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,16 +60,18 @@ public class Modulo implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @Column(name = "Oculto")
     private Boolean oculto;
-    @OneToMany(mappedBy = "moduleId")
-    private List<Acl> aclList;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
+    @OneToMany(mappedBy = "modulo")
+    private Collection<Acl> aclCollection;
 
     public Modulo() {
     }
@@ -114,22 +120,6 @@ public class Modulo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -146,13 +136,30 @@ public class Modulo implements Serializable {
         this.oculto = oculto;
     }
 
-    @XmlTransient
-    public List<Acl> getAclList() {
-        return aclList;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setAclList(List<Acl> aclList) {
-        this.aclList = aclList;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Acl> getAclCollection() {
+        return aclCollection;
+    }
+
+    public void setAclCollection(Collection<Acl> aclCollection) {
+        this.aclCollection = aclCollection;
     }
 
     @Override

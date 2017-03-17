@@ -10,7 +10,11 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "Consecutivo", catalog = "gedsys", schema = "dbo")
@@ -31,11 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Consecutivo.findByConsecutivo", query = "SELECT c FROM Consecutivo c WHERE c.consecutivo = :consecutivo")
     , @NamedQuery(name = "Consecutivo.findByPrefijo", query = "SELECT c FROM Consecutivo c WHERE c.prefijo = :prefijo")
     , @NamedQuery(name = "Consecutivo.findBySufijo", query = "SELECT c FROM Consecutivo c WHERE c.sufijo = :sufijo")
-    , @NamedQuery(name = "Consecutivo.findByTipoDocumentalId", query = "SELECT c FROM Consecutivo c WHERE c.tipoDocumentalId = :tipoDocumentalId")
     , @NamedQuery(name = "Consecutivo.findByFechaCreacion", query = "SELECT c FROM Consecutivo c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Consecutivo.findByFechaModificacion", query = "SELECT c FROM Consecutivo c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Consecutivo.findByCreadoPor", query = "SELECT c FROM Consecutivo c WHERE c.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Consecutivo.findByModificadoPor", query = "SELECT c FROM Consecutivo c WHERE c.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Consecutivo.findByBorrado", query = "SELECT c FROM Consecutivo c WHERE c.borrado = :borrado")
     , @NamedQuery(name = "Consecutivo.findByTipoConsecutivo", query = "SELECT c FROM Consecutivo c WHERE c.tipoConsecutivo = :tipoConsecutivo")})
 public class Consecutivo implements Serializable {
@@ -43,30 +44,34 @@ public class Consecutivo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Consecutivo", length = 20)
+    @Column(name = "Consecutivo")
     private String consecutivo;
-    @Column(name = "Prefijo", length = 4)
+    @Column(name = "Prefijo")
     private String prefijo;
-    @Column(name = "Sufijo", length = 4)
+    @Column(name = "Sufijo")
     private String sufijo;
-    @Column(name = "TipoDocumentalId", length = 36)
-    private String tipoDocumentalId;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
-    @Column(name = "TipoConsecutivo", length = 1)
+    @Column(name = "TipoConsecutivo")
     private String tipoConsecutivo;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
 
     public Consecutivo() {
     }
@@ -107,14 +112,6 @@ public class Consecutivo implements Serializable {
         this.sufijo = sufijo;
     }
 
-    public String getTipoDocumentalId() {
-        return tipoDocumentalId;
-    }
-
-    public void setTipoDocumentalId(String tipoDocumentalId) {
-        this.tipoDocumentalId = tipoDocumentalId;
-    }
-
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -131,22 +128,6 @@ public class Consecutivo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
@@ -161,6 +142,30 @@ public class Consecutivo implements Serializable {
 
     public void setTipoConsecutivo(String tipoConsecutivo) {
         this.tipoConsecutivo = tipoConsecutivo;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     @Override

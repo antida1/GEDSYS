@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,16 +22,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "Log", catalog = "gedsys", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l")
-    , @NamedQuery(name = "Log.findById", query = "SELECT l FROM Log l WHERE l.id = :id")})
+    , @NamedQuery(name = "Log.findById", query = "SELECT l FROM Log l WHERE l.id = :id")
+    , @NamedQuery(name = "Log.findByModulo", query = "SELECT l FROM Log l WHERE l.modulo = :modulo")
+    , @NamedQuery(name = "Log.findByCampo", query = "SELECT l FROM Log l WHERE l.campo = :campo")
+    , @NamedQuery(name = "Log.findByValorAnterior", query = "SELECT l FROM Log l WHERE l.valorAnterior = :valorAnterior")
+    , @NamedQuery(name = "Log.findByValorActual", query = "SELECT l FROM Log l WHERE l.valorActual = :valorActual")
+    , @NamedQuery(name = "Log.findByFechaCreacion", query = "SELECT l FROM Log l WHERE l.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Log.findByFechaModificacion", query = "SELECT l FROM Log l WHERE l.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Log.findByCreadoPor", query = "SELECT l FROM Log l WHERE l.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Log.findByModificadoPor", query = "SELECT l FROM Log l WHERE l.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "Log.findByBorrado", query = "SELECT l FROM Log l WHERE l.borrado = :borrado")})
 public class Log implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
+    private Integer id;
     @Column(name = "Modulo")
     private Integer modulo;
     @Column(name = "Campo")
@@ -51,12 +68,6 @@ public class Log implements Serializable {
     @Column(name = "Borrado")
     private Boolean borrado;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "Id", nullable = false)
-    private Integer id;
-
     public Log() {
     }
 
@@ -70,31 +81,6 @@ public class Log implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Log)) {
-            return false;
-        }
-        Log other = (Log) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Log[ id=" + id + " ]";
     }
 
     public Integer getModulo() {
@@ -167,6 +153,31 @@ public class Log implements Serializable {
 
     public void setBorrado(Boolean borrado) {
         this.borrado = borrado;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Log)) {
+            return false;
+        }
+        Log other = (Log) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sucomunicacion.gedsys.entities.Log[ id=" + id + " ]";
     }
     
 }

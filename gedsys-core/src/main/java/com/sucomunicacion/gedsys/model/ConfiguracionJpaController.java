@@ -19,7 +19,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class ConfiguracionJpaController implements Serializable {
 

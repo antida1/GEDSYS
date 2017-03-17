@@ -29,6 +29,22 @@
     <class>com.sucomunicacion.gedsys.entities.Entidad</class>
     <class>com.sucomunicacion.gedsys.entities.Grupo</class>
     <class>com.sucomunicacion.gedsys.entities.TipoDocumento</class>
+    <class>com.sucomunicacion.gedsys.entities.Anexos</class>
+    <class>com.sucomunicacion.gedsys.entities.MonitoresProceso</class>
+    <class>com.sucomunicacion.gedsys.entities.Autores</class>
+    <class>com.sucomunicacion.gedsys.entities.Notificaciones</class>
+    <class>com.sucomunicacion.gedsys.entities.ClaseDocumento</class>
+    <class>com.sucomunicacion.gedsys.entities.GrupoUsuarios</class>
+    <class>com.sucomunicacion.gedsys.entities.Preferencias</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoNegocio</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Autor</class>
+    <class>com.sucomunicacion.gedsys.entities.Municipio</class>
+    <class>com.sucomunicacion.gedsys.entities.GrupoUsuario</class>
+    <class>com.sucomunicacion.gedsys.entities.Notificacion</class>
+    <class>com.sucomunicacion.gedsys.entities.Departamento</class>
+    <class>com.sucomunicacion.gedsys.entities.Corregimiento</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

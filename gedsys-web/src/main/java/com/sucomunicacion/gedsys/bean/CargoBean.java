@@ -80,7 +80,7 @@ public class CargoBean extends BaseBean implements Serializable {
             this.cargo.setFechaCreacion(new Date());
             this.cargo.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.cargo.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.cargo.setCreadoPor(usuario);
             cJpa.create(cargo);
             this.listar();
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa = new CargoJpaController(emf);
             this.cargo.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.cargo.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.cargo.setModificadoPor(usuario);
             cJpa.edit(cargo);
             this.listar();
         } catch (Exception e) {

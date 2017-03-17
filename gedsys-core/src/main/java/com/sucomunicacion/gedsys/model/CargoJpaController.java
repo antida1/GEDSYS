@@ -6,20 +6,23 @@
 package com.sucomunicacion.gedsys.model;
 
 import com.sucomunicacion.gedsys.entities.Cargo;
-import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
+import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class CargoJpaController implements Serializable {
 
@@ -33,11 +36,47 @@ public class CargoJpaController implements Serializable {
     }
 
     public void create(Cargo cargo) throws PreexistingEntityException, Exception {
+        if (cargo.getUsuarioCollection() == null) {
+            cargo.setUsuarioCollection(new ArrayList<Usuario>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Usuario creadoPor = cargo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                cargo.setCreadoPor(creadoPor);
+            }
+            Usuario modificadoPor = cargo.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                cargo.setModificadoPor(modificadoPor);
+            }
+            Collection<Usuario> attachedUsuarioCollection = new ArrayList<Usuario>();
+            for (Usuario usuarioCollectionUsuarioToAttach : cargo.getUsuarioCollection()) {
+                usuarioCollectionUsuarioToAttach = em.getReference(usuarioCollectionUsuarioToAttach.getClass(), usuarioCollectionUsuarioToAttach.getId());
+                attachedUsuarioCollection.add(usuarioCollectionUsuarioToAttach);
+            }
+            cargo.setUsuarioCollection(attachedUsuarioCollection);
             em.persist(cargo);
+            if (creadoPor != null) {
+                creadoPor.getCargoCollection().add(cargo);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getCargoCollection().add(cargo);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Usuario usuarioCollectionUsuario : cargo.getUsuarioCollection()) {
+                Cargo oldCargoOfUsuarioCollectionUsuario = usuarioCollectionUsuario.getCargo();
+                usuarioCollectionUsuario.setCargo(cargo);
+                usuarioCollectionUsuario = em.merge(usuarioCollectionUsuario);
+                if (oldCargoOfUsuarioCollectionUsuario != null) {
+                    oldCargoOfUsuarioCollectionUsuario.getUsuarioCollection().remove(usuarioCollectionUsuario);
+                    oldCargoOfUsuarioCollectionUsuario = em.merge(oldCargoOfUsuarioCollectionUsuario);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findCargo(cargo.getId()) != null) {
@@ -56,7 +95,62 @@ public class CargoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Cargo persistentCargo = em.find(Cargo.class, cargo.getId());
+            Usuario creadoPorOld = persistentCargo.getCreadoPor();
+            Usuario creadoPorNew = cargo.getCreadoPor();
+            Usuario modificadoPorOld = persistentCargo.getModificadoPor();
+            Usuario modificadoPorNew = cargo.getModificadoPor();
+            Collection<Usuario> usuarioCollectionOld = persistentCargo.getUsuarioCollection();
+            Collection<Usuario> usuarioCollectionNew = cargo.getUsuarioCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                cargo.setCreadoPor(creadoPorNew);
+            }
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                cargo.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Usuario> attachedUsuarioCollectionNew = new ArrayList<Usuario>();
+            for (Usuario usuarioCollectionNewUsuarioToAttach : usuarioCollectionNew) {
+                usuarioCollectionNewUsuarioToAttach = em.getReference(usuarioCollectionNewUsuarioToAttach.getClass(), usuarioCollectionNewUsuarioToAttach.getId());
+                attachedUsuarioCollectionNew.add(usuarioCollectionNewUsuarioToAttach);
+            }
+            usuarioCollectionNew = attachedUsuarioCollectionNew;
+            cargo.setUsuarioCollection(usuarioCollectionNew);
             cargo = em.merge(cargo);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getCargoCollection().remove(cargo);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getCargoCollection().add(cargo);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getCargoCollection().remove(cargo);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getCargoCollection().add(cargo);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Usuario usuarioCollectionOldUsuario : usuarioCollectionOld) {
+                if (!usuarioCollectionNew.contains(usuarioCollectionOldUsuario)) {
+                    usuarioCollectionOldUsuario.setCargo(null);
+                    usuarioCollectionOldUsuario = em.merge(usuarioCollectionOldUsuario);
+                }
+            }
+            for (Usuario usuarioCollectionNewUsuario : usuarioCollectionNew) {
+                if (!usuarioCollectionOld.contains(usuarioCollectionNewUsuario)) {
+                    Cargo oldCargoOfUsuarioCollectionNewUsuario = usuarioCollectionNewUsuario.getCargo();
+                    usuarioCollectionNewUsuario.setCargo(cargo);
+                    usuarioCollectionNewUsuario = em.merge(usuarioCollectionNewUsuario);
+                    if (oldCargoOfUsuarioCollectionNewUsuario != null && !oldCargoOfUsuarioCollectionNewUsuario.equals(cargo)) {
+                        oldCargoOfUsuarioCollectionNewUsuario.getUsuarioCollection().remove(usuarioCollectionNewUsuario);
+                        oldCargoOfUsuarioCollectionNewUsuario = em.merge(oldCargoOfUsuarioCollectionNewUsuario);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -85,6 +179,21 @@ public class CargoJpaController implements Serializable {
                 cargo.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cargo with id " + id + " no longer exists.", enfe);
+            }
+            Usuario creadoPor = cargo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getCargoCollection().remove(cargo);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = cargo.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getCargoCollection().remove(cargo);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Usuario> usuarioCollection = cargo.getUsuarioCollection();
+            for (Usuario usuarioCollectionUsuario : usuarioCollection) {
+                usuarioCollectionUsuario.setCargo(null);
+                usuarioCollectionUsuario = em.merge(usuarioCollectionUsuario);
             }
             em.remove(cargo);
             em.getTransaction().commit();

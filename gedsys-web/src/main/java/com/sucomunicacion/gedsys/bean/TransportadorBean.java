@@ -76,7 +76,7 @@ public class TransportadorBean extends BaseBean implements Serializable {
             
             this.transportador.setFechaCreacion(new Date());
             this.transportador.setFechaModificacion(new Date());
-            this.transportador.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.transportador.setCreadoPor(usuario);
             sJpa.create(transportador);
             this.listar();
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class TransportadorBean extends BaseBean implements Serializable {
             sJpa = new TransportadorJpaController(emf);
             this.transportador.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.transportador.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.transportador.setModificadoPor(usuario);
             sJpa.edit(transportador);
             this.listar();
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class TransportadorBean extends BaseBean implements Serializable {
     
     public void limpiar(){
         this.transportador.setNombre("");
-        this.transportador.setCreadoPor("");
+        this.transportador.setCreadoPor(null);
         this.transportador.setId(0);
     }
 }

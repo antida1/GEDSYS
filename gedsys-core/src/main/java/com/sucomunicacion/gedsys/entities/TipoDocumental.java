@@ -6,8 +6,8 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,10 +24,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "TipoDocumental", catalog = "gedsys", schema = "dbo")
@@ -38,8 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "TipoDocumental.findByNombre", query = "SELECT t FROM TipoDocumental t WHERE t.nombre = :nombre")
     , @NamedQuery(name = "TipoDocumental.findByFechaCreacion", query = "SELECT t FROM TipoDocumental t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "TipoDocumental.findByFechaModificacion", query = "SELECT t FROM TipoDocumental t WHERE t.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "TipoDocumental.findByCreadoPor", query = "SELECT t FROM TipoDocumental t WHERE t.creadoPor = :creadoPor")
-    , @NamedQuery(name = "TipoDocumental.findByModificadoPor", query = "SELECT t FROM TipoDocumental t WHERE t.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "TipoDocumental.findByBorrado", query = "SELECT t FROM TipoDocumental t WHERE t.borrado = :borrado")
     , @NamedQuery(name = "TipoDocumental.findByRequiereRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "TipoDocumental.findByTiempoRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.tiempoRespuesta = :tiempoRespuesta")
@@ -52,9 +51,9 @@ public class TipoDocumental implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -62,27 +61,29 @@ public class TipoDocumental implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
     @Column(name = "RequiereRespuesta")
     private Boolean requiereRespuesta;
     @Column(name = "TiempoRespuesta")
     private Integer tiempoRespuesta;
-    @Column(name = "TipoCalendario", length = 1)
+    @Column(name = "TipoCalendario")
     private String tipoCalendario;
-    @Column(name = "EstampadoCronologico", length = 1)
+    @Column(name = "EstampadoCronologico")
     private String estampadoCronologico;
     @Column(name = "DocumentoExterno")
     private Boolean documentoExterno;
-    @OneToMany(mappedBy = "tipoDocumental")
-    private List<Documento> documentoList;
     @JoinColumn(name = "UnidadDocumental", referencedColumnName = "Id")
     @ManyToOne
     private UnidadDocumental unidadDocumental;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
+    @OneToMany(mappedBy = "tipoDocumental")
+    private Collection<Documento> documentoCollection;
 
     public TipoDocumental() {
     }
@@ -121,22 +122,6 @@ public class TipoDocumental implements Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     public Boolean getBorrado() {
@@ -187,21 +172,38 @@ public class TipoDocumental implements Serializable {
         this.documentoExterno = documentoExterno;
     }
 
-    @XmlTransient
-    public List<Documento> getDocumentoList() {
-        return documentoList;
-    }
-
-    public void setDocumentoList(List<Documento> documentoList) {
-        this.documentoList = documentoList;
-    }
-
     public UnidadDocumental getUnidadDocumental() {
         return unidadDocumental;
     }
 
     public void setUnidadDocumental(UnidadDocumental unidadDocumental) {
         this.unidadDocumental = unidadDocumental;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @Override

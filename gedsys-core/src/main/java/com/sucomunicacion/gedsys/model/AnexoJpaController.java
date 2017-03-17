@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.Documento;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
@@ -20,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class AnexoJpaController implements Serializable {
 
@@ -43,10 +44,37 @@ public class AnexoJpaController implements Serializable {
                 documento = em.getReference(documento.getClass(), documento.getId());
                 anexo.setDocumento(documento);
             }
+            Documento anexoRel = anexo.getAnexo();
+            if (anexoRel != null) {
+                anexoRel = em.getReference(anexoRel.getClass(), anexoRel.getId());
+                anexo.setAnexo(anexoRel);
+            }
+            Usuario creadoPor = anexo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                anexo.setCreadoPor(creadoPor);
+            }
+            Usuario modificadorPor = anexo.getModificadorPor();
+            if (modificadorPor != null) {
+                modificadorPor = em.getReference(modificadorPor.getClass(), modificadorPor.getId());
+                anexo.setModificadorPor(modificadorPor);
+            }
             em.persist(anexo);
             if (documento != null) {
-                documento.getAnexoList().add(anexo);
+                documento.getAnexoCollection().add(anexo);
                 documento = em.merge(documento);
+            }
+            if (anexoRel != null) {
+                anexoRel.getAnexoCollection().add(anexo);
+                anexoRel = em.merge(anexoRel);
+            }
+            if (creadoPor != null) {
+                creadoPor.getAnexoCollection().add(anexo);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadorPor != null) {
+                modificadorPor.getAnexoCollection().add(anexo);
+                modificadorPor = em.merge(modificadorPor);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -69,24 +97,66 @@ public class AnexoJpaController implements Serializable {
             Anexo persistentAnexo = em.find(Anexo.class, anexo.getId());
             Documento documentoOld = persistentAnexo.getDocumento();
             Documento documentoNew = anexo.getDocumento();
+            Documento anexoRelOld = persistentAnexo.getAnexo();
+            Documento anexoRelNew = anexo.getAnexo();
+            Usuario creadoPorOld = persistentAnexo.getCreadoPor();
+            Usuario creadoPorNew = anexo.getCreadoPor();
+            Usuario modificadorPorOld = persistentAnexo.getModificadorPor();
+            Usuario modificadorPorNew = anexo.getModificadorPor();
             if (documentoNew != null) {
                 documentoNew = em.getReference(documentoNew.getClass(), documentoNew.getId());
                 anexo.setDocumento(documentoNew);
             }
+            if (anexoRelNew != null) {
+                anexoRelNew = em.getReference(anexoRelNew.getClass(), anexoRelNew.getId());
+                anexo.setAnexo(anexoRelNew);
+            }
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                anexo.setCreadoPor(creadoPorNew);
+            }
+            if (modificadorPorNew != null) {
+                modificadorPorNew = em.getReference(modificadorPorNew.getClass(), modificadorPorNew.getId());
+                anexo.setModificadorPor(modificadorPorNew);
+            }
             anexo = em.merge(anexo);
             if (documentoOld != null && !documentoOld.equals(documentoNew)) {
-                documentoOld.getAnexoList().remove(anexo);
+                documentoOld.getAnexoCollection().remove(anexo);
                 documentoOld = em.merge(documentoOld);
             }
             if (documentoNew != null && !documentoNew.equals(documentoOld)) {
-                documentoNew.getAnexoList().add(anexo);
+                documentoNew.getAnexoCollection().add(anexo);
                 documentoNew = em.merge(documentoNew);
+            }
+            if (anexoRelOld != null && !anexoRelOld.equals(anexoRelNew)) {
+                anexoRelOld.getAnexoCollection().remove(anexo);
+                anexoRelOld = em.merge(anexoRelOld);
+            }
+            if (anexoRelNew != null && !anexoRelNew.equals(anexoRelOld)) {
+                anexoRelNew.getAnexoCollection().add(anexo);
+                anexoRelNew = em.merge(anexoRelNew);
+            }
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getAnexoCollection().remove(anexo);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getAnexoCollection().add(anexo);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadorPorOld != null && !modificadorPorOld.equals(modificadorPorNew)) {
+                modificadorPorOld.getAnexoCollection().remove(anexo);
+                modificadorPorOld = em.merge(modificadorPorOld);
+            }
+            if (modificadorPorNew != null && !modificadorPorNew.equals(modificadorPorOld)) {
+                modificadorPorNew.getAnexoCollection().add(anexo);
+                modificadorPorNew = em.merge(modificadorPorNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = anexo.getId();
+                Long id = anexo.getId();
                 if (findAnexo(id) == null) {
                     throw new NonexistentEntityException("The anexo with id " + id + " no longer exists.");
                 }
@@ -99,7 +169,7 @@ public class AnexoJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -113,8 +183,23 @@ public class AnexoJpaController implements Serializable {
             }
             Documento documento = anexo.getDocumento();
             if (documento != null) {
-                documento.getAnexoList().remove(anexo);
+                documento.getAnexoCollection().remove(anexo);
                 documento = em.merge(documento);
+            }
+            Documento anexoRel = anexo.getAnexo();
+            if (anexoRel != null) {
+                anexoRel.getAnexoCollection().remove(anexo);
+                anexoRel = em.merge(anexoRel);
+            }
+            Usuario creadoPor = anexo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getAnexoCollection().remove(anexo);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadorPor = anexo.getModificadorPor();
+            if (modificadorPor != null) {
+                modificadorPor.getAnexoCollection().remove(anexo);
+                modificadorPor = em.merge(modificadorPor);
             }
             em.remove(anexo);
             em.getTransaction().commit();
@@ -149,7 +234,7 @@ public class AnexoJpaController implements Serializable {
         }
     }
 
-    public Anexo findAnexo(Integer id) {
+    public Anexo findAnexo(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Anexo.class, id);

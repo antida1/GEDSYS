@@ -10,11 +10,13 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Transportador;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,27 +37,45 @@ public class TransportadorJpaController implements Serializable {
     }
 
     public void create(Transportador transportador) throws PreexistingEntityException, Exception {
-        if (transportador.getDocumentoList() == null) {
-            transportador.setDocumentoList(new ArrayList<Documento>());
+        if (transportador.getDocumentoCollection() == null) {
+            transportador.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Documento> attachedDocumentoList = new ArrayList<Documento>();
-            for (Documento documentoListDocumentoToAttach : transportador.getDocumentoList()) {
-                documentoListDocumentoToAttach = em.getReference(documentoListDocumentoToAttach.getClass(), documentoListDocumentoToAttach.getId());
-                attachedDocumentoList.add(documentoListDocumentoToAttach);
+            Usuario creadoPor = transportador.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                transportador.setCreadoPor(creadoPor);
             }
-            transportador.setDocumentoList(attachedDocumentoList);
+            Usuario modificadoPor = transportador.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                transportador.setModificadoPor(modificadoPor);
+            }
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : transportador.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            transportador.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(transportador);
-            for (Documento documentoListDocumento : transportador.getDocumentoList()) {
-                Transportador oldTransportadorOfDocumentoListDocumento = documentoListDocumento.getTransportador();
-                documentoListDocumento.setTransportador(transportador);
-                documentoListDocumento = em.merge(documentoListDocumento);
-                if (oldTransportadorOfDocumentoListDocumento != null) {
-                    oldTransportadorOfDocumentoListDocumento.getDocumentoList().remove(documentoListDocumento);
-                    oldTransportadorOfDocumentoListDocumento = em.merge(oldTransportadorOfDocumentoListDocumento);
+            if (creadoPor != null) {
+                creadoPor.getTransportadorCollection().add(transportador);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getTransportadorCollection().add(transportador);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Documento documentoCollectionDocumento : transportador.getDocumentoCollection()) {
+                Transportador oldTransportadorOfDocumentoCollectionDocumento = documentoCollectionDocumento.getTransportador();
+                documentoCollectionDocumento.setTransportador(transportador);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldTransportadorOfDocumentoCollectionDocumento != null) {
+                    oldTransportadorOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldTransportadorOfDocumentoCollectionDocumento = em.merge(oldTransportadorOfDocumentoCollectionDocumento);
                 }
             }
             em.getTransaction().commit();
@@ -77,30 +97,58 @@ public class TransportadorJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Transportador persistentTransportador = em.find(Transportador.class, transportador.getId());
-            List<Documento> documentoListOld = persistentTransportador.getDocumentoList();
-            List<Documento> documentoListNew = transportador.getDocumentoList();
-            List<Documento> attachedDocumentoListNew = new ArrayList<Documento>();
-            for (Documento documentoListNewDocumentoToAttach : documentoListNew) {
-                documentoListNewDocumentoToAttach = em.getReference(documentoListNewDocumentoToAttach.getClass(), documentoListNewDocumentoToAttach.getId());
-                attachedDocumentoListNew.add(documentoListNewDocumentoToAttach);
+            Usuario creadoPorOld = persistentTransportador.getCreadoPor();
+            Usuario creadoPorNew = transportador.getCreadoPor();
+            Usuario modificadoPorOld = persistentTransportador.getModificadoPor();
+            Usuario modificadoPorNew = transportador.getModificadoPor();
+            Collection<Documento> documentoCollectionOld = persistentTransportador.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = transportador.getDocumentoCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                transportador.setCreadoPor(creadoPorNew);
             }
-            documentoListNew = attachedDocumentoListNew;
-            transportador.setDocumentoList(documentoListNew);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                transportador.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            transportador.setDocumentoCollection(documentoCollectionNew);
             transportador = em.merge(transportador);
-            for (Documento documentoListOldDocumento : documentoListOld) {
-                if (!documentoListNew.contains(documentoListOldDocumento)) {
-                    documentoListOldDocumento.setTransportador(null);
-                    documentoListOldDocumento = em.merge(documentoListOldDocumento);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getTransportadorCollection().remove(transportador);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getTransportadorCollection().add(transportador);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getTransportadorCollection().remove(transportador);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getTransportadorCollection().add(transportador);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setTransportador(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (Documento documentoListNewDocumento : documentoListNew) {
-                if (!documentoListOld.contains(documentoListNewDocumento)) {
-                    Transportador oldTransportadorOfDocumentoListNewDocumento = documentoListNewDocumento.getTransportador();
-                    documentoListNewDocumento.setTransportador(transportador);
-                    documentoListNewDocumento = em.merge(documentoListNewDocumento);
-                    if (oldTransportadorOfDocumentoListNewDocumento != null && !oldTransportadorOfDocumentoListNewDocumento.equals(transportador)) {
-                        oldTransportadorOfDocumentoListNewDocumento.getDocumentoList().remove(documentoListNewDocumento);
-                        oldTransportadorOfDocumentoListNewDocumento = em.merge(oldTransportadorOfDocumentoListNewDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    Transportador oldTransportadorOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getTransportador();
+                    documentoCollectionNewDocumento.setTransportador(transportador);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldTransportadorOfDocumentoCollectionNewDocumento != null && !oldTransportadorOfDocumentoCollectionNewDocumento.equals(transportador)) {
+                        oldTransportadorOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldTransportadorOfDocumentoCollectionNewDocumento = em.merge(oldTransportadorOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -133,10 +181,20 @@ public class TransportadorJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The transportador with id " + id + " no longer exists.", enfe);
             }
-            List<Documento> documentoList = transportador.getDocumentoList();
-            for (Documento documentoListDocumento : documentoList) {
-                documentoListDocumento.setTransportador(null);
-                documentoListDocumento = em.merge(documentoListDocumento);
+            Usuario creadoPor = transportador.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getTransportadorCollection().remove(transportador);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = transportador.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getTransportadorCollection().remove(transportador);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Documento> documentoCollection = transportador.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setTransportador(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(transportador);
             em.getTransaction().commit();

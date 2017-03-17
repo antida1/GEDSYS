@@ -10,11 +10,13 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Entidad;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,27 +37,45 @@ public class EntidadJpaController implements Serializable {
     }
 
     public void create(Entidad entidad) throws PreexistingEntityException, Exception {
-        if (entidad.getDocumentoList() == null) {
-            entidad.setDocumentoList(new ArrayList<Documento>());
+        if (entidad.getDocumentoCollection() == null) {
+            entidad.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Documento> attachedDocumentoList = new ArrayList<Documento>();
-            for (Documento documentoListDocumentoToAttach : entidad.getDocumentoList()) {
-                documentoListDocumentoToAttach = em.getReference(documentoListDocumentoToAttach.getClass(), documentoListDocumentoToAttach.getId());
-                attachedDocumentoList.add(documentoListDocumentoToAttach);
+            Usuario creadoPor = entidad.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                entidad.setCreadoPor(creadoPor);
             }
-            entidad.setDocumentoList(attachedDocumentoList);
+            Usuario modificadoPor = entidad.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                entidad.setModificadoPor(modificadoPor);
+            }
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : entidad.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            entidad.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(entidad);
-            for (Documento documentoListDocumento : entidad.getDocumentoList()) {
-                Entidad oldEntidadOfDocumentoListDocumento = documentoListDocumento.getEntidad();
-                documentoListDocumento.setEntidad(entidad);
-                documentoListDocumento = em.merge(documentoListDocumento);
-                if (oldEntidadOfDocumentoListDocumento != null) {
-                    oldEntidadOfDocumentoListDocumento.getDocumentoList().remove(documentoListDocumento);
-                    oldEntidadOfDocumentoListDocumento = em.merge(oldEntidadOfDocumentoListDocumento);
+            if (creadoPor != null) {
+                creadoPor.getEntidadCollection().add(entidad);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getEntidadCollection().add(entidad);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Documento documentoCollectionDocumento : entidad.getDocumentoCollection()) {
+                Entidad oldEntidadOfDocumentoCollectionDocumento = documentoCollectionDocumento.getEntidad();
+                documentoCollectionDocumento.setEntidad(entidad);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldEntidadOfDocumentoCollectionDocumento != null) {
+                    oldEntidadOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldEntidadOfDocumentoCollectionDocumento = em.merge(oldEntidadOfDocumentoCollectionDocumento);
                 }
             }
             em.getTransaction().commit();
@@ -77,30 +97,58 @@ public class EntidadJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Entidad persistentEntidad = em.find(Entidad.class, entidad.getId());
-            List<Documento> documentoListOld = persistentEntidad.getDocumentoList();
-            List<Documento> documentoListNew = entidad.getDocumentoList();
-            List<Documento> attachedDocumentoListNew = new ArrayList<Documento>();
-            for (Documento documentoListNewDocumentoToAttach : documentoListNew) {
-                documentoListNewDocumentoToAttach = em.getReference(documentoListNewDocumentoToAttach.getClass(), documentoListNewDocumentoToAttach.getId());
-                attachedDocumentoListNew.add(documentoListNewDocumentoToAttach);
+            Usuario creadoPorOld = persistentEntidad.getCreadoPor();
+            Usuario creadoPorNew = entidad.getCreadoPor();
+            Usuario modificadoPorOld = persistentEntidad.getModificadoPor();
+            Usuario modificadoPorNew = entidad.getModificadoPor();
+            Collection<Documento> documentoCollectionOld = persistentEntidad.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = entidad.getDocumentoCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                entidad.setCreadoPor(creadoPorNew);
             }
-            documentoListNew = attachedDocumentoListNew;
-            entidad.setDocumentoList(documentoListNew);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                entidad.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            entidad.setDocumentoCollection(documentoCollectionNew);
             entidad = em.merge(entidad);
-            for (Documento documentoListOldDocumento : documentoListOld) {
-                if (!documentoListNew.contains(documentoListOldDocumento)) {
-                    documentoListOldDocumento.setEntidad(null);
-                    documentoListOldDocumento = em.merge(documentoListOldDocumento);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getEntidadCollection().remove(entidad);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getEntidadCollection().add(entidad);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getEntidadCollection().remove(entidad);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getEntidadCollection().add(entidad);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setEntidad(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (Documento documentoListNewDocumento : documentoListNew) {
-                if (!documentoListOld.contains(documentoListNewDocumento)) {
-                    Entidad oldEntidadOfDocumentoListNewDocumento = documentoListNewDocumento.getEntidad();
-                    documentoListNewDocumento.setEntidad(entidad);
-                    documentoListNewDocumento = em.merge(documentoListNewDocumento);
-                    if (oldEntidadOfDocumentoListNewDocumento != null && !oldEntidadOfDocumentoListNewDocumento.equals(entidad)) {
-                        oldEntidadOfDocumentoListNewDocumento.getDocumentoList().remove(documentoListNewDocumento);
-                        oldEntidadOfDocumentoListNewDocumento = em.merge(oldEntidadOfDocumentoListNewDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    Entidad oldEntidadOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getEntidad();
+                    documentoCollectionNewDocumento.setEntidad(entidad);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldEntidadOfDocumentoCollectionNewDocumento != null && !oldEntidadOfDocumentoCollectionNewDocumento.equals(entidad)) {
+                        oldEntidadOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldEntidadOfDocumentoCollectionNewDocumento = em.merge(oldEntidadOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -133,10 +181,20 @@ public class EntidadJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The entidad with id " + id + " no longer exists.", enfe);
             }
-            List<Documento> documentoList = entidad.getDocumentoList();
-            for (Documento documentoListDocumento : documentoList) {
-                documentoListDocumento.setEntidad(null);
-                documentoListDocumento = em.merge(documentoListDocumento);
+            Usuario creadoPor = entidad.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getEntidadCollection().remove(entidad);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = entidad.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getEntidadCollection().remove(entidad);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Documento> documentoCollection = entidad.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setEntidad(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(entidad);
             em.getTransaction().commit();

@@ -82,7 +82,7 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             this.unidadDocumental.setFechaCreacion(new Date());
             this.unidadDocumental.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.unidadDocumental.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.unidadDocumental.setCreadoPor(usuario);
             udJpa.create(unidadDocumental);
             this.listar();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             udJpa = new UnidadDocumentalJpaController(emf);
             this.unidadDocumental.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.unidadDocumental.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.unidadDocumental.setModificadoPor(usuario);
             udJpa.edit(unidadDocumental);
             this.listar();
         } catch (Exception e) {

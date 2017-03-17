@@ -76,7 +76,7 @@ public class EntidadBean extends BaseBean implements Serializable {
             
             this.entidad.setFechaCreacion(new Date());
             this.entidad.setFechaModificacion(new Date());
-            this.entidad.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.entidad.setCreadoPor(usuario);
             sJpa.create(entidad);
             this.listar();
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class EntidadBean extends BaseBean implements Serializable {
             sJpa = new EntidadJpaController(emf);
             this.entidad.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.entidad.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.entidad.setModificadoPor(usuario);
             sJpa.edit(entidad);
             this.listar();
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class EntidadBean extends BaseBean implements Serializable {
     
     public void limpiar(){
         this.entidad.setNombre("");
-        this.entidad.setCreadoPor("");
+        this.entidad.setCreadoPor(null);
         this.entidad.setId(0);
     }
 }

@@ -11,19 +11,21 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.SubSeccion;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.SubSerie;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Serie;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class SerieJpaController implements Serializable {
 
@@ -37,11 +39,11 @@ public class SerieJpaController implements Serializable {
     }
 
     public void create(Serie serie) throws PreexistingEntityException, Exception {
-        if (serie.getSubSerieList() == null) {
-            serie.setSubSerieList(new ArrayList<SubSerie>());
+        if (serie.getSubSerieCollection() == null) {
+            serie.setSubSerieCollection(new ArrayList<SubSerie>());
         }
-        if (serie.getDocumentoList() == null) {
-            serie.setDocumentoList(new ArrayList<Documento>());
+        if (serie.getDocumentoCollection() == null) {
+            serie.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
@@ -52,39 +54,57 @@ public class SerieJpaController implements Serializable {
                 subSeccion = em.getReference(subSeccion.getClass(), subSeccion.getId());
                 serie.setSubSeccion(subSeccion);
             }
-            List<SubSerie> attachedSubSerieList = new ArrayList<SubSerie>();
-            for (SubSerie subSerieListSubSerieToAttach : serie.getSubSerieList()) {
-                subSerieListSubSerieToAttach = em.getReference(subSerieListSubSerieToAttach.getClass(), subSerieListSubSerieToAttach.getId());
-                attachedSubSerieList.add(subSerieListSubSerieToAttach);
+            Usuario creadoPor = serie.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                serie.setCreadoPor(creadoPor);
             }
-            serie.setSubSerieList(attachedSubSerieList);
-            List<Documento> attachedDocumentoList = new ArrayList<Documento>();
-            for (Documento documentoListDocumentoToAttach : serie.getDocumentoList()) {
-                documentoListDocumentoToAttach = em.getReference(documentoListDocumentoToAttach.getClass(), documentoListDocumentoToAttach.getId());
-                attachedDocumentoList.add(documentoListDocumentoToAttach);
+            Usuario modificadoPor = serie.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                serie.setModificadoPor(modificadoPor);
             }
-            serie.setDocumentoList(attachedDocumentoList);
+            Collection<SubSerie> attachedSubSerieCollection = new ArrayList<SubSerie>();
+            for (SubSerie subSerieCollectionSubSerieToAttach : serie.getSubSerieCollection()) {
+                subSerieCollectionSubSerieToAttach = em.getReference(subSerieCollectionSubSerieToAttach.getClass(), subSerieCollectionSubSerieToAttach.getId());
+                attachedSubSerieCollection.add(subSerieCollectionSubSerieToAttach);
+            }
+            serie.setSubSerieCollection(attachedSubSerieCollection);
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : serie.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            serie.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(serie);
             if (subSeccion != null) {
-                subSeccion.getSerieList().add(serie);
+                subSeccion.getSerieCollection().add(serie);
                 subSeccion = em.merge(subSeccion);
             }
-            for (SubSerie subSerieListSubSerie : serie.getSubSerieList()) {
-                Serie oldSerieOfSubSerieListSubSerie = subSerieListSubSerie.getSerie();
-                subSerieListSubSerie.setSerie(serie);
-                subSerieListSubSerie = em.merge(subSerieListSubSerie);
-                if (oldSerieOfSubSerieListSubSerie != null) {
-                    oldSerieOfSubSerieListSubSerie.getSubSerieList().remove(subSerieListSubSerie);
-                    oldSerieOfSubSerieListSubSerie = em.merge(oldSerieOfSubSerieListSubSerie);
+            if (creadoPor != null) {
+                creadoPor.getSerieCollection().add(serie);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getSerieCollection().add(serie);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (SubSerie subSerieCollectionSubSerie : serie.getSubSerieCollection()) {
+                Serie oldSerieOfSubSerieCollectionSubSerie = subSerieCollectionSubSerie.getSerie();
+                subSerieCollectionSubSerie.setSerie(serie);
+                subSerieCollectionSubSerie = em.merge(subSerieCollectionSubSerie);
+                if (oldSerieOfSubSerieCollectionSubSerie != null) {
+                    oldSerieOfSubSerieCollectionSubSerie.getSubSerieCollection().remove(subSerieCollectionSubSerie);
+                    oldSerieOfSubSerieCollectionSubSerie = em.merge(oldSerieOfSubSerieCollectionSubSerie);
                 }
             }
-            for (Documento documentoListDocumento : serie.getDocumentoList()) {
-                Serie oldSerieOfDocumentoListDocumento = documentoListDocumento.getSerie();
-                documentoListDocumento.setSerie(serie);
-                documentoListDocumento = em.merge(documentoListDocumento);
-                if (oldSerieOfDocumentoListDocumento != null) {
-                    oldSerieOfDocumentoListDocumento.getDocumentoList().remove(documentoListDocumento);
-                    oldSerieOfDocumentoListDocumento = em.merge(oldSerieOfDocumentoListDocumento);
+            for (Documento documentoCollectionDocumento : serie.getDocumentoCollection()) {
+                Serie oldSerieOfDocumentoCollectionDocumento = documentoCollectionDocumento.getSerie();
+                documentoCollectionDocumento.setSerie(serie);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldSerieOfDocumentoCollectionDocumento != null) {
+                    oldSerieOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldSerieOfDocumentoCollectionDocumento = em.merge(oldSerieOfDocumentoCollectionDocumento);
                 }
             }
             em.getTransaction().commit();
@@ -108,68 +128,96 @@ public class SerieJpaController implements Serializable {
             Serie persistentSerie = em.find(Serie.class, serie.getId());
             SubSeccion subSeccionOld = persistentSerie.getSubSeccion();
             SubSeccion subSeccionNew = serie.getSubSeccion();
-            List<SubSerie> subSerieListOld = persistentSerie.getSubSerieList();
-            List<SubSerie> subSerieListNew = serie.getSubSerieList();
-            List<Documento> documentoListOld = persistentSerie.getDocumentoList();
-            List<Documento> documentoListNew = serie.getDocumentoList();
+            Usuario creadoPorOld = persistentSerie.getCreadoPor();
+            Usuario creadoPorNew = serie.getCreadoPor();
+            Usuario modificadoPorOld = persistentSerie.getModificadoPor();
+            Usuario modificadoPorNew = serie.getModificadoPor();
+            Collection<SubSerie> subSerieCollectionOld = persistentSerie.getSubSerieCollection();
+            Collection<SubSerie> subSerieCollectionNew = serie.getSubSerieCollection();
+            Collection<Documento> documentoCollectionOld = persistentSerie.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = serie.getDocumentoCollection();
             if (subSeccionNew != null) {
                 subSeccionNew = em.getReference(subSeccionNew.getClass(), subSeccionNew.getId());
                 serie.setSubSeccion(subSeccionNew);
             }
-            List<SubSerie> attachedSubSerieListNew = new ArrayList<SubSerie>();
-            for (SubSerie subSerieListNewSubSerieToAttach : subSerieListNew) {
-                subSerieListNewSubSerieToAttach = em.getReference(subSerieListNewSubSerieToAttach.getClass(), subSerieListNewSubSerieToAttach.getId());
-                attachedSubSerieListNew.add(subSerieListNewSubSerieToAttach);
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                serie.setCreadoPor(creadoPorNew);
             }
-            subSerieListNew = attachedSubSerieListNew;
-            serie.setSubSerieList(subSerieListNew);
-            List<Documento> attachedDocumentoListNew = new ArrayList<Documento>();
-            for (Documento documentoListNewDocumentoToAttach : documentoListNew) {
-                documentoListNewDocumentoToAttach = em.getReference(documentoListNewDocumentoToAttach.getClass(), documentoListNewDocumentoToAttach.getId());
-                attachedDocumentoListNew.add(documentoListNewDocumentoToAttach);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                serie.setModificadoPor(modificadoPorNew);
             }
-            documentoListNew = attachedDocumentoListNew;
-            serie.setDocumentoList(documentoListNew);
+            Collection<SubSerie> attachedSubSerieCollectionNew = new ArrayList<SubSerie>();
+            for (SubSerie subSerieCollectionNewSubSerieToAttach : subSerieCollectionNew) {
+                subSerieCollectionNewSubSerieToAttach = em.getReference(subSerieCollectionNewSubSerieToAttach.getClass(), subSerieCollectionNewSubSerieToAttach.getId());
+                attachedSubSerieCollectionNew.add(subSerieCollectionNewSubSerieToAttach);
+            }
+            subSerieCollectionNew = attachedSubSerieCollectionNew;
+            serie.setSubSerieCollection(subSerieCollectionNew);
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            serie.setDocumentoCollection(documentoCollectionNew);
             serie = em.merge(serie);
             if (subSeccionOld != null && !subSeccionOld.equals(subSeccionNew)) {
-                subSeccionOld.getSerieList().remove(serie);
+                subSeccionOld.getSerieCollection().remove(serie);
                 subSeccionOld = em.merge(subSeccionOld);
             }
             if (subSeccionNew != null && !subSeccionNew.equals(subSeccionOld)) {
-                subSeccionNew.getSerieList().add(serie);
+                subSeccionNew.getSerieCollection().add(serie);
                 subSeccionNew = em.merge(subSeccionNew);
             }
-            for (SubSerie subSerieListOldSubSerie : subSerieListOld) {
-                if (!subSerieListNew.contains(subSerieListOldSubSerie)) {
-                    subSerieListOldSubSerie.setSerie(null);
-                    subSerieListOldSubSerie = em.merge(subSerieListOldSubSerie);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getSerieCollection().remove(serie);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getSerieCollection().add(serie);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getSerieCollection().remove(serie);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getSerieCollection().add(serie);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (SubSerie subSerieCollectionOldSubSerie : subSerieCollectionOld) {
+                if (!subSerieCollectionNew.contains(subSerieCollectionOldSubSerie)) {
+                    subSerieCollectionOldSubSerie.setSerie(null);
+                    subSerieCollectionOldSubSerie = em.merge(subSerieCollectionOldSubSerie);
                 }
             }
-            for (SubSerie subSerieListNewSubSerie : subSerieListNew) {
-                if (!subSerieListOld.contains(subSerieListNewSubSerie)) {
-                    Serie oldSerieOfSubSerieListNewSubSerie = subSerieListNewSubSerie.getSerie();
-                    subSerieListNewSubSerie.setSerie(serie);
-                    subSerieListNewSubSerie = em.merge(subSerieListNewSubSerie);
-                    if (oldSerieOfSubSerieListNewSubSerie != null && !oldSerieOfSubSerieListNewSubSerie.equals(serie)) {
-                        oldSerieOfSubSerieListNewSubSerie.getSubSerieList().remove(subSerieListNewSubSerie);
-                        oldSerieOfSubSerieListNewSubSerie = em.merge(oldSerieOfSubSerieListNewSubSerie);
+            for (SubSerie subSerieCollectionNewSubSerie : subSerieCollectionNew) {
+                if (!subSerieCollectionOld.contains(subSerieCollectionNewSubSerie)) {
+                    Serie oldSerieOfSubSerieCollectionNewSubSerie = subSerieCollectionNewSubSerie.getSerie();
+                    subSerieCollectionNewSubSerie.setSerie(serie);
+                    subSerieCollectionNewSubSerie = em.merge(subSerieCollectionNewSubSerie);
+                    if (oldSerieOfSubSerieCollectionNewSubSerie != null && !oldSerieOfSubSerieCollectionNewSubSerie.equals(serie)) {
+                        oldSerieOfSubSerieCollectionNewSubSerie.getSubSerieCollection().remove(subSerieCollectionNewSubSerie);
+                        oldSerieOfSubSerieCollectionNewSubSerie = em.merge(oldSerieOfSubSerieCollectionNewSubSerie);
                     }
                 }
             }
-            for (Documento documentoListOldDocumento : documentoListOld) {
-                if (!documentoListNew.contains(documentoListOldDocumento)) {
-                    documentoListOldDocumento.setSerie(null);
-                    documentoListOldDocumento = em.merge(documentoListOldDocumento);
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setSerie(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (Documento documentoListNewDocumento : documentoListNew) {
-                if (!documentoListOld.contains(documentoListNewDocumento)) {
-                    Serie oldSerieOfDocumentoListNewDocumento = documentoListNewDocumento.getSerie();
-                    documentoListNewDocumento.setSerie(serie);
-                    documentoListNewDocumento = em.merge(documentoListNewDocumento);
-                    if (oldSerieOfDocumentoListNewDocumento != null && !oldSerieOfDocumentoListNewDocumento.equals(serie)) {
-                        oldSerieOfDocumentoListNewDocumento.getDocumentoList().remove(documentoListNewDocumento);
-                        oldSerieOfDocumentoListNewDocumento = em.merge(oldSerieOfDocumentoListNewDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    Serie oldSerieOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getSerie();
+                    documentoCollectionNewDocumento.setSerie(serie);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldSerieOfDocumentoCollectionNewDocumento != null && !oldSerieOfDocumentoCollectionNewDocumento.equals(serie)) {
+                        oldSerieOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldSerieOfDocumentoCollectionNewDocumento = em.merge(oldSerieOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -204,18 +252,28 @@ public class SerieJpaController implements Serializable {
             }
             SubSeccion subSeccion = serie.getSubSeccion();
             if (subSeccion != null) {
-                subSeccion.getSerieList().remove(serie);
+                subSeccion.getSerieCollection().remove(serie);
                 subSeccion = em.merge(subSeccion);
             }
-            List<SubSerie> subSerieList = serie.getSubSerieList();
-            for (SubSerie subSerieListSubSerie : subSerieList) {
-                subSerieListSubSerie.setSerie(null);
-                subSerieListSubSerie = em.merge(subSerieListSubSerie);
+            Usuario creadoPor = serie.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getSerieCollection().remove(serie);
+                creadoPor = em.merge(creadoPor);
             }
-            List<Documento> documentoList = serie.getDocumentoList();
-            for (Documento documentoListDocumento : documentoList) {
-                documentoListDocumento.setSerie(null);
-                documentoListDocumento = em.merge(documentoListDocumento);
+            Usuario modificadoPor = serie.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getSerieCollection().remove(serie);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<SubSerie> subSerieCollection = serie.getSubSerieCollection();
+            for (SubSerie subSerieCollectionSubSerie : subSerieCollection) {
+                subSerieCollectionSubSerie.setSerie(null);
+                subSerieCollectionSubSerie = em.merge(subSerieCollectionSubSerie);
+            }
+            Collection<Documento> documentoCollection = serie.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setSerie(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(serie);
             em.getTransaction().commit();

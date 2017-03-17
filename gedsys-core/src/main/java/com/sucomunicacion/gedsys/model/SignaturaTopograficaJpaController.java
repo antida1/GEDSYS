@@ -11,16 +11,19 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.SignaturaTopografica;
+import com.sucomunicacion.gedsys.entities.Usuario;
+import java.util.ArrayList;
+import java.util.Collection;
+import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class SignaturaTopograficaJpaController implements Serializable {
 
@@ -34,8 +37,11 @@ public class SignaturaTopograficaJpaController implements Serializable {
     }
 
     public void create(SignaturaTopografica signaturaTopografica) throws PreexistingEntityException, Exception {
-        if (signaturaTopografica.getSignaturaTopograficaList() == null) {
-            signaturaTopografica.setSignaturaTopograficaList(new ArrayList<SignaturaTopografica>());
+        if (signaturaTopografica.getSignaturaTopograficaCollection() == null) {
+            signaturaTopografica.setSignaturaTopograficaCollection(new ArrayList<SignaturaTopografica>());
+        }
+        if (signaturaTopografica.getDocumentoCollection() == null) {
+            signaturaTopografica.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
@@ -46,24 +52,57 @@ public class SignaturaTopograficaJpaController implements Serializable {
                 dependeDe = em.getReference(dependeDe.getClass(), dependeDe.getId());
                 signaturaTopografica.setDependeDe(dependeDe);
             }
-            List<SignaturaTopografica> attachedSignaturaTopograficaList = new ArrayList<SignaturaTopografica>();
-            for (SignaturaTopografica signaturaTopograficaListSignaturaTopograficaToAttach : signaturaTopografica.getSignaturaTopograficaList()) {
-                signaturaTopograficaListSignaturaTopograficaToAttach = em.getReference(signaturaTopograficaListSignaturaTopograficaToAttach.getClass(), signaturaTopograficaListSignaturaTopograficaToAttach.getId());
-                attachedSignaturaTopograficaList.add(signaturaTopograficaListSignaturaTopograficaToAttach);
+            Usuario creadoPor = signaturaTopografica.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                signaturaTopografica.setCreadoPor(creadoPor);
             }
-            signaturaTopografica.setSignaturaTopograficaList(attachedSignaturaTopograficaList);
+            Usuario modificadoPor = signaturaTopografica.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                signaturaTopografica.setModificadoPor(modificadoPor);
+            }
+            Collection<SignaturaTopografica> attachedSignaturaTopograficaCollection = new ArrayList<SignaturaTopografica>();
+            for (SignaturaTopografica signaturaTopograficaCollectionSignaturaTopograficaToAttach : signaturaTopografica.getSignaturaTopograficaCollection()) {
+                signaturaTopograficaCollectionSignaturaTopograficaToAttach = em.getReference(signaturaTopograficaCollectionSignaturaTopograficaToAttach.getClass(), signaturaTopograficaCollectionSignaturaTopograficaToAttach.getId());
+                attachedSignaturaTopograficaCollection.add(signaturaTopograficaCollectionSignaturaTopograficaToAttach);
+            }
+            signaturaTopografica.setSignaturaTopograficaCollection(attachedSignaturaTopograficaCollection);
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : signaturaTopografica.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            signaturaTopografica.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(signaturaTopografica);
             if (dependeDe != null) {
-                dependeDe.getSignaturaTopograficaList().add(signaturaTopografica);
+                dependeDe.getSignaturaTopograficaCollection().add(signaturaTopografica);
                 dependeDe = em.merge(dependeDe);
             }
-            for (SignaturaTopografica signaturaTopograficaListSignaturaTopografica : signaturaTopografica.getSignaturaTopograficaList()) {
-                SignaturaTopografica oldDependeDeOfSignaturaTopograficaListSignaturaTopografica = signaturaTopograficaListSignaturaTopografica.getDependeDe();
-                signaturaTopograficaListSignaturaTopografica.setDependeDe(signaturaTopografica);
-                signaturaTopograficaListSignaturaTopografica = em.merge(signaturaTopograficaListSignaturaTopografica);
-                if (oldDependeDeOfSignaturaTopograficaListSignaturaTopografica != null) {
-                    oldDependeDeOfSignaturaTopograficaListSignaturaTopografica.getSignaturaTopograficaList().remove(signaturaTopograficaListSignaturaTopografica);
-                    oldDependeDeOfSignaturaTopograficaListSignaturaTopografica = em.merge(oldDependeDeOfSignaturaTopograficaListSignaturaTopografica);
+            if (creadoPor != null) {
+                creadoPor.getSignaturaTopograficaCollection().add(signaturaTopografica);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getSignaturaTopograficaCollection().add(signaturaTopografica);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (SignaturaTopografica signaturaTopograficaCollectionSignaturaTopografica : signaturaTopografica.getSignaturaTopograficaCollection()) {
+                SignaturaTopografica oldDependeDeOfSignaturaTopograficaCollectionSignaturaTopografica = signaturaTopograficaCollectionSignaturaTopografica.getDependeDe();
+                signaturaTopograficaCollectionSignaturaTopografica.setDependeDe(signaturaTopografica);
+                signaturaTopograficaCollectionSignaturaTopografica = em.merge(signaturaTopograficaCollectionSignaturaTopografica);
+                if (oldDependeDeOfSignaturaTopograficaCollectionSignaturaTopografica != null) {
+                    oldDependeDeOfSignaturaTopograficaCollectionSignaturaTopografica.getSignaturaTopograficaCollection().remove(signaturaTopograficaCollectionSignaturaTopografica);
+                    oldDependeDeOfSignaturaTopograficaCollectionSignaturaTopografica = em.merge(oldDependeDeOfSignaturaTopograficaCollectionSignaturaTopografica);
+                }
+            }
+            for (Documento documentoCollectionDocumento : signaturaTopografica.getDocumentoCollection()) {
+                SignaturaTopografica oldSignaturaTopograficaOfDocumentoCollectionDocumento = documentoCollectionDocumento.getSignaturaTopografica();
+                documentoCollectionDocumento.setSignaturaTopografica(signaturaTopografica);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldSignaturaTopograficaOfDocumentoCollectionDocumento != null) {
+                    oldSignaturaTopograficaOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldSignaturaTopograficaOfDocumentoCollectionDocumento = em.merge(oldSignaturaTopograficaOfDocumentoCollectionDocumento);
                 }
             }
             em.getTransaction().commit();
@@ -87,42 +126,96 @@ public class SignaturaTopograficaJpaController implements Serializable {
             SignaturaTopografica persistentSignaturaTopografica = em.find(SignaturaTopografica.class, signaturaTopografica.getId());
             SignaturaTopografica dependeDeOld = persistentSignaturaTopografica.getDependeDe();
             SignaturaTopografica dependeDeNew = signaturaTopografica.getDependeDe();
-            List<SignaturaTopografica> signaturaTopograficaListOld = persistentSignaturaTopografica.getSignaturaTopograficaList();
-            List<SignaturaTopografica> signaturaTopograficaListNew = signaturaTopografica.getSignaturaTopograficaList();
+            Usuario creadoPorOld = persistentSignaturaTopografica.getCreadoPor();
+            Usuario creadoPorNew = signaturaTopografica.getCreadoPor();
+            Usuario modificadoPorOld = persistentSignaturaTopografica.getModificadoPor();
+            Usuario modificadoPorNew = signaturaTopografica.getModificadoPor();
+            Collection<SignaturaTopografica> signaturaTopograficaCollectionOld = persistentSignaturaTopografica.getSignaturaTopograficaCollection();
+            Collection<SignaturaTopografica> signaturaTopograficaCollectionNew = signaturaTopografica.getSignaturaTopograficaCollection();
+            Collection<Documento> documentoCollectionOld = persistentSignaturaTopografica.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = signaturaTopografica.getDocumentoCollection();
             if (dependeDeNew != null) {
                 dependeDeNew = em.getReference(dependeDeNew.getClass(), dependeDeNew.getId());
                 signaturaTopografica.setDependeDe(dependeDeNew);
             }
-            List<SignaturaTopografica> attachedSignaturaTopograficaListNew = new ArrayList<SignaturaTopografica>();
-            for (SignaturaTopografica signaturaTopograficaListNewSignaturaTopograficaToAttach : signaturaTopograficaListNew) {
-                signaturaTopograficaListNewSignaturaTopograficaToAttach = em.getReference(signaturaTopograficaListNewSignaturaTopograficaToAttach.getClass(), signaturaTopograficaListNewSignaturaTopograficaToAttach.getId());
-                attachedSignaturaTopograficaListNew.add(signaturaTopograficaListNewSignaturaTopograficaToAttach);
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                signaturaTopografica.setCreadoPor(creadoPorNew);
             }
-            signaturaTopograficaListNew = attachedSignaturaTopograficaListNew;
-            signaturaTopografica.setSignaturaTopograficaList(signaturaTopograficaListNew);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                signaturaTopografica.setModificadoPor(modificadoPorNew);
+            }
+            Collection<SignaturaTopografica> attachedSignaturaTopograficaCollectionNew = new ArrayList<SignaturaTopografica>();
+            for (SignaturaTopografica signaturaTopograficaCollectionNewSignaturaTopograficaToAttach : signaturaTopograficaCollectionNew) {
+                signaturaTopograficaCollectionNewSignaturaTopograficaToAttach = em.getReference(signaturaTopograficaCollectionNewSignaturaTopograficaToAttach.getClass(), signaturaTopograficaCollectionNewSignaturaTopograficaToAttach.getId());
+                attachedSignaturaTopograficaCollectionNew.add(signaturaTopograficaCollectionNewSignaturaTopograficaToAttach);
+            }
+            signaturaTopograficaCollectionNew = attachedSignaturaTopograficaCollectionNew;
+            signaturaTopografica.setSignaturaTopograficaCollection(signaturaTopograficaCollectionNew);
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            signaturaTopografica.setDocumentoCollection(documentoCollectionNew);
             signaturaTopografica = em.merge(signaturaTopografica);
             if (dependeDeOld != null && !dependeDeOld.equals(dependeDeNew)) {
-                dependeDeOld.getSignaturaTopograficaList().remove(signaturaTopografica);
+                dependeDeOld.getSignaturaTopograficaCollection().remove(signaturaTopografica);
                 dependeDeOld = em.merge(dependeDeOld);
             }
             if (dependeDeNew != null && !dependeDeNew.equals(dependeDeOld)) {
-                dependeDeNew.getSignaturaTopograficaList().add(signaturaTopografica);
+                dependeDeNew.getSignaturaTopograficaCollection().add(signaturaTopografica);
                 dependeDeNew = em.merge(dependeDeNew);
             }
-            for (SignaturaTopografica signaturaTopograficaListOldSignaturaTopografica : signaturaTopograficaListOld) {
-                if (!signaturaTopograficaListNew.contains(signaturaTopograficaListOldSignaturaTopografica)) {
-                    signaturaTopograficaListOldSignaturaTopografica.setDependeDe(null);
-                    signaturaTopograficaListOldSignaturaTopografica = em.merge(signaturaTopograficaListOldSignaturaTopografica);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getSignaturaTopograficaCollection().remove(signaturaTopografica);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getSignaturaTopograficaCollection().add(signaturaTopografica);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getSignaturaTopograficaCollection().remove(signaturaTopografica);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getSignaturaTopograficaCollection().add(signaturaTopografica);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (SignaturaTopografica signaturaTopograficaCollectionOldSignaturaTopografica : signaturaTopograficaCollectionOld) {
+                if (!signaturaTopograficaCollectionNew.contains(signaturaTopograficaCollectionOldSignaturaTopografica)) {
+                    signaturaTopograficaCollectionOldSignaturaTopografica.setDependeDe(null);
+                    signaturaTopograficaCollectionOldSignaturaTopografica = em.merge(signaturaTopograficaCollectionOldSignaturaTopografica);
                 }
             }
-            for (SignaturaTopografica signaturaTopograficaListNewSignaturaTopografica : signaturaTopograficaListNew) {
-                if (!signaturaTopograficaListOld.contains(signaturaTopograficaListNewSignaturaTopografica)) {
-                    SignaturaTopografica oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica = signaturaTopograficaListNewSignaturaTopografica.getDependeDe();
-                    signaturaTopograficaListNewSignaturaTopografica.setDependeDe(signaturaTopografica);
-                    signaturaTopograficaListNewSignaturaTopografica = em.merge(signaturaTopograficaListNewSignaturaTopografica);
-                    if (oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica != null && !oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica.equals(signaturaTopografica)) {
-                        oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica.getSignaturaTopograficaList().remove(signaturaTopograficaListNewSignaturaTopografica);
-                        oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica = em.merge(oldDependeDeOfSignaturaTopograficaListNewSignaturaTopografica);
+            for (SignaturaTopografica signaturaTopograficaCollectionNewSignaturaTopografica : signaturaTopograficaCollectionNew) {
+                if (!signaturaTopograficaCollectionOld.contains(signaturaTopograficaCollectionNewSignaturaTopografica)) {
+                    SignaturaTopografica oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica = signaturaTopograficaCollectionNewSignaturaTopografica.getDependeDe();
+                    signaturaTopograficaCollectionNewSignaturaTopografica.setDependeDe(signaturaTopografica);
+                    signaturaTopograficaCollectionNewSignaturaTopografica = em.merge(signaturaTopograficaCollectionNewSignaturaTopografica);
+                    if (oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica != null && !oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica.equals(signaturaTopografica)) {
+                        oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica.getSignaturaTopograficaCollection().remove(signaturaTopograficaCollectionNewSignaturaTopografica);
+                        oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica = em.merge(oldDependeDeOfSignaturaTopograficaCollectionNewSignaturaTopografica);
+                    }
+                }
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setSignaturaTopografica(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
+                }
+            }
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    SignaturaTopografica oldSignaturaTopograficaOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getSignaturaTopografica();
+                    documentoCollectionNewDocumento.setSignaturaTopografica(signaturaTopografica);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldSignaturaTopograficaOfDocumentoCollectionNewDocumento != null && !oldSignaturaTopograficaOfDocumentoCollectionNewDocumento.equals(signaturaTopografica)) {
+                        oldSignaturaTopograficaOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldSignaturaTopograficaOfDocumentoCollectionNewDocumento = em.merge(oldSignaturaTopograficaOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -130,7 +223,7 @@ public class SignaturaTopograficaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = signaturaTopografica.getId();
+                Long id = signaturaTopografica.getId();
                 if (findSignaturaTopografica(id) == null) {
                     throw new NonexistentEntityException("The signaturaTopografica with id " + id + " no longer exists.");
                 }
@@ -143,7 +236,7 @@ public class SignaturaTopograficaJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -157,13 +250,28 @@ public class SignaturaTopograficaJpaController implements Serializable {
             }
             SignaturaTopografica dependeDe = signaturaTopografica.getDependeDe();
             if (dependeDe != null) {
-                dependeDe.getSignaturaTopograficaList().remove(signaturaTopografica);
+                dependeDe.getSignaturaTopograficaCollection().remove(signaturaTopografica);
                 dependeDe = em.merge(dependeDe);
             }
-            List<SignaturaTopografica> signaturaTopograficaList = signaturaTopografica.getSignaturaTopograficaList();
-            for (SignaturaTopografica signaturaTopograficaListSignaturaTopografica : signaturaTopograficaList) {
-                signaturaTopograficaListSignaturaTopografica.setDependeDe(null);
-                signaturaTopograficaListSignaturaTopografica = em.merge(signaturaTopograficaListSignaturaTopografica);
+            Usuario creadoPor = signaturaTopografica.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getSignaturaTopograficaCollection().remove(signaturaTopografica);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = signaturaTopografica.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getSignaturaTopograficaCollection().remove(signaturaTopografica);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<SignaturaTopografica> signaturaTopograficaCollection = signaturaTopografica.getSignaturaTopograficaCollection();
+            for (SignaturaTopografica signaturaTopograficaCollectionSignaturaTopografica : signaturaTopograficaCollection) {
+                signaturaTopograficaCollectionSignaturaTopografica.setDependeDe(null);
+                signaturaTopograficaCollectionSignaturaTopografica = em.merge(signaturaTopograficaCollectionSignaturaTopografica);
+            }
+            Collection<Documento> documentoCollection = signaturaTopografica.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setSignaturaTopografica(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(signaturaTopografica);
             em.getTransaction().commit();
@@ -198,7 +306,7 @@ public class SignaturaTopograficaJpaController implements Serializable {
         }
     }
 
-    public SignaturaTopografica findSignaturaTopografica(Integer id) {
+    public SignaturaTopografica findSignaturaTopografica(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(SignaturaTopografica.class, id);

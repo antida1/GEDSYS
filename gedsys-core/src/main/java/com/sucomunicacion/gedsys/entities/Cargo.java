@@ -6,14 +6,16 @@
 package com.sucomunicacion.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,7 +28,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 @Entity
 @Table(name = "Cargo", catalog = "gedsys", schema = "dbo")
@@ -37,21 +39,16 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Cargo.findByNombre", query = "SELECT c FROM Cargo c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "Cargo.findByFechaCreacion", query = "SELECT c FROM Cargo c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Cargo.findByFechaModificacion", query = "SELECT c FROM Cargo c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Cargo.findByCreadoPor", query = "SELECT c FROM Cargo c WHERE c.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Cargo.findByModificadoPor", query = "SELECT c FROM Cargo c WHERE c.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Cargo.findByBorrado", query = "SELECT c FROM Cargo c WHERE c.borrado = :borrado")})
 public class Cargo implements Serializable {
-
-    @OneToMany(mappedBy = "cargo")
-    private List<Usuario> usuarioList;
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre")
     private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
@@ -59,12 +56,16 @@ public class Cargo implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor", length = 36)
-    private String creadoPor;
-    @Column(name = "ModificadoPor", length = 36)
-    private String modificadoPor;
     @Column(name = "Borrado")
     private Boolean borrado;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor;
+    @OneToMany(mappedBy = "cargo")
+    private Collection<Usuario> usuarioCollection;
 
     public Cargo() {
     }
@@ -105,28 +106,38 @@ public class Cargo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public String getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(String modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Boolean getBorrado() {
         return borrado;
     }
 
     public void setBorrado(Boolean borrado) {
         this.borrado = borrado;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Usuario> getUsuarioCollection() {
+        return usuarioCollection;
+    }
+
+    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
+        this.usuarioCollection = usuarioCollection;
     }
 
     @Override
@@ -152,16 +163,6 @@ public class Cargo implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Cargo[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
     }
     
 }

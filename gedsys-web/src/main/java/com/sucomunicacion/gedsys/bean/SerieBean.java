@@ -82,7 +82,7 @@ public class SerieBean extends BaseBean implements Serializable {
             this.serie.setFechaCreacion(new Date());
             this.serie.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.serie.setCreadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.serie.setCreadoPor(usuario);
             ssJpa.create(serie);
             this.listar();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class SerieBean extends BaseBean implements Serializable {
             ssJpa = new SerieJpaController(emf);
             this.serie.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.serie.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
+            this.serie.setModificadoPor(usuario);
             ssJpa.edit(serie);
             this.listar();
         } catch (Exception e) {

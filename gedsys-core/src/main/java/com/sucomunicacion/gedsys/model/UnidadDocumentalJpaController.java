@@ -11,6 +11,11 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.SubSerie;
+import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.TipoDocumental;
+import java.util.ArrayList;
+import java.util.Collection;
+import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.UnidadDocumental;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
@@ -20,7 +25,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class UnidadDocumentalJpaController implements Serializable {
 
@@ -34,6 +39,12 @@ public class UnidadDocumentalJpaController implements Serializable {
     }
 
     public void create(UnidadDocumental unidadDocumental) throws PreexistingEntityException, Exception {
+        if (unidadDocumental.getTipoDocumentalCollection() == null) {
+            unidadDocumental.setTipoDocumentalCollection(new ArrayList<TipoDocumental>());
+        }
+        if (unidadDocumental.getDocumentoCollection() == null) {
+            unidadDocumental.setDocumentoCollection(new ArrayList<Documento>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -43,10 +54,58 @@ public class UnidadDocumentalJpaController implements Serializable {
                 subSerie = em.getReference(subSerie.getClass(), subSerie.getId());
                 unidadDocumental.setSubSerie(subSerie);
             }
+            Usuario creadoPor = unidadDocumental.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                unidadDocumental.setCreadoPor(creadoPor);
+            }
+            Usuario modificadoPor = unidadDocumental.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                unidadDocumental.setModificadoPor(modificadoPor);
+            }
+            Collection<TipoDocumental> attachedTipoDocumentalCollection = new ArrayList<TipoDocumental>();
+            for (TipoDocumental tipoDocumentalCollectionTipoDocumentalToAttach : unidadDocumental.getTipoDocumentalCollection()) {
+                tipoDocumentalCollectionTipoDocumentalToAttach = em.getReference(tipoDocumentalCollectionTipoDocumentalToAttach.getClass(), tipoDocumentalCollectionTipoDocumentalToAttach.getId());
+                attachedTipoDocumentalCollection.add(tipoDocumentalCollectionTipoDocumentalToAttach);
+            }
+            unidadDocumental.setTipoDocumentalCollection(attachedTipoDocumentalCollection);
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : unidadDocumental.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            }
+            unidadDocumental.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(unidadDocumental);
             if (subSerie != null) {
-                subSerie.getUnidadDocumentalList().add(unidadDocumental);
+                subSerie.getUnidadDocumentalCollection().add(unidadDocumental);
                 subSerie = em.merge(subSerie);
+            }
+            if (creadoPor != null) {
+                creadoPor.getUnidadDocumentalCollection().add(unidadDocumental);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getUnidadDocumentalCollection().add(unidadDocumental);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (TipoDocumental tipoDocumentalCollectionTipoDocumental : unidadDocumental.getTipoDocumentalCollection()) {
+                UnidadDocumental oldUnidadDocumentalOfTipoDocumentalCollectionTipoDocumental = tipoDocumentalCollectionTipoDocumental.getUnidadDocumental();
+                tipoDocumentalCollectionTipoDocumental.setUnidadDocumental(unidadDocumental);
+                tipoDocumentalCollectionTipoDocumental = em.merge(tipoDocumentalCollectionTipoDocumental);
+                if (oldUnidadDocumentalOfTipoDocumentalCollectionTipoDocumental != null) {
+                    oldUnidadDocumentalOfTipoDocumentalCollectionTipoDocumental.getTipoDocumentalCollection().remove(tipoDocumentalCollectionTipoDocumental);
+                    oldUnidadDocumentalOfTipoDocumentalCollectionTipoDocumental = em.merge(oldUnidadDocumentalOfTipoDocumentalCollectionTipoDocumental);
+                }
+            }
+            for (Documento documentoCollectionDocumento : unidadDocumental.getDocumentoCollection()) {
+                UnidadDocumental oldUnidadDocumentalOfDocumentoCollectionDocumento = documentoCollectionDocumento.getUnidadDocumental();
+                documentoCollectionDocumento.setUnidadDocumental(unidadDocumental);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldUnidadDocumentalOfDocumentoCollectionDocumento != null) {
+                    oldUnidadDocumentalOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldUnidadDocumentalOfDocumentoCollectionDocumento = em.merge(oldUnidadDocumentalOfDocumentoCollectionDocumento);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -69,18 +128,98 @@ public class UnidadDocumentalJpaController implements Serializable {
             UnidadDocumental persistentUnidadDocumental = em.find(UnidadDocumental.class, unidadDocumental.getId());
             SubSerie subSerieOld = persistentUnidadDocumental.getSubSerie();
             SubSerie subSerieNew = unidadDocumental.getSubSerie();
+            Usuario creadoPorOld = persistentUnidadDocumental.getCreadoPor();
+            Usuario creadoPorNew = unidadDocumental.getCreadoPor();
+            Usuario modificadoPorOld = persistentUnidadDocumental.getModificadoPor();
+            Usuario modificadoPorNew = unidadDocumental.getModificadoPor();
+            Collection<TipoDocumental> tipoDocumentalCollectionOld = persistentUnidadDocumental.getTipoDocumentalCollection();
+            Collection<TipoDocumental> tipoDocumentalCollectionNew = unidadDocumental.getTipoDocumentalCollection();
+            Collection<Documento> documentoCollectionOld = persistentUnidadDocumental.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = unidadDocumental.getDocumentoCollection();
             if (subSerieNew != null) {
                 subSerieNew = em.getReference(subSerieNew.getClass(), subSerieNew.getId());
                 unidadDocumental.setSubSerie(subSerieNew);
             }
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                unidadDocumental.setCreadoPor(creadoPorNew);
+            }
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                unidadDocumental.setModificadoPor(modificadoPorNew);
+            }
+            Collection<TipoDocumental> attachedTipoDocumentalCollectionNew = new ArrayList<TipoDocumental>();
+            for (TipoDocumental tipoDocumentalCollectionNewTipoDocumentalToAttach : tipoDocumentalCollectionNew) {
+                tipoDocumentalCollectionNewTipoDocumentalToAttach = em.getReference(tipoDocumentalCollectionNewTipoDocumentalToAttach.getClass(), tipoDocumentalCollectionNewTipoDocumentalToAttach.getId());
+                attachedTipoDocumentalCollectionNew.add(tipoDocumentalCollectionNewTipoDocumentalToAttach);
+            }
+            tipoDocumentalCollectionNew = attachedTipoDocumentalCollectionNew;
+            unidadDocumental.setTipoDocumentalCollection(tipoDocumentalCollectionNew);
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            }
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            unidadDocumental.setDocumentoCollection(documentoCollectionNew);
             unidadDocumental = em.merge(unidadDocumental);
             if (subSerieOld != null && !subSerieOld.equals(subSerieNew)) {
-                subSerieOld.getUnidadDocumentalList().remove(unidadDocumental);
+                subSerieOld.getUnidadDocumentalCollection().remove(unidadDocumental);
                 subSerieOld = em.merge(subSerieOld);
             }
             if (subSerieNew != null && !subSerieNew.equals(subSerieOld)) {
-                subSerieNew.getUnidadDocumentalList().add(unidadDocumental);
+                subSerieNew.getUnidadDocumentalCollection().add(unidadDocumental);
                 subSerieNew = em.merge(subSerieNew);
+            }
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getUnidadDocumentalCollection().remove(unidadDocumental);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getUnidadDocumentalCollection().add(unidadDocumental);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getUnidadDocumentalCollection().remove(unidadDocumental);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getUnidadDocumentalCollection().add(unidadDocumental);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (TipoDocumental tipoDocumentalCollectionOldTipoDocumental : tipoDocumentalCollectionOld) {
+                if (!tipoDocumentalCollectionNew.contains(tipoDocumentalCollectionOldTipoDocumental)) {
+                    tipoDocumentalCollectionOldTipoDocumental.setUnidadDocumental(null);
+                    tipoDocumentalCollectionOldTipoDocumental = em.merge(tipoDocumentalCollectionOldTipoDocumental);
+                }
+            }
+            for (TipoDocumental tipoDocumentalCollectionNewTipoDocumental : tipoDocumentalCollectionNew) {
+                if (!tipoDocumentalCollectionOld.contains(tipoDocumentalCollectionNewTipoDocumental)) {
+                    UnidadDocumental oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental = tipoDocumentalCollectionNewTipoDocumental.getUnidadDocumental();
+                    tipoDocumentalCollectionNewTipoDocumental.setUnidadDocumental(unidadDocumental);
+                    tipoDocumentalCollectionNewTipoDocumental = em.merge(tipoDocumentalCollectionNewTipoDocumental);
+                    if (oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental != null && !oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental.equals(unidadDocumental)) {
+                        oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental.getTipoDocumentalCollection().remove(tipoDocumentalCollectionNewTipoDocumental);
+                        oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental = em.merge(oldUnidadDocumentalOfTipoDocumentalCollectionNewTipoDocumental);
+                    }
+                }
+            }
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setUnidadDocumental(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
+                }
+            }
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    UnidadDocumental oldUnidadDocumentalOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getUnidadDocumental();
+                    documentoCollectionNewDocumento.setUnidadDocumental(unidadDocumental);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldUnidadDocumentalOfDocumentoCollectionNewDocumento != null && !oldUnidadDocumentalOfDocumentoCollectionNewDocumento.equals(unidadDocumental)) {
+                        oldUnidadDocumentalOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldUnidadDocumentalOfDocumentoCollectionNewDocumento = em.merge(oldUnidadDocumentalOfDocumentoCollectionNewDocumento);
+                    }
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -113,8 +252,28 @@ public class UnidadDocumentalJpaController implements Serializable {
             }
             SubSerie subSerie = unidadDocumental.getSubSerie();
             if (subSerie != null) {
-                subSerie.getUnidadDocumentalList().remove(unidadDocumental);
+                subSerie.getUnidadDocumentalCollection().remove(unidadDocumental);
                 subSerie = em.merge(subSerie);
+            }
+            Usuario creadoPor = unidadDocumental.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getUnidadDocumentalCollection().remove(unidadDocumental);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = unidadDocumental.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getUnidadDocumentalCollection().remove(unidadDocumental);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<TipoDocumental> tipoDocumentalCollection = unidadDocumental.getTipoDocumentalCollection();
+            for (TipoDocumental tipoDocumentalCollectionTipoDocumental : tipoDocumentalCollection) {
+                tipoDocumentalCollectionTipoDocumental.setUnidadDocumental(null);
+                tipoDocumentalCollectionTipoDocumental = em.merge(tipoDocumentalCollectionTipoDocumental);
+            }
+            Collection<Documento> documentoCollection = unidadDocumental.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setUnidadDocumental(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(unidadDocumental);
             em.getTransaction().commit();

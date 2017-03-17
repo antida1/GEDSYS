@@ -10,18 +10,20 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Acl;
 import com.sucomunicacion.gedsys.entities.Modulo;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author rober
  */
 public class ModuloJpaController implements Serializable {
 
@@ -35,27 +37,45 @@ public class ModuloJpaController implements Serializable {
     }
 
     public void create(Modulo modulo) throws PreexistingEntityException, Exception {
-        if (modulo.getAclList() == null) {
-            modulo.setAclList(new ArrayList<Acl>());
+        if (modulo.getAclCollection() == null) {
+            modulo.setAclCollection(new ArrayList<Acl>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Acl> attachedAclList = new ArrayList<Acl>();
-            for (Acl aclListAclToAttach : modulo.getAclList()) {
-                aclListAclToAttach = em.getReference(aclListAclToAttach.getClass(), aclListAclToAttach.getId());
-                attachedAclList.add(aclListAclToAttach);
+            Usuario creadoPor = modulo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
+                modulo.setCreadoPor(creadoPor);
             }
-            modulo.setAclList(attachedAclList);
+            Usuario modificadoPor = modulo.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
+                modulo.setModificadoPor(modificadoPor);
+            }
+            Collection<Acl> attachedAclCollection = new ArrayList<Acl>();
+            for (Acl aclCollectionAclToAttach : modulo.getAclCollection()) {
+                aclCollectionAclToAttach = em.getReference(aclCollectionAclToAttach.getClass(), aclCollectionAclToAttach.getId());
+                attachedAclCollection.add(aclCollectionAclToAttach);
+            }
+            modulo.setAclCollection(attachedAclCollection);
             em.persist(modulo);
-            for (Acl aclListAcl : modulo.getAclList()) {
-                Modulo oldModuleIdOfAclListAcl = aclListAcl.getModuleId();
-                aclListAcl.setModuleId(modulo);
-                aclListAcl = em.merge(aclListAcl);
-                if (oldModuleIdOfAclListAcl != null) {
-                    oldModuleIdOfAclListAcl.getAclList().remove(aclListAcl);
-                    oldModuleIdOfAclListAcl = em.merge(oldModuleIdOfAclListAcl);
+            if (creadoPor != null) {
+                creadoPor.getModuloCollection().add(modulo);
+                creadoPor = em.merge(creadoPor);
+            }
+            if (modificadoPor != null) {
+                modificadoPor.getModuloCollection().add(modulo);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            for (Acl aclCollectionAcl : modulo.getAclCollection()) {
+                Modulo oldModuloOfAclCollectionAcl = aclCollectionAcl.getModulo();
+                aclCollectionAcl.setModulo(modulo);
+                aclCollectionAcl = em.merge(aclCollectionAcl);
+                if (oldModuloOfAclCollectionAcl != null) {
+                    oldModuloOfAclCollectionAcl.getAclCollection().remove(aclCollectionAcl);
+                    oldModuloOfAclCollectionAcl = em.merge(oldModuloOfAclCollectionAcl);
                 }
             }
             em.getTransaction().commit();
@@ -77,30 +97,58 @@ public class ModuloJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Modulo persistentModulo = em.find(Modulo.class, modulo.getId());
-            List<Acl> aclListOld = persistentModulo.getAclList();
-            List<Acl> aclListNew = modulo.getAclList();
-            List<Acl> attachedAclListNew = new ArrayList<Acl>();
-            for (Acl aclListNewAclToAttach : aclListNew) {
-                aclListNewAclToAttach = em.getReference(aclListNewAclToAttach.getClass(), aclListNewAclToAttach.getId());
-                attachedAclListNew.add(aclListNewAclToAttach);
+            Usuario creadoPorOld = persistentModulo.getCreadoPor();
+            Usuario creadoPorNew = modulo.getCreadoPor();
+            Usuario modificadoPorOld = persistentModulo.getModificadoPor();
+            Usuario modificadoPorNew = modulo.getModificadoPor();
+            Collection<Acl> aclCollectionOld = persistentModulo.getAclCollection();
+            Collection<Acl> aclCollectionNew = modulo.getAclCollection();
+            if (creadoPorNew != null) {
+                creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
+                modulo.setCreadoPor(creadoPorNew);
             }
-            aclListNew = attachedAclListNew;
-            modulo.setAclList(aclListNew);
+            if (modificadoPorNew != null) {
+                modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
+                modulo.setModificadoPor(modificadoPorNew);
+            }
+            Collection<Acl> attachedAclCollectionNew = new ArrayList<Acl>();
+            for (Acl aclCollectionNewAclToAttach : aclCollectionNew) {
+                aclCollectionNewAclToAttach = em.getReference(aclCollectionNewAclToAttach.getClass(), aclCollectionNewAclToAttach.getId());
+                attachedAclCollectionNew.add(aclCollectionNewAclToAttach);
+            }
+            aclCollectionNew = attachedAclCollectionNew;
+            modulo.setAclCollection(aclCollectionNew);
             modulo = em.merge(modulo);
-            for (Acl aclListOldAcl : aclListOld) {
-                if (!aclListNew.contains(aclListOldAcl)) {
-                    aclListOldAcl.setModuleId(null);
-                    aclListOldAcl = em.merge(aclListOldAcl);
+            if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
+                creadoPorOld.getModuloCollection().remove(modulo);
+                creadoPorOld = em.merge(creadoPorOld);
+            }
+            if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
+                creadoPorNew.getModuloCollection().add(modulo);
+                creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
+                modificadoPorOld.getModuloCollection().remove(modulo);
+                modificadoPorOld = em.merge(modificadoPorOld);
+            }
+            if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
+                modificadoPorNew.getModuloCollection().add(modulo);
+                modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            for (Acl aclCollectionOldAcl : aclCollectionOld) {
+                if (!aclCollectionNew.contains(aclCollectionOldAcl)) {
+                    aclCollectionOldAcl.setModulo(null);
+                    aclCollectionOldAcl = em.merge(aclCollectionOldAcl);
                 }
             }
-            for (Acl aclListNewAcl : aclListNew) {
-                if (!aclListOld.contains(aclListNewAcl)) {
-                    Modulo oldModuleIdOfAclListNewAcl = aclListNewAcl.getModuleId();
-                    aclListNewAcl.setModuleId(modulo);
-                    aclListNewAcl = em.merge(aclListNewAcl);
-                    if (oldModuleIdOfAclListNewAcl != null && !oldModuleIdOfAclListNewAcl.equals(modulo)) {
-                        oldModuleIdOfAclListNewAcl.getAclList().remove(aclListNewAcl);
-                        oldModuleIdOfAclListNewAcl = em.merge(oldModuleIdOfAclListNewAcl);
+            for (Acl aclCollectionNewAcl : aclCollectionNew) {
+                if (!aclCollectionOld.contains(aclCollectionNewAcl)) {
+                    Modulo oldModuloOfAclCollectionNewAcl = aclCollectionNewAcl.getModulo();
+                    aclCollectionNewAcl.setModulo(modulo);
+                    aclCollectionNewAcl = em.merge(aclCollectionNewAcl);
+                    if (oldModuloOfAclCollectionNewAcl != null && !oldModuloOfAclCollectionNewAcl.equals(modulo)) {
+                        oldModuloOfAclCollectionNewAcl.getAclCollection().remove(aclCollectionNewAcl);
+                        oldModuloOfAclCollectionNewAcl = em.merge(oldModuloOfAclCollectionNewAcl);
                     }
                 }
             }
@@ -133,10 +181,20 @@ public class ModuloJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The modulo with id " + id + " no longer exists.", enfe);
             }
-            List<Acl> aclList = modulo.getAclList();
-            for (Acl aclListAcl : aclList) {
-                aclListAcl.setModuleId(null);
-                aclListAcl = em.merge(aclListAcl);
+            Usuario creadoPor = modulo.getCreadoPor();
+            if (creadoPor != null) {
+                creadoPor.getModuloCollection().remove(modulo);
+                creadoPor = em.merge(creadoPor);
+            }
+            Usuario modificadoPor = modulo.getModificadoPor();
+            if (modificadoPor != null) {
+                modificadoPor.getModuloCollection().remove(modulo);
+                modificadoPor = em.merge(modificadoPor);
+            }
+            Collection<Acl> aclCollection = modulo.getAclCollection();
+            for (Acl aclCollectionAcl : aclCollection) {
+                aclCollectionAcl.setModulo(null);
+                aclCollectionAcl = em.merge(aclCollectionAcl);
             }
             em.remove(modulo);
             em.getTransaction().commit();
