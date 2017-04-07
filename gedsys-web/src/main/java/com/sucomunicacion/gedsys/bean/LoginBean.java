@@ -65,7 +65,7 @@ public class LoginBean extends BaseBean implements Serializable {
     }
     
     public void iniciarSesion() {
-       
+        try {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -87,6 +87,10 @@ public class LoginBean extends BaseBean implements Serializable {
         context.addCallbackParam("isLogin", logeado);
         if(logeado){
             context.addCallbackParam("view", "faces/index.xhtml");
+        }
+        } catch( Exception e ){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error inesperado", e.getMessage());
+            e.printStackTrace();
         }
 
     }

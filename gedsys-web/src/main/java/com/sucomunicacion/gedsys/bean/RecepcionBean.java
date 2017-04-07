@@ -11,6 +11,8 @@ import com.sucomunicacion.gedsys.entities.Municipio;
 import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.Entidad;
+import com.sucomunicacion.gedsys.entities.Transportador;
 import com.sucomunicacion.gedsys.model.DocumentoJpaController;
 import com.sucomunicacion.gedsys.utils.JpaUtils;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
@@ -45,8 +47,9 @@ public class RecepcionBean extends BaseBean implements Serializable {
     private List<Documento> documentos;
     private List<Usuario> usuarios;
     private List<TipoDocumento> tipoDocumentos;
+    private List<Entidad> entidades;
+    private List<Transportador> transportadores;
 
-    
     private String accion;
     
     private int PaisId;
@@ -67,6 +70,15 @@ public class RecepcionBean extends BaseBean implements Serializable {
             UsuarioBean ub = new UsuarioBean();
             ub.listar();
             this.usuarios = ub.getUsuarios();
+            
+            EntidadBean eb = new EntidadBean();
+            eb.listar();
+            this.entidades = eb.getEntidades();
+            
+            TransportadorBean tb = new TransportadorBean();
+            tb.listar();
+            this.transportadores = tb.getTransportadores();
+            
             
         } catch (Exception ex) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,6 +193,23 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setFoliosFile(List<UploadedFile> foliosFile) {
         this.foliosFile = foliosFile;
     }
+    
+    public List<Entidad> getEntidades() {
+        return entidades;
+    }
+
+    public void setEntidades(List<Entidad> entidades) {
+        this.entidades = entidades;
+    }
+    
+    public List<Transportador> getTransportadores() {
+        return transportadores;
+    }
+
+    public void setTransportadores(List<Transportador> transportadores) {
+        this.transportadores = transportadores;
+    }
+    
     
     public void onPaisChange(){
         try {

@@ -29,10 +29,16 @@
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="col-md-1">
-                                        <p:commandButton icon="ui-icon-pencil" type="button" title="Generar Radicado" onclick="PF('denRadicado').show"></p:commandButton>
+                                        <p:commandButton icon="ui-icon-pencil" type="button" title="Generar Radicado"  onclick="PF('denRadicado').show()"></p:commandButton>
                                     </div>
-                                    <p:dialog header="Radicado" widgetVar="denRadicado" minHeight="800" >
-                                        Hello!!!
+                                    <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                                        <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                                            <p:printer target="radic"/>
+                                        </p:commandButton>
+                                        <div class="page" size="A4"  id="image">
+                                            <h:graphicImage id="radic" library="images" name="#{login.usuario.foto}"  alt="..."/>
+                                        </div>
+                                        <p:draggable for="radic" containment="parent" />
                                     </p:dialog>
                                 </div>
                                 <div class="col-xs-6 form-group">
@@ -88,7 +94,7 @@
                                     <div class="col-md-7">
                                         <p:selectOneMenu id="entidad" var="#{recepcionBean.documento.entidad}" filter="true" filterMatchMode="contains" style="width: 100%">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione una entidad" itemValue="#{null}" />
-                                            <f:selectItems value="#{entidadBean.entidades}" var="entidad" itemLabel="#{entidad.nombre}" itemValue="#{entidad}"/>
+                                            <f:selectItems value="#{}"
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="col-md-1">
