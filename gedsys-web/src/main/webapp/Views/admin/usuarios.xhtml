@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <body>
 
         <ui:composition template="./../../Template/plantilla.xhtml">
@@ -22,14 +22,14 @@
                     </p:menubar>
                     <p:separator/>
                     <p:dataTable id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0">
-                         <p:column headerText="Nombres">
-                             <h:outputText value="#{usuario.nombres}" />
+                        <p:column headerText="Nombres">
+                            <h:outputText value="#{usuario.nombres}" />
                         </p:column>
                         <p:column headerText="Apellidos">
                             <h:outputText value="#{usuario.apelidos}" />
                         </p:column>
-                         <p:column headerText="Cargo">
-                             <h:outputText value="#{usuario.cargo.nombre}" />
+                        <p:column headerText="Cargo">
+                            <h:outputText value="#{usuario.cargo.nombre}" />
                         </p:column>
                         <p:column headerText="Correo Electronico">
                             <h:outputText value="#{usuario.email}" />
@@ -45,7 +45,7 @@
                                              update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
                                              icon="ui-icon-pencil" title="Editar">
                             </p:commandButton>
-                       </p:column>
+                        </p:column>
                         <p:column headerText="Borrar">
                             <p:commandButton icon="ui-icon-eraser" 
                                              title="Borrar"

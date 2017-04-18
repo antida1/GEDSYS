@@ -12,14 +12,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
-import sun.java2d.pipe.RenderingEngine;
 
 /**
  *
  * @author rober
  */
-public class Radicado {
+public class RadicadoImage {
     public String Generar(String numeroRadicado, String logoPath){
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2D = img.createGraphics();
@@ -46,9 +46,8 @@ public class Radicado {
         g2D.drawString(numeroRadicado, 0, fm.getAscent());
         g2D.dispose();
         try {
-            ImageIO.write(img, "png", new File( numeroRadicado + ".png"));
-        } catch (Exception e) {
-            e.printStackTrace();
+            ImageIO.write(img, "png", new File( "F:"+ File.separatorChar + numeroRadicado + ".png"));
+        } catch (IOException e) {
         }
         return numeroRadicado + ".png";
     }

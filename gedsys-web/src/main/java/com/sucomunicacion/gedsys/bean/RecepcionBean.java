@@ -13,10 +13,14 @@ import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Entidad;
 import com.sucomunicacion.gedsys.entities.Transportador;
+import com.sucomunicacion.gedsys.images.RadicadoImage;
 import com.sucomunicacion.gedsys.model.DocumentoJpaController;
 import com.sucomunicacion.gedsys.utils.JpaUtils;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import com.sucomunicacion.utils.UploadDocument;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
@@ -25,9 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManagerFactory;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -35,7 +41,6 @@ import org.primefaces.model.UploadedFile;
  * @author rober
  */
 @ManagedBean
-@ViewScoped
 public class RecepcionBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
@@ -58,7 +63,6 @@ public class RecepcionBean extends BaseBean implements Serializable {
     
     private UploadedFile documentFile;
     private List<UploadedFile> foliosFile = new  LinkedList<>();
- 
     
     @PostConstruct
     public void init(){
@@ -70,15 +74,6 @@ public class RecepcionBean extends BaseBean implements Serializable {
             UsuarioBean ub = new UsuarioBean();
             ub.listar();
             this.usuarios = ub.getUsuarios();
-            
-            EntidadBean eb = new EntidadBean();
-            eb.listar();
-            this.entidades = eb.getEntidades();
-            
-            TransportadorBean tb = new TransportadorBean();
-            tb.listar();
-            this.transportadores = tb.getTransportadores();
-            
             
         } catch (Exception ex) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -245,7 +240,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
      *
      * @throws Exception
      */
-    public void radicar() throws Exception{
+    public void radicar() {
          DocumentoJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -265,7 +260,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
             this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
             sJpa.create(documento);
         } catch (Exception e) {
-            throw e;
+            e.printStackTrace();
         }
     }
     

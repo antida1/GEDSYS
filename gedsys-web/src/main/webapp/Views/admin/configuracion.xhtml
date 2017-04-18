@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+            <ui:define name="content">
+                <div class="form-group row">
+                    <p:outputLabel id="Logo" for="logo" class="col-xs-3 col-form-label" />
+                    <div class="col-xs-3">
+                        <p:fileUpload value="#{configurationBean.logo}" mode="simple" skinSimple="true" />
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

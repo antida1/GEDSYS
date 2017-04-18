@@ -10,6 +10,8 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+                <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
+                <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <div class="x_panel">
                     <div class="x_title">
@@ -31,14 +33,10 @@
                                     <div class="col-md-1">
                                         <p:commandButton icon="ui-icon-pencil" type="button" title="Generar Radicado"  onclick="PF('denRadicado').show()"></p:commandButton>
                                     </div>
-                                    <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                                        <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
-                                            <p:printer target="radic"/>
-                                        </p:commandButton>
-                                        <div class="page" size="A4"  id="image">
-                                            <h:graphicImage id="radic" library="images" name="#{login.usuario.foto}"  alt="..."/>
-                                        </div>
-                                        <p:draggable for="radic" containment="parent" />
+                                    <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                                        <ui:include src="newRadicado.xhtml">
+                                            
+                                        </ui:include>
                                     </p:dialog>
                                 </div>
                                 <div class="col-xs-6 form-group">
@@ -92,9 +90,9 @@
                                     <label class=" col-md-4" for="entidad">Entidad <span class="required">*</span>
                                     </label>
                                     <div class="col-md-7">
-                                        <p:selectOneMenu id="entidad" var="#{recepcionBean.documento.entidad}" filter="true" filterMatchMode="contains" style="width: 100%">
-                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione una entidad" itemValue="#{null}" />
-                                            <f:selectItems value="#{}"
+                                        <p:selectOneMenu id="Entidad" value="#{recepcionBean.documento.entidad}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione la entidad" itemValue="#{null}" />
+                                            <f:selectItems value="#{entidadBean.entidades}" var="entRem" itemLabel="#{entRem.nombre}" itemValue="#{entRem}" />
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="col-md-1">
