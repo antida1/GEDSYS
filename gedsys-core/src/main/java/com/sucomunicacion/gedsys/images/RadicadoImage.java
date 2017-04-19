@@ -23,7 +23,7 @@ public class RadicadoImage {
     public String Generar(String numeroRadicado, String logoPath){
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2D = img.createGraphics();
-        Font font = new Font("Arial", Font.PLAIN, 48);
+        Font font = new Font("Arial", Font.PLAIN, 16);
         g2D.setFont(font);
         FontMetrics fm = g2D.getFontMetrics();
         int width = fm.stringWidth(numeroRadicado);

@@ -18,6 +18,7 @@ import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -228,4 +229,18 @@ public class ConsecutivoJpaController implements Serializable {
         }
     }
     
+    public Consecutivo findConsecutivoByTipoConsecutivo(String tipoConsecutivo) {
+        Consecutivo consec = null;
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Consecutivo> consultaConsecutivo  =
+                    em.createNamedQuery("Consecutivo.findByTipoConsecutivo", Consecutivo.class);
+            consultaConsecutivo.setParameter("tipoConsecutivo", tipoConsecutivo);
+            consec = consultaConsecutivo.getSingleResult();
+        } catch (Exception e) {
+            throw e;
+        }
+        return consec;
+    }
+
 }

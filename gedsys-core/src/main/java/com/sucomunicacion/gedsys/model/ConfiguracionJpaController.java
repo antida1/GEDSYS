@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -128,6 +129,21 @@ public class ConfiguracionJpaController implements Serializable {
         }
     }
 
+    public Configuracion findConfigurationByName(String name) {
+        Configuracion conf = null;
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Configuracion> consultaConfiguracion =
+                    em.createNamedQuery("Configuracion.findByNombre",
+                    Configuracion.class);
+            consultaConfiguracion.setParameter("nombre", name);
+            conf = consultaConfiguracion.getSingleResult();
+        } catch (Exception e) {
+            throw e;
+        }
+        return conf;
+    }
+
     public int getConfiguracionCount() {
         EntityManager em = getEntityManager();
         try {
@@ -140,5 +156,5 @@ public class ConfiguracionJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }
