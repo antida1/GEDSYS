@@ -1,0 +1,29 @@
+.filter {
+  padding: 2%; }
+
+.tab-content .tab-pane .doc-container {
+  padding: 2% 0; }
+  .tab-content .tab-pane .doc-container .doc .paper {
+    background: #f2f2f2;
+    margin-bottom: 2vh;
+    padding: 5%; }
+    .tab-content .tab-pane .doc-container .doc .paper .content p {
+      height: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 20px;
+      line-height: 15px; }
+    .tab-content .tab-pane .doc-container .doc .paper .title h4 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary {
+      transition: all 0.3s ease;
+      background: #172D44;
+      border: none;
+      color: white; }
+      .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover {
+        background: #24466a;
+        color: #1ABB9C; }
+
+/*# sourceMappingURL=docs.css.map */

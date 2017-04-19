@@ -1,92 +1,80 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+<?xml version='1.0' encoding='UTF-8' ?>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-
         <f:facet name="base">
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximu-scale=1.0, user-scale=0" />
-            <meta name="apple-mobile-web-app-capable" content="yes"/>
-            <h:outputStylesheet library="css" name="default.css"/>
-
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <h:outputStylesheet library="css" name="default.css" />
             <!-- Bootstrap -->
-            <h:outputStylesheet library="css" name="bootstrap.css"/>
+            <h:outputStylesheet library="css" name="bootstrap.css" />
             <!-- Font Awesome -->
-            <h:outputStylesheet library="css" name="font-awesome.css"/>
+            <h:outputStylesheet library="css" name="font-awesome.css" />
             <!-- NProgress -->
-            <h:outputStylesheet library="css" name="nprogress.css"/>
+            <h:outputStylesheet library="css" name="nprogress.css" />
             <!-- iCheck -->
             <h:outputStylesheet library="css" name="green.css" />
             <!-- bootstrap-progressbar -->
-            <h:outputStylesheet library="css" name="bootstrap-progressbar-3.3.4.min.css"/>
+            <h:outputStylesheet library="css" name="bootstrap-progressbar-3.3.4.min.css" />
             <!-- JQVMap -->
-            <h:outputStylesheet library="css" name="jqvmap.min.css"/>
+            <h:outputStylesheet library="css" name="jqvmap.min.css" />
             <!-- bootstrap-daterangepicker -->
-            <h:outputStylesheet library="css" name="daterangepicker.css"/>
-
+            <h:outputStylesheet library="css" name="daterangepicker.css" />
             <!-- Custom Theme Style -->
-            <h:outputStylesheet library="css" name="custom.min.css"/>
-        </f:facet>     
+            <h:outputStylesheet library="css" name="custom.min.css" />
+            <h:outputStylesheet library="css" name="docs.css" /> </f:facet>
         <title>GEDSYS</title>
-        <ui:insert name="head"/>
+        <ui:insert name="head" />
         <script>
             PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día'
+                closeText: 'Cerrar'
+                , prevText: 'Anterior'
+                , nextText: 'Siguiente'
+                , monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                , monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                , dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+                , dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+                , dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+                , weekHeader: 'Semana'
+                , firstDay: 1
+                , isRTL: false
+                , showMonthAfterYear: false
+                , yearSuffix: ''
+                , timeOnlyTitle: 'Sólo hora'
+                , timeText: 'Tiempo'
+                , hourText: 'Hora'
+                , minuteText: 'Minuto'
+                , secondText: 'Segundo'
+                , currentText: 'Fecha actual'
+                , ampm: false
+                , month: 'Mes'
+                , week: 'Semana'
+                , day: 'Día'
+                , allDayText: 'Todo el día'
             };
         </script>
     </h:head>
+
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title text-center" style="border: 0;">
-                            <p:link outcome="/index" class="site_title"><h:graphicImage library="images" name="logo.png" width="40px" height="40px"  /></p:link>
+                            <p:link outcome="/index" class="site_title">
+                                <h:graphicImage library="images" name="logo.png" width="40px" height="40px" /> </p:link>
                         </div>
-
                         <div class="clearfix"></div>
-
                         <!-- menu profile quick info -->
                         <div class="profile">
                             <div class="profile_pic">
-                                <h:graphicImage library="images" name="#{login.usuario.foto}"  alt="..." class="img-circle profile_img"/>
-                            </div>
-                            <div class="profile_info">
-                                <span>Bienvenido,</span>
-                                <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2>
-                            </div>
+                                <h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" /> </div>
+                            <div class="profile_info"> <span>Bienvenido,</span>
+                                <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2> </div>
                         </div>
                         <!-- /menu profile quick info -->
-
                         <br />
                         <br />
                         <!-- sidebar menu -->
@@ -96,43 +84,67 @@
                                 <ul class="nav side-menu">
                                     <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><p:link outcome="/index" value="Dashboard"/></li>
+                                            <li>
+                                                <p:link outcome="/index" value="Dashboard" /> </li>
                                         </ul>
                                     </li>
                                     <li><a><i class="fa fa-edit"></i> Procesos <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><p:link outcome="/Views/procesos/producciondoc">Creación de Documentos</p:link></li>
-                                            <li><p:link outcome="/Views/procesos/recepcion">Recepción de Documentos</p:link></li>
-                                            <li><p:link outcome="/Views/procesos/form_advanced">Gestión de Documentos</p:link></li>
+                                            <li>
+                                                <p:link outcome="/Views/procesos/producciondoc">Creación de Documentos</p:link>
+                                            </li>
+                                            <li>
+                                                <p:link outcome="/Views/procesos/recepcion">Recepción de Documentos</p:link>
+                                            </li>
+                                            <li>
+                                                <p:link outcome="/Views/procesos/form_advanced">Gestión de Documentos</p:link>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li><a><i class="fa fa-desktop"></i> Marcadores de Pertenencia <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><p:link outcome="/Views/admin/seccion" value="Secciones"/></li>
-                                            <li><p:link outcome="/Views/admin/subsecciones" value="Sub Seccion"/></li>
-                                            <li><p:link outcome="/Views/admin/series" value="Serie"/></li>
-                                            <li><p:link outcome="/Views/admin/subseries" value="SubSerie" /></li>
-                                            <li><p:link outcome="/Views/admin/unidaddoc" value="Unidad Documental" /></li>
-                                            <li><p:link outcome="/Views/admin/tipodoc" value="Tipo Documental" /></li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/seccion" value="Secciones" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/subsecciones" value="Sub Seccion" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/series" value="Serie" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/subseries" value="SubSerie" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/unidaddoc" value="Unidad Documental" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/tipodoc" value="Tipo Documental" /> </li>
                                         </ul>
                                     </li>
                                     <li><a><i class="fa fa-clone"></i>Administración <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><p:link outcome="/Views/admin/usuarios" value="Usuarios" /></li>
-                                            <li><p:link outcome="/Views/admin/cargo" value="Cargos" /></li>
-                                            <li><p:link outcome="/Views/admin/roles" value="Roles" /></li>
-                                            <li><p:link outcome="/Views/admin/acl" value="Lista de Control de Acceso" /></li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/usuarios" value="Usuarios" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/cargo" value="Cargos" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/roles" value="Roles" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/acl" value="Lista de Control de Acceso" /> </li>
                                         </ul>
                                     </li>
                                     <li><a><i class="fa fa-clone"></i>Maestros <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><p:link outcome="/Views/admin/entidad" value="Entidades" /></li>
-                                            <li><p:link outcome="/Views/admin/transportador" value="Empresas de Mensajeria" /></li>
-                                            <li><p:link outcome="/Views/admin/tipoDocumento" value="Tipos de Documento" /></li>
-                                            <li><p:link outcome="/Views/admin/pais" value="Paises" /></li>
-                                            <li><p:link outcome="/Views/admin/departamento" value="Departamentos" /></li>
-                                            <li><p:link outcome="/Views/admin/municipio" value="Municipios" /></li>
-                                            <li><p:link outcome="/Views/admin/consecutivo" value="Consecutivos" /></li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/entidad" value="Entidades" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/transportador" value="Empresas de Mensajeria" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/tipoDocumento" value="Tipos de Documento" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/pais" value="Paises" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/departamento" value="Departamentos" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/municipio" value="Municipios" /> </li>
+                                            <li>
+                                                <p:link outcome="/Views/admin/consecutivo" value="Consecutivos" /> </li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -164,131 +176,79 @@
                                             <li><a href="#level1_1">Level One</a></li>
                                             <li><a>Level One<span class="fa fa-chevron-down"></span></a>
                                                 <ul class="nav child_menu">
-                                                    <li class="sub_menu"><a href="level2.html">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_1">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_2">Level Two</a>
-                                                    </li>
+                                                    <li class="sub_menu"><a href="level2.html">Level Two</a> </li>
+                                                    <li><a href="#level2_1">Level Two</a> </li>
+                                                    <li><a href="#level2_2">Level Two</a> </li>
                                                 </ul>
                                             </li>
                                             <li><a href="#level1_2">Level One</a></li>
                                         </ul>
-                                    </li>                  
+                                    </li>
                                     <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Soporte <span class="label label-success pull-right">Próximamente</span></a></li>
                                 </ul>
                             </div>
-
                         </div>
                         <!-- /sidebar menu -->
-
                         <!-- /menu footer buttons -->
                         <div class="sidebar-footer hidden-small">
-                            <a data-toggle="tooltip" data-placement="top" title="Ajustes">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                            </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Pantalla Completa">
-                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                            </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Lock">
-                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                            </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Cerrar Sessión">
-                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Ajustes"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Pantalla Completa"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span> </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Lock"> <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Cerrar Sessión"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </a>
                         </div>
                         <!-- /menu footer buttons -->
                     </div>
                 </div>
-
                 <!-- top navigation -->
                 <div class="top_nav">
                     <div class="nav_menu">
                         <nav>
-                            <div class="nav toggle">
-                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                            </div>
-
+                            <div class="nav toggle"> <a id="menu_toggle"><i class="fa fa-bars"></i></a> </div>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <h:graphicImage library="images" name="#{login.usuario.foto}" />
-                                        <h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/>
-                                        <span class=" fa fa-angle-down"></span>
-                                    </a>
+                                        <h:outputText value="#{login.usuario.nombres}" />&#160;
+                                        <h:outputText value="#{login.usuario.apelidos}" /> <span class=" fa fa-angle-down"></span> </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                                         <li><a href="javascript:;"> Perfil</a></li>
                                         <li>
-                                            <a href="javascript:;">
-                                                <span class="badge bg-red pull-right">50%</span>
-                                                <span>Ajustes</span>
-                                            </a>
+                                            <a href="javascript:;"> <span class="badge bg-red pull-right">50%</span> <span>Ajustes</span> </a>
                                         </li>
                                         <li><a href="javascript:;">Ayuda</a></li>
                                         <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Cerrar Sessión</a></li>
                                     </ul>
                                 </li>
-
                                 <li role="presentation" class="dropdown">
-                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-envelope-o"></i>
-                                        <span class="badge bg-green">6</span>
-                                    </a>
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i> <span class="badge bg-green">6</span> </a>
                                     <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                                         <li>
-                                            <a>
-                                                <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span>
-                                                <span>
-                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span>
-                                                    <span class="time">3 mins ago</span>
-                                                </span>
-                                                <span class="message">
+                                            <a> <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span> <span>
+                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">3 mins ago</span> </span> <span class="message">
                                                     Inicio de proceso documental con Gedsys
-                                                </span>
-                                            </a>
+                                                </span> </a>
                                         </li>
                                         <li>
-                                            <a>
-                                                <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span>
-                                                <span>
-                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span>
-                                                    <span class="time">3 mins ago</span>
-                                                </span>
-                                                <span class="message">
+                                            <a> <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span> <span>
+                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">3 mins ago</span> </span> <span class="message">
                                                     Inicio de proceso documental con Gedsys
-                                                </span>
-                                            </a>
+                                                </span> </a>
                                         </li>
                                         <li>
-                                            <a>
-                                                <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span>
-                                                <span>
-                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span>
-                                                    <span class="time">3 mins ago</span>
-                                                </span>
-                                                <span class="message">
+                                            <a> <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span> <span>
+                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">3 mins ago</span> </span> <span class="message">
                                                     Inicio de proceso documental con Gedsys
-                                                </span>
-                                            </a>
+                                                </span> </a>
                                         </li>
                                         <li>
-                                            <a>
-                                                <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span>
-                                                <span>
-                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span>
-                                                    <span class="time">3 mins ago</span>
-                                                </span>
-                                                <span class="message">
+                                            <a> <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span> <span>
+                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">3 mins ago</span> </span> <span class="message">
                                                     Inicio de proceso documental con Gedsys
-                                                </span>
-                                            </a>
+                                                </span> </a>
                                         </li>
                                         <li>
                                             <div class="text-center">
-                                                <a>
-                                                    <strong>See All Alerts</strong>
-                                                    <i class="fa fa-angle-right"></i>
-                                                </a>
+                                                <a> <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i> </a>
                                             </div>
                                         </li>
                                     </ul>
@@ -298,60 +258,50 @@
                     </div>
                 </div>
                 <!-- /top navigation -->
-
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <ui:insert name="content">Content</ui:insert>
                 </div>
                 <!-- /page content -->
-
                 <!-- footer content -->
                 <footer>
-                    <div class="pull-right">
-                        GEDSYS -  by <a href="http://www.base16.co">BASE16</a>
-                    </div>
+                    <div class="pull-right"> GEDSYS - by <a href="http://www.base16.co">BASE16</a> </div>
                     <div class="clearfix"></div>
                 </footer>
                 <!-- /footer content -->
             </div>
         </div>
-
         <!-- Bootstrap -->
-        <h:outputScript library="js" name="bootstrap.min.js"/>
+        <h:outputScript library="js" name="bootstrap.min.js" />
         <!-- FastClick -->
-        <h:outputScript library="js" name="fastclick.js"/>
+        <h:outputScript library="js" name="fastclick.js" />
         <!-- NProgress -->
-        <h:outputScript library="js" name="nprogress.js"/>
+        <h:outputScript library="js" name="nprogress.js" />
         <!-- Chart.js -->
-        <h:outputScript library="js" name="Chart.min.js"/>
-
+        <h:outputScript library="js" name="Chart.min.js" />
         <!-- bootstrap-progressbar -->
-        <h:outputScript library="js" name="bootstrap-progressbar.min.js"/>
+        <h:outputScript library="js" name="bootstrap-progressbar.min.js" />
         <!-- iCheck -->
-        <h:outputScript library="js" name="icheck.min.js"/>
+        <h:outputScript library="js" name="icheck.min.js" />
         <!-- Skycons -->
-        <h:outputScript library="js" name="skycons.js"/>
+        <h:outputScript library="js" name="skycons.js" />
         <!-- Flot -->
-        <h:outputScript library="js" name="jquery.flot.js"/>
-        <h:outputScript library="js" name="jquery.flot.pie.js"/>
-        <h:outputScript library="js" name="jquery.flot.time.js"/>
-        <h:outputScript library="js" name="jquery.flot.stack.js"/>
-        <h:outputScript library="js" name="jquery.flot.resize.js"/>
+        <h:outputScript library="js" name="jquery.flot.js" />
+        <h:outputScript library="js" name="jquery.flot.pie.js" />
+        <h:outputScript library="js" name="jquery.flot.time.js" />
+        <h:outputScript library="js" name="jquery.flot.stack.js" />
+        <h:outputScript library="js" name="jquery.flot.resize.js" />
         <!-- Flot plugins -->
-        <h:outputScript library="js" name="jquery.flot.orderBars.js"/>
-        <h:outputScript library="js" name="jquery.flot.spline.min.js"/>
-        <h:outputScript library="js" name="curvedLines.js"/>
+        <h:outputScript library="js" name="jquery.flot.orderBars.js" />
+        <h:outputScript library="js" name="jquery.flot.spline.min.js" />
+        <h:outputScript library="js" name="curvedLines.js" />
         <!-- DateJS -->
-        <h:outputScript library="js" name="date.min.js"/>
-
+        <h:outputScript library="js" name="date.min.js" />
         <!-- bootstrap-daterangepicker -->
-        <h:outputScript library="js" name="moment.min.js"/>
-        <h:outputScript library="js" name="daterangepicker.js"/>
-
+        <h:outputScript library="js" name="moment.min.js" />
+        <h:outputScript library="js" name="daterangepicker.js" />
         <!-- Custom Theme Scripts -->
-        <h:outputScript library="js" name="custom.min.js"/>
+        <h:outputScript library="js" name="custom.min.js" />
+        <h:outputScript library="js" name="docs.js" /> </body>
 
-
-    </body>
-
-</html>
+    </html>

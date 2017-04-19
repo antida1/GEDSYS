@@ -1,0 +1,48 @@
+$background: #172D44;
+$accent: #1ABB9C;
+.filter {
+    padding: 2%;
+}
+
+.tab-content {
+    .tab-pane {
+        .doc-container {
+            padding: 2% 0;
+            .doc {
+                .paper {
+                    background: darken(whitesmoke, 1%);
+                    margin-bottom: 2vh;
+                    padding: 5%;
+                    .content {
+                        p {
+                            height: 90px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            margin-bottom: 20px;
+                            line-height: 15px;
+                        }
+                    }
+                    .title {
+                        h4 {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                    .btn-group {
+                        .btn-primary {
+                            transition: all 0.3s ease;
+                            background: $background;
+                            border: none;
+                            color: white;
+                            &:hover {
+                                background: lighten($background, 10%);
+                                color: $accent;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
