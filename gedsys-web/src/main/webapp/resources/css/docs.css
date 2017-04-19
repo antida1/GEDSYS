@@ -1,5 +1,9 @@
 .filter {
   padding: 2%; }
+  .filter .collapse form .row .input-group .input-group-btn button {
+    transition: all 0.3s ease;
+    background: #172D44;
+    color: #1ABB9C; }
 
 .tab-content .tab-pane .doc-container {
   padding: 2% 0; }

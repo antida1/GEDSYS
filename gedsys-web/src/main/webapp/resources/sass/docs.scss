@@ -2,6 +2,21 @@ $background: #172D44;
 $accent: #1ABB9C;
 .filter {
     padding: 2%;
+    .collapse{
+        form{
+            .row{
+                .input-group{
+                    .input-group-btn{
+                        button{
+                            transition: all 0.3s ease;
+                            background: $background;
+                            color: $accent;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .tab-content {
