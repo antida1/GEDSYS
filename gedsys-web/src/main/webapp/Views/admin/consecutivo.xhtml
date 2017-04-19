@@ -46,15 +46,15 @@
                             <h:outputText value="#{consecutivo.modificadoPor.apelidos} #{consecutivo.creadoPor.apelidos}" />
                         </p:column>
                         <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{consecutivoBean.getConsecutivoById(consecutivo)}" 
-                                             update=":dlgDetalle" oncomplete="PF('consecutivoDialog').show()" 
+                            <p:commandButton actionListener="#{consecutivoBean.getConsecutivoById(consecutivo)}"
+                                             update=":dlgDetalle" oncomplete="PF('consecutivoDialog').show()"
                                              icon="ui-icon-pencil" title="Editar">
                             </p:commandButton>
                         </p:column>
                         <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
+                            <p:commandButton icon="ui-icon-eraser"
                                              title="Borrar"
-                                             actionListener="#{consecutivoBean.eliminar(consecutivo)}" 
+                                             actionListener="#{consecutivoBean.eliminar(consecutivo)}"
                                              update=":form:lstConsecutivos messages"/>
                         </p:column>
                     </p:dataTable>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                         <p:spacer/>
-                        <div> 
+                        <div>
                             <p:commandButton update=":form:lstConsecutivos messages" icon="ui-icon-disk" value="#{consecutivoBean.accion}" actionListener="#{consecutivoBean.procesar()}" oncomplete="PF('consecutivoDialog').hide()" />
                             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('consecutivoDialog').hide()"></p:commandButton>
                         </div>

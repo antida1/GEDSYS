@@ -233,7 +233,7 @@ public class ConsecutivoJpaController implements Serializable {
         Consecutivo consec = null;
         EntityManager em = getEntityManager();
         try {
-            TypedQuery<Consecutivo> consultaConsecutivo  = 
+            TypedQuery<Consecutivo> consultaConsecutivo  =
                     em.createNamedQuery("Consecutivo.findByTipoConsecutivo", Consecutivo.class);
             consultaConsecutivo.setParameter("tipoConsecutivo", tipoConsecutivo);
             consec = consultaConsecutivo.getSingleResult();
@@ -242,5 +242,5 @@ public class ConsecutivoJpaController implements Serializable {
         }
         return consec;
     }
-    
+
 }

@@ -32,14 +32,14 @@ import javax.persistence.EntityManagerFactory;
 public class ConsecutivoBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
-    
+
     /**
      * Creates a new instance of ConsecutivoBean
      */
     public ConsecutivoBean() {
     }
-    
-        
+
+
     private Consecutivo consecutivo = new Consecutivo();
     private List<Consecutivo> consecutivos;
     private String accion;
@@ -67,7 +67,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
+
     public void procesar() {
         try {
             switch(accion){
@@ -81,7 +81,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
         } catch (Exception e) {
         }
     }
-    
+
     private void crear() {
         ConsecutivoJpaController cJpa;
         try {
@@ -98,7 +98,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     private void modificar() {
         ConsecutivoJpaController cJpa;
         try {
@@ -114,7 +114,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void eliminar(Consecutivo consecutivo) {
         ConsecutivoJpaController cJpa;
         try {
@@ -127,7 +127,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void listar() {
         ConsecutivoJpaController cJpa;
         try {
@@ -139,7 +139,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void getConsecutivoById(Consecutivo consecutivo)  {
         ConsecutivoJpaController cJpa;
         Consecutivo consecutivoTemp;

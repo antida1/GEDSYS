@@ -133,7 +133,7 @@ public class ConfiguracionJpaController implements Serializable {
         Configuracion conf = null;
         EntityManager em = getEntityManager();
         try {
-            TypedQuery<Configuracion> consultaConfiguracion = 
+            TypedQuery<Configuracion> consultaConfiguracion =
                     em.createNamedQuery("Configuracion.findByNombre",
                     Configuracion.class);
             consultaConfiguracion.setParameter("nombre", name);

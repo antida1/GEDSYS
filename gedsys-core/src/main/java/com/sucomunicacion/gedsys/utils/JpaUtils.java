@@ -25,7 +25,7 @@ public class JpaUtils {
     public static EntityManagerFactory getEntityManagerFactory( String path){
         if( emf == null ){
            try {
-            //TODO: Cambiar la configuracion para que haga la lectura del web.xml del proyecto 
+            //TODO: Cambiar la configuracion para que haga la lectura del web.xml del proyecto
             Configuration config = new Configuration( path );
             Properties prop = config.getProp();
 

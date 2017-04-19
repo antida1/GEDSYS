@@ -98,21 +98,21 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     
     public void guardar(){
         try {
-            
+
             //Config Manager Resources and Docs.
             saveRegister("logo", logoFile.getFileName());
             saveRegister("pathResource", logoFile.getFileName());
             saveRegister("pathData", logoFile.getFileName());
             saveRegister("encriptFiles", logoFile.getFileName());
-            
-            
+
+
             //Company
             saveRegister("companyName", logoFile.getFileName());
             saveRegister("direccion", logoFile.getFileName());
             saveRegister("telefono", logoFile.getFileName());
             saveRegister("razonSocial", logoFile.getFileName());
-            
-            
+
+
             //SMTP Account
             saveRegister("mailAccount", logoFile.getFileName());
             saveRegister("mailPassword", logoFile.getFileName());
@@ -120,23 +120,23 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
             saveRegister("mailServer", logoFile.getFileName());
             saveRegister("mailSSLTLS", logoFile.getFileName());
 
-            
-            
+
+
             uploadLogo();
-        
+
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
         }
-       
+
     }
-    
+
     private void saveRegister(String name, String value) throws Exception{
         ConfiguracionJpaController confJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             EntityManager em =  emf.createEntityManager();
             confJpa = new ConfiguracionJpaController(emf);
-            
+
             
             Configuracion conf = confJpa.findConfigurationByName("logo");
             if(conf !=null){
@@ -147,7 +147,7 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
                 conf.setNombre(name);
                 conf.setValor(value);
                 confJpa.create(conf);
-            }  
+            }
         } catch (Exception e) {
             throw e;
         }
