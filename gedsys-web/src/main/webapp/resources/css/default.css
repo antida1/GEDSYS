@@ -46,3 +46,108 @@ a:link:hover, a:visited:hover  {
     box-shadow: 0;
   }
 }
+body .logoSpinner {
+  height: 400px;
+  width: 400px;
+}
+body .logoSpinner .circunference {
+  transform: rotate(0deg);
+  transition: all 0.2s ease;
+  display: block;
+  background: transparent;
+  border: dashed 2px white;
+  height: 360px;
+  width: 360px;
+  border-radius: 50%;
+}
+body .logoSpinner .circunference .circunference-1 {
+  transform: rotate(0deg);
+  transition: all 0.2s ease;
+  position: relative;
+  height: 70%;
+  width: 70%;
+  top: 15%;
+  left: 15%;
+}
+body .logoSpinner .circunference .circunference-1 .circle:nth-child(1) {
+  top: 70%;
+  background: #00B2A5;
+}
+body .logoSpinner .circunference .circunference-1 .circle:nth-child(2) {
+  bottom: 5%;
+  height: 15%;
+  width: 15%;
+}
+body .logoSpinner .circunference .circunference-1 .circle:nth-child(3) {
+  left: 90%;
+  background: #07514D;
+}
+body .logoSpinner .circunference .circle {
+  position: relative;
+  height: 20%;
+  width: 20%;
+  background: white;
+  display: block;
+  border-radius: 50%;
+}
+body .logoSpinner .circunference .circle.circle-2:nth-child(2) {
+  background: #00B2A5;
+  height: 15%;
+  width: 15%;
+  left: 93%;
+  bottom: 25%;
+}
+body .logoSpinner .circunference .circle.circle-2:nth-child(3) {
+  background: #07514D;
+  height: 15%;
+  width: 15%;
+  bottom: 68%;
+}
+body .logoSpinner .circunference .circle.circle-2:nth-child(4) {
+  background: white;
+  height: 14%;
+  width: 14%;
+  bottom: 100%;
+  left: 68%;
+}
+body .logoSpinner .circunference .circle.circle-2:nth-child(5) {
+  background: white;
+  height: 16%;
+  width: 16%;
+  bottom: 29%;
+  left: 66%;
+}
+body .logoSpinner .circunference .circle.circle-2:nth-child(6) {
+  background: #07514D;
+  height: 15%;
+  width: 15%;
+  bottom: 45%;
+  left: 17%;
+}
+body .logoSpinner .title {
+  color: white;
+  font-size: 140px;
+  position: relative;
+  display: block;
+  bottom: 77%;
+  left: 20%;
+}
+body .logoSpinner .subtitle {
+  color: white;
+  font-size: 18px;
+  position: relative;
+  display: block;
+  bottom: 88%;
+  left: 24%;
+}
+body .logoSpinner.loading .circunference {
+  animation: spin 5s ease-in-out infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

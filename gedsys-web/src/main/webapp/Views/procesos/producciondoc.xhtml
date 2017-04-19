@@ -1,117 +1,101 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
-
             <ui:define name="content">
                 <div class="col-md-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Producción de Documentos</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <br />
-                    <h:form class="form-horizontal form-label-left">
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Documento Interno</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:selectOneMenu style="width:100%">
-                                <f:selectItem itemLabel="Documento 1" itemValue="" />
-                                <f:selectItem itemLabel="Documento 2" itemValue="Xbox One" />
-                                <f:selectItem itemLabel="Documento 3" itemValue="PS4" />
-                                <f:selectItem itemLabel="Documento 4" itemValue="Wii U" />
-                            </p:selectOneMenu>
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Producción de Documentos</h2>
+                            <div class="clearfix"></div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:calendar id="popup" />
+                        <div class="x_content">
+                            <br />
+                            <h:form class="form-horizontal form-label-left text-left">
+                                <div class="form-group col-xs-12 col-sm-8">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Documento Interno</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:selectOneMenu style="width:100%">
+                                            <f:selectItem itemLabel="Documento 1" itemValue="" />
+                                            <f:selectItem itemLabel="Documento 2" itemValue="Xbox One" />
+                                            <f:selectItem itemLabel="Documento 3" itemValue="PS4" />
+                                            <f:selectItem itemLabel="Documento 4" itemValue="Wii U" /> </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-4">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:calendar id="popup" /> </div>
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nro Consecutivo Radicado Interno</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" readonly="readonly" placeholder="Radicado Generado Automatico"></input>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-7">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Remitente Interno <span class="required">*</span> </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:selectOneMenu style="width:100%">
+                                            <f:selectItem itemLabel="Funcionario 1" itemValue="Xbox One" />
+                                            <f:selectItem itemLabel="Funcionario 2" itemValue="PS4" />
+                                            <f:selectItem itemLabel="Funcionario 3" itemValue="Wii U" /> </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-5">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Dirigido a</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" value=""></input>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Con Copia a</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:selectOneMenu style="width:100%">
+                                            <f:selectItem itemLabel="Funcionario 1" itemValue="Xbox One" />
+                                            <f:selectItem itemLabel="Funcionario 2" itemValue="PS4" />
+                                            <f:selectItem itemLabel="Funcionario 3" itemValue="Wii U" /> </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Cargo</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" name="country" readonly="readonly" id="autocomplete-custom-append" class="form-control col-md-10"></input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Asunto</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:editor id="editor" widgetVar="editorAsunto" /> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Requiere Respuesta</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:selectOneButton value="#{selectOneView.option}">
+                                            <f:selectItem itemLabel="Si" itemValue="0" />
+                                            <f:selectItem itemLabel="No" itemValue="0" /> </p:selectOneButton>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Anexos</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" /> </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                        <button type="submit" class="btn btn-primary">Cancel</button>
+                                        <button type="submit" class="btn btn-success">Enviar</button>
+                                    </div>
+                                </div>
+                            </h:form>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nro Consecutivo Radicado Interno</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" readonly="readonly" placeholder="Radicado Generado Automatico"></input>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Remitente Interno <span class="required">*</span>
-                        </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:selectOneMenu style="width:100%" >
-                                <f:selectItem itemLabel="Funcionario 1" itemValue="Xbox One" />
-                                <f:selectItem itemLabel="Funcionario 2" itemValue="PS4" />
-                                <f:selectItem itemLabel="Funcionario 3" itemValue="Wii U" />
-                            </p:selectOneMenu>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Dirigido a</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" value=""></input>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Con Copia a</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:selectOneMenu style="width:100%">
-                                <f:selectItem itemLabel="Funcionario 1" itemValue="Xbox One" />
-                                <f:selectItem itemLabel="Funcionario 2" itemValue="PS4" />
-                                <f:selectItem itemLabel="Funcionario 3" itemValue="Wii U" />
-                            </p:selectOneMenu>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Cargo</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" name="country" readonly="readonly" id="autocomplete-custom-append" class="form-control col-md-10"></input>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Asunto</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:editor id="editor" widgetVar="editorAsunto" />
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Requiere Respuesta</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <p:selectOneButton value="#{selectOneView.option}">
-                                <f:selectItem itemLabel="Si" itemValue="0" />
-                                <f:selectItem itemLabel="No" itemValue="0" />
-                            </p:selectOneButton>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Anexos</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <p:fileUpload fileUploadListener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                        </div>
-                      </div>
-
-                      <div class="ln_solid"></div>
-                      <div class="form-group">
-                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          <button type="submit" class="btn btn-primary">Cancel</button>
-                          <button type="submit" class="btn btn-success">Enviar</button>
-                        </div>
-                      </div>
-
-                    </h:form>
-                  </div>
+                    </div>
                 </div>
-              </div>
             </ui:define>
         </ui:composition>
     </body>
-</html>
+
+    </html>
