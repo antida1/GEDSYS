@@ -1,0 +1,24 @@
+package com.sucomunicacion.gedsys.entities;
+
+import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
+import com.sucomunicacion.gedsys.entities.TipoDocumento;
+import com.sucomunicacion.gedsys.entities.Usuario;
+import java.util.Date;
+import javax.annotation.Generated;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
+
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-04-18T14:21:26")
+@StaticMetamodel(ProcesoTipoDocumento.class)
+public class ProcesoTipoDocumento_ {
+
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Usuario> creadoPor;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, TipoDocumento> tipoDocumento;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Date> fechaModificacion;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, ProcesoNegocio> proceso;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Boolean> borrado;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Date> fechaCreacion;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Usuario> modificadoPor;
+    public static volatile SingularAttribute<ProcesoTipoDocumento, Long> id;
+
+}
