@@ -25,9 +25,11 @@
       transition: all 0.3s ease;
       background: #172D44;
       border: none;
-      color: white; }
+      color: #5A738E; }
       .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover {
         background: #24466a;
         color: #1ABB9C; }
+        .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover:nth-child(4) {
+          color: red; }
 
 /*# sourceMappingURL=docs.css.map */

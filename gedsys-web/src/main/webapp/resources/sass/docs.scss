@@ -1,5 +1,6 @@
 $background: #172D44;
 $accent: #1ABB9C;
+$textAccent: #5A738E;
 .filter {
     padding: 2%;
     .collapse{
@@ -49,10 +50,13 @@ $accent: #1ABB9C;
                             transition: all 0.3s ease;
                             background: $background;
                             border: none;
-                            color: white;
+                            color: $textAccent;
                             &:hover {
                                 background: lighten($background, 10%);
                                 color: $accent;
+                                &:nth-child(4){
+                                    color: red;
+                                }
                             }
                         }
                     }
