@@ -39,6 +39,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
         this.limpiar();
         this.accion = accion;
     }
+    
     public List<SeccionSubSeccion> getSecciones() {
         return seccionSubSecciones;
     }
@@ -98,7 +99,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
             sJpa.edit(seccionSubSeccion);
             this.listar();
         } catch (Exception e) {
-            throw e;
+            Logger.getLogger(SeccionSubSeccionBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -121,7 +122,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
             sJpa = new SeccionSubSeccionJpaController(emf);
             seccionSubSecciones = sJpa.findSeccionSubSeccionEntities();
         } catch (Exception e) {
-            
+            Logger.getLogger(SeccionSubSeccionBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -142,6 +143,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
     }
     
     public void limpiar(){
+        this.seccionSubSeccion = null;
         this.seccionSubSeccion.setCodigo("");
         this.seccionSubSeccion.setNombre("");
         this.seccionSubSeccion.setCreadoPor(null);

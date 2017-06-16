@@ -18,16 +18,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author rober
- */
-@ManagedBean 
+ */ 
 @ViewScoped
+@Named
 public class SignaturaTopograficaBean extends BaseBean implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     
     private SignaturaTopografica signaturaTopografica = new SignaturaTopografica();
     private List<SignaturaTopografica> signaturasTopograficas;
@@ -58,6 +60,10 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         this.accion = accion;
     }
     
+    public SignaturaTopograficaBean() {
+        
+    }
+    
     public void procesar(){
         try {
             switch(accion){
@@ -72,7 +78,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         }
     }
 
-    public void crear() {
+    private void crear() {
         SignaturaTopograficaJpaController sJpa;
         try {
             EntityManagerFactory emf =  JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -84,14 +90,13 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             this.signaturaTopografica.setCreadoPor(usuario);
             sJpa.create(signaturaTopografica);
             this.listar();
-            
         } catch (Exception e) {
             Logger.getLogger(SignaturaTopograficaBean.class.getName()).log(Level.SEVERE, null, e);
         }
         
     }
 
-    public void modificar() {
+    private void modificar() {
         SignaturaTopograficaJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
