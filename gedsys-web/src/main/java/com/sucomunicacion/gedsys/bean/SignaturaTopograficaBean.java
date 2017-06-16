@@ -105,7 +105,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         }
     }
     
-    public void eliminar(){
+    public void eliminar(SignaturaTopografica signaturaTopografica){
         SignaturaTopograficaJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
