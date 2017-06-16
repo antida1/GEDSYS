@@ -14,7 +14,6 @@ import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Entidad;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class EntidadJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Entidad entidad) throws PreexistingEntityException, Exception {
+    public void create(Entidad entidad) {
         if (entidad.getDocumentoCollection() == null) {
             entidad.setDocumentoCollection(new ArrayList<Documento>());
         }
@@ -79,11 +78,6 @@ public class EntidadJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findEntidad(entidad.getId()) != null) {
-                throw new PreexistingEntityException("Entidad " + entidad + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

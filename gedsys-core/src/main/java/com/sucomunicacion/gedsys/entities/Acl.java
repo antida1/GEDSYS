@@ -27,57 +27,57 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "ACL")
+@Table(name = "acl", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Acl.findAll", query = "SELECT a FROM Acl a")
     , @NamedQuery(name = "Acl.findById", query = "SELECT a FROM Acl a WHERE a.id = :id")
-    , @NamedQuery(name = "Acl.findByCanRead", query = "SELECT a FROM Acl a WHERE a.canRead = :canRead")
     , @NamedQuery(name = "Acl.findByCanCreate", query = "SELECT a FROM Acl a WHERE a.canCreate = :canCreate")
-    , @NamedQuery(name = "Acl.findByCanUpdate", query = "SELECT a FROM Acl a WHERE a.canUpdate = :canUpdate")
     , @NamedQuery(name = "Acl.findByCanDelete", query = "SELECT a FROM Acl a WHERE a.canDelete = :canDelete")
     , @NamedQuery(name = "Acl.findByCanExport", query = "SELECT a FROM Acl a WHERE a.canExport = :canExport")
     , @NamedQuery(name = "Acl.findByCanGeneratePDF", query = "SELECT a FROM Acl a WHERE a.canGeneratePDF = :canGeneratePDF")
+    , @NamedQuery(name = "Acl.findByCanRead", query = "SELECT a FROM Acl a WHERE a.canRead = :canRead")
+    , @NamedQuery(name = "Acl.findByCanUpdate", query = "SELECT a FROM Acl a WHERE a.canUpdate = :canUpdate")
     , @NamedQuery(name = "Acl.findByFechaCreacion", query = "SELECT a FROM Acl a WHERE a.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Acl.findByFechaModificacion", query = "SELECT a FROM Acl a WHERE a.fechaModificacion = :fechaModificacion")})
 public class Acl implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "CanRead")
-    private Boolean canRead;
     @Column(name = "CanCreate")
     private Boolean canCreate;
-    @Column(name = "CanUpdate")
-    private Boolean canUpdate;
     @Column(name = "CanDelete")
     private Boolean canDelete;
     @Column(name = "CanExport")
     private Boolean canExport;
     @Column(name = "CanGeneratePDF")
     private Boolean canGeneratePDF;
+    @Column(name = "CanRead")
+    private Boolean canRead;
+    @Column(name = "CanUpdate")
+    private Boolean canUpdate;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @JoinColumn(name = "Grupo", referencedColumnName = "Id")
-    @ManyToOne
-    private Grupo grupo;
-    @JoinColumn(name = "Modulo", referencedColumnName = "Id")
-    @ManyToOne
-    private Modulo modulo;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    @JoinColumn(name = "Grupo", referencedColumnName = "Id")
+    @ManyToOne
+    private Grupo grupo;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "Modulo", referencedColumnName = "Id")
+    @ManyToOne
+    private Modulo modulo;
 
     public Acl() {
     }
@@ -94,28 +94,12 @@ public class Acl implements Serializable {
         this.id = id;
     }
 
-    public Boolean getCanRead() {
-        return canRead;
-    }
-
-    public void setCanRead(Boolean canRead) {
-        this.canRead = canRead;
-    }
-
     public Boolean getCanCreate() {
         return canCreate;
     }
 
     public void setCanCreate(Boolean canCreate) {
         this.canCreate = canCreate;
-    }
-
-    public Boolean getCanUpdate() {
-        return canUpdate;
-    }
-
-    public void setCanUpdate(Boolean canUpdate) {
-        this.canUpdate = canUpdate;
     }
 
     public Boolean getCanDelete() {
@@ -142,6 +126,22 @@ public class Acl implements Serializable {
         this.canGeneratePDF = canGeneratePDF;
     }
 
+    public Boolean getCanRead() {
+        return canRead;
+    }
+
+    public void setCanRead(Boolean canRead) {
+        this.canRead = canRead;
+    }
+
+    public Boolean getCanUpdate() {
+        return canUpdate;
+    }
+
+    public void setCanUpdate(Boolean canUpdate) {
+        this.canUpdate = canUpdate;
+    }
+
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -158,22 +158,6 @@ public class Acl implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupo grupo) {
-        this.grupo = grupo;
-    }
-
-    public Modulo getModulo() {
-        return modulo;
-    }
-
-    public void setModulo(Modulo modulo) {
-        this.modulo = modulo;
-    }
-
     public Usuario getCreadoPor() {
         return creadoPor;
     }
@@ -182,12 +166,28 @@ public class Acl implements Serializable {
         this.creadoPor = creadoPor;
     }
 
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
     public Usuario getModificadoPor() {
         return modificadoPor;
     }
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public Modulo getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(Modulo modulo) {
+        this.modulo = modulo;
     }
 
     @Override

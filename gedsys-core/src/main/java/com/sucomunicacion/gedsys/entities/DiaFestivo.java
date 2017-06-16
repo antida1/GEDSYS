@@ -25,25 +25,29 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "DiaFestivo")
+@Table(name = "diafestivo", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DiaFestivo.findAll", query = "SELECT d FROM DiaFestivo d")
     , @NamedQuery(name = "DiaFestivo.findById", query = "SELECT d FROM DiaFestivo d WHERE d.id = :id")
+    , @NamedQuery(name = "DiaFestivo.findByBorrado", query = "SELECT d FROM DiaFestivo d WHERE d.borrado = :borrado")
+    , @NamedQuery(name = "DiaFestivo.findByCreadoPor", query = "SELECT d FROM DiaFestivo d WHERE d.creadoPor = :creadoPor")
     , @NamedQuery(name = "DiaFestivo.findByDiaFestivo", query = "SELECT d FROM DiaFestivo d WHERE d.diaFestivo = :diaFestivo")
     , @NamedQuery(name = "DiaFestivo.findByFechaCreacion", query = "SELECT d FROM DiaFestivo d WHERE d.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "DiaFestivo.findByFechaModificacion", query = "SELECT d FROM DiaFestivo d WHERE d.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "DiaFestivo.findByCreadoPor", query = "SELECT d FROM DiaFestivo d WHERE d.creadoPor = :creadoPor")
-    , @NamedQuery(name = "DiaFestivo.findByModificadoPor", query = "SELECT d FROM DiaFestivo d WHERE d.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "DiaFestivo.findByBorrado", query = "SELECT d FROM DiaFestivo d WHERE d.borrado = :borrado")})
+    , @NamedQuery(name = "DiaFestivo.findByModificadoPor", query = "SELECT d FROM DiaFestivo d WHERE d.modificadoPor = :modificadoPor")})
 public class DiaFestivo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "CreadoPor")
+    private Integer creadoPor;
     @Column(name = "DiaFestivo")
     @Temporal(TemporalType.DATE)
     private Date diaFestivo;
@@ -53,12 +57,8 @@ public class DiaFestivo implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
     @Column(name = "ModificadoPor")
     private Integer modificadoPor;
-    @Column(name = "Borrado")
-    private Boolean borrado;
 
     public DiaFestivo() {
     }
@@ -73,6 +73,22 @@ public class DiaFestivo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public Integer getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Integer creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Date getDiaFestivo() {
@@ -99,28 +115,12 @@ public class DiaFestivo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Integer getModificadoPor() {
         return modificadoPor;
     }
 
     public void setModificadoPor(Integer modificadoPor) {
         this.modificadoPor = modificadoPor;
-    }
-
-    public Boolean getBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
     }
 
     @Override

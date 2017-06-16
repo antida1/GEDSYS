@@ -31,50 +31,51 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Municipio")
+@Table(name = "municipio", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Municipios.findByDepartamento", query = "SELECT m FROM Municipio m where m.departamento = :departamento")
-    , @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m")
+    @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m")
     , @NamedQuery(name = "Municipio.findById", query = "SELECT m FROM Municipio m WHERE m.id = :id")
+    , @NamedQuery(name = "Municipio.findByBorrado", query = "SELECT m FROM Municipio m WHERE m.borrado = :borrado")
     , @NamedQuery(name = "Municipio.findByCodigo", query = "SELECT m FROM Municipio m WHERE m.codigo = :codigo")
-    , @NamedQuery(name = "Municipio.findByNombre", query = "SELECT m FROM Municipio m WHERE m.nombre = :nombre")
     , @NamedQuery(name = "Municipio.findByFechaCreacion", query = "SELECT m FROM Municipio m WHERE m.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Municipio.findByFechaModificacion", query = "SELECT m FROM Municipio m WHERE m.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Municipio.findByBorrado", query = "SELECT m FROM Municipio m WHERE m.borrado = :borrado")})
+    , @NamedQuery(name = "Municipio.findByNombre", query = "SELECT m FROM Municipio m WHERE m.nombre = :nombre")
+    , @NamedQuery(name = "Municipios.findByDepartamento", query = "SELECT m FROM Municipio m WHERE m.departamento = :departamento")})
+    
 public class Municipio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Codigo")
     private String codigo;
-    @Column(name = "Nombre")
-    private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @OneToMany(mappedBy = "municipio")
-    private Collection<Corregimiento> corregimientoCollection;
-    @JoinColumn(name = "Departamento", referencedColumnName = "Id")
-    @ManyToOne
-    private Departamento departamento;
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    @JoinColumn(name = "Departamento", referencedColumnName = "Id")
+    @ManyToOne
+    private Departamento departamento;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
     @OneToMany(mappedBy = "municipio")
-    private Collection<Documento> documentoCollection;
+    private Collection<Corregimiento> corregimientoCollection;
 
     public Municipio() {
     }
@@ -91,20 +92,20 @@ public class Municipio implements Serializable {
         this.id = id;
     }
 
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Date getFechaCreacion() {
@@ -123,30 +124,22 @@ public class Municipio implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Corregimiento> getCorregimientoCollection() {
-        return corregimientoCollection;
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setCorregimientoCollection(Collection<Corregimiento> corregimientoCollection) {
-        this.corregimientoCollection = corregimientoCollection;
-    }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -155,6 +148,14 @@ public class Municipio implements Serializable {
 
     public void setCreadoPor(Usuario creadoPor) {
         this.creadoPor = creadoPor;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     public Usuario getModificadoPor() {
@@ -167,12 +168,12 @@ public class Municipio implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public Collection<Corregimiento> getCorregimientoCollection() {
+        return corregimientoCollection;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setCorregimientoCollection(Collection<Corregimiento> corregimientoCollection) {
+        this.corregimientoCollection = corregimientoCollection;
     }
 
     @Override

@@ -31,47 +31,47 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Corregimiento")
+@Table(name = "corregimiento", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Corregimiento.findAll", query = "SELECT c FROM Corregimiento c")
     , @NamedQuery(name = "Corregimiento.findById", query = "SELECT c FROM Corregimiento c WHERE c.id = :id")
+    , @NamedQuery(name = "Corregimiento.findByBorrado", query = "SELECT c FROM Corregimiento c WHERE c.borrado = :borrado")
     , @NamedQuery(name = "Corregimiento.findByCodigo", query = "SELECT c FROM Corregimiento c WHERE c.codigo = :codigo")
-    , @NamedQuery(name = "Corregimiento.findByNombre", query = "SELECT c FROM Corregimiento c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "Corregimiento.findByFechaCreacion", query = "SELECT c FROM Corregimiento c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Corregimiento.findByFechaModificacion", query = "SELECT c FROM Corregimiento c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Corregimiento.findByBorrado", query = "SELECT c FROM Corregimiento c WHERE c.borrado = :borrado")})
+    , @NamedQuery(name = "Corregimiento.findByNombre", query = "SELECT c FROM Corregimiento c WHERE c.nombre = :nombre")})
 public class Corregimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Codigo")
     private String codigo;
-    @Column(name = "Nombre")
-    private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
-    @ManyToOne
-    private Municipio municipio;
+    @Column(name = "Nombre")
+    private String nombre;
+    @OneToMany(mappedBy = "corregimiento")
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "corregimiento")
-    private Collection<Documento> documentoCollection;
+    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
+    @ManyToOne
+    private Municipio municipio;
 
     public Corregimiento() {
     }
@@ -88,20 +88,20 @@ public class Corregimiento implements Serializable {
         this.id = id;
     }
 
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Date getFechaCreacion() {
@@ -120,20 +120,22 @@ public class Corregimiento implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Municipio getMunicipio() {
-        return municipio;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -152,14 +154,12 @@ public class Corregimiento implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public Municipio getMunicipio() {
+        return municipio;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setMunicipio(Municipio municipio) {
+        this.municipio = municipio;
     }
 
     @Override

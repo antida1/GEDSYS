@@ -11,11 +11,10 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.entities.Municipio;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +36,7 @@ public class DepartamentoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Departamento departamento) throws PreexistingEntityException, Exception {
+    public void create(Departamento departamento) {
         if (departamento.getMunicipioCollection() == null) {
             departamento.setMunicipioCollection(new ArrayList<Municipio>());
         }
@@ -45,11 +44,6 @@ public class DepartamentoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Pais pais = departamento.getPais();
-            if (pais != null) {
-                pais = em.getReference(pais.getClass(), pais.getId());
-                departamento.setPais(pais);
-            }
             Usuario creadoPor = departamento.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -60,6 +54,11 @@ public class DepartamentoJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 departamento.setModificadoPor(modificadoPor);
             }
+            Pais pais = departamento.getPais();
+            if (pais != null) {
+                pais = em.getReference(pais.getClass(), pais.getId());
+                departamento.setPais(pais);
+            }
             Collection<Municipio> attachedMunicipioCollection = new ArrayList<Municipio>();
             for (Municipio municipioCollectionMunicipioToAttach : departamento.getMunicipioCollection()) {
                 municipioCollectionMunicipioToAttach = em.getReference(municipioCollectionMunicipioToAttach.getClass(), municipioCollectionMunicipioToAttach.getId());
@@ -67,10 +66,6 @@ public class DepartamentoJpaController implements Serializable {
             }
             departamento.setMunicipioCollection(attachedMunicipioCollection);
             em.persist(departamento);
-            if (pais != null) {
-                pais.getDepartamentoCollection().add(departamento);
-                pais = em.merge(pais);
-            }
             if (creadoPor != null) {
                 creadoPor.getDepartamentoCollection().add(departamento);
                 creadoPor = em.merge(creadoPor);
@@ -78,6 +73,10 @@ public class DepartamentoJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getDepartamentoCollection().add(departamento);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            if (pais != null) {
+                pais.getDepartamentoCollection().add(departamento);
+                pais = em.merge(pais);
             }
             for (Municipio municipioCollectionMunicipio : departamento.getMunicipioCollection()) {
                 Departamento oldDepartamentoOfMunicipioCollectionMunicipio = municipioCollectionMunicipio.getDepartamento();
@@ -89,11 +88,6 @@ public class DepartamentoJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findDepartamento(departamento.getId()) != null) {
-                throw new PreexistingEntityException("Departamento " + departamento + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -107,18 +101,14 @@ public class DepartamentoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Departamento persistentDepartamento = em.find(Departamento.class, departamento.getId());
-            Pais paisOld = persistentDepartamento.getPais();
-            Pais paisNew = departamento.getPais();
             Usuario creadoPorOld = persistentDepartamento.getCreadoPor();
             Usuario creadoPorNew = departamento.getCreadoPor();
             Usuario modificadoPorOld = persistentDepartamento.getModificadoPor();
             Usuario modificadoPorNew = departamento.getModificadoPor();
+            Pais paisOld = persistentDepartamento.getPais();
+            Pais paisNew = departamento.getPais();
             Collection<Municipio> municipioCollectionOld = persistentDepartamento.getMunicipioCollection();
             Collection<Municipio> municipioCollectionNew = departamento.getMunicipioCollection();
-            if (paisNew != null) {
-                paisNew = em.getReference(paisNew.getClass(), paisNew.getId());
-                departamento.setPais(paisNew);
-            }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 departamento.setCreadoPor(creadoPorNew);
@@ -126,6 +116,10 @@ public class DepartamentoJpaController implements Serializable {
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 departamento.setModificadoPor(modificadoPorNew);
+            }
+            if (paisNew != null) {
+                paisNew = em.getReference(paisNew.getClass(), paisNew.getId());
+                departamento.setPais(paisNew);
             }
             Collection<Municipio> attachedMunicipioCollectionNew = new ArrayList<Municipio>();
             for (Municipio municipioCollectionNewMunicipioToAttach : municipioCollectionNew) {
@@ -135,14 +129,6 @@ public class DepartamentoJpaController implements Serializable {
             municipioCollectionNew = attachedMunicipioCollectionNew;
             departamento.setMunicipioCollection(municipioCollectionNew);
             departamento = em.merge(departamento);
-            if (paisOld != null && !paisOld.equals(paisNew)) {
-                paisOld.getDepartamentoCollection().remove(departamento);
-                paisOld = em.merge(paisOld);
-            }
-            if (paisNew != null && !paisNew.equals(paisOld)) {
-                paisNew.getDepartamentoCollection().add(departamento);
-                paisNew = em.merge(paisNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getDepartamentoCollection().remove(departamento);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -158,6 +144,14 @@ public class DepartamentoJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getDepartamentoCollection().add(departamento);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (paisOld != null && !paisOld.equals(paisNew)) {
+                paisOld.getDepartamentoCollection().remove(departamento);
+                paisOld = em.merge(paisOld);
+            }
+            if (paisNew != null && !paisNew.equals(paisOld)) {
+                paisNew.getDepartamentoCollection().add(departamento);
+                paisNew = em.merge(paisNew);
             }
             for (Municipio municipioCollectionOldMunicipio : municipioCollectionOld) {
                 if (!municipioCollectionNew.contains(municipioCollectionOldMunicipio)) {
@@ -205,11 +199,6 @@ public class DepartamentoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The departamento with id " + id + " no longer exists.", enfe);
             }
-            Pais pais = departamento.getPais();
-            if (pais != null) {
-                pais.getDepartamentoCollection().remove(departamento);
-                pais = em.merge(pais);
-            }
             Usuario creadoPor = departamento.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getDepartamentoCollection().remove(departamento);
@@ -219,6 +208,11 @@ public class DepartamentoJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getDepartamentoCollection().remove(departamento);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            Pais pais = departamento.getPais();
+            if (pais != null) {
+                pais.getDepartamentoCollection().remove(departamento);
+                pais = em.merge(pais);
             }
             Collection<Municipio> municipioCollection = departamento.getMunicipioCollection();
             for (Municipio municipioCollectionMunicipio : municipioCollection) {
@@ -282,7 +276,7 @@ public class DepartamentoJpaController implements Serializable {
     
     public List<Departamento> findDepartamentosByPais(Pais pais) {
         return findDepartamentosByPais(pais, -1, -1);
-    }
+}
 
     public List<Departamento> findDepartamentosByPais(Pais pais, int maxResults, int firstResult) {
         return findDepartamentosByPais(pais, true, maxResults, firstResult);

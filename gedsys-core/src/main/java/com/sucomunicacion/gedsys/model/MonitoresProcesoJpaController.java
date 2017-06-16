@@ -11,10 +11,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,16 +33,11 @@ public class MonitoresProcesoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(MonitoresProceso monitoresProceso) throws PreexistingEntityException, Exception {
+    public void create(MonitoresProceso monitoresProceso) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ProcesoNegocio proceso = monitoresProceso.getProceso();
-            if (proceso != null) {
-                proceso = em.getReference(proceso.getClass(), proceso.getId());
-                monitoresProceso.setProceso(proceso);
-            }
             Usuario creadoPor = monitoresProceso.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -54,11 +48,12 @@ public class MonitoresProcesoJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 monitoresProceso.setModificadoPor(modificadoPor);
             }
-            em.persist(monitoresProceso);
+            ProcesoNegocio proceso = monitoresProceso.getProceso();
             if (proceso != null) {
-                proceso.getMonitoresProcesoCollection().add(monitoresProceso);
-                proceso = em.merge(proceso);
+                proceso = em.getReference(proceso.getClass(), proceso.getId());
+                monitoresProceso.setProceso(proceso);
             }
+            em.persist(monitoresProceso);
             if (creadoPor != null) {
                 creadoPor.getMonitoresProcesoCollection().add(monitoresProceso);
                 creadoPor = em.merge(creadoPor);
@@ -67,12 +62,11 @@ public class MonitoresProcesoJpaController implements Serializable {
                 modificadoPor.getMonitoresProcesoCollection().add(monitoresProceso);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findMonitoresProceso(monitoresProceso.getId()) != null) {
-                throw new PreexistingEntityException("MonitoresProceso " + monitoresProceso + " already exists.", ex);
+            if (proceso != null) {
+                proceso.getMonitoresProcesoCollection().add(monitoresProceso);
+                proceso = em.merge(proceso);
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -86,16 +80,12 @@ public class MonitoresProcesoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             MonitoresProceso persistentMonitoresProceso = em.find(MonitoresProceso.class, monitoresProceso.getId());
-            ProcesoNegocio procesoOld = persistentMonitoresProceso.getProceso();
-            ProcesoNegocio procesoNew = monitoresProceso.getProceso();
             Usuario creadoPorOld = persistentMonitoresProceso.getCreadoPor();
             Usuario creadoPorNew = monitoresProceso.getCreadoPor();
             Usuario modificadoPorOld = persistentMonitoresProceso.getModificadoPor();
             Usuario modificadoPorNew = monitoresProceso.getModificadoPor();
-            if (procesoNew != null) {
-                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
-                monitoresProceso.setProceso(procesoNew);
-            }
+            ProcesoNegocio procesoOld = persistentMonitoresProceso.getProceso();
+            ProcesoNegocio procesoNew = monitoresProceso.getProceso();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 monitoresProceso.setCreadoPor(creadoPorNew);
@@ -104,15 +94,11 @@ public class MonitoresProcesoJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 monitoresProceso.setModificadoPor(modificadoPorNew);
             }
+            if (procesoNew != null) {
+                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
+                monitoresProceso.setProceso(procesoNew);
+            }
             monitoresProceso = em.merge(monitoresProceso);
-            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
-                procesoOld.getMonitoresProcesoCollection().remove(monitoresProceso);
-                procesoOld = em.merge(procesoOld);
-            }
-            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
-                procesoNew.getMonitoresProcesoCollection().add(monitoresProceso);
-                procesoNew = em.merge(procesoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getMonitoresProcesoCollection().remove(monitoresProceso);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -128,6 +114,14 @@ public class MonitoresProcesoJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getMonitoresProcesoCollection().add(monitoresProceso);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
+                procesoOld.getMonitoresProcesoCollection().remove(monitoresProceso);
+                procesoOld = em.merge(procesoOld);
+            }
+            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
+                procesoNew.getMonitoresProcesoCollection().add(monitoresProceso);
+                procesoNew = em.merge(procesoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -158,11 +152,6 @@ public class MonitoresProcesoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The monitoresProceso with id " + id + " no longer exists.", enfe);
             }
-            ProcesoNegocio proceso = monitoresProceso.getProceso();
-            if (proceso != null) {
-                proceso.getMonitoresProcesoCollection().remove(monitoresProceso);
-                proceso = em.merge(proceso);
-            }
             Usuario creadoPor = monitoresProceso.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getMonitoresProcesoCollection().remove(monitoresProceso);
@@ -172,6 +161,11 @@ public class MonitoresProcesoJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getMonitoresProcesoCollection().remove(monitoresProceso);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            ProcesoNegocio proceso = monitoresProceso.getProceso();
+            if (proceso != null) {
+                proceso.getMonitoresProcesoCollection().remove(monitoresProceso);
+                proceso = em.merge(proceso);
             }
             em.remove(monitoresProceso);
             em.getTransaction().commit();

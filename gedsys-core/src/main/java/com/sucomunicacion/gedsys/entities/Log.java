@@ -25,48 +25,48 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "Log")
+@Table(name = "log", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l")
     , @NamedQuery(name = "Log.findById", query = "SELECT l FROM Log l WHERE l.id = :id")
-    , @NamedQuery(name = "Log.findByModulo", query = "SELECT l FROM Log l WHERE l.modulo = :modulo")
+    , @NamedQuery(name = "Log.findByBorrado", query = "SELECT l FROM Log l WHERE l.borrado = :borrado")
     , @NamedQuery(name = "Log.findByCampo", query = "SELECT l FROM Log l WHERE l.campo = :campo")
-    , @NamedQuery(name = "Log.findByValorAnterior", query = "SELECT l FROM Log l WHERE l.valorAnterior = :valorAnterior")
-    , @NamedQuery(name = "Log.findByValorActual", query = "SELECT l FROM Log l WHERE l.valorActual = :valorActual")
+    , @NamedQuery(name = "Log.findByCreadoPor", query = "SELECT l FROM Log l WHERE l.creadoPor = :creadoPor")
     , @NamedQuery(name = "Log.findByFechaCreacion", query = "SELECT l FROM Log l WHERE l.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Log.findByFechaModificacion", query = "SELECT l FROM Log l WHERE l.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Log.findByCreadoPor", query = "SELECT l FROM Log l WHERE l.creadoPor = :creadoPor")
     , @NamedQuery(name = "Log.findByModificadoPor", query = "SELECT l FROM Log l WHERE l.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Log.findByBorrado", query = "SELECT l FROM Log l WHERE l.borrado = :borrado")})
+    , @NamedQuery(name = "Log.findByModulo", query = "SELECT l FROM Log l WHERE l.modulo = :modulo")
+    , @NamedQuery(name = "Log.findByValorActual", query = "SELECT l FROM Log l WHERE l.valorActual = :valorActual")
+    , @NamedQuery(name = "Log.findByValorAnterior", query = "SELECT l FROM Log l WHERE l.valorAnterior = :valorAnterior")})
 public class Log implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Modulo")
-    private Integer modulo;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Campo")
     private String campo;
-    @Column(name = "ValorAnterior")
-    private String valorAnterior;
-    @Column(name = "ValorActual")
-    private String valorActual;
+    @Column(name = "CreadoPor")
+    private Integer creadoPor;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
     @Column(name = "ModificadoPor")
     private Integer modificadoPor;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Modulo")
+    private Integer modulo;
+    @Column(name = "ValorActual")
+    private String valorActual;
+    @Column(name = "ValorAnterior")
+    private String valorAnterior;
 
     public Log() {
     }
@@ -83,12 +83,12 @@ public class Log implements Serializable {
         this.id = id;
     }
 
-    public Integer getModulo() {
-        return modulo;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setModulo(Integer modulo) {
-        this.modulo = modulo;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public String getCampo() {
@@ -99,20 +99,12 @@ public class Log implements Serializable {
         this.campo = campo;
     }
 
-    public String getValorAnterior() {
-        return valorAnterior;
+    public Integer getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setValorAnterior(String valorAnterior) {
-        this.valorAnterior = valorAnterior;
-    }
-
-    public String getValorActual() {
-        return valorActual;
-    }
-
-    public void setValorActual(String valorActual) {
-        this.valorActual = valorActual;
+    public void setCreadoPor(Integer creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Date getFechaCreacion() {
@@ -131,14 +123,6 @@ public class Log implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Integer getModificadoPor() {
         return modificadoPor;
     }
@@ -147,12 +131,28 @@ public class Log implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public Integer getModulo() {
+        return modulo;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setModulo(Integer modulo) {
+        this.modulo = modulo;
+    }
+
+    public String getValorActual() {
+        return valorActual;
+    }
+
+    public void setValorActual(String valorActual) {
+        this.valorActual = valorActual;
+    }
+
+    public String getValorAnterior() {
+        return valorAnterior;
+    }
+
+    public void setValorAnterior(String valorAnterior) {
+        this.valorAnterior = valorAnterior;
     }
 
     @Override

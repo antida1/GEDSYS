@@ -31,59 +31,59 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Transportador")
+@Table(name = "transportador", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Transportador.findAll", query = "SELECT t FROM Transportador t")
     , @NamedQuery(name = "Transportador.findById", query = "SELECT t FROM Transportador t WHERE t.id = :id")
-    , @NamedQuery(name = "Transportador.findByTipoDocumento", query = "SELECT t FROM Transportador t WHERE t.tipoDocumento = :tipoDocumento")
-    , @NamedQuery(name = "Transportador.findByNumeroDocumento", query = "SELECT t FROM Transportador t WHERE t.numeroDocumento = :numeroDocumento")
-    , @NamedQuery(name = "Transportador.findByNombre", query = "SELECT t FROM Transportador t WHERE t.nombre = :nombre")
-    , @NamedQuery(name = "Transportador.findByTelefono", query = "SELECT t FROM Transportador t WHERE t.telefono = :telefono")
-    , @NamedQuery(name = "Transportador.findByFax", query = "SELECT t FROM Transportador t WHERE t.fax = :fax")
-    , @NamedQuery(name = "Transportador.findByEmail", query = "SELECT t FROM Transportador t WHERE t.email = :email")
+    , @NamedQuery(name = "Transportador.findByBorrado", query = "SELECT t FROM Transportador t WHERE t.borrado = :borrado")
     , @NamedQuery(name = "Transportador.findByCelular", query = "SELECT t FROM Transportador t WHERE t.celular = :celular")
+    , @NamedQuery(name = "Transportador.findByEmail", query = "SELECT t FROM Transportador t WHERE t.email = :email")
+    , @NamedQuery(name = "Transportador.findByFax", query = "SELECT t FROM Transportador t WHERE t.fax = :fax")
     , @NamedQuery(name = "Transportador.findByFechaCreacion", query = "SELECT t FROM Transportador t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Transportador.findByFechaModificacion", query = "SELECT t FROM Transportador t WHERE t.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Transportador.findByBorrado", query = "SELECT t FROM Transportador t WHERE t.borrado = :borrado")})
+    , @NamedQuery(name = "Transportador.findByNombre", query = "SELECT t FROM Transportador t WHERE t.nombre = :nombre")
+    , @NamedQuery(name = "Transportador.findByNumeroDocumento", query = "SELECT t FROM Transportador t WHERE t.numeroDocumento = :numeroDocumento")
+    , @NamedQuery(name = "Transportador.findByTelefono", query = "SELECT t FROM Transportador t WHERE t.telefono = :telefono")
+    , @NamedQuery(name = "Transportador.findByTipoDocumento", query = "SELECT t FROM Transportador t WHERE t.tipoDocumento = :tipoDocumento")})
 public class Transportador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "TipoDocumento")
-    private String tipoDocumento;
-    @Column(name = "NumeroDocumento")
-    private String numeroDocumento;
-    @Column(name = "Nombre")
-    private String nombre;
-    @Column(name = "Telefono")
-    private String telefono;
-    @Column(name = "Fax")
-    private String fax;
-    @Column(name = "Email")
-    private String email;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Celular")
     private String celular;
+    @Column(name = "Email")
+    private String email;
+    @Column(name = "Fax")
+    private String fax;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
+    @Column(name = "NumeroDocumento")
+    private String numeroDocumento;
+    @Column(name = "Telefono")
+    private String telefono;
+    @Column(name = "TipoDocumento")
+    private String tipoDocumento;
+    @OneToMany(mappedBy = "transportador")
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "transportador")
-    private Collection<Documento> documentoCollection;
 
     public Transportador() {
     }
@@ -100,44 +100,20 @@ public class Transportador implements Serializable {
         this.id = id;
     }
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
-    public String getNumeroDocumento() {
-        return numeroDocumento;
+    public String getCelular() {
+        return celular;
     }
 
-    public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
+    public void setCelular(String celular) {
+        this.celular = celular;
     }
 
     public String getEmail() {
@@ -148,12 +124,12 @@ public class Transportador implements Serializable {
         this.email = email;
     }
 
-    public String getCelular() {
-        return celular;
+    public String getFax() {
+        return fax;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     public Date getFechaCreacion() {
@@ -172,12 +148,46 @@ public class Transportador implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -194,16 +204,6 @@ public class Transportador implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
-    }
-
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
     }
 
     @Override

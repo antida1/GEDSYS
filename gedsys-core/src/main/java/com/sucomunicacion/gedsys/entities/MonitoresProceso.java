@@ -28,42 +28,42 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "MonitoresProceso")
+@Table(name = "monitoresproceso", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MonitoresProceso.findAll", query = "SELECT m FROM MonitoresProceso m")
     , @NamedQuery(name = "MonitoresProceso.findById", query = "SELECT m FROM MonitoresProceso m WHERE m.id = :id")
-    , @NamedQuery(name = "MonitoresProceso.findByMonitor", query = "SELECT m FROM MonitoresProceso m WHERE m.monitor = :monitor")
+    , @NamedQuery(name = "MonitoresProceso.findByBorrado", query = "SELECT m FROM MonitoresProceso m WHERE m.borrado = :borrado")
     , @NamedQuery(name = "MonitoresProceso.findByFechaCreacion", query = "SELECT m FROM MonitoresProceso m WHERE m.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "MonitoresProceso.findByFechaModificacion", query = "SELECT m FROM MonitoresProceso m WHERE m.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "MonitoresProceso.findByBorrado", query = "SELECT m FROM MonitoresProceso m WHERE m.borrado = :borrado")})
+    , @NamedQuery(name = "MonitoresProceso.findByMonitor", query = "SELECT m FROM MonitoresProceso m WHERE m.monitor = :monitor")})
 public class MonitoresProceso implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
-    @Column(name = "Monitor")
-    private BigInteger monitor;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
-    @ManyToOne
-    private ProcesoNegocio proceso;
+    @Column(name = "Monitor")
+    private BigInteger monitor;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
+    @ManyToOne
+    private ProcesoNegocio proceso;
 
     public MonitoresProceso() {
     }
@@ -80,12 +80,12 @@ public class MonitoresProceso implements Serializable {
         this.id = id;
     }
 
-    public BigInteger getMonitor() {
-        return monitor;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setMonitor(BigInteger monitor) {
-        this.monitor = monitor;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -104,20 +104,12 @@ public class MonitoresProceso implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public BigInteger getMonitor() {
+        return monitor;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
-    }
-
-    public ProcesoNegocio getProceso() {
-        return proceso;
-    }
-
-    public void setProceso(ProcesoNegocio proceso) {
-        this.proceso = proceso;
+    public void setMonitor(BigInteger monitor) {
+        this.monitor = monitor;
     }
 
     public Usuario getCreadoPor() {
@@ -134,6 +126,14 @@ public class MonitoresProceso implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public ProcesoNegocio getProceso() {
+        return proceso;
+    }
+
+    public void setProceso(ProcesoNegocio proceso) {
+        this.proceso = proceso;
     }
 
     @Override

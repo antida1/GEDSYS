@@ -31,46 +31,44 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "UnidadDocumental")
+@Table(name = "unidaddocumental", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UnidadDocumental.findAll", query = "SELECT u FROM UnidadDocumental u")
     , @NamedQuery(name = "UnidadDocumental.findById", query = "SELECT u FROM UnidadDocumental u WHERE u.id = :id")
-    , @NamedQuery(name = "UnidadDocumental.findByNombre", query = "SELECT u FROM UnidadDocumental u WHERE u.nombre = :nombre")
+    , @NamedQuery(name = "UnidadDocumental.findByBorrado", query = "SELECT u FROM UnidadDocumental u WHERE u.borrado = :borrado")
     , @NamedQuery(name = "UnidadDocumental.findByFechaCreacion", query = "SELECT u FROM UnidadDocumental u WHERE u.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "UnidadDocumental.findByFechaModificacion", query = "SELECT u FROM UnidadDocumental u WHERE u.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "UnidadDocumental.findByBorrado", query = "SELECT u FROM UnidadDocumental u WHERE u.borrado = :borrado")})
+    , @NamedQuery(name = "UnidadDocumental.findByNombre", query = "SELECT u FROM UnidadDocumental u WHERE u.nombre = :nombre")})
 public class UnidadDocumental implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @JoinColumn(name = "SubSerie", referencedColumnName = "Id")
-    @ManyToOne
-    private SubSerie subSerie;
+    @Column(name = "Nombre")
+    private String nombre;
+    @OneToMany(mappedBy = "unidadDocumental")
+    private Collection<TipoDocumental> tipoDocumentalCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "unidadDocumental")
-    private Collection<TipoDocumental> tipoDocumentalCollection;
-    @OneToMany(mappedBy = "unidadDocumental")
-    private Collection<Documento> documentoCollection;
+    @JoinColumn(name = "SubSerie", referencedColumnName = "Id")
+    @ManyToOne
+    private SubSerie subSerie;
 
     public UnidadDocumental() {
     }
@@ -87,12 +85,12 @@ public class UnidadDocumental implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -111,20 +109,22 @@ public class UnidadDocumental implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public SubSerie getSubSerie() {
-        return subSerie;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<TipoDocumental> getTipoDocumentalCollection() {
+        return tipoDocumentalCollection;
     }
 
-    public void setSubSerie(SubSerie subSerie) {
-        this.subSerie = subSerie;
+    public void setTipoDocumentalCollection(Collection<TipoDocumental> tipoDocumentalCollection) {
+        this.tipoDocumentalCollection = tipoDocumentalCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -143,24 +143,12 @@ public class UnidadDocumental implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<TipoDocumental> getTipoDocumentalCollection() {
-        return tipoDocumentalCollection;
+    public SubSerie getSubSerie() {
+        return subSerie;
     }
 
-    public void setTipoDocumentalCollection(Collection<TipoDocumental> tipoDocumentalCollection) {
-        this.tipoDocumentalCollection = tipoDocumentalCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
-    }
-
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setSubSerie(SubSerie subSerie) {
+        this.subSerie = subSerie;
     }
 
     @Override

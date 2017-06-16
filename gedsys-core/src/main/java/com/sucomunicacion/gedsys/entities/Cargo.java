@@ -31,33 +31,33 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Cargo")
+@Table(name = "cargo", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cargo.findAll", query = "SELECT c FROM Cargo c")
     , @NamedQuery(name = "Cargo.findById", query = "SELECT c FROM Cargo c WHERE c.id = :id")
-    , @NamedQuery(name = "Cargo.findByNombre", query = "SELECT c FROM Cargo c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Cargo.findByBorrado", query = "SELECT c FROM Cargo c WHERE c.borrado = :borrado")
     , @NamedQuery(name = "Cargo.findByFechaCreacion", query = "SELECT c FROM Cargo c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Cargo.findByFechaModificacion", query = "SELECT c FROM Cargo c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Cargo.findByBorrado", query = "SELECT c FROM Cargo c WHERE c.borrado = :borrado")})
+    , @NamedQuery(name = "Cargo.findByNombre", query = "SELECT c FROM Cargo c WHERE c.nombre = :nombre")})
 public class Cargo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -82,12 +82,12 @@ public class Cargo implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -106,12 +106,12 @@ public class Cargo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Usuario getCreadoPor() {

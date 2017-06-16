@@ -32,75 +32,75 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "ProcesoNegocio")
+@Table(name = "procesonegocio", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProcesoNegocio.findAll", query = "SELECT p FROM ProcesoNegocio p")
     , @NamedQuery(name = "ProcesoNegocio.findById", query = "SELECT p FROM ProcesoNegocio p WHERE p.id = :id")
-    , @NamedQuery(name = "ProcesoNegocio.findByNombreProceso", query = "SELECT p FROM ProcesoNegocio p WHERE p.nombreProceso = :nombreProceso")
+    , @NamedQuery(name = "ProcesoNegocio.findByBorrado", query = "SELECT p FROM ProcesoNegocio p WHERE p.borrado = :borrado")
+    , @NamedQuery(name = "ProcesoNegocio.findByConteoDias", query = "SELECT p FROM ProcesoNegocio p WHERE p.conteoDias = :conteoDias")
     , @NamedQuery(name = "ProcesoNegocio.findByDestinatario", query = "SELECT p FROM ProcesoNegocio p WHERE p.destinatario = :destinatario")
-    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorCorreo", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorCorreo = :notificarPorCorreo")
-    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorPush", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorPush = :notificarPorPush")
-    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorSMS", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorSMS = :notificarPorSMS")
-    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorPopup", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorPopup = :notificarPorPopup")
-    , @NamedQuery(name = "ProcesoNegocio.findByPlazo", query = "SELECT p FROM ProcesoNegocio p WHERE p.plazo = :plazo")
-    , @NamedQuery(name = "ProcesoNegocio.findByUnidadMedida", query = "SELECT p FROM ProcesoNegocio p WHERE p.unidadMedida = :unidadMedida")
     , @NamedQuery(name = "ProcesoNegocio.findByFechaCreacion", query = "SELECT p FROM ProcesoNegocio p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "ProcesoNegocio.findByFechaModificacion", query = "SELECT p FROM ProcesoNegocio p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "ProcesoNegocio.findByBorrado", query = "SELECT p FROM ProcesoNegocio p WHERE p.borrado = :borrado")
-    , @NamedQuery(name = "ProcesoNegocio.findByConteoDias", query = "SELECT p FROM ProcesoNegocio p WHERE p.conteoDias = :conteoDias")})
+    , @NamedQuery(name = "ProcesoNegocio.findByNombreProceso", query = "SELECT p FROM ProcesoNegocio p WHERE p.nombreProceso = :nombreProceso")
+    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorCorreo", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorCorreo = :notificarPorCorreo")
+    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorPopup", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorPopup = :notificarPorPopup")
+    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorPush", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorPush = :notificarPorPush")
+    , @NamedQuery(name = "ProcesoNegocio.findByNotificarPorSMS", query = "SELECT p FROM ProcesoNegocio p WHERE p.notificarPorSMS = :notificarPorSMS")
+    , @NamedQuery(name = "ProcesoNegocio.findByPlazo", query = "SELECT p FROM ProcesoNegocio p WHERE p.plazo = :plazo")
+    , @NamedQuery(name = "ProcesoNegocio.findByUnidadMedida", query = "SELECT p FROM ProcesoNegocio p WHERE p.unidadMedida = :unidadMedida")})
 public class ProcesoNegocio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
-    @Column(name = "NombreProceso")
-    private String nombreProceso;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "ConteoDias")
+    private Boolean conteoDias;
     @Lob
     @Column(name = "Descripcion")
     private String descripcion;
     @Column(name = "Destinatario")
     private Integer destinatario;
-    @Column(name = "NotificarPorCorreo")
-    private Boolean notificarPorCorreo;
-    @Column(name = "NotificarPorPush")
-    private Boolean notificarPorPush;
-    @Column(name = "NotificarPorSMS")
-    private Boolean notificarPorSMS;
-    @Column(name = "NotificarPorPopup")
-    private Boolean notificarPorPopup;
-    @Column(name = "Plazo")
-    private Integer plazo;
-    @Column(name = "UnidadMedida")
-    private Integer unidadMedida;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @Column(name = "ConteoDias")
-    private Boolean conteoDias;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
-    @OneToMany(mappedBy = "siguienteProceso")
-    private Collection<ProcesoNegocio> procesoNegocioCollection;
-    @JoinColumn(name = "SiguienteProceso", referencedColumnName = "Id")
-    @ManyToOne
-    private ProcesoNegocio siguienteProceso;
+    @Column(name = "NombreProceso")
+    private String nombreProceso;
+    @Column(name = "NotificarPorCorreo")
+    private Boolean notificarPorCorreo;
+    @Column(name = "NotificarPorPopup")
+    private Boolean notificarPorPopup;
+    @Column(name = "NotificarPorPush")
+    private Boolean notificarPorPush;
+    @Column(name = "NotificarPorSMS")
+    private Boolean notificarPorSMS;
+    @Column(name = "Plazo")
+    private Integer plazo;
+    @Column(name = "UnidadMedida")
+    private Integer unidadMedida;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @OneToMany(mappedBy = "siguienteProceso")
+    private Collection<ProcesoNegocio> procesoNegocioCollection;
+    @JoinColumn(name = "SiguienteProceso", referencedColumnName = "Id")
+    @ManyToOne
+    private ProcesoNegocio siguienteProceso;
     @OneToMany(mappedBy = "proceso")
-    private Collection<ProcesoDocumental> procesoDocumentalCollection;
+    private Collection<ProcesoDocumental> procesodocumentalCollection;
+    @OneToMany(mappedBy = "proceso")
+    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
     @OneToMany(mappedBy = "proceso")
     private Collection<MonitoresProceso> monitoresProcesoCollection;
 
@@ -119,12 +119,20 @@ public class ProcesoNegocio implements Serializable {
         this.id = id;
     }
 
-    public String getNombreProceso() {
-        return nombreProceso;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombreProceso(String nombreProceso) {
-        this.nombreProceso = nombreProceso;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public Boolean getConteoDias() {
+        return conteoDias;
+    }
+
+    public void setConteoDias(Boolean conteoDias) {
+        this.conteoDias = conteoDias;
     }
 
     public String getDescripcion() {
@@ -143,12 +151,44 @@ public class ProcesoNegocio implements Serializable {
         this.destinatario = destinatario;
     }
 
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getNombreProceso() {
+        return nombreProceso;
+    }
+
+    public void setNombreProceso(String nombreProceso) {
+        this.nombreProceso = nombreProceso;
+    }
+
     public Boolean getNotificarPorCorreo() {
         return notificarPorCorreo;
     }
 
     public void setNotificarPorCorreo(Boolean notificarPorCorreo) {
         this.notificarPorCorreo = notificarPorCorreo;
+    }
+
+    public Boolean getNotificarPorPopup() {
+        return notificarPorPopup;
+    }
+
+    public void setNotificarPorPopup(Boolean notificarPorPopup) {
+        this.notificarPorPopup = notificarPorPopup;
     }
 
     public Boolean getNotificarPorPush() {
@@ -167,14 +207,6 @@ public class ProcesoNegocio implements Serializable {
         this.notificarPorSMS = notificarPorSMS;
     }
 
-    public Boolean getNotificarPorPopup() {
-        return notificarPorPopup;
-    }
-
-    public void setNotificarPorPopup(Boolean notificarPorPopup) {
-        this.notificarPorPopup = notificarPorPopup;
-    }
-
     public Integer getPlazo() {
         return plazo;
     }
@@ -189,66 +221,6 @@ public class ProcesoNegocio implements Serializable {
 
     public void setUnidadMedida(Integer unidadMedida) {
         this.unidadMedida = unidadMedida;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Date getFechaModificacion() {
-        return fechaModificacion;
-    }
-
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
-
-    public Boolean getBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
-    }
-
-    public Boolean getConteoDias() {
-        return conteoDias;
-    }
-
-    public void setConteoDias(Boolean conteoDias) {
-        this.conteoDias = conteoDias;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
-        return procesoTipoDocumentoCollection;
-    }
-
-    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
-        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoNegocio> getProcesoNegocioCollection() {
-        return procesoNegocioCollection;
-    }
-
-    public void setProcesoNegocioCollection(Collection<ProcesoNegocio> procesoNegocioCollection) {
-        this.procesoNegocioCollection = procesoNegocioCollection;
-    }
-
-    public ProcesoNegocio getSiguienteProceso() {
-        return siguienteProceso;
-    }
-
-    public void setSiguienteProceso(ProcesoNegocio siguienteProceso) {
-        this.siguienteProceso = siguienteProceso;
     }
 
     public Usuario getCreadoPor() {
@@ -269,12 +241,40 @@ public class ProcesoNegocio implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<ProcesoDocumental> getProcesoDocumentalCollection() {
-        return procesoDocumentalCollection;
+    public Collection<ProcesoNegocio> getProcesoNegocioCollection() {
+        return procesoNegocioCollection;
     }
 
-    public void setProcesoDocumentalCollection(Collection<ProcesoDocumental> procesoDocumentalCollection) {
-        this.procesoDocumentalCollection = procesoDocumentalCollection;
+    public void setProcesoNegocioCollection(Collection<ProcesoNegocio> procesoNegocioCollection) {
+        this.procesoNegocioCollection = procesoNegocioCollection;
+    }
+
+    public ProcesoNegocio getSiguienteProceso() {
+        return siguienteProceso;
+    }
+
+    public void setSiguienteProceso(ProcesoNegocio siguienteProceso) {
+        this.siguienteProceso = siguienteProceso;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoDocumental> getProcesodocumentalCollection() {
+        return procesodocumentalCollection;
+    }
+
+    public void setProcesodocumentalCollection(Collection<ProcesoDocumental> procesodocumentalCollection) {
+        this.procesodocumentalCollection = procesodocumentalCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
+        return procesoTipoDocumentoCollection;
+    }
+
+    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
+        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
     }
 
     @XmlTransient

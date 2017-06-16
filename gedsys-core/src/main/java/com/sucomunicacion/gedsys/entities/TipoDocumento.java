@@ -31,35 +31,35 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "TipoDocumento")
+@Table(name = "tipodocumento", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoDocumento.findAll", query = "SELECT t FROM TipoDocumento t")
     , @NamedQuery(name = "TipoDocumento.findById", query = "SELECT t FROM TipoDocumento t WHERE t.id = :id")
-    , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")
+    , @NamedQuery(name = "TipoDocumento.findByBorrado", query = "SELECT t FROM TipoDocumento t WHERE t.borrado = :borrado")
     , @NamedQuery(name = "TipoDocumento.findByFechaCreacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "TipoDocumento.findByFechaModificacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "TipoDocumento.findByBorrado", query = "SELECT t FROM TipoDocumento t WHERE t.borrado = :borrado")})
+    , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")})
 public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @OneToMany(mappedBy = "tipoDocumento")
-    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
+    private Collection<Documento> documentoCollection;
     @OneToMany(mappedBy = "tipoDocumento")
     private Collection<PlantillaDocumental> plantillaDocumentalCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
@@ -71,7 +71,7 @@ public class TipoDocumento implements Serializable {
     @OneToMany(mappedBy = "tipoDocumento")
     private Collection<Consecutivo> consecutivoCollection;
     @OneToMany(mappedBy = "tipoDocumento")
-    private Collection<Documento> documentoCollection;
+    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
 
     public TipoDocumento() {
     }
@@ -88,12 +88,12 @@ public class TipoDocumento implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -112,22 +112,22 @@ public class TipoDocumento implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
-        return procesoTipoDocumentoCollection;
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
-        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @XmlTransient
@@ -168,12 +168,12 @@ public class TipoDocumento implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
+        return procesoTipoDocumentoCollection;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
+        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
     }
 
     @Override

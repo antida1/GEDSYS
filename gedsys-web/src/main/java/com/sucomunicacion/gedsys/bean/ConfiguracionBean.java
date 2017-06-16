@@ -42,8 +42,6 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     /**
      * Creates a new instance of ConfiguracionBean
      */
-    private Usuario usuario = new Usuario();
-    private UploadedFile logoFile;
     private String pathResource;
     private String pathData;
     private Boolean encriptFiles;
@@ -53,14 +51,110 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     private String telefono;
     private String razonSocial;
 
+    
     private String mailAccount;
     private String mailPassword;
     private String mailPort;
     private String mailServer;
     private Boolean mailSSLTLS;
+    private String mail;
+    private UploadedFile logoFile;
+    
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public String getPathResource() {
+        return pathResource;
+    }
+
+    public void setPathResource(String pathResource) {
+        this.pathResource = pathResource;
+    }
+
+    public String getPathData() {
+        return pathData;
+    }
+
+    public void setPathData(String pathData) {
+        this.pathData = pathData;
+    }
+
+    public Boolean getEncriptFiles() {
+        return encriptFiles;
+    }
+
+    public void setEncriptFiles(Boolean encriptFiles) {
+        this.encriptFiles = encriptFiles;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getMailAccount() {
+        return mailAccount;
+    }
+
+    public void setMailAccount(String mailAccount) {
+        this.mailAccount = mailAccount;
+    }
+
+    public String getMailPassword() {
+        return mailPassword;
+    }
+
+    public void setMailPassword(String mailPassword) {
+        this.mailPassword = mailPassword;
+    }
+
+    public String getMailPort() {
+        return mailPort;
+    }
+
+    public void setMailPort(String mailPort) {
+        this.mailPort = mailPort;
+    }
+
+    public String getMailServer() {
+        return mailServer;
+    }
+
+    public void setMailServer(String mailServer) {
+        this.mailServer = mailServer;
+    }
+
+    public Boolean getMailSSLTLS() {
+        return mailSSLTLS;
+    }
+
+    public void setMailSSLTLS(Boolean mailSSLTLS) {
+        this.mailSSLTLS = mailSSLTLS;
     }
 
     public void setLogoFile(UploadedFile logoFile) {

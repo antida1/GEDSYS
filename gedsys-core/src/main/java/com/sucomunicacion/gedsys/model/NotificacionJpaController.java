@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +32,7 @@ public class NotificacionJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Notificacion notificacion) throws PreexistingEntityException, Exception {
+    public void create(Notificacion notificacion) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -49,11 +48,6 @@ public class NotificacionJpaController implements Serializable {
                 responsable = em.merge(responsable);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findNotificacion(notificacion.getId()) != null) {
-                throw new PreexistingEntityException("Notificacion " + notificacion + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

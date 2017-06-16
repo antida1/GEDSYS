@@ -31,52 +31,52 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "SignaturaTopografica")
+@Table(name = "signaturatopografica", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SignaturaTopografica.findAll", query = "SELECT s FROM SignaturaTopografica s")
     , @NamedQuery(name = "SignaturaTopografica.findById", query = "SELECT s FROM SignaturaTopografica s WHERE s.id = :id")
-    , @NamedQuery(name = "SignaturaTopografica.findByNombre", query = "SELECT s FROM SignaturaTopografica s WHERE s.nombre = :nombre")
+    , @NamedQuery(name = "SignaturaTopografica.findByBorrado", query = "SELECT s FROM SignaturaTopografica s WHERE s.borrado = :borrado")
+    , @NamedQuery(name = "SignaturaTopografica.findByCodigo", query = "SELECT s FROM SignaturaTopografica s WHERE s.codigo = :codigo")
     , @NamedQuery(name = "SignaturaTopografica.findByFechaCracion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaCracion = :fechaCracion")
     , @NamedQuery(name = "SignaturaTopografica.findByFechaModificacion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "SignaturaTopografica.findByBorrado", query = "SELECT s FROM SignaturaTopografica s WHERE s.borrado = :borrado")
     , @NamedQuery(name = "SignaturaTopografica.findByNivel", query = "SELECT s FROM SignaturaTopografica s WHERE s.nivel = :nivel")
-    , @NamedQuery(name = "SignaturaTopografica.findByCodigo", query = "SELECT s FROM SignaturaTopografica s WHERE s.codigo = :codigo")})
+    , @NamedQuery(name = "SignaturaTopografica.findByNombre", query = "SELECT s FROM SignaturaTopografica s WHERE s.nombre = :nombre")})
 public class SignaturaTopografica implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "Codigo")
+    private String codigo;
     @Column(name = "FechaCracion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCracion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
     @Column(name = "Nivel")
     private Integer nivel;
-    @Column(name = "Codigo")
-    private String codigo;
+    @Column(name = "Nombre")
+    private String nombre;
+    @OneToMany(mappedBy = "signaturaTopografica")
+    private Collection<Documento> documentoCollection;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
     @OneToMany(mappedBy = "dependeDe")
     private Collection<SignaturaTopografica> signaturaTopograficaCollection;
     @JoinColumn(name = "DependeDe", referencedColumnName = "Id")
     @ManyToOne
     private SignaturaTopografica dependeDe;
-    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
-    @ManyToOne
-    private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "signaturaTopografica")
-    private Collection<Documento> documentoCollection;
 
     public SignaturaTopografica() {
     }
@@ -93,12 +93,20 @@ public class SignaturaTopografica implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public Date getFechaCracion() {
@@ -117,14 +125,6 @@ public class SignaturaTopografica implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
-    }
-
     public Integer getNivel() {
         return nivel;
     }
@@ -133,12 +133,30 @@ public class SignaturaTopografica implements Serializable {
         this.nivel = nivel;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     @XmlTransient
@@ -159,30 +177,12 @@ public class SignaturaTopografica implements Serializable {
         this.dependeDe = dependeDe;
     }
 
-    public Usuario getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Usuario creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Usuario getModificadoPor() {
         return modificadoPor;
     }
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
-    }
-
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
     }
 
     @Override

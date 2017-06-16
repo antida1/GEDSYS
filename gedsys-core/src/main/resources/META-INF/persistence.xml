@@ -3,48 +3,39 @@
   <persistence-unit name="com.sucomunicacion_gedsys-core_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.sucomunicacion.gedsys.entities.Acl</class>
-    <class>com.sucomunicacion.gedsys.entities.Anexo</class>
+    <class>com.sucomunicacion.gedsys.entities.Autor</class>
     <class>com.sucomunicacion.gedsys.entities.Cargo</class>
+    <class>com.sucomunicacion.gedsys.entities.ClaseDocumento</class>
     <class>com.sucomunicacion.gedsys.entities.Configuracion</class>
     <class>com.sucomunicacion.gedsys.entities.Consecutivo</class>
-    <class>com.sucomunicacion.gedsys.entities.Corregimientos</class>
-    <class>com.sucomunicacion.gedsys.entities.Departamentos</class>
+    <class>com.sucomunicacion.gedsys.entities.Corregimiento</class>
+    <class>com.sucomunicacion.gedsys.entities.Departamento</class>
+    <class>com.sucomunicacion.gedsys.entities.DestinatariosDoc</class>
     <class>com.sucomunicacion.gedsys.entities.DiaFestivo</class>
     <class>com.sucomunicacion.gedsys.entities.Documento</class>
-    <class>com.sucomunicacion.gedsys.entities.FlujoDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Log</class>
-    <class>com.sucomunicacion.gedsys.entities.Modulo</class>
-    <class>com.sucomunicacion.gedsys.entities.Municipios</class>
-    <class>com.sucomunicacion.gedsys.entities.Pais</class>
-    <class>com.sucomunicacion.gedsys.entities.Seccion</class>
-    <class>com.sucomunicacion.gedsys.entities.Serie</class>
-    <class>com.sucomunicacion.gedsys.entities.SignaturaTopografica</class>
-    <class>com.sucomunicacion.gedsys.entities.SubSeccion</class>
-    <class>com.sucomunicacion.gedsys.entities.SubSerie</class>
-    <class>com.sucomunicacion.gedsys.entities.TipoDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Usuario</class>
-    <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.PlantillaDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Transportador</class>
     <class>com.sucomunicacion.gedsys.entities.Entidad</class>
     <class>com.sucomunicacion.gedsys.entities.Grupo</class>
-    <class>com.sucomunicacion.gedsys.entities.TipoDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.Anexos</class>
-    <class>com.sucomunicacion.gedsys.entities.MonitoresProceso</class>
-    <class>com.sucomunicacion.gedsys.entities.Autores</class>
-    <class>com.sucomunicacion.gedsys.entities.Notificaciones</class>
-    <class>com.sucomunicacion.gedsys.entities.ClaseDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.GrupoUsuarios</class>
-    <class>com.sucomunicacion.gedsys.entities.Preferencias</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoNegocio</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Autor</class>
-    <class>com.sucomunicacion.gedsys.entities.Municipio</class>
     <class>com.sucomunicacion.gedsys.entities.GrupoUsuario</class>
+    <class>com.sucomunicacion.gedsys.entities.Log</class>
+    <class>com.sucomunicacion.gedsys.entities.Modulo</class>
+    <class>com.sucomunicacion.gedsys.entities.MonitoresProceso</class>
+    <class>com.sucomunicacion.gedsys.entities.Municipio</class>
     <class>com.sucomunicacion.gedsys.entities.Notificacion</class>
-    <class>com.sucomunicacion.gedsys.entities.Departamento</class>
-    <class>com.sucomunicacion.gedsys.entities.Corregimiento</class>
+    <class>com.sucomunicacion.gedsys.entities.Pais</class>
+    <class>com.sucomunicacion.gedsys.entities.PlantillaDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Preferencias</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoNegocio</class>
+    <class>com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento</class>
+    <class>com.sucomunicacion.gedsys.entities.SeccionSubSeccion</class>
+    <class>com.sucomunicacion.gedsys.entities.Serie</class>
+    <class>com.sucomunicacion.gedsys.entities.SignaturaTopografica</class>
+    <class>com.sucomunicacion.gedsys.entities.SubSerie</class>
+    <class>com.sucomunicacion.gedsys.entities.TipoDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.TipoDocumento</class>
+    <class>com.sucomunicacion.gedsys.entities.Transportador</class>
+    <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
+    <class>com.sucomunicacion.gedsys.entities.Usuario</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

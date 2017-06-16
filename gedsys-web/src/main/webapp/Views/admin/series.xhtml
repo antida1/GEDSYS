@@ -11,7 +11,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <f:event type="preRenderView" listener="#{serieBean.listar()}" />
-                <f:event type="preRenderView" listener="#{subSeccionBean.listar()}" />
+                <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <h:form id="form">
                     <h3>Series</h3>
@@ -22,7 +22,7 @@
                     <p:separator/>
                     <p:dataTable id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0">
                          <p:column headerText="SubSección">
-                             <h:outputText value="#{ser.subSeccion.nombre}" />
+                             <h:outputText value="#{ser.seccionSubseccionId.nombre}" />
                         </p:column>
                         <p:column headerText="Nombre">
                             <h:outputText value="#{ser.nombre}" />
@@ -57,11 +57,11 @@
                     <h:form>
                         <h:inputHidden id="id" value="#{serieBean.serie.id}" />
                         <div class="form-group row">
-                            <p:outputLabel value="SubSeccion" for="SubSeccion" class="col-xs-3 col-form-label"/>
+                            <p:outputLabel value="Seccion" for="Seccion" class="col-xs-3 col-form-label"/>
                             <div class="col-xs-9">
-                                <p:selectOneMenu id="SubSeccion" value="#{serieBean.serie.subSeccion}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="Seccion" value="#{serieBean.serie.seccionSubseccionId}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
-                                    <f:selectItems value="#{subSeccionBean.subsecciones}" var="subsec" itemLabel="#{subsec.nombre}" itemValue="#{subsec}" />
+                                    <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="subsec" itemLabel="#{subsec.nombre}" itemValue="#{subsec}" />
                                 </p:selectOneMenu>
                             </div>
                         </div>

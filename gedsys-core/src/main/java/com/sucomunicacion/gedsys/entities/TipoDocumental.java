@@ -31,59 +31,59 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "TipoDocumental")
+@Table(name = "tipodocumental", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoDocumental.findAll", query = "SELECT t FROM TipoDocumental t")
     , @NamedQuery(name = "TipoDocumental.findById", query = "SELECT t FROM TipoDocumental t WHERE t.id = :id")
-    , @NamedQuery(name = "TipoDocumental.findByNombre", query = "SELECT t FROM TipoDocumental t WHERE t.nombre = :nombre")
+    , @NamedQuery(name = "TipoDocumental.findByBorrado", query = "SELECT t FROM TipoDocumental t WHERE t.borrado = :borrado")
+    , @NamedQuery(name = "TipoDocumental.findByDocumentoExterno", query = "SELECT t FROM TipoDocumental t WHERE t.documentoExterno = :documentoExterno")
+    , @NamedQuery(name = "TipoDocumental.findByEstampadoCronologico", query = "SELECT t FROM TipoDocumental t WHERE t.estampadoCronologico = :estampadoCronologico")
     , @NamedQuery(name = "TipoDocumental.findByFechaCreacion", query = "SELECT t FROM TipoDocumental t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "TipoDocumental.findByFechaModificacion", query = "SELECT t FROM TipoDocumental t WHERE t.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "TipoDocumental.findByBorrado", query = "SELECT t FROM TipoDocumental t WHERE t.borrado = :borrado")
+    , @NamedQuery(name = "TipoDocumental.findByNombre", query = "SELECT t FROM TipoDocumental t WHERE t.nombre = :nombre")
     , @NamedQuery(name = "TipoDocumental.findByRequiereRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "TipoDocumental.findByTiempoRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.tiempoRespuesta = :tiempoRespuesta")
-    , @NamedQuery(name = "TipoDocumental.findByTipoCalendario", query = "SELECT t FROM TipoDocumental t WHERE t.tipoCalendario = :tipoCalendario")
-    , @NamedQuery(name = "TipoDocumental.findByEstampadoCronologico", query = "SELECT t FROM TipoDocumental t WHERE t.estampadoCronologico = :estampadoCronologico")
-    , @NamedQuery(name = "TipoDocumental.findByDocumentoExterno", query = "SELECT t FROM TipoDocumental t WHERE t.documentoExterno = :documentoExterno")})
+    , @NamedQuery(name = "TipoDocumental.findByTipoCalendario", query = "SELECT t FROM TipoDocumental t WHERE t.tipoCalendario = :tipoCalendario")})
 public class TipoDocumental implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "DocumentoExterno")
+    private Boolean documentoExterno;
+    @Column(name = "EstampadoCronologico")
+    private String estampadoCronologico;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @Column(name = "RequiereRespuesta")
     private Boolean requiereRespuesta;
     @Column(name = "TiempoRespuesta")
     private Integer tiempoRespuesta;
     @Column(name = "TipoCalendario")
     private String tipoCalendario;
-    @Column(name = "EstampadoCronologico")
-    private String estampadoCronologico;
-    @Column(name = "DocumentoExterno")
-    private Boolean documentoExterno;
-    @JoinColumn(name = "UnidadDocumental", referencedColumnName = "Id")
-    @ManyToOne
-    private UnidadDocumental unidadDocumental;
+    @OneToMany(mappedBy = "tipoDocumental")
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "tipoDocumental")
-    private Collection<Documento> documentoCollection;
+    @JoinColumn(name = "UnidadDocumental", referencedColumnName = "Id")
+    @ManyToOne
+    private UnidadDocumental unidadDocumental;
 
     public TipoDocumental() {
     }
@@ -100,12 +100,28 @@ public class TipoDocumental implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public Boolean getDocumentoExterno() {
+        return documentoExterno;
+    }
+
+    public void setDocumentoExterno(Boolean documentoExterno) {
+        this.documentoExterno = documentoExterno;
+    }
+
+    public String getEstampadoCronologico() {
+        return estampadoCronologico;
+    }
+
+    public void setEstampadoCronologico(String estampadoCronologico) {
+        this.estampadoCronologico = estampadoCronologico;
     }
 
     public Date getFechaCreacion() {
@@ -124,12 +140,12 @@ public class TipoDocumental implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Boolean getRequiereRespuesta() {
@@ -156,28 +172,14 @@ public class TipoDocumental implements Serializable {
         this.tipoCalendario = tipoCalendario;
     }
 
-    public String getEstampadoCronologico() {
-        return estampadoCronologico;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setEstampadoCronologico(String estampadoCronologico) {
-        this.estampadoCronologico = estampadoCronologico;
-    }
-
-    public Boolean getDocumentoExterno() {
-        return documentoExterno;
-    }
-
-    public void setDocumentoExterno(Boolean documentoExterno) {
-        this.documentoExterno = documentoExterno;
-    }
-
-    public UnidadDocumental getUnidadDocumental() {
-        return unidadDocumental;
-    }
-
-    public void setUnidadDocumental(UnidadDocumental unidadDocumental) {
-        this.unidadDocumental = unidadDocumental;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -196,14 +198,12 @@ public class TipoDocumental implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public UnidadDocumental getUnidadDocumental() {
+        return unidadDocumental;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setUnidadDocumental(UnidadDocumental unidadDocumental) {
+        this.unidadDocumental = unidadDocumental;
     }
 
     @Override

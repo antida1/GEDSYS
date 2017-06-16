@@ -27,36 +27,36 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "GrupoUsuario")
+@Table(name = "grupousuario", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "GrupoUsuario.findAll", query = "SELECT g FROM GrupoUsuario g")
     , @NamedQuery(name = "GrupoUsuario.findById", query = "SELECT g FROM GrupoUsuario g WHERE g.id = :id")
+    , @NamedQuery(name = "GrupoUsuario.findByBorrado", query = "SELECT g FROM GrupoUsuario g WHERE g.borrado = :borrado")
     , @NamedQuery(name = "GrupoUsuario.findByFechaCreacion", query = "SELECT g FROM GrupoUsuario g WHERE g.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "GrupoUsuario.findByFechaModificacion", query = "SELECT g FROM GrupoUsuario g WHERE g.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "GrupoUsuario.findByBorrado", query = "SELECT g FROM GrupoUsuario g WHERE g.borrado = :borrado")})
+    , @NamedQuery(name = "GrupoUsuario.findByFechaModificacion", query = "SELECT g FROM GrupoUsuario g WHERE g.fechaModificacion = :fechaModificacion")})
 public class GrupoUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @JoinColumn(name = "Grupo", referencedColumnName = "Id")
-    @ManyToOne
-    private Grupo grupo;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    @JoinColumn(name = "Grupo", referencedColumnName = "Id")
+    @ManyToOne
+    private Grupo grupo;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
@@ -79,6 +79,14 @@ public class GrupoUsuario implements Serializable {
         this.id = id;
     }
 
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -95,12 +103,12 @@ public class GrupoUsuario implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Grupo getGrupo() {
@@ -109,14 +117,6 @@ public class GrupoUsuario implements Serializable {
 
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
-    }
-
-    public Usuario getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Usuario creadoPor) {
-        this.creadoPor = creadoPor;
     }
 
     public Usuario getModificadoPor() {

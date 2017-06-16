@@ -10,15 +10,13 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.Serie;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.Serie;
+import com.sucomunicacion.gedsys.entities.SubSerie;
 import com.sucomunicacion.gedsys.entities.UnidadDocumental;
+import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
-import com.sucomunicacion.gedsys.entities.Documento;
-import com.sucomunicacion.gedsys.entities.SubSerie;
-import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,22 +36,14 @@ public class SubSerieJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(SubSerie subSerie) throws PreexistingEntityException, Exception {
+    public void create(SubSerie subSerie) {
         if (subSerie.getUnidadDocumentalCollection() == null) {
             subSerie.setUnidadDocumentalCollection(new ArrayList<UnidadDocumental>());
-        }
-        if (subSerie.getDocumentoCollection() == null) {
-            subSerie.setDocumentoCollection(new ArrayList<Documento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Serie serie = subSerie.getSerie();
-            if (serie != null) {
-                serie = em.getReference(serie.getClass(), serie.getId());
-                subSerie.setSerie(serie);
-            }
             Usuario creadoPor = subSerie.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -64,23 +54,18 @@ public class SubSerieJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 subSerie.setModificadoPor(modificadoPor);
             }
+            Serie serie = subSerie.getSerie();
+            if (serie != null) {
+                serie = em.getReference(serie.getClass(), serie.getId());
+                subSerie.setSerie(serie);
+            }
             Collection<UnidadDocumental> attachedUnidadDocumentalCollection = new ArrayList<UnidadDocumental>();
             for (UnidadDocumental unidadDocumentalCollectionUnidadDocumentalToAttach : subSerie.getUnidadDocumentalCollection()) {
                 unidadDocumentalCollectionUnidadDocumentalToAttach = em.getReference(unidadDocumentalCollectionUnidadDocumentalToAttach.getClass(), unidadDocumentalCollectionUnidadDocumentalToAttach.getId());
                 attachedUnidadDocumentalCollection.add(unidadDocumentalCollectionUnidadDocumentalToAttach);
             }
             subSerie.setUnidadDocumentalCollection(attachedUnidadDocumentalCollection);
-            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
-            for (Documento documentoCollectionDocumentoToAttach : subSerie.getDocumentoCollection()) {
-                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
-                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
-            }
-            subSerie.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(subSerie);
-            if (serie != null) {
-                serie.getSubSerieCollection().add(subSerie);
-                serie = em.merge(serie);
-            }
             if (creadoPor != null) {
                 creadoPor.getSubSerieCollection().add(subSerie);
                 creadoPor = em.merge(creadoPor);
@@ -88,6 +73,10 @@ public class SubSerieJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getSubSerieCollection().add(subSerie);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            if (serie != null) {
+                serie.getSubSerieCollection().add(subSerie);
+                serie = em.merge(serie);
             }
             for (UnidadDocumental unidadDocumentalCollectionUnidadDocumental : subSerie.getUnidadDocumentalCollection()) {
                 SubSerie oldSubSerieOfUnidadDocumentalCollectionUnidadDocumental = unidadDocumentalCollectionUnidadDocumental.getSubSerie();
@@ -98,21 +87,7 @@ public class SubSerieJpaController implements Serializable {
                     oldSubSerieOfUnidadDocumentalCollectionUnidadDocumental = em.merge(oldSubSerieOfUnidadDocumentalCollectionUnidadDocumental);
                 }
             }
-            for (Documento documentoCollectionDocumento : subSerie.getDocumentoCollection()) {
-                SubSerie oldSubSerieOfDocumentoCollectionDocumento = documentoCollectionDocumento.getSubSerie();
-                documentoCollectionDocumento.setSubSerie(subSerie);
-                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
-                if (oldSubSerieOfDocumentoCollectionDocumento != null) {
-                    oldSubSerieOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
-                    oldSubSerieOfDocumentoCollectionDocumento = em.merge(oldSubSerieOfDocumentoCollectionDocumento);
-                }
-            }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findSubSerie(subSerie.getId()) != null) {
-                throw new PreexistingEntityException("SubSerie " + subSerie + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -126,20 +101,14 @@ public class SubSerieJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             SubSerie persistentSubSerie = em.find(SubSerie.class, subSerie.getId());
-            Serie serieOld = persistentSubSerie.getSerie();
-            Serie serieNew = subSerie.getSerie();
             Usuario creadoPorOld = persistentSubSerie.getCreadoPor();
             Usuario creadoPorNew = subSerie.getCreadoPor();
             Usuario modificadoPorOld = persistentSubSerie.getModificadoPor();
             Usuario modificadoPorNew = subSerie.getModificadoPor();
+            Serie serieOld = persistentSubSerie.getSerie();
+            Serie serieNew = subSerie.getSerie();
             Collection<UnidadDocumental> unidadDocumentalCollectionOld = persistentSubSerie.getUnidadDocumentalCollection();
             Collection<UnidadDocumental> unidadDocumentalCollectionNew = subSerie.getUnidadDocumentalCollection();
-            Collection<Documento> documentoCollectionOld = persistentSubSerie.getDocumentoCollection();
-            Collection<Documento> documentoCollectionNew = subSerie.getDocumentoCollection();
-            if (serieNew != null) {
-                serieNew = em.getReference(serieNew.getClass(), serieNew.getId());
-                subSerie.setSerie(serieNew);
-            }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 subSerie.setCreadoPor(creadoPorNew);
@@ -148,6 +117,10 @@ public class SubSerieJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 subSerie.setModificadoPor(modificadoPorNew);
             }
+            if (serieNew != null) {
+                serieNew = em.getReference(serieNew.getClass(), serieNew.getId());
+                subSerie.setSerie(serieNew);
+            }
             Collection<UnidadDocumental> attachedUnidadDocumentalCollectionNew = new ArrayList<UnidadDocumental>();
             for (UnidadDocumental unidadDocumentalCollectionNewUnidadDocumentalToAttach : unidadDocumentalCollectionNew) {
                 unidadDocumentalCollectionNewUnidadDocumentalToAttach = em.getReference(unidadDocumentalCollectionNewUnidadDocumentalToAttach.getClass(), unidadDocumentalCollectionNewUnidadDocumentalToAttach.getId());
@@ -155,22 +128,7 @@ public class SubSerieJpaController implements Serializable {
             }
             unidadDocumentalCollectionNew = attachedUnidadDocumentalCollectionNew;
             subSerie.setUnidadDocumentalCollection(unidadDocumentalCollectionNew);
-            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
-            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
-                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
-                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
-            }
-            documentoCollectionNew = attachedDocumentoCollectionNew;
-            subSerie.setDocumentoCollection(documentoCollectionNew);
             subSerie = em.merge(subSerie);
-            if (serieOld != null && !serieOld.equals(serieNew)) {
-                serieOld.getSubSerieCollection().remove(subSerie);
-                serieOld = em.merge(serieOld);
-            }
-            if (serieNew != null && !serieNew.equals(serieOld)) {
-                serieNew.getSubSerieCollection().add(subSerie);
-                serieNew = em.merge(serieNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getSubSerieCollection().remove(subSerie);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -187,6 +145,14 @@ public class SubSerieJpaController implements Serializable {
                 modificadoPorNew.getSubSerieCollection().add(subSerie);
                 modificadoPorNew = em.merge(modificadoPorNew);
             }
+            if (serieOld != null && !serieOld.equals(serieNew)) {
+                serieOld.getSubSerieCollection().remove(subSerie);
+                serieOld = em.merge(serieOld);
+            }
+            if (serieNew != null && !serieNew.equals(serieOld)) {
+                serieNew.getSubSerieCollection().add(subSerie);
+                serieNew = em.merge(serieNew);
+            }
             for (UnidadDocumental unidadDocumentalCollectionOldUnidadDocumental : unidadDocumentalCollectionOld) {
                 if (!unidadDocumentalCollectionNew.contains(unidadDocumentalCollectionOldUnidadDocumental)) {
                     unidadDocumentalCollectionOldUnidadDocumental.setSubSerie(null);
@@ -201,23 +167,6 @@ public class SubSerieJpaController implements Serializable {
                     if (oldSubSerieOfUnidadDocumentalCollectionNewUnidadDocumental != null && !oldSubSerieOfUnidadDocumentalCollectionNewUnidadDocumental.equals(subSerie)) {
                         oldSubSerieOfUnidadDocumentalCollectionNewUnidadDocumental.getUnidadDocumentalCollection().remove(unidadDocumentalCollectionNewUnidadDocumental);
                         oldSubSerieOfUnidadDocumentalCollectionNewUnidadDocumental = em.merge(oldSubSerieOfUnidadDocumentalCollectionNewUnidadDocumental);
-                    }
-                }
-            }
-            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
-                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
-                    documentoCollectionOldDocumento.setSubSerie(null);
-                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
-                }
-            }
-            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
-                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
-                    SubSerie oldSubSerieOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getSubSerie();
-                    documentoCollectionNewDocumento.setSubSerie(subSerie);
-                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
-                    if (oldSubSerieOfDocumentoCollectionNewDocumento != null && !oldSubSerieOfDocumentoCollectionNewDocumento.equals(subSerie)) {
-                        oldSubSerieOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
-                        oldSubSerieOfDocumentoCollectionNewDocumento = em.merge(oldSubSerieOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -250,11 +199,6 @@ public class SubSerieJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The subSerie with id " + id + " no longer exists.", enfe);
             }
-            Serie serie = subSerie.getSerie();
-            if (serie != null) {
-                serie.getSubSerieCollection().remove(subSerie);
-                serie = em.merge(serie);
-            }
             Usuario creadoPor = subSerie.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getSubSerieCollection().remove(subSerie);
@@ -265,15 +209,15 @@ public class SubSerieJpaController implements Serializable {
                 modificadoPor.getSubSerieCollection().remove(subSerie);
                 modificadoPor = em.merge(modificadoPor);
             }
+            Serie serie = subSerie.getSerie();
+            if (serie != null) {
+                serie.getSubSerieCollection().remove(subSerie);
+                serie = em.merge(serie);
+            }
             Collection<UnidadDocumental> unidadDocumentalCollection = subSerie.getUnidadDocumentalCollection();
             for (UnidadDocumental unidadDocumentalCollectionUnidadDocumental : unidadDocumentalCollection) {
                 unidadDocumentalCollectionUnidadDocumental.setSubSerie(null);
                 unidadDocumentalCollectionUnidadDocumental = em.merge(unidadDocumentalCollectionUnidadDocumental);
-            }
-            Collection<Documento> documentoCollection = subSerie.getDocumentoCollection();
-            for (Documento documentoCollectionDocumento : documentoCollection) {
-                documentoCollectionDocumento.setSubSerie(null);
-                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             em.remove(subSerie);
             em.getTransaction().commit();

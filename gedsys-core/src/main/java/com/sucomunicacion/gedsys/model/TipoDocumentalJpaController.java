@@ -10,12 +10,11 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.UnidadDocumental;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.UnidadDocumental;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.TipoDocumental;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +36,7 @@ public class TipoDocumentalJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(TipoDocumental tipoDocumental) throws PreexistingEntityException, Exception {
+    public void create(TipoDocumental tipoDocumental) {
         if (tipoDocumental.getDocumentoCollection() == null) {
             tipoDocumental.setDocumentoCollection(new ArrayList<Documento>());
         }
@@ -45,11 +44,6 @@ public class TipoDocumentalJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
-            if (unidadDocumental != null) {
-                unidadDocumental = em.getReference(unidadDocumental.getClass(), unidadDocumental.getId());
-                tipoDocumental.setUnidadDocumental(unidadDocumental);
-            }
             Usuario creadoPor = tipoDocumental.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -60,6 +54,11 @@ public class TipoDocumentalJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 tipoDocumental.setModificadoPor(modificadoPor);
             }
+            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
+            if (unidadDocumental != null) {
+                unidadDocumental = em.getReference(unidadDocumental.getClass(), unidadDocumental.getId());
+                tipoDocumental.setUnidadDocumental(unidadDocumental);
+            }
             Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
             for (Documento documentoCollectionDocumentoToAttach : tipoDocumental.getDocumentoCollection()) {
                 documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
@@ -67,10 +66,6 @@ public class TipoDocumentalJpaController implements Serializable {
             }
             tipoDocumental.setDocumentoCollection(attachedDocumentoCollection);
             em.persist(tipoDocumental);
-            if (unidadDocumental != null) {
-                unidadDocumental.getTipoDocumentalCollection().add(tipoDocumental);
-                unidadDocumental = em.merge(unidadDocumental);
-            }
             if (creadoPor != null) {
                 creadoPor.getTipoDocumentalCollection().add(tipoDocumental);
                 creadoPor = em.merge(creadoPor);
@@ -78,6 +73,10 @@ public class TipoDocumentalJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getTipoDocumentalCollection().add(tipoDocumental);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            if (unidadDocumental != null) {
+                unidadDocumental.getTipoDocumentalCollection().add(tipoDocumental);
+                unidadDocumental = em.merge(unidadDocumental);
             }
             for (Documento documentoCollectionDocumento : tipoDocumental.getDocumentoCollection()) {
                 TipoDocumental oldTipoDocumentalOfDocumentoCollectionDocumento = documentoCollectionDocumento.getTipoDocumental();
@@ -89,11 +88,6 @@ public class TipoDocumentalJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findTipoDocumental(tipoDocumental.getId()) != null) {
-                throw new PreexistingEntityException("TipoDocumental " + tipoDocumental + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -107,18 +101,14 @@ public class TipoDocumentalJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             TipoDocumental persistentTipoDocumental = em.find(TipoDocumental.class, tipoDocumental.getId());
-            UnidadDocumental unidadDocumentalOld = persistentTipoDocumental.getUnidadDocumental();
-            UnidadDocumental unidadDocumentalNew = tipoDocumental.getUnidadDocumental();
             Usuario creadoPorOld = persistentTipoDocumental.getCreadoPor();
             Usuario creadoPorNew = tipoDocumental.getCreadoPor();
             Usuario modificadoPorOld = persistentTipoDocumental.getModificadoPor();
             Usuario modificadoPorNew = tipoDocumental.getModificadoPor();
+            UnidadDocumental unidadDocumentalOld = persistentTipoDocumental.getUnidadDocumental();
+            UnidadDocumental unidadDocumentalNew = tipoDocumental.getUnidadDocumental();
             Collection<Documento> documentoCollectionOld = persistentTipoDocumental.getDocumentoCollection();
             Collection<Documento> documentoCollectionNew = tipoDocumental.getDocumentoCollection();
-            if (unidadDocumentalNew != null) {
-                unidadDocumentalNew = em.getReference(unidadDocumentalNew.getClass(), unidadDocumentalNew.getId());
-                tipoDocumental.setUnidadDocumental(unidadDocumentalNew);
-            }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 tipoDocumental.setCreadoPor(creadoPorNew);
@@ -126,6 +116,10 @@ public class TipoDocumentalJpaController implements Serializable {
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 tipoDocumental.setModificadoPor(modificadoPorNew);
+            }
+            if (unidadDocumentalNew != null) {
+                unidadDocumentalNew = em.getReference(unidadDocumentalNew.getClass(), unidadDocumentalNew.getId());
+                tipoDocumental.setUnidadDocumental(unidadDocumentalNew);
             }
             Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
             for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
@@ -135,14 +129,6 @@ public class TipoDocumentalJpaController implements Serializable {
             documentoCollectionNew = attachedDocumentoCollectionNew;
             tipoDocumental.setDocumentoCollection(documentoCollectionNew);
             tipoDocumental = em.merge(tipoDocumental);
-            if (unidadDocumentalOld != null && !unidadDocumentalOld.equals(unidadDocumentalNew)) {
-                unidadDocumentalOld.getTipoDocumentalCollection().remove(tipoDocumental);
-                unidadDocumentalOld = em.merge(unidadDocumentalOld);
-            }
-            if (unidadDocumentalNew != null && !unidadDocumentalNew.equals(unidadDocumentalOld)) {
-                unidadDocumentalNew.getTipoDocumentalCollection().add(tipoDocumental);
-                unidadDocumentalNew = em.merge(unidadDocumentalNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getTipoDocumentalCollection().remove(tipoDocumental);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -158,6 +144,14 @@ public class TipoDocumentalJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getTipoDocumentalCollection().add(tipoDocumental);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (unidadDocumentalOld != null && !unidadDocumentalOld.equals(unidadDocumentalNew)) {
+                unidadDocumentalOld.getTipoDocumentalCollection().remove(tipoDocumental);
+                unidadDocumentalOld = em.merge(unidadDocumentalOld);
+            }
+            if (unidadDocumentalNew != null && !unidadDocumentalNew.equals(unidadDocumentalOld)) {
+                unidadDocumentalNew.getTipoDocumentalCollection().add(tipoDocumental);
+                unidadDocumentalNew = em.merge(unidadDocumentalNew);
             }
             for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
                 if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
@@ -205,11 +199,6 @@ public class TipoDocumentalJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tipoDocumental with id " + id + " no longer exists.", enfe);
             }
-            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
-            if (unidadDocumental != null) {
-                unidadDocumental.getTipoDocumentalCollection().remove(tipoDocumental);
-                unidadDocumental = em.merge(unidadDocumental);
-            }
             Usuario creadoPor = tipoDocumental.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getTipoDocumentalCollection().remove(tipoDocumental);
@@ -219,6 +208,11 @@ public class TipoDocumentalJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getTipoDocumentalCollection().remove(tipoDocumental);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            UnidadDocumental unidadDocumental = tipoDocumental.getUnidadDocumental();
+            if (unidadDocumental != null) {
+                unidadDocumental.getTipoDocumentalCollection().remove(tipoDocumental);
+                unidadDocumental = em.merge(unidadDocumental);
             }
             Collection<Documento> documentoCollection = tipoDocumental.getDocumentoCollection();
             for (Documento documentoCollectionDocumento : documentoCollection) {

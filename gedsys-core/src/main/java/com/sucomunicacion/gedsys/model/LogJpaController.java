@@ -7,7 +7,6 @@ package com.sucomunicacion.gedsys.model;
 
 import com.sucomunicacion.gedsys.entities.Log;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -32,18 +31,13 @@ public class LogJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Log log) throws PreexistingEntityException, Exception {
+    public void create(Log log) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(log);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findLog(log.getId()) != null) {
-                throw new PreexistingEntityException("Log " + log + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

@@ -14,7 +14,6 @@ import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.Transportador;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class TransportadorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Transportador transportador) throws PreexistingEntityException, Exception {
+    public void create(Transportador transportador) {
         if (transportador.getDocumentoCollection() == null) {
             transportador.setDocumentoCollection(new ArrayList<Documento>());
         }
@@ -79,11 +78,6 @@ public class TransportadorJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findTransportador(transportador.getId()) != null) {
-                throw new PreexistingEntityException("Transportador " + transportador + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

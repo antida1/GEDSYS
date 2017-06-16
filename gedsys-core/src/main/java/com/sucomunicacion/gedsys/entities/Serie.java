@@ -31,46 +31,44 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Serie")
+@Table(name = "serie", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Serie.findAll", query = "SELECT s FROM Serie s")
     , @NamedQuery(name = "Serie.findById", query = "SELECT s FROM Serie s WHERE s.id = :id")
-    , @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")
+    , @NamedQuery(name = "Serie.findByBorrado", query = "SELECT s FROM Serie s WHERE s.borrado = :borrado")
     , @NamedQuery(name = "Serie.findByFechaCreacion", query = "SELECT s FROM Serie s WHERE s.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Serie.findByFechaModificacion", query = "SELECT s FROM Serie s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Serie.findByBorrado", query = "SELECT s FROM Serie s WHERE s.borrado = :borrado")})
+    , @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")})
 public class Serie implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @OneToMany(mappedBy = "serie")
     private Collection<SubSerie> subSerieCollection;
-    @JoinColumn(name = "SubSeccion", referencedColumnName = "Id")
-    @ManyToOne
-    private SubSeccion subSeccion;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "serie")
-    private Collection<Documento> documentoCollection;
+    @JoinColumn(name = "SeccionSubseccion_Id", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private SeccionSubSeccion seccionSubseccionId;
 
     public Serie() {
     }
@@ -87,12 +85,12 @@ public class Serie implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -111,12 +109,12 @@ public class Serie implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -127,14 +125,6 @@ public class Serie implements Serializable {
 
     public void setSubSerieCollection(Collection<SubSerie> subSerieCollection) {
         this.subSerieCollection = subSerieCollection;
-    }
-
-    public SubSeccion getSubSeccion() {
-        return subSeccion;
-    }
-
-    public void setSubSeccion(SubSeccion subSeccion) {
-        this.subSeccion = subSeccion;
     }
 
     public Usuario getCreadoPor() {
@@ -153,14 +143,12 @@ public class Serie implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public SeccionSubSeccion getSeccionSubseccionId() {
+        return seccionSubseccionId;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
+    public void setSeccionSubseccionId(SeccionSubSeccion seccionSubseccionId) {
+        this.seccionSubseccionId = seccionSubseccionId;
     }
 
     @Override

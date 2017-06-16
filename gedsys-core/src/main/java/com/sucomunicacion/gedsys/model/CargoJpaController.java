@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +34,7 @@ public class CargoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Cargo cargo) throws PreexistingEntityException, Exception {
+    public void create(Cargo cargo) {
         if (cargo.getUsuarioCollection() == null) {
             cargo.setUsuarioCollection(new ArrayList<Usuario>());
         }
@@ -78,11 +77,6 @@ public class CargoJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findCargo(cargo.getId()) != null) {
-                throw new PreexistingEntityException("Cargo " + cargo + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

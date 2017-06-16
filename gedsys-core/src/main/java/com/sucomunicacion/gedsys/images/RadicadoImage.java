@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
  */
 public class RadicadoImage {
 
-    public String Generar(String numeroRadicado, String logoPath) {
+    public String Generar(String numeroRadicado, String logoPath, String destinationPath) {
         try {
             File path = new File(logoPath);
             BufferedImage logo = ImageIO.read(new File(path, "logo.png"));
@@ -65,7 +65,7 @@ public class RadicadoImage {
                         
             g2D.dispose();
 
-            ImageIO.write(img, "png", new File("F:" + File.separatorChar + numeroRadicado + ".png"));
+            ImageIO.write(img, "png", new File( destinationPath + numeroRadicado + ".png"));
         } catch (IOException e) {
         }
         return numeroRadicado + ".png";

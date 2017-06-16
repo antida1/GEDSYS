@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,181 +32,179 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.autheticate", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario and u.clave = :clave")
+     @NamedQuery(name = "Usuario.autheticate", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario and u.clave = :clave")
     , @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
-    , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")
-    , @NamedQuery(name = "Usuario.findByClave", query = "SELECT u FROM Usuario u WHERE u.clave = :clave")
-    , @NamedQuery(name = "Usuario.findByNombres", query = "SELECT u FROM Usuario u WHERE u.nombres = :nombres")
     , @NamedQuery(name = "Usuario.findByApelidos", query = "SELECT u FROM Usuario u WHERE u.apelidos = :apelidos")
-    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByCelular", query = "SELECT u FROM Usuario u WHERE u.celular = :celular")
-    , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
-    , @NamedQuery(name = "Usuario.findByFoto", query = "SELECT u FROM Usuario u WHERE u.foto = :foto")
+    , @NamedQuery(name = "Usuario.findByClave", query = "SELECT u FROM Usuario u WHERE u.clave = :clave")
+    , @NamedQuery(name = "Usuario.findByCreadoPor", query = "SELECT u FROM Usuario u WHERE u.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByFechaCreacion", query = "SELECT u FROM Usuario u WHERE u.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Usuario.findByFechaModificacion", query = "SELECT u FROM Usuario u WHERE u.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Usuario.findByCreadoPor", query = "SELECT u FROM Usuario u WHERE u.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Usuario.findByModificadoPor", query = "SELECT u FROM Usuario u WHERE u.modificadoPor = :modificadoPor")})
+    , @NamedQuery(name = "Usuario.findByFoto", query = "SELECT u FROM Usuario u WHERE u.foto = :foto")
+    , @NamedQuery(name = "Usuario.findByModificadoPor", query = "SELECT u FROM Usuario u WHERE u.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "Usuario.findByNombres", query = "SELECT u FROM Usuario u WHERE u.nombres = :nombres")
+    , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
+    , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Usuario")
-    private String usuario;
-    @Column(name = "Clave")
-    private String clave;
-    @Column(name = "Nombres")
-    private String nombres;
     @Column(name = "Apelidos")
     private String apelidos;
-    @Column(name = "Email")
-    private String email;
     @Column(name = "Celular")
     private String celular;
-    @Column(name = "Telefono")
-    private String telefono;
-    @Column(name = "Foto")
-    private String foto;
+    @Column(name = "Clave")
+    private String clave;
+    @Column(name = "CreadoPor")
+    private Integer creadoPor;
+    @Column(name = "Email")
+    private String email;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
+    @Column(name = "Foto")
+    private String foto;
     @Column(name = "ModificadoPor")
     private Integer modificadoPor;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Cargo> cargoCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Cargo> cargoCollection1;
-    @OneToMany(mappedBy = "responsable")
-    private Collection<Notificacion> notificacionCollection;
-    @JoinColumn(name = "Cargo", referencedColumnName = "Id")
-    @ManyToOne
-    private Cargo cargo;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Autor> autorCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Autor> autorCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<SubSerie> subSerieCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<SubSerie> subSerieCollection1;
+    @Column(name = "Nombres")
+    private String nombres;
+    @Column(name = "Telefono")
+    private String telefono;
+    @Column(name = "Usuario")
+    private String usuario;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ClaseDocumento> claseDocumentoCollection;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ClaseDocumento> claseDocumentoCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Seccion> seccionCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Seccion> seccionCollection1;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Grupo> grupoCollection;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Serie> serieCollection;
+    private Collection<Documento> documentoCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Serie> serieCollection1;
+    private Collection<Documento> documentoCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<UnidadDocumental> unidadDocumentalCollection;
+    private Collection<Acl> aclCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<UnidadDocumental> unidadDocumentalCollection1;
+    private Collection<Acl> aclCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Pais> paisCollection;
+    private Collection<SeccionSubSeccion> seccionSubSeccionCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Pais> paisCollection1;
+    private Collection<SeccionSubSeccion> seccionSubSeccionCollection1;
+    @OneToMany(mappedBy = "usuario")
+    private Collection<Preferencias> preferenciasCollection;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<PlantillaDocumental> plantillaDocumentalCollection;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<PlantillaDocumental> plantillaDocumentalCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<TipoDocumental> tipoDocumentalCollection;
+    private Collection<Cargo> cargoCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<TipoDocumental> tipoDocumentalCollection1;
+    private Collection<Cargo> cargoCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Entidad> entidadCollection;
+    private Collection<TipoDocumento> tipoDocumentoCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Entidad> entidadCollection1;
+    private Collection<TipoDocumento> tipoDocumentoCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Corregimiento> corregimientoCollection;
+    private Collection<SubSerie> subSerieCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Corregimiento> corregimientoCollection1;
+    private Collection<SubSerie> subSerieCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Modulo> moduloCollection;
+    private Collection<Municipio> municipioCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Modulo> moduloCollection1;
+    private Collection<Municipio> municipioCollection1;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ProcesoNegocio> procesoNegocioCollection;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ProcesoNegocio> procesoNegocioCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Anexo> anexoCollection;
-    @OneToMany(mappedBy = "modificadorPor")
-    private Collection<Anexo> anexoCollection1;
+    private Collection<Corregimiento> corregimientoCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Corregimiento> corregimientoCollection1;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<GrupoUsuario> grupoUsuarioCollection;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<GrupoUsuario> grupoUsuarioCollection1;
     @OneToMany(mappedBy = "usuario")
     private Collection<GrupoUsuario> grupoUsuarioCollection2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private Collection<DestinatariosDoc> destinatariosDocCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private Collection<DestinatariosDoc> destinatariosDocCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinatarioId")
+    private Collection<DestinatariosDoc> destinatariosDocCollection2;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<ProcesoDocumental> procesoDocumentalCollection;
+    private Collection<Autor> autorCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<ProcesoDocumental> procesoDocumentalCollection1;
+    private Collection<Autor> autorCollection1;
+    @OneToMany(mappedBy = "responsable")
+    private Collection<Notificacion> notificacionCollection;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Acl> aclCollection;
+    private Collection<Pais> paisCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Acl> aclCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Departamento> departamentoCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Departamento> departamentoCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<SignaturaTopografica> signaturaTopograficaCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<SignaturaTopografica> signaturaTopograficaCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Municipio> municipioCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Municipio> municipioCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<TipoDocumento> tipoDocumentoCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<TipoDocumento> tipoDocumentoCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<Transportador> transportadorCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Transportador> transportadorCollection1;
-    @OneToMany(mappedBy = "creadoPor")
-    private Collection<MonitoresProceso> monitoresProcesoCollection;
-    @OneToMany(mappedBy = "modificadoPor")
-    private Collection<MonitoresProceso> monitoresProcesoCollection1;
+    private Collection<Pais> paisCollection1;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Consecutivo> consecutivoCollection;
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Consecutivo> consecutivoCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<Documento> documentoCollection;
+    private Collection<SignaturaTopografica> signaturaTopograficaCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<Documento> documentoCollection1;
-    @OneToMany(mappedBy = "usuario")
-    private Collection<Preferencias> preferenciasCollection;
+    private Collection<SignaturaTopografica> signaturaTopograficaCollection1;
     @OneToMany(mappedBy = "creadoPor")
-    private Collection<SubSeccion> subSeccionCollection;
+    private Collection<TipoDocumental> tipoDocumentalCollection;
     @OneToMany(mappedBy = "modificadoPor")
-    private Collection<SubSeccion> subSeccionCollection1;
+    private Collection<TipoDocumental> tipoDocumentalCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<Transportador> transportadorCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Transportador> transportadorCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<ProcesoDocumental> procesodocumentalCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<ProcesoDocumental> procesodocumentalCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<Entidad> entidadCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Entidad> entidadCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<UnidadDocumental> unidadDocumentalCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<UnidadDocumental> unidadDocumentalCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<Serie> serieCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Serie> serieCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<Departamento> departamentoCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Departamento> departamentoCollection1;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<MonitoresProceso> monitoresProcesoCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<MonitoresProceso> monitoresProcesoCollection1;
+    @JoinColumn(name = "Cargo", referencedColumnName = "Id")
+    @ManyToOne
+    private Cargo cargo;
+    @OneToMany(mappedBy = "creadoPor")
+    private Collection<Modulo> moduloCollection;
+    @OneToMany(mappedBy = "modificadoPor")
+    private Collection<Modulo> moduloCollection1;
 
     public Usuario() {
     }
@@ -222,44 +221,12 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
     public String getApelidos() {
         return apelidos;
     }
 
     public void setApelidos(String apelidos) {
         this.apelidos = apelidos;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getCelular() {
@@ -270,20 +237,28 @@ public class Usuario implements Serializable {
         this.celular = celular;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getClave() {
+        return clave;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
-    public String getFoto() {
-        return foto;
+    public Integer getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setFoto(String foto) {
-        this.foto = foto;
+    public void setCreadoPor(Integer creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getFechaCreacion() {
@@ -302,12 +277,12 @@ public class Usuario implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
+    public String getFoto() {
+        return foto;
     }
 
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public Integer getModificadoPor() {
@@ -318,102 +293,28 @@ public class Usuario implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Cargo> getCargoCollection() {
-        return cargoCollection;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setCargoCollection(Collection<Cargo> cargoCollection) {
-        this.cargoCollection = cargoCollection;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Cargo> getCargoCollection1() {
-        return cargoCollection1;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setCargoCollection1(Collection<Cargo> cargoCollection1) {
-        this.cargoCollection1 = cargoCollection1;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Notificacion> getNotificacionCollection() {
-        return notificacionCollection;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNotificacionCollection(Collection<Notificacion> notificacionCollection) {
-        this.notificacionCollection = notificacionCollection;
-    }
-
-    public Cargo getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Autor> getAutorCollection() {
-        return autorCollection;
-    }
-
-    public void setAutorCollection(Collection<Autor> autorCollection) {
-        this.autorCollection = autorCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Autor> getAutorCollection1() {
-        return autorCollection1;
-    }
-
-    public void setAutorCollection1(Collection<Autor> autorCollection1) {
-        this.autorCollection1 = autorCollection1;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
-        return procesoTipoDocumentoCollection;
-    }
-
-    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
-        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection1() {
-        return procesoTipoDocumentoCollection1;
-    }
-
-    public void setProcesoTipoDocumentoCollection1(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection1) {
-        this.procesoTipoDocumentoCollection1 = procesoTipoDocumentoCollection1;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<SubSerie> getSubSerieCollection() {
-        return subSerieCollection;
-    }
-
-    public void setSubSerieCollection(Collection<SubSerie> subSerieCollection) {
-        this.subSerieCollection = subSerieCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<SubSerie> getSubSerieCollection1() {
-        return subSerieCollection1;
-    }
-
-    public void setSubSerieCollection1(Collection<SubSerie> subSerieCollection1) {
-        this.subSerieCollection1 = subSerieCollection1;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     @XmlTransient
@@ -438,26 +339,6 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Seccion> getSeccionCollection() {
-        return seccionCollection;
-    }
-
-    public void setSeccionCollection(Collection<Seccion> seccionCollection) {
-        this.seccionCollection = seccionCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Seccion> getSeccionCollection1() {
-        return seccionCollection1;
-    }
-
-    public void setSeccionCollection1(Collection<Seccion> seccionCollection1) {
-        this.seccionCollection1 = seccionCollection1;
-    }
-
-    @XmlTransient
-    @JsonIgnore
     public Collection<Grupo> getGrupoCollection() {
         return grupoCollection;
     }
@@ -468,62 +349,72 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Serie> getSerieCollection() {
-        return serieCollection;
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
     }
 
-    public void setSerieCollection(Collection<Serie> serieCollection) {
-        this.serieCollection = serieCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Serie> getSerieCollection1() {
-        return serieCollection1;
-    }
-
-    public void setSerieCollection1(Collection<Serie> serieCollection1) {
-        this.serieCollection1 = serieCollection1;
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<UnidadDocumental> getUnidadDocumentalCollection() {
-        return unidadDocumentalCollection;
+    public Collection<Documento> getDocumentoCollection1() {
+        return documentoCollection1;
     }
 
-    public void setUnidadDocumentalCollection(Collection<UnidadDocumental> unidadDocumentalCollection) {
-        this.unidadDocumentalCollection = unidadDocumentalCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<UnidadDocumental> getUnidadDocumentalCollection1() {
-        return unidadDocumentalCollection1;
-    }
-
-    public void setUnidadDocumentalCollection1(Collection<UnidadDocumental> unidadDocumentalCollection1) {
-        this.unidadDocumentalCollection1 = unidadDocumentalCollection1;
+    public void setDocumentoCollection1(Collection<Documento> documentoCollection1) {
+        this.documentoCollection1 = documentoCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Pais> getPaisCollection() {
-        return paisCollection;
+    public Collection<Acl> getAclCollection() {
+        return aclCollection;
     }
 
-    public void setPaisCollection(Collection<Pais> paisCollection) {
-        this.paisCollection = paisCollection;
+    public void setAclCollection(Collection<Acl> aclCollection) {
+        this.aclCollection = aclCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Pais> getPaisCollection1() {
-        return paisCollection1;
+    public Collection<Acl> getAclCollection1() {
+        return aclCollection1;
     }
 
-    public void setPaisCollection1(Collection<Pais> paisCollection1) {
-        this.paisCollection1 = paisCollection1;
+    public void setAclCollection1(Collection<Acl> aclCollection1) {
+        this.aclCollection1 = aclCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<SeccionSubSeccion> getSeccionSubSeccionCollection() {
+        return seccionSubSeccionCollection;
+    }
+
+    public void setSeccionSubSeccionCollection(Collection<SeccionSubSeccion> seccionSubSeccionCollection) {
+        this.seccionSubSeccionCollection = seccionSubSeccionCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<SeccionSubSeccion> getSeccionSubSeccionCollection1() {
+        return seccionSubSeccionCollection1;
+    }
+
+    public void setSeccionSubSeccionCollection1(Collection<SeccionSubSeccion> seccionSubSeccionCollection1) {
+        this.seccionSubSeccionCollection1 = seccionSubSeccionCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Preferencias> getPreferenciasCollection() {
+        return preferenciasCollection;
+    }
+
+    public void setPreferenciasCollection(Collection<Preferencias> preferenciasCollection) {
+        this.preferenciasCollection = preferenciasCollection;
     }
 
     @XmlTransient
@@ -548,82 +439,82 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<TipoDocumental> getTipoDocumentalCollection() {
-        return tipoDocumentalCollection;
+    public Collection<Cargo> getCargoCollection() {
+        return cargoCollection;
     }
 
-    public void setTipoDocumentalCollection(Collection<TipoDocumental> tipoDocumentalCollection) {
-        this.tipoDocumentalCollection = tipoDocumentalCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<TipoDocumental> getTipoDocumentalCollection1() {
-        return tipoDocumentalCollection1;
-    }
-
-    public void setTipoDocumentalCollection1(Collection<TipoDocumental> tipoDocumentalCollection1) {
-        this.tipoDocumentalCollection1 = tipoDocumentalCollection1;
+    public void setCargoCollection(Collection<Cargo> cargoCollection) {
+        this.cargoCollection = cargoCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Entidad> getEntidadCollection() {
-        return entidadCollection;
+    public Collection<Cargo> getCargoCollection1() {
+        return cargoCollection1;
     }
 
-    public void setEntidadCollection(Collection<Entidad> entidadCollection) {
-        this.entidadCollection = entidadCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Entidad> getEntidadCollection1() {
-        return entidadCollection1;
-    }
-
-    public void setEntidadCollection1(Collection<Entidad> entidadCollection1) {
-        this.entidadCollection1 = entidadCollection1;
+    public void setCargoCollection1(Collection<Cargo> cargoCollection1) {
+        this.cargoCollection1 = cargoCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Corregimiento> getCorregimientoCollection() {
-        return corregimientoCollection;
+    public Collection<TipoDocumento> getTipoDocumentoCollection() {
+        return tipoDocumentoCollection;
     }
 
-    public void setCorregimientoCollection(Collection<Corregimiento> corregimientoCollection) {
-        this.corregimientoCollection = corregimientoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Corregimiento> getCorregimientoCollection1() {
-        return corregimientoCollection1;
-    }
-
-    public void setCorregimientoCollection1(Collection<Corregimiento> corregimientoCollection1) {
-        this.corregimientoCollection1 = corregimientoCollection1;
+    public void setTipoDocumentoCollection(Collection<TipoDocumento> tipoDocumentoCollection) {
+        this.tipoDocumentoCollection = tipoDocumentoCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Modulo> getModuloCollection() {
-        return moduloCollection;
+    public Collection<TipoDocumento> getTipoDocumentoCollection1() {
+        return tipoDocumentoCollection1;
     }
 
-    public void setModuloCollection(Collection<Modulo> moduloCollection) {
-        this.moduloCollection = moduloCollection;
+    public void setTipoDocumentoCollection1(Collection<TipoDocumento> tipoDocumentoCollection1) {
+        this.tipoDocumentoCollection1 = tipoDocumentoCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Modulo> getModuloCollection1() {
-        return moduloCollection1;
+    public Collection<SubSerie> getSubSerieCollection() {
+        return subSerieCollection;
     }
 
-    public void setModuloCollection1(Collection<Modulo> moduloCollection1) {
-        this.moduloCollection1 = moduloCollection1;
+    public void setSubSerieCollection(Collection<SubSerie> subSerieCollection) {
+        this.subSerieCollection = subSerieCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<SubSerie> getSubSerieCollection1() {
+        return subSerieCollection1;
+    }
+
+    public void setSubSerieCollection1(Collection<SubSerie> subSerieCollection1) {
+        this.subSerieCollection1 = subSerieCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Municipio> getMunicipioCollection() {
+        return municipioCollection;
+    }
+
+    public void setMunicipioCollection(Collection<Municipio> municipioCollection) {
+        this.municipioCollection = municipioCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Municipio> getMunicipioCollection1() {
+        return municipioCollection1;
+    }
+
+    public void setMunicipioCollection1(Collection<Municipio> municipioCollection1) {
+        this.municipioCollection1 = municipioCollection1;
     }
 
     @XmlTransient
@@ -648,22 +539,22 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Anexo> getAnexoCollection() {
-        return anexoCollection;
+    public Collection<Corregimiento> getCorregimientoCollection() {
+        return corregimientoCollection;
     }
 
-    public void setAnexoCollection(Collection<Anexo> anexoCollection) {
-        this.anexoCollection = anexoCollection;
+    public void setCorregimientoCollection(Collection<Corregimiento> corregimientoCollection) {
+        this.corregimientoCollection = corregimientoCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Anexo> getAnexoCollection1() {
-        return anexoCollection1;
+    public Collection<Corregimiento> getCorregimientoCollection1() {
+        return corregimientoCollection1;
     }
 
-    public void setAnexoCollection1(Collection<Anexo> anexoCollection1) {
-        this.anexoCollection1 = anexoCollection1;
+    public void setCorregimientoCollection1(Collection<Corregimiento> corregimientoCollection1) {
+        this.corregimientoCollection1 = corregimientoCollection1;
     }
 
     @XmlTransient
@@ -698,162 +589,82 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<ProcesoDocumental> getProcesoDocumentalCollection() {
-        return procesoDocumentalCollection;
+    public Collection<DestinatariosDoc> getDestinatariosDocCollection() {
+        return destinatariosDocCollection;
     }
 
-    public void setProcesoDocumentalCollection(Collection<ProcesoDocumental> procesoDocumentalCollection) {
-        this.procesoDocumentalCollection = procesoDocumentalCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoDocumental> getProcesoDocumentalCollection1() {
-        return procesoDocumentalCollection1;
-    }
-
-    public void setProcesoDocumentalCollection1(Collection<ProcesoDocumental> procesoDocumentalCollection1) {
-        this.procesoDocumentalCollection1 = procesoDocumentalCollection1;
+    public void setDestinatariosDocCollection(Collection<DestinatariosDoc> destinatariosDocCollection) {
+        this.destinatariosDocCollection = destinatariosDocCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Acl> getAclCollection() {
-        return aclCollection;
+    public Collection<DestinatariosDoc> getDestinatariosDocCollection1() {
+        return destinatariosDocCollection1;
     }
 
-    public void setAclCollection(Collection<Acl> aclCollection) {
-        this.aclCollection = aclCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Acl> getAclCollection1() {
-        return aclCollection1;
-    }
-
-    public void setAclCollection1(Collection<Acl> aclCollection1) {
-        this.aclCollection1 = aclCollection1;
+    public void setDestinatariosDocCollection1(Collection<DestinatariosDoc> destinatariosDocCollection1) {
+        this.destinatariosDocCollection1 = destinatariosDocCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Departamento> getDepartamentoCollection() {
-        return departamentoCollection;
+    public Collection<DestinatariosDoc> getDestinatariosDocCollection2() {
+        return destinatariosDocCollection2;
     }
 
-    public void setDepartamentoCollection(Collection<Departamento> departamentoCollection) {
-        this.departamentoCollection = departamentoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Departamento> getDepartamentoCollection1() {
-        return departamentoCollection1;
-    }
-
-    public void setDepartamentoCollection1(Collection<Departamento> departamentoCollection1) {
-        this.departamentoCollection1 = departamentoCollection1;
+    public void setDestinatariosDocCollection2(Collection<DestinatariosDoc> destinatariosDocCollection2) {
+        this.destinatariosDocCollection2 = destinatariosDocCollection2;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<SignaturaTopografica> getSignaturaTopograficaCollection() {
-        return signaturaTopograficaCollection;
+    public Collection<Autor> getAutorCollection() {
+        return autorCollection;
     }
 
-    public void setSignaturaTopograficaCollection(Collection<SignaturaTopografica> signaturaTopograficaCollection) {
-        this.signaturaTopograficaCollection = signaturaTopograficaCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<SignaturaTopografica> getSignaturaTopograficaCollection1() {
-        return signaturaTopograficaCollection1;
-    }
-
-    public void setSignaturaTopograficaCollection1(Collection<SignaturaTopografica> signaturaTopograficaCollection1) {
-        this.signaturaTopograficaCollection1 = signaturaTopograficaCollection1;
+    public void setAutorCollection(Collection<Autor> autorCollection) {
+        this.autorCollection = autorCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Municipio> getMunicipioCollection() {
-        return municipioCollection;
+    public Collection<Autor> getAutorCollection1() {
+        return autorCollection1;
     }
 
-    public void setMunicipioCollection(Collection<Municipio> municipioCollection) {
-        this.municipioCollection = municipioCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Municipio> getMunicipioCollection1() {
-        return municipioCollection1;
-    }
-
-    public void setMunicipioCollection1(Collection<Municipio> municipioCollection1) {
-        this.municipioCollection1 = municipioCollection1;
+    public void setAutorCollection1(Collection<Autor> autorCollection1) {
+        this.autorCollection1 = autorCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<TipoDocumento> getTipoDocumentoCollection() {
-        return tipoDocumentoCollection;
+    public Collection<Notificacion> getNotificacionCollection() {
+        return notificacionCollection;
     }
 
-    public void setTipoDocumentoCollection(Collection<TipoDocumento> tipoDocumentoCollection) {
-        this.tipoDocumentoCollection = tipoDocumentoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<TipoDocumento> getTipoDocumentoCollection1() {
-        return tipoDocumentoCollection1;
-    }
-
-    public void setTipoDocumentoCollection1(Collection<TipoDocumento> tipoDocumentoCollection1) {
-        this.tipoDocumentoCollection1 = tipoDocumentoCollection1;
+    public void setNotificacionCollection(Collection<Notificacion> notificacionCollection) {
+        this.notificacionCollection = notificacionCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Transportador> getTransportadorCollection() {
-        return transportadorCollection;
+    public Collection<Pais> getPaisCollection() {
+        return paisCollection;
     }
 
-    public void setTransportadorCollection(Collection<Transportador> transportadorCollection) {
-        this.transportadorCollection = transportadorCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Transportador> getTransportadorCollection1() {
-        return transportadorCollection1;
-    }
-
-    public void setTransportadorCollection1(Collection<Transportador> transportadorCollection1) {
-        this.transportadorCollection1 = transportadorCollection1;
+    public void setPaisCollection(Collection<Pais> paisCollection) {
+        this.paisCollection = paisCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<MonitoresProceso> getMonitoresProcesoCollection() {
-        return monitoresProcesoCollection;
+    public Collection<Pais> getPaisCollection1() {
+        return paisCollection1;
     }
 
-    public void setMonitoresProcesoCollection(Collection<MonitoresProceso> monitoresProcesoCollection) {
-        this.monitoresProcesoCollection = monitoresProcesoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<MonitoresProceso> getMonitoresProcesoCollection1() {
-        return monitoresProcesoCollection1;
-    }
-
-    public void setMonitoresProcesoCollection1(Collection<MonitoresProceso> monitoresProcesoCollection1) {
-        this.monitoresProcesoCollection1 = monitoresProcesoCollection1;
+    public void setPaisCollection1(Collection<Pais> paisCollection1) {
+        this.paisCollection1 = paisCollection1;
     }
 
     @XmlTransient
@@ -878,52 +689,230 @@ public class Usuario implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
+    public Collection<SignaturaTopografica> getSignaturaTopograficaCollection() {
+        return signaturaTopograficaCollection;
     }
 
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection1() {
-        return documentoCollection1;
-    }
-
-    public void setDocumentoCollection1(Collection<Documento> documentoCollection1) {
-        this.documentoCollection1 = documentoCollection1;
+    public void setSignaturaTopograficaCollection(Collection<SignaturaTopografica> signaturaTopograficaCollection) {
+        this.signaturaTopograficaCollection = signaturaTopograficaCollection;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Preferencias> getPreferenciasCollection() {
-        return preferenciasCollection;
+    public Collection<SignaturaTopografica> getSignaturaTopograficaCollection1() {
+        return signaturaTopograficaCollection1;
     }
 
-    public void setPreferenciasCollection(Collection<Preferencias> preferenciasCollection) {
-        this.preferenciasCollection = preferenciasCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<SubSeccion> getSubSeccionCollection() {
-        return subSeccionCollection;
-    }
-
-    public void setSubSeccionCollection(Collection<SubSeccion> subSeccionCollection) {
-        this.subSeccionCollection = subSeccionCollection;
+    public void setSignaturaTopograficaCollection1(Collection<SignaturaTopografica> signaturaTopograficaCollection1) {
+        this.signaturaTopograficaCollection1 = signaturaTopograficaCollection1;
     }
 
     @XmlTransient
     @JsonIgnore
-    public Collection<SubSeccion> getSubSeccionCollection1() {
-        return subSeccionCollection1;
+    public Collection<TipoDocumental> getTipoDocumentalCollection() {
+        return tipoDocumentalCollection;
     }
 
-    public void setSubSeccionCollection1(Collection<SubSeccion> subSeccionCollection1) {
-        this.subSeccionCollection1 = subSeccionCollection1;
+    public void setTipoDocumentalCollection(Collection<TipoDocumental> tipoDocumentalCollection) {
+        this.tipoDocumentalCollection = tipoDocumentalCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<TipoDocumental> getTipoDocumentalCollection1() {
+        return tipoDocumentalCollection1;
+    }
+
+    public void setTipoDocumentalCollection1(Collection<TipoDocumental> tipoDocumentalCollection1) {
+        this.tipoDocumentalCollection1 = tipoDocumentalCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Transportador> getTransportadorCollection() {
+        return transportadorCollection;
+    }
+
+    public void setTransportadorCollection(Collection<Transportador> transportadorCollection) {
+        this.transportadorCollection = transportadorCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Transportador> getTransportadorCollection1() {
+        return transportadorCollection1;
+    }
+
+    public void setTransportadorCollection1(Collection<Transportador> transportadorCollection1) {
+        this.transportadorCollection1 = transportadorCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoDocumental> getProcesodocumentalCollection() {
+        return procesodocumentalCollection;
+    }
+
+    public void setProcesodocumentalCollection(Collection<ProcesoDocumental> procesodocumentalCollection) {
+        this.procesodocumentalCollection = procesodocumentalCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoDocumental> getProcesodocumentalCollection1() {
+        return procesodocumentalCollection1;
+    }
+
+    public void setProcesodocumentalCollection1(Collection<ProcesoDocumental> procesodocumentalCollection1) {
+        this.procesodocumentalCollection1 = procesodocumentalCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection() {
+        return procesoTipoDocumentoCollection;
+    }
+
+    public void setProcesoTipoDocumentoCollection(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection) {
+        this.procesoTipoDocumentoCollection = procesoTipoDocumentoCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoTipoDocumento> getProcesoTipoDocumentoCollection1() {
+        return procesoTipoDocumentoCollection1;
+    }
+
+    public void setProcesoTipoDocumentoCollection1(Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection1) {
+        this.procesoTipoDocumentoCollection1 = procesoTipoDocumentoCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Entidad> getEntidadCollection() {
+        return entidadCollection;
+    }
+
+    public void setEntidadCollection(Collection<Entidad> entidadCollection) {
+        this.entidadCollection = entidadCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Entidad> getEntidadCollection1() {
+        return entidadCollection1;
+    }
+
+    public void setEntidadCollection1(Collection<Entidad> entidadCollection1) {
+        this.entidadCollection1 = entidadCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<UnidadDocumental> getUnidadDocumentalCollection() {
+        return unidadDocumentalCollection;
+    }
+
+    public void setUnidadDocumentalCollection(Collection<UnidadDocumental> unidadDocumentalCollection) {
+        this.unidadDocumentalCollection = unidadDocumentalCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<UnidadDocumental> getUnidadDocumentalCollection1() {
+        return unidadDocumentalCollection1;
+    }
+
+    public void setUnidadDocumentalCollection1(Collection<UnidadDocumental> unidadDocumentalCollection1) {
+        this.unidadDocumentalCollection1 = unidadDocumentalCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Serie> getSerieCollection() {
+        return serieCollection;
+    }
+
+    public void setSerieCollection(Collection<Serie> serieCollection) {
+        this.serieCollection = serieCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Serie> getSerieCollection1() {
+        return serieCollection1;
+    }
+
+    public void setSerieCollection1(Collection<Serie> serieCollection1) {
+        this.serieCollection1 = serieCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Departamento> getDepartamentoCollection() {
+        return departamentoCollection;
+    }
+
+    public void setDepartamentoCollection(Collection<Departamento> departamentoCollection) {
+        this.departamentoCollection = departamentoCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Departamento> getDepartamentoCollection1() {
+        return departamentoCollection1;
+    }
+
+    public void setDepartamentoCollection1(Collection<Departamento> departamentoCollection1) {
+        this.departamentoCollection1 = departamentoCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<MonitoresProceso> getMonitoresProcesoCollection() {
+        return monitoresProcesoCollection;
+    }
+
+    public void setMonitoresProcesoCollection(Collection<MonitoresProceso> monitoresProcesoCollection) {
+        this.monitoresProcesoCollection = monitoresProcesoCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<MonitoresProceso> getMonitoresProcesoCollection1() {
+        return monitoresProcesoCollection1;
+    }
+
+    public void setMonitoresProcesoCollection1(Collection<MonitoresProceso> monitoresProcesoCollection1) {
+        this.monitoresProcesoCollection1 = monitoresProcesoCollection1;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Modulo> getModuloCollection() {
+        return moduloCollection;
+    }
+
+    public void setModuloCollection(Collection<Modulo> moduloCollection) {
+        this.moduloCollection = moduloCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Modulo> getModuloCollection1() {
+        return moduloCollection1;
+    }
+
+    public void setModuloCollection1(Collection<Modulo> moduloCollection1) {
+        this.moduloCollection1 = moduloCollection1;
     }
 
     @Override

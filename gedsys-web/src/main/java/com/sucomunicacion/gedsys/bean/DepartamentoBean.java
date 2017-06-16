@@ -12,23 +12,18 @@ import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.DepartamentoJpaController;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author rober
  */
-@ManagedBean
 @ViewScoped
+@Named
 public class DepartamentoBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;

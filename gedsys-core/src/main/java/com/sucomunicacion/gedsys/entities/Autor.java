@@ -31,25 +31,23 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Autor")
+@Table(name = "autor", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Autor.findAll", query = "SELECT a FROM Autor a")
     , @NamedQuery(name = "Autor.findById", query = "SELECT a FROM Autor a WHERE a.id = :id")
-    , @NamedQuery(name = "Autor.findByNombres", query = "SELECT a FROM Autor a WHERE a.nombres = :nombres")
     , @NamedQuery(name = "Autor.findByApellidos", query = "SELECT a FROM Autor a WHERE a.apellidos = :apellidos")
     , @NamedQuery(name = "Autor.findByFechaCreacion", query = "SELECT a FROM Autor a WHERE a.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Autor.findByFechaModificacion", query = "SELECT a FROM Autor a WHERE a.fechaModificacion = :fechaModificacion")})
+    , @NamedQuery(name = "Autor.findByFechaModificacion", query = "SELECT a FROM Autor a WHERE a.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Autor.findByNombres", query = "SELECT a FROM Autor a WHERE a.nombres = :nombres")})
 public class Autor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
-    @Column(name = "Nombres")
-    private String nombres;
     @Column(name = "Apellidos")
     private String apellidos;
     @Column(name = "FechaCreacion")
@@ -58,14 +56,16 @@ public class Autor implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.DATE)
     private Date fechaModificacion;
+    @Column(name = "Nombres")
+    private String nombres;
+    @OneToMany(mappedBy = "autor")
+    private Collection<Documento> documentoCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "autor")
-    private Collection<Documento> documentoCollection;
 
     public Autor() {
     }
@@ -80,14 +80,6 @@ public class Autor implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
     }
 
     public String getApellidos() {
@@ -114,6 +106,24 @@ public class Autor implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Documento> getDocumentoCollection() {
+        return documentoCollection;
+    }
+
+    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
+        this.documentoCollection = documentoCollection;
+    }
+
     public Usuario getCreadoPor() {
         return creadoPor;
     }
@@ -128,16 +138,6 @@ public class Autor implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Documento> getDocumentoCollection() {
-        return documentoCollection;
-    }
-
-    public void setDocumentoCollection(Collection<Documento> documentoCollection) {
-        this.documentoCollection = documentoCollection;
     }
 
     @Override

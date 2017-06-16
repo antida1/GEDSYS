@@ -14,10 +14,6 @@
         <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
             <p:printer target="radic"/>
         </p:commandButton>
-        <p:commandButton update="imessages" value="Generar" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px" actionListener="#{radicadoBean.generar()}" action="#{radicadoBean.generar()}">
-        
-        </p:commandButton>
-        
         <div class="page" size="A4"  id="image" >
             <p:graphicImage id="radic" value="#{radicadoBean.radicadoImg}" />
         </div>

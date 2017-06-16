@@ -10,15 +10,14 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.Departamento;
 import com.sucomunicacion.gedsys.entities.Usuario;
-import com.sucomunicacion.gedsys.entities.Corregimiento;
+import com.sucomunicacion.gedsys.entities.Departamento;
+import com.sucomunicacion.gedsys.entities.Documento;
 import java.util.ArrayList;
 import java.util.Collection;
-import com.sucomunicacion.gedsys.entities.Documento;
+import com.sucomunicacion.gedsys.entities.Corregimiento;
 import com.sucomunicacion.gedsys.entities.Municipio;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,65 +37,56 @@ public class MunicipioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Municipio municipio) throws PreexistingEntityException, Exception {
-        if (municipio.getCorregimientoCollection() == null) {
-            municipio.setCorregimientoCollection(new ArrayList<Corregimiento>());
-        }
+    public void create(Municipio municipio) {
         if (municipio.getDocumentoCollection() == null) {
             municipio.setDocumentoCollection(new ArrayList<Documento>());
+        }
+        if (municipio.getCorregimientoCollection() == null) {
+            municipio.setCorregimientoCollection(new ArrayList<Corregimiento>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Departamento departamento = municipio.getDepartamento();
-            if (departamento != null) {
-                departamento = em.getReference(departamento.getClass(), departamento.getId());
-                municipio.setDepartamento(departamento);
-            }
             Usuario creadoPor = municipio.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
                 municipio.setCreadoPor(creadoPor);
+            }
+            Departamento departamento = municipio.getDepartamento();
+            if (departamento != null) {
+                departamento = em.getReference(departamento.getClass(), departamento.getId());
+                municipio.setDepartamento(departamento);
             }
             Usuario modificadoPor = municipio.getModificadoPor();
             if (modificadoPor != null) {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 municipio.setModificadoPor(modificadoPor);
             }
-            Collection<Corregimiento> attachedCorregimientoCollection = new ArrayList<Corregimiento>();
-            for (Corregimiento corregimientoCollectionCorregimientoToAttach : municipio.getCorregimientoCollection()) {
-                corregimientoCollectionCorregimientoToAttach = em.getReference(corregimientoCollectionCorregimientoToAttach.getClass(), corregimientoCollectionCorregimientoToAttach.getId());
-                attachedCorregimientoCollection.add(corregimientoCollectionCorregimientoToAttach);
-            }
-            municipio.setCorregimientoCollection(attachedCorregimientoCollection);
             Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
             for (Documento documentoCollectionDocumentoToAttach : municipio.getDocumentoCollection()) {
                 documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
                 attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
             }
             municipio.setDocumentoCollection(attachedDocumentoCollection);
-            em.persist(municipio);
-            if (departamento != null) {
-                departamento.getMunicipioCollection().add(municipio);
-                departamento = em.merge(departamento);
+            Collection<Corregimiento> attachedCorregimientoCollection = new ArrayList<Corregimiento>();
+            for (Corregimiento corregimientoCollectionCorregimientoToAttach : municipio.getCorregimientoCollection()) {
+                corregimientoCollectionCorregimientoToAttach = em.getReference(corregimientoCollectionCorregimientoToAttach.getClass(), corregimientoCollectionCorregimientoToAttach.getId());
+                attachedCorregimientoCollection.add(corregimientoCollectionCorregimientoToAttach);
             }
+            municipio.setCorregimientoCollection(attachedCorregimientoCollection);
+            em.persist(municipio);
             if (creadoPor != null) {
                 creadoPor.getMunicipioCollection().add(municipio);
                 creadoPor = em.merge(creadoPor);
             }
+            if (departamento != null) {
+                departamento.getMunicipioCollection().add(municipio);
+                departamento = em.merge(departamento);
+            }
             if (modificadoPor != null) {
                 modificadoPor.getMunicipioCollection().add(municipio);
                 modificadoPor = em.merge(modificadoPor);
-            }
-            for (Corregimiento corregimientoCollectionCorregimiento : municipio.getCorregimientoCollection()) {
-                Municipio oldMunicipioOfCorregimientoCollectionCorregimiento = corregimientoCollectionCorregimiento.getMunicipio();
-                corregimientoCollectionCorregimiento.setMunicipio(municipio);
-                corregimientoCollectionCorregimiento = em.merge(corregimientoCollectionCorregimiento);
-                if (oldMunicipioOfCorregimientoCollectionCorregimiento != null) {
-                    oldMunicipioOfCorregimientoCollectionCorregimiento.getCorregimientoCollection().remove(corregimientoCollectionCorregimiento);
-                    oldMunicipioOfCorregimientoCollectionCorregimiento = em.merge(oldMunicipioOfCorregimientoCollectionCorregimiento);
-                }
             }
             for (Documento documentoCollectionDocumento : municipio.getDocumentoCollection()) {
                 Municipio oldMunicipioOfDocumentoCollectionDocumento = documentoCollectionDocumento.getMunicipio();
@@ -107,12 +97,16 @@ public class MunicipioJpaController implements Serializable {
                     oldMunicipioOfDocumentoCollectionDocumento = em.merge(oldMunicipioOfDocumentoCollectionDocumento);
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findMunicipio(municipio.getId()) != null) {
-                throw new PreexistingEntityException("Municipio " + municipio + " already exists.", ex);
+            for (Corregimiento corregimientoCollectionCorregimiento : municipio.getCorregimientoCollection()) {
+                Municipio oldMunicipioOfCorregimientoCollectionCorregimiento = corregimientoCollectionCorregimiento.getMunicipio();
+                corregimientoCollectionCorregimiento.setMunicipio(municipio);
+                corregimientoCollectionCorregimiento = em.merge(corregimientoCollectionCorregimiento);
+                if (oldMunicipioOfCorregimientoCollectionCorregimiento != null) {
+                    oldMunicipioOfCorregimientoCollectionCorregimiento.getCorregimientoCollection().remove(corregimientoCollectionCorregimiento);
+                    oldMunicipioOfCorregimientoCollectionCorregimiento = em.merge(oldMunicipioOfCorregimientoCollectionCorregimiento);
+                }
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -126,35 +120,28 @@ public class MunicipioJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Municipio persistentMunicipio = em.find(Municipio.class, municipio.getId());
-            Departamento departamentoOld = persistentMunicipio.getDepartamento();
-            Departamento departamentoNew = municipio.getDepartamento();
             Usuario creadoPorOld = persistentMunicipio.getCreadoPor();
             Usuario creadoPorNew = municipio.getCreadoPor();
+            Departamento departamentoOld = persistentMunicipio.getDepartamento();
+            Departamento departamentoNew = municipio.getDepartamento();
             Usuario modificadoPorOld = persistentMunicipio.getModificadoPor();
             Usuario modificadoPorNew = municipio.getModificadoPor();
-            Collection<Corregimiento> corregimientoCollectionOld = persistentMunicipio.getCorregimientoCollection();
-            Collection<Corregimiento> corregimientoCollectionNew = municipio.getCorregimientoCollection();
             Collection<Documento> documentoCollectionOld = persistentMunicipio.getDocumentoCollection();
             Collection<Documento> documentoCollectionNew = municipio.getDocumentoCollection();
-            if (departamentoNew != null) {
-                departamentoNew = em.getReference(departamentoNew.getClass(), departamentoNew.getId());
-                municipio.setDepartamento(departamentoNew);
-            }
+            Collection<Corregimiento> corregimientoCollectionOld = persistentMunicipio.getCorregimientoCollection();
+            Collection<Corregimiento> corregimientoCollectionNew = municipio.getCorregimientoCollection();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 municipio.setCreadoPor(creadoPorNew);
+            }
+            if (departamentoNew != null) {
+                departamentoNew = em.getReference(departamentoNew.getClass(), departamentoNew.getId());
+                municipio.setDepartamento(departamentoNew);
             }
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 municipio.setModificadoPor(modificadoPorNew);
             }
-            Collection<Corregimiento> attachedCorregimientoCollectionNew = new ArrayList<Corregimiento>();
-            for (Corregimiento corregimientoCollectionNewCorregimientoToAttach : corregimientoCollectionNew) {
-                corregimientoCollectionNewCorregimientoToAttach = em.getReference(corregimientoCollectionNewCorregimientoToAttach.getClass(), corregimientoCollectionNewCorregimientoToAttach.getId());
-                attachedCorregimientoCollectionNew.add(corregimientoCollectionNewCorregimientoToAttach);
-            }
-            corregimientoCollectionNew = attachedCorregimientoCollectionNew;
-            municipio.setCorregimientoCollection(corregimientoCollectionNew);
             Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
             for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
                 documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
@@ -162,15 +149,14 @@ public class MunicipioJpaController implements Serializable {
             }
             documentoCollectionNew = attachedDocumentoCollectionNew;
             municipio.setDocumentoCollection(documentoCollectionNew);
+            Collection<Corregimiento> attachedCorregimientoCollectionNew = new ArrayList<Corregimiento>();
+            for (Corregimiento corregimientoCollectionNewCorregimientoToAttach : corregimientoCollectionNew) {
+                corregimientoCollectionNewCorregimientoToAttach = em.getReference(corregimientoCollectionNewCorregimientoToAttach.getClass(), corregimientoCollectionNewCorregimientoToAttach.getId());
+                attachedCorregimientoCollectionNew.add(corregimientoCollectionNewCorregimientoToAttach);
+            }
+            corregimientoCollectionNew = attachedCorregimientoCollectionNew;
+            municipio.setCorregimientoCollection(corregimientoCollectionNew);
             municipio = em.merge(municipio);
-            if (departamentoOld != null && !departamentoOld.equals(departamentoNew)) {
-                departamentoOld.getMunicipioCollection().remove(municipio);
-                departamentoOld = em.merge(departamentoOld);
-            }
-            if (departamentoNew != null && !departamentoNew.equals(departamentoOld)) {
-                departamentoNew.getMunicipioCollection().add(municipio);
-                departamentoNew = em.merge(departamentoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getMunicipioCollection().remove(municipio);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -179,6 +165,14 @@ public class MunicipioJpaController implements Serializable {
                 creadoPorNew.getMunicipioCollection().add(municipio);
                 creadoPorNew = em.merge(creadoPorNew);
             }
+            if (departamentoOld != null && !departamentoOld.equals(departamentoNew)) {
+                departamentoOld.getMunicipioCollection().remove(municipio);
+                departamentoOld = em.merge(departamentoOld);
+            }
+            if (departamentoNew != null && !departamentoNew.equals(departamentoOld)) {
+                departamentoNew.getMunicipioCollection().add(municipio);
+                departamentoNew = em.merge(departamentoNew);
+            }
             if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
                 modificadoPorOld.getMunicipioCollection().remove(municipio);
                 modificadoPorOld = em.merge(modificadoPorOld);
@@ -186,23 +180,6 @@ public class MunicipioJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getMunicipioCollection().add(municipio);
                 modificadoPorNew = em.merge(modificadoPorNew);
-            }
-            for (Corregimiento corregimientoCollectionOldCorregimiento : corregimientoCollectionOld) {
-                if (!corregimientoCollectionNew.contains(corregimientoCollectionOldCorregimiento)) {
-                    corregimientoCollectionOldCorregimiento.setMunicipio(null);
-                    corregimientoCollectionOldCorregimiento = em.merge(corregimientoCollectionOldCorregimiento);
-                }
-            }
-            for (Corregimiento corregimientoCollectionNewCorregimiento : corregimientoCollectionNew) {
-                if (!corregimientoCollectionOld.contains(corregimientoCollectionNewCorregimiento)) {
-                    Municipio oldMunicipioOfCorregimientoCollectionNewCorregimiento = corregimientoCollectionNewCorregimiento.getMunicipio();
-                    corregimientoCollectionNewCorregimiento.setMunicipio(municipio);
-                    corregimientoCollectionNewCorregimiento = em.merge(corregimientoCollectionNewCorregimiento);
-                    if (oldMunicipioOfCorregimientoCollectionNewCorregimiento != null && !oldMunicipioOfCorregimientoCollectionNewCorregimiento.equals(municipio)) {
-                        oldMunicipioOfCorregimientoCollectionNewCorregimiento.getCorregimientoCollection().remove(corregimientoCollectionNewCorregimiento);
-                        oldMunicipioOfCorregimientoCollectionNewCorregimiento = em.merge(oldMunicipioOfCorregimientoCollectionNewCorregimiento);
-                    }
-                }
             }
             for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
                 if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
@@ -218,6 +195,23 @@ public class MunicipioJpaController implements Serializable {
                     if (oldMunicipioOfDocumentoCollectionNewDocumento != null && !oldMunicipioOfDocumentoCollectionNewDocumento.equals(municipio)) {
                         oldMunicipioOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
                         oldMunicipioOfDocumentoCollectionNewDocumento = em.merge(oldMunicipioOfDocumentoCollectionNewDocumento);
+                    }
+                }
+            }
+            for (Corregimiento corregimientoCollectionOldCorregimiento : corregimientoCollectionOld) {
+                if (!corregimientoCollectionNew.contains(corregimientoCollectionOldCorregimiento)) {
+                    corregimientoCollectionOldCorregimiento.setMunicipio(null);
+                    corregimientoCollectionOldCorregimiento = em.merge(corregimientoCollectionOldCorregimiento);
+                }
+            }
+            for (Corregimiento corregimientoCollectionNewCorregimiento : corregimientoCollectionNew) {
+                if (!corregimientoCollectionOld.contains(corregimientoCollectionNewCorregimiento)) {
+                    Municipio oldMunicipioOfCorregimientoCollectionNewCorregimiento = corregimientoCollectionNewCorregimiento.getMunicipio();
+                    corregimientoCollectionNewCorregimiento.setMunicipio(municipio);
+                    corregimientoCollectionNewCorregimiento = em.merge(corregimientoCollectionNewCorregimiento);
+                    if (oldMunicipioOfCorregimientoCollectionNewCorregimiento != null && !oldMunicipioOfCorregimientoCollectionNewCorregimiento.equals(municipio)) {
+                        oldMunicipioOfCorregimientoCollectionNewCorregimiento.getCorregimientoCollection().remove(corregimientoCollectionNewCorregimiento);
+                        oldMunicipioOfCorregimientoCollectionNewCorregimiento = em.merge(oldMunicipioOfCorregimientoCollectionNewCorregimiento);
                     }
                 }
             }
@@ -250,30 +244,30 @@ public class MunicipioJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The municipio with id " + id + " no longer exists.", enfe);
             }
-            Departamento departamento = municipio.getDepartamento();
-            if (departamento != null) {
-                departamento.getMunicipioCollection().remove(municipio);
-                departamento = em.merge(departamento);
-            }
             Usuario creadoPor = municipio.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getMunicipioCollection().remove(municipio);
                 creadoPor = em.merge(creadoPor);
+            }
+            Departamento departamento = municipio.getDepartamento();
+            if (departamento != null) {
+                departamento.getMunicipioCollection().remove(municipio);
+                departamento = em.merge(departamento);
             }
             Usuario modificadoPor = municipio.getModificadoPor();
             if (modificadoPor != null) {
                 modificadoPor.getMunicipioCollection().remove(municipio);
                 modificadoPor = em.merge(modificadoPor);
             }
-            Collection<Corregimiento> corregimientoCollection = municipio.getCorregimientoCollection();
-            for (Corregimiento corregimientoCollectionCorregimiento : corregimientoCollection) {
-                corregimientoCollectionCorregimiento.setMunicipio(null);
-                corregimientoCollectionCorregimiento = em.merge(corregimientoCollectionCorregimiento);
-            }
             Collection<Documento> documentoCollection = municipio.getDocumentoCollection();
             for (Documento documentoCollectionDocumento : documentoCollection) {
                 documentoCollectionDocumento.setMunicipio(null);
                 documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+            }
+            Collection<Corregimiento> corregimientoCollection = municipio.getCorregimientoCollection();
+            for (Corregimiento corregimientoCollectionCorregimiento : corregimientoCollection) {
+                corregimientoCollectionCorregimiento.setMunicipio(null);
+                corregimientoCollectionCorregimiento = em.merge(corregimientoCollectionCorregimiento);
             }
             em.remove(municipio);
             em.getTransaction().commit();
@@ -332,7 +326,7 @@ public class MunicipioJpaController implements Serializable {
     
     public List<Municipio> findMunicipiosByDepartamento(Departamento departamento) {
         return findMunicipiosByDepartamento(departamento, true, -1, -1);
-    }
+}
     
     public List<Municipio> findMunicipiosByDepartamento(Departamento departamento, int maxResults, int firstResult) {
         return findMunicipiosByDepartamento(departamento, false, maxResults, firstResult);

@@ -14,14 +14,12 @@ import com.sucomunicacion.gedsys.web.utils.WebConfiguration;
 public class BaseBean {
     
     String configFilePath = "";
-
+    
     public BaseBean() {
         configFilePath = WebConfiguration.configFilePath();
     }  
     
     public String getConfigFilePath() {
-        
-        
         return configFilePath;
     }
         

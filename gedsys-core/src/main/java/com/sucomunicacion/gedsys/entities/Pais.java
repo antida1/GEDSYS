@@ -31,36 +31,36 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Pais")
+@Table(name = "pais", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p")
     , @NamedQuery(name = "Pais.findById", query = "SELECT p FROM Pais p WHERE p.id = :id")
+    , @NamedQuery(name = "Pais.findByBorrado", query = "SELECT p FROM Pais p WHERE p.borrado = :borrado")
     , @NamedQuery(name = "Pais.findByCodigo", query = "SELECT p FROM Pais p WHERE p.codigo = :codigo")
-    , @NamedQuery(name = "Pais.findByNombre", query = "SELECT p FROM Pais p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Pais.findByFechaCreacion", query = "SELECT p FROM Pais p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Pais.findByFechaModificacion", query = "SELECT p FROM Pais p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Pais.findByBorrado", query = "SELECT p FROM Pais p WHERE p.borrado = :borrado")})
+    , @NamedQuery(name = "Pais.findByNombre", query = "SELECT p FROM Pais p WHERE p.nombre = :nombre")})
 public class Pais implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Codigo")
     private String codigo;
-    @Column(name = "Nombre")
-    private String nombre;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -85,20 +85,20 @@ public class Pais implements Serializable {
         this.id = id;
     }
 
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Date getFechaCreacion() {
@@ -117,12 +117,12 @@ public class Pais implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Usuario getCreadoPor() {

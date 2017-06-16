@@ -14,7 +14,6 @@ import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class AutorJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Autor autor) throws PreexistingEntityException, Exception {
+    public void create(Autor autor) {
         if (autor.getDocumentoCollection() == null) {
             autor.setDocumentoCollection(new ArrayList<Documento>());
         }
@@ -79,11 +78,6 @@ public class AutorJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findAutor(autor.getId()) != null) {
-                throw new PreexistingEntityException("Autor " + autor + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

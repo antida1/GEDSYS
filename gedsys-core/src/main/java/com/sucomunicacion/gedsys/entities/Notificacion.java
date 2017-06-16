@@ -28,67 +28,67 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "Notificacion")
+@Table(name = "notificacion", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Notificacion.findAll", query = "SELECT n FROM Notificacion n")
     , @NamedQuery(name = "Notificacion.findById", query = "SELECT n FROM Notificacion n WHERE n.id = :id")
     , @NamedQuery(name = "Notificacion.findByAsunto", query = "SELECT n FROM Notificacion n WHERE n.asunto = :asunto")
-    , @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion")
-    , @NamedQuery(name = "Notificacion.findByPeridicidadNotificacion", query = "SELECT n FROM Notificacion n WHERE n.peridicidadNotificacion = :peridicidadNotificacion")
-    , @NamedQuery(name = "Notificacion.findByNotificacionCorreo", query = "SELECT n FROM Notificacion n WHERE n.notificacionCorreo = :notificacionCorreo")
-    , @NamedQuery(name = "Notificacion.findByNotificacionPush", query = "SELECT n FROM Notificacion n WHERE n.notificacionPush = :notificacionPush")
     , @NamedQuery(name = "Notificacion.findByCreadorPor", query = "SELECT n FROM Notificacion n WHERE n.creadorPor = :creadorPor")
-    , @NamedQuery(name = "Notificacion.findByModificadoPor", query = "SELECT n FROM Notificacion n WHERE n.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "Notificacion.findByDiasNotificacion", query = "SELECT n FROM Notificacion n WHERE n.diasNotificacion = :diasNotificacion")
     , @NamedQuery(name = "Notificacion.findByFechaCreacion", query = "SELECT n FROM Notificacion n WHERE n.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Notificacion.findByFechaModificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Notificacion.findByNotificacionPeriodica", query = "SELECT n FROM Notificacion n WHERE n.notificacionPeriodica = :notificacionPeriodica")
-    , @NamedQuery(name = "Notificacion.findByTipoPeriodo", query = "SELECT n FROM Notificacion n WHERE n.tipoPeriodo = :tipoPeriodo")
-    , @NamedQuery(name = "Notificacion.findByDiasNotificacion", query = "SELECT n FROM Notificacion n WHERE n.diasNotificacion = :diasNotificacion")
+    , @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion")
     , @NamedQuery(name = "Notificacion.findByMesesNotificacion", query = "SELECT n FROM Notificacion n WHERE n.mesesNotificacion = :mesesNotificacion")
-    , @NamedQuery(name = "Notificacion.findByNotificacionPopup", query = "SELECT n FROM Notificacion n WHERE n.notificacionPopup = :notificacionPopup")})
+    , @NamedQuery(name = "Notificacion.findByModificadoPor", query = "SELECT n FROM Notificacion n WHERE n.modificadoPor = :modificadoPor")
+    , @NamedQuery(name = "Notificacion.findByNotificacionCorreo", query = "SELECT n FROM Notificacion n WHERE n.notificacionCorreo = :notificacionCorreo")
+    , @NamedQuery(name = "Notificacion.findByNotificacionPeriodica", query = "SELECT n FROM Notificacion n WHERE n.notificacionPeriodica = :notificacionPeriodica")
+    , @NamedQuery(name = "Notificacion.findByNotificacionPopup", query = "SELECT n FROM Notificacion n WHERE n.notificacionPopup = :notificacionPopup")
+    , @NamedQuery(name = "Notificacion.findByNotificacionPush", query = "SELECT n FROM Notificacion n WHERE n.notificacionPush = :notificacionPush")
+    , @NamedQuery(name = "Notificacion.findByPeridicidadNotificacion", query = "SELECT n FROM Notificacion n WHERE n.peridicidadNotificacion = :peridicidadNotificacion")
+    , @NamedQuery(name = "Notificacion.findByTipoPeriodo", query = "SELECT n FROM Notificacion n WHERE n.tipoPeriodo = :tipoPeriodo")})
 public class Notificacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
     @Column(name = "Asunto")
     private String asunto;
+    @Column(name = "CreadorPor")
+    private Integer creadorPor;
     @Lob
     @Column(name = "Descripcion")
     private String descripcion;
-    @Column(name = "FechaNotificacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNotificacion;
-    @Column(name = "PeridicidadNotificacion")
-    private Integer peridicidadNotificacion;
-    @Column(name = "NotificacionCorreo")
-    private Boolean notificacionCorreo;
-    @Column(name = "NotificacionPush")
-    private Boolean notificacionPush;
-    @Column(name = "CreadorPor")
-    private Integer creadorPor;
-    @Column(name = "ModificadoPor")
-    private Integer modificadoPor;
+    @Column(name = "DiasNotificacion")
+    private Integer diasNotificacion;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "NotificacionPeriodica")
-    private Boolean notificacionPeriodica;
-    @Column(name = "TipoPeriodo")
-    private Integer tipoPeriodo;
-    @Column(name = "DiasNotificacion")
-    private Integer diasNotificacion;
+    @Column(name = "FechaNotificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNotificacion;
     @Column(name = "MesesNotificacion")
     private Integer mesesNotificacion;
+    @Column(name = "ModificadoPor")
+    private Integer modificadoPor;
+    @Column(name = "NotificacionCorreo")
+    private Boolean notificacionCorreo;
+    @Column(name = "NotificacionPeriodica")
+    private Boolean notificacionPeriodica;
     @Column(name = "NotificacionPopup")
     private Boolean notificacionPopup;
+    @Column(name = "NotificacionPush")
+    private Boolean notificacionPush;
+    @Column(name = "PeridicidadNotificacion")
+    private Integer peridicidadNotificacion;
+    @Column(name = "TipoPeriodo")
+    private Integer tipoPeriodo;
     @JoinColumn(name = "Responsable", referencedColumnName = "Id")
     @ManyToOne
     private Usuario responsable;
@@ -116,46 +116,6 @@ public class Notificacion implements Serializable {
         this.asunto = asunto;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Date getFechaNotificacion() {
-        return fechaNotificacion;
-    }
-
-    public void setFechaNotificacion(Date fechaNotificacion) {
-        this.fechaNotificacion = fechaNotificacion;
-    }
-
-    public Integer getPeridicidadNotificacion() {
-        return peridicidadNotificacion;
-    }
-
-    public void setPeridicidadNotificacion(Integer peridicidadNotificacion) {
-        this.peridicidadNotificacion = peridicidadNotificacion;
-    }
-
-    public Boolean getNotificacionCorreo() {
-        return notificacionCorreo;
-    }
-
-    public void setNotificacionCorreo(Boolean notificacionCorreo) {
-        this.notificacionCorreo = notificacionCorreo;
-    }
-
-    public Boolean getNotificacionPush() {
-        return notificacionPush;
-    }
-
-    public void setNotificacionPush(Boolean notificacionPush) {
-        this.notificacionPush = notificacionPush;
-    }
-
     public Integer getCreadorPor() {
         return creadorPor;
     }
@@ -164,12 +124,20 @@ public class Notificacion implements Serializable {
         this.creadorPor = creadorPor;
     }
 
-    public Integer getModificadoPor() {
-        return modificadoPor;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setModificadoPor(Integer modificadoPor) {
-        this.modificadoPor = modificadoPor;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Integer getDiasNotificacion() {
+        return diasNotificacion;
+    }
+
+    public void setDiasNotificacion(Integer diasNotificacion) {
+        this.diasNotificacion = diasNotificacion;
     }
 
     public Date getFechaCreacion() {
@@ -188,28 +156,12 @@ public class Notificacion implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getNotificacionPeriodica() {
-        return notificacionPeriodica;
+    public Date getFechaNotificacion() {
+        return fechaNotificacion;
     }
 
-    public void setNotificacionPeriodica(Boolean notificacionPeriodica) {
-        this.notificacionPeriodica = notificacionPeriodica;
-    }
-
-    public Integer getTipoPeriodo() {
-        return tipoPeriodo;
-    }
-
-    public void setTipoPeriodo(Integer tipoPeriodo) {
-        this.tipoPeriodo = tipoPeriodo;
-    }
-
-    public Integer getDiasNotificacion() {
-        return diasNotificacion;
-    }
-
-    public void setDiasNotificacion(Integer diasNotificacion) {
-        this.diasNotificacion = diasNotificacion;
+    public void setFechaNotificacion(Date fechaNotificacion) {
+        this.fechaNotificacion = fechaNotificacion;
     }
 
     public Integer getMesesNotificacion() {
@@ -220,12 +172,60 @@ public class Notificacion implements Serializable {
         this.mesesNotificacion = mesesNotificacion;
     }
 
+    public Integer getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Integer modificadoPor) {
+        this.modificadoPor = modificadoPor;
+    }
+
+    public Boolean getNotificacionCorreo() {
+        return notificacionCorreo;
+    }
+
+    public void setNotificacionCorreo(Boolean notificacionCorreo) {
+        this.notificacionCorreo = notificacionCorreo;
+    }
+
+    public Boolean getNotificacionPeriodica() {
+        return notificacionPeriodica;
+    }
+
+    public void setNotificacionPeriodica(Boolean notificacionPeriodica) {
+        this.notificacionPeriodica = notificacionPeriodica;
+    }
+
     public Boolean getNotificacionPopup() {
         return notificacionPopup;
     }
 
     public void setNotificacionPopup(Boolean notificacionPopup) {
         this.notificacionPopup = notificacionPopup;
+    }
+
+    public Boolean getNotificacionPush() {
+        return notificacionPush;
+    }
+
+    public void setNotificacionPush(Boolean notificacionPush) {
+        this.notificacionPush = notificacionPush;
+    }
+
+    public Integer getPeridicidadNotificacion() {
+        return peridicidadNotificacion;
+    }
+
+    public void setPeridicidadNotificacion(Integer peridicidadNotificacion) {
+        this.peridicidadNotificacion = peridicidadNotificacion;
+    }
+
+    public Integer getTipoPeriodo() {
+        return tipoPeriodo;
+    }
+
+    public void setTipoPeriodo(Integer tipoPeriodo) {
+        this.tipoPeriodo = tipoPeriodo;
     }
 
     public Usuario getResponsable() {

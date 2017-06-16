@@ -10,11 +10,10 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Grupo;
 import com.sucomunicacion.gedsys.entities.GrupoUsuario;
-import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,20 +33,20 @@ public class GrupoUsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(GrupoUsuario grupoUsuario) throws PreexistingEntityException, Exception {
+    public void create(GrupoUsuario grupoUsuario) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Grupo grupo = grupoUsuario.getGrupo();
-            if (grupo != null) {
-                grupo = em.getReference(grupo.getClass(), grupo.getId());
-                grupoUsuario.setGrupo(grupo);
-            }
             Usuario creadoPor = grupoUsuario.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
                 grupoUsuario.setCreadoPor(creadoPor);
+            }
+            Grupo grupo = grupoUsuario.getGrupo();
+            if (grupo != null) {
+                grupo = em.getReference(grupo.getClass(), grupo.getId());
+                grupoUsuario.setGrupo(grupo);
             }
             Usuario modificadoPor = grupoUsuario.getModificadoPor();
             if (modificadoPor != null) {
@@ -60,13 +59,13 @@ public class GrupoUsuarioJpaController implements Serializable {
                 grupoUsuario.setUsuario(usuario);
             }
             em.persist(grupoUsuario);
-            if (grupo != null) {
-                grupo.getGrupoUsuarioCollection().add(grupoUsuario);
-                grupo = em.merge(grupo);
-            }
             if (creadoPor != null) {
                 creadoPor.getGrupoUsuarioCollection().add(grupoUsuario);
                 creadoPor = em.merge(creadoPor);
+            }
+            if (grupo != null) {
+                grupo.getGrupoUsuarioCollection().add(grupoUsuario);
+                grupo = em.merge(grupo);
             }
             if (modificadoPor != null) {
                 modificadoPor.getGrupoUsuarioCollection().add(grupoUsuario);
@@ -77,11 +76,6 @@ public class GrupoUsuarioJpaController implements Serializable {
                 usuario = em.merge(usuario);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findGrupoUsuario(grupoUsuario.getId()) != null) {
-                throw new PreexistingEntityException("GrupoUsuario " + grupoUsuario + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -95,21 +89,21 @@ public class GrupoUsuarioJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             GrupoUsuario persistentGrupoUsuario = em.find(GrupoUsuario.class, grupoUsuario.getId());
-            Grupo grupoOld = persistentGrupoUsuario.getGrupo();
-            Grupo grupoNew = grupoUsuario.getGrupo();
             Usuario creadoPorOld = persistentGrupoUsuario.getCreadoPor();
             Usuario creadoPorNew = grupoUsuario.getCreadoPor();
+            Grupo grupoOld = persistentGrupoUsuario.getGrupo();
+            Grupo grupoNew = grupoUsuario.getGrupo();
             Usuario modificadoPorOld = persistentGrupoUsuario.getModificadoPor();
             Usuario modificadoPorNew = grupoUsuario.getModificadoPor();
             Usuario usuarioOld = persistentGrupoUsuario.getUsuario();
             Usuario usuarioNew = grupoUsuario.getUsuario();
-            if (grupoNew != null) {
-                grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getId());
-                grupoUsuario.setGrupo(grupoNew);
-            }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 grupoUsuario.setCreadoPor(creadoPorNew);
+            }
+            if (grupoNew != null) {
+                grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getId());
+                grupoUsuario.setGrupo(grupoNew);
             }
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
@@ -120,14 +114,6 @@ public class GrupoUsuarioJpaController implements Serializable {
                 grupoUsuario.setUsuario(usuarioNew);
             }
             grupoUsuario = em.merge(grupoUsuario);
-            if (grupoOld != null && !grupoOld.equals(grupoNew)) {
-                grupoOld.getGrupoUsuarioCollection().remove(grupoUsuario);
-                grupoOld = em.merge(grupoOld);
-            }
-            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
-                grupoNew.getGrupoUsuarioCollection().add(grupoUsuario);
-                grupoNew = em.merge(grupoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getGrupoUsuarioCollection().remove(grupoUsuario);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -135,6 +121,14 @@ public class GrupoUsuarioJpaController implements Serializable {
             if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
                 creadoPorNew.getGrupoUsuarioCollection().add(grupoUsuario);
                 creadoPorNew = em.merge(creadoPorNew);
+            }
+            if (grupoOld != null && !grupoOld.equals(grupoNew)) {
+                grupoOld.getGrupoUsuarioCollection().remove(grupoUsuario);
+                grupoOld = em.merge(grupoOld);
+            }
+            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
+                grupoNew.getGrupoUsuarioCollection().add(grupoUsuario);
+                grupoNew = em.merge(grupoNew);
             }
             if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
                 modificadoPorOld.getGrupoUsuarioCollection().remove(grupoUsuario);
@@ -181,15 +175,15 @@ public class GrupoUsuarioJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The grupoUsuario with id " + id + " no longer exists.", enfe);
             }
-            Grupo grupo = grupoUsuario.getGrupo();
-            if (grupo != null) {
-                grupo.getGrupoUsuarioCollection().remove(grupoUsuario);
-                grupo = em.merge(grupo);
-            }
             Usuario creadoPor = grupoUsuario.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getGrupoUsuarioCollection().remove(grupoUsuario);
                 creadoPor = em.merge(creadoPor);
+            }
+            Grupo grupo = grupoUsuario.getGrupo();
+            if (grupo != null) {
+                grupo.getGrupoUsuarioCollection().remove(grupoUsuario);
+                grupo = em.merge(grupo);
             }
             Usuario modificadoPor = grupoUsuario.getModificadoPor();
             if (modificadoPor != null) {

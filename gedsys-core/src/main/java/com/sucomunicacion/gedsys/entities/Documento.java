@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,106 +33,100 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Documento")
+@Table(name = "documento", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Documento.findAll", query = "SELECT d FROM Documento d")
     , @NamedQuery(name = "Documento.findById", query = "SELECT d FROM Documento d WHERE d.id = :id")
-    , @NamedQuery(name = "Documento.findByConsecutivo", query = "SELECT d FROM Documento d WHERE d.consecutivo = :consecutivo")
-    , @NamedQuery(name = "Documento.findByAsunto", query = "SELECT d FROM Documento d WHERE d.asunto = :asunto")
-    , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")
-    , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
-    , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
-    , @NamedQuery(name = "Documento.findByFechaDocumento", query = "SELECT d FROM Documento d WHERE d.fechaDocumento = :fechaDocumento")
-    , @NamedQuery(name = "Documento.findByRemitente", query = "SELECT d FROM Documento d WHERE d.remitente = :remitente")
-    , @NamedQuery(name = "Documento.findByDestinatario", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario")
-    , @NamedQuery(name = "Documento.findByCodigoPostal", query = "SELECT d FROM Documento d WHERE d.codigoPostal = :codigoPostal")
     , @NamedQuery(name = "Documento.findByAnexos", query = "SELECT d FROM Documento d WHERE d.anexos = :anexos")
+    , @NamedQuery(name = "Documento.findByAsunto", query = "SELECT d FROM Documento d WHERE d.asunto = :asunto")
+    , @NamedQuery(name = "Documento.findByCodigoPostal", query = "SELECT d FROM Documento d WHERE d.codigoPostal = :codigoPostal")
+    , @NamedQuery(name = "Documento.findByConsecutivo", query = "SELECT d FROM Documento d WHERE d.consecutivo = :consecutivo")
+    , @NamedQuery(name = "Documento.findByDestinatario", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario")
+    , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
+    , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
+    , @NamedQuery(name = "Documento.findByExtension", query = "SELECT d FROM Documento d WHERE d.extension = :extension")
+    , @NamedQuery(name = "Documento.findByFechaCreacion", query = "SELECT d FROM Documento d WHERE d.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Documento.findByFechaDocumento", query = "SELECT d FROM Documento d WHERE d.fechaDocumento = :fechaDocumento")
+    , @NamedQuery(name = "Documento.findByFechaModificacion", query = "SELECT d FROM Documento d WHERE d.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Documento.findByFolioNro", query = "SELECT d FROM Documento d WHERE d.folioNro = :folioNro")
     , @NamedQuery(name = "Documento.findByFolios", query = "SELECT d FROM Documento d WHERE d.folios = :folios")
     , @NamedQuery(name = "Documento.findByLibros", query = "SELECT d FROM Documento d WHERE d.libros = :libros")
     , @NamedQuery(name = "Documento.findByMedioEnvio", query = "SELECT d FROM Documento d WHERE d.medioEnvio = :medioEnvio")
-    , @NamedQuery(name = "Documento.findByFechaCreacion", query = "SELECT d FROM Documento d WHERE d.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Documento.findByFechaModificacion", query = "SELECT d FROM Documento d WHERE d.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
     , @NamedQuery(name = "Documento.findByMimeType", query = "SELECT d FROM Documento d WHERE d.mimeType = :mimeType")
     , @NamedQuery(name = "Documento.findByNombreDocumento", query = "SELECT d FROM Documento d WHERE d.nombreDocumento = :nombreDocumento")
     , @NamedQuery(name = "Documento.findByPathFile", query = "SELECT d FROM Documento d WHERE d.pathFile = :pathFile")
-    , @NamedQuery(name = "Documento.findByExtension", query = "SELECT d FROM Documento d WHERE d.extension = :extension")
-    , @NamedQuery(name = "Documento.findByFolioNro", query = "SELECT d FROM Documento d WHERE d.folioNro = :folioNro")})
+    , @NamedQuery(name = "Documento.findByRemitente", query = "SELECT d FROM Documento d WHERE d.remitente = :remitente")
+    , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
+    , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 public class Documento implements Serializable {
+
+    @Column(name = "Clase")
+    private String clase;
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
-    @Column(name = "Consecutivo")
-    private String consecutivo;
-    @Column(name = "Asunto")
-    private String asunto;
-    @Column(name = "RutaArchivo")
-    private String rutaArchivo;
-    @Column(name = "RequiereRespuesta")
-    private Boolean requiereRespuesta;
-    @Column(name = "Direccion")
-    private String direccion;
-    @Column(name = "FechaDocumento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaDocumento;
-    @Column(name = "Remitente")
-    private String remitente;
-    @Column(name = "Destinatario")
-    private Integer destinatario;
-    @Column(name = "CodigoPostal")
-    private String codigoPostal;
     @Column(name = "Anexos")
     private Boolean anexos;
-    @Column(name = "Folios")
-    private Integer folios;
-    @Column(name = "Libros")
-    private Integer libros;
-    @Column(name = "MedioEnvio")
-    private String medioEnvio;
+    @Column(name = "Asunto")
+    private String asunto;
+    @Column(name = "CodigoPostal")
+    private String codigoPostal;
+    @Column(name = "Consecutivo")
+    private String consecutivo;
+    @Column(name = "Destinatario")
+    private Integer destinatario;
     @Lob
     @Column(name = "Detalle")
     private String detalle;
+    @Column(name = "Direccion")
+    private String direccion;
+    @Column(name = "Estado")
+    private Integer estado;
+    @Column(name = "Extension")
+    private String extension;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
+    @Column(name = "FechaDocumento")
+    @Temporal(TemporalType.DATE)
+    private Date fechaDocumento;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Estado")
-    private Integer estado;
+    @Column(name = "FolioNro")
+    private String folioNro;
+    @Column(name = "Folios")
+    private String folios;
+    @Column(name = "Libros")
+    private String libros;
+    @Column(name = "MedioEnvio")
+    private String medioEnvio;
     @Column(name = "MimeType")
     private String mimeType;
     @Column(name = "NombreDocumento")
     private String nombreDocumento;
     @Column(name = "PathFile")
     private String pathFile;
-    @Column(name = "Extension")
-    private String extension;
-    @Column(name = "FolioNro")
-    private Integer folioNro;
-    @OneToMany(mappedBy = "documento")
-    private Collection<Anexo> anexoCollection;
-    @OneToMany(mappedBy = "anexo")
-    private Collection<Anexo> anexoCollection1;
-    @OneToMany(mappedBy = "documento")
-    private Collection<ProcesoDocumental> procesoDocumentalCollection;
+    @Column(name = "Remitente")
+    private String remitente;
+    @Column(name = "RequiereRespuesta")
+    private Boolean requiereRespuesta;
+    @Column(name = "RutaArchivo")
+    private String rutaArchivo;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
     @JoinColumn(name = "Autor", referencedColumnName = "Id")
     @ManyToOne
     private Autor autor;
     @JoinColumn(name = "ClaseDocumento", referencedColumnName = "id")
     @ManyToOne
     private ClaseDocumento claseDocumento;
-    @JoinColumn(name = "Transportador", referencedColumnName = "Id")
-    @ManyToOne
-    private Transportador transportador;
-    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
-    @ManyToOne
-    private Usuario creadoPor;
     @JoinColumn(name = "Corregimiento", referencedColumnName = "Id")
     @ManyToOne
     private Corregimiento corregimiento;
@@ -140,39 +135,34 @@ public class Documento implements Serializable {
     @JoinColumn(name = "DocumentoRelacionado", referencedColumnName = "Id")
     @ManyToOne
     private Documento documentoRelacionado;
-    @JoinColumn(name = "UnidadDocumental", referencedColumnName = "Id")
-    @ManyToOne
-    private UnidadDocumental unidadDocumental;
-    @JoinColumn(name = "TipoDocumental", referencedColumnName = "Id")
-    @ManyToOne
-    private TipoDocumental tipoDocumental;
     @JoinColumn(name = "Entidad", referencedColumnName = "id")
     @ManyToOne
     private Entidad entidad;
-    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
-    @ManyToOne
-    private Municipio municipio;
-    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
-    @ManyToOne
-    private TipoDocumento tipoDocumento;
-    @JoinColumn(name = "Session", referencedColumnName = "Id")
-    @ManyToOne
-    private Seccion session;
-    @JoinColumn(name = "Serie", referencedColumnName = "Id")
-    @ManyToOne
-    private Serie serie;
-    @JoinColumn(name = "SignaturaTopografica", referencedColumnName = "Id")
-    @ManyToOne
-    private SignaturaTopografica signaturaTopografica;
-    @JoinColumn(name = "SubSeccion", referencedColumnName = "Id")
-    @ManyToOne
-    private SubSeccion subSeccion;
-    @JoinColumn(name = "SubSerie", referencedColumnName = "Id")
-    @ManyToOne
-    private SubSerie subSerie;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
+    @JoinColumn(name = "Municipio", referencedColumnName = "Id")
+    @ManyToOne
+    private Municipio municipio;
+    @JoinColumn(name = "Transportador", referencedColumnName = "Id")
+    @ManyToOne
+    private Transportador transportador;
+    @JoinColumn(name = "Session", referencedColumnName = "Id")
+    @ManyToOne
+    private SeccionSubSeccion session;
+    @JoinColumn(name = "SignaturaTopografica", referencedColumnName = "Id")
+    @ManyToOne
+    private SignaturaTopografica signaturaTopografica;
+    @JoinColumn(name = "TipoDocumental", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumental tipoDocumental;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "documentoId")
+    private Collection<DestinatariosDoc> destinatariosDocCollection;
+    @OneToMany(mappedBy = "documento")
+    private Collection<ProcesoDocumental> procesodocumentalCollection;
 
     public Documento() {
     }
@@ -189,12 +179,12 @@ public class Documento implements Serializable {
         this.id = id;
     }
 
-    public String getConsecutivo() {
-        return consecutivo;
+    public Boolean getAnexos() {
+        return anexos;
     }
 
-    public void setConsecutivo(String consecutivo) {
-        this.consecutivo = consecutivo;
+    public void setAnexos(Boolean anexos) {
+        this.anexos = anexos;
     }
 
     public String getAsunto() {
@@ -205,44 +195,20 @@ public class Documento implements Serializable {
         this.asunto = asunto;
     }
 
-    public String getRutaArchivo() {
-        return rutaArchivo;
+    public String getCodigoPostal() {
+        return codigoPostal;
     }
 
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
 
-    public Boolean getRequiereRespuesta() {
-        return requiereRespuesta;
+    public String getConsecutivo() {
+        return consecutivo;
     }
 
-    public void setRequiereRespuesta(Boolean requiereRespuesta) {
-        this.requiereRespuesta = requiereRespuesta;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public Date getFechaDocumento() {
-        return fechaDocumento;
-    }
-
-    public void setFechaDocumento(Date fechaDocumento) {
-        this.fechaDocumento = fechaDocumento;
-    }
-
-    public String getRemitente() {
-        return remitente;
-    }
-
-    public void setRemitente(String remitente) {
-        this.remitente = remitente;
+    public void setConsecutivo(String consecutivo) {
+        this.consecutivo = consecutivo;
     }
 
     public Integer getDestinatario() {
@@ -253,52 +219,36 @@ public class Documento implements Serializable {
         this.destinatario = destinatario;
     }
 
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public void setCodigoPostal(String codigoPostal) {
-        this.codigoPostal = codigoPostal;
-    }
-
-    public Boolean getAnexos() {
-        return anexos;
-    }
-
-    public void setAnexos(Boolean anexos) {
-        this.anexos = anexos;
-    }
-
-    public Integer getFolios() {
-        return folios;
-    }
-
-    public void setFolios(Integer folios) {
-        this.folios = folios;
-    }
-
-    public Integer getLibros() {
-        return libros;
-    }
-
-    public void setLibros(Integer libros) {
-        this.libros = libros;
-    }
-
-    public String getMedioEnvio() {
-        return medioEnvio;
-    }
-
-    public void setMedioEnvio(String medioEnvio) {
-        this.medioEnvio = medioEnvio;
-    }
-
     public String getDetalle() {
         return detalle;
     }
 
     public void setDetalle(String detalle) {
         this.detalle = detalle;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public Date getFechaCreacion() {
@@ -309,6 +259,14 @@ public class Documento implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Date getFechaDocumento() {
+        return fechaDocumento;
+    }
+
+    public void setFechaDocumento(Date fechaDocumento) {
+        this.fechaDocumento = fechaDocumento;
+    }
+
     public Date getFechaModificacion() {
         return fechaModificacion;
     }
@@ -317,12 +275,36 @@ public class Documento implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getEstado() {
-        return estado;
+    public String getFolioNro() {
+        return folioNro;
     }
 
-    public void setEstado(Integer estado) {
-        this.estado = estado;
+    public void setFolioNro(String folioNro) {
+        this.folioNro = folioNro;
+    }
+
+    public String getFolios() {
+        return folios;
+    }
+
+    public void setFolios(String folios) {
+        this.folios = folios;
+    }
+
+    public String getLibros() {
+        return libros;
+    }
+
+    public void setLibros(String libros) {
+        this.libros = libros;
+    }
+
+    public String getMedioEnvio() {
+        return medioEnvio;
+    }
+
+    public void setMedioEnvio(String medioEnvio) {
+        this.medioEnvio = medioEnvio;
     }
 
     public String getMimeType() {
@@ -349,50 +331,36 @@ public class Documento implements Serializable {
         this.pathFile = pathFile;
     }
 
-    public String getExtension() {
-        return extension;
+    public String getRemitente() {
+        return remitente;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setRemitente(String remitente) {
+        this.remitente = remitente;
     }
 
-    public Integer getFolioNro() {
-        return folioNro;
+    public Boolean getRequiereRespuesta() {
+        return requiereRespuesta;
     }
 
-    public void setFolioNro(Integer folioNro) {
-        this.folioNro = folioNro;
+    public void setRequiereRespuesta(Boolean requiereRespuesta) {
+        this.requiereRespuesta = requiereRespuesta;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Anexo> getAnexoCollection() {
-        return anexoCollection;
+    public String getRutaArchivo() {
+        return rutaArchivo;
     }
 
-    public void setAnexoCollection(Collection<Anexo> anexoCollection) {
-        this.anexoCollection = anexoCollection;
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Anexo> getAnexoCollection1() {
-        return anexoCollection1;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setAnexoCollection1(Collection<Anexo> anexoCollection1) {
-        this.anexoCollection1 = anexoCollection1;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProcesoDocumental> getProcesoDocumentalCollection() {
-        return procesoDocumentalCollection;
-    }
-
-    public void setProcesoDocumentalCollection(Collection<ProcesoDocumental> procesoDocumentalCollection) {
-        this.procesoDocumentalCollection = procesoDocumentalCollection;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Autor getAutor() {
@@ -409,22 +377,6 @@ public class Documento implements Serializable {
 
     public void setClaseDocumento(ClaseDocumento claseDocumento) {
         this.claseDocumento = claseDocumento;
-    }
-
-    public Transportador getTransportador() {
-        return transportador;
-    }
-
-    public void setTransportador(Transportador transportador) {
-        this.transportador = transportador;
-    }
-
-    public Usuario getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Usuario creadoPor) {
-        this.creadoPor = creadoPor;
     }
 
     public Corregimiento getCorregimiento() {
@@ -453,22 +405,6 @@ public class Documento implements Serializable {
         this.documentoRelacionado = documentoRelacionado;
     }
 
-    public UnidadDocumental getUnidadDocumental() {
-        return unidadDocumental;
-    }
-
-    public void setUnidadDocumental(UnidadDocumental unidadDocumental) {
-        this.unidadDocumental = unidadDocumental;
-    }
-
-    public TipoDocumental getTipoDocumental() {
-        return tipoDocumental;
-    }
-
-    public void setTipoDocumental(TipoDocumental tipoDocumental) {
-        this.tipoDocumental = tipoDocumental;
-    }
-
     public Entidad getEntidad() {
         return entidad;
     }
@@ -477,12 +413,12 @@ public class Documento implements Serializable {
         this.entidad = entidad;
     }
 
-    public Municipio getMunicipio() {
-        return municipio;
+    public Usuario getModificadoPor() {
+        return modificadoPor;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     public TipoDocumento getTipoDocumento() {
@@ -493,20 +429,28 @@ public class Documento implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public Seccion getSession() {
+    public Municipio getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(Municipio municipio) {
+        this.municipio = municipio;
+    }
+
+    public Transportador getTransportador() {
+        return transportador;
+    }
+
+    public void setTransportador(Transportador transportador) {
+        this.transportador = transportador;
+    }
+
+    public SeccionSubSeccion getSession() {
         return session;
     }
 
-    public void setSession(Seccion session) {
+    public void setSession(SeccionSubSeccion session) {
         this.session = session;
-    }
-
-    public Serie getSerie() {
-        return serie;
-    }
-
-    public void setSerie(Serie serie) {
-        this.serie = serie;
     }
 
     public SignaturaTopografica getSignaturaTopografica() {
@@ -517,28 +461,32 @@ public class Documento implements Serializable {
         this.signaturaTopografica = signaturaTopografica;
     }
 
-    public SubSeccion getSubSeccion() {
-        return subSeccion;
+    public TipoDocumental getTipoDocumental() {
+        return tipoDocumental;
     }
 
-    public void setSubSeccion(SubSeccion subSeccion) {
-        this.subSeccion = subSeccion;
+    public void setTipoDocumental(TipoDocumental tipoDocumental) {
+        this.tipoDocumental = tipoDocumental;
     }
 
-    public SubSerie getSubSerie() {
-        return subSerie;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<DestinatariosDoc> getDestinatariosDocCollection() {
+        return destinatariosDocCollection;
     }
 
-    public void setSubSerie(SubSerie subSerie) {
-        this.subSerie = subSerie;
+    public void setDestinatariosDocCollection(Collection<DestinatariosDoc> destinatariosDocCollection) {
+        this.destinatariosDocCollection = destinatariosDocCollection;
     }
 
-    public Usuario getModificadoPor() {
-        return modificadoPor;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<ProcesoDocumental> getProcesodocumentalCollection() {
+        return procesodocumentalCollection;
     }
 
-    public void setModificadoPor(Usuario modificadoPor) {
-        this.modificadoPor = modificadoPor;
+    public void setProcesodocumentalCollection(Collection<ProcesoDocumental> procesodocumentalCollection) {
+        this.procesodocumentalCollection = procesodocumentalCollection;
     }
 
     @Override
@@ -564,6 +512,14 @@ public class Documento implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Documento[ id=" + id + " ]";
+    }
+
+    public String getClase() {
+        return clase;
+    }
+
+    public void setClase(String clase) {
+        this.clase = clase;
     }
     
 }

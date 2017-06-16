@@ -49,6 +49,13 @@ public class RadicadoBean extends BaseBean implements Serializable {
     }
 
     public StreamedContent getRadicadoImg() {
+        if(this.radicadoImg == null){
+            this.generar();
+        }
+        return radicadoImg;
+    }
+
+    private void generar() {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
             EntityManager em = emf.createEntityManager();
@@ -59,10 +66,12 @@ public class RadicadoBean extends BaseBean implements Serializable {
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("Externo");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
+            /*
             consec.setConsecutivo(intConsec.toString());
             em.merge(consec);
             em.flush();
-
+            */
+            
             RadicadoImage ri = new RadicadoImage();
             SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
             Date hoy = new Date();
@@ -73,11 +82,9 @@ public class RadicadoBean extends BaseBean implements Serializable {
             String path = servletContext.getRealPath("/resources/images");
 
             String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
-            fileName = ri.Generar(name, path);
+            fileName = ri.Generar(name, path, "E:" + File.separatorChar);
 
-            em.getTransaction().commit();
-
-            File file = new File("F:" + File.separatorChar + this.fileName);
+            File file = new File("E:" + File.separatorChar + this.fileName);
             if (file.canRead()) {
                 FileInputStream fi = new FileInputStream(file);
                 this.radicadoImg = new DefaultStreamedContent(fi, null, file.getName());
@@ -86,10 +93,5 @@ public class RadicadoBean extends BaseBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error!", e.getMessage()));
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
-        return radicadoImg;
-    }
-
-    public void generar() {
-
     }
 }

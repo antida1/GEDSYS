@@ -27,51 +27,51 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "Consecutivo")
+@Table(name = "consecutivo", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Consecutivo.findAll", query = "SELECT c FROM Consecutivo c")
     , @NamedQuery(name = "Consecutivo.findById", query = "SELECT c FROM Consecutivo c WHERE c.id = :id")
+    , @NamedQuery(name = "Consecutivo.findByBorrado", query = "SELECT c FROM Consecutivo c WHERE c.borrado = :borrado")
     , @NamedQuery(name = "Consecutivo.findByConsecutivo", query = "SELECT c FROM Consecutivo c WHERE c.consecutivo = :consecutivo")
-    , @NamedQuery(name = "Consecutivo.findByPrefijo", query = "SELECT c FROM Consecutivo c WHERE c.prefijo = :prefijo")
-    , @NamedQuery(name = "Consecutivo.findBySufijo", query = "SELECT c FROM Consecutivo c WHERE c.sufijo = :sufijo")
     , @NamedQuery(name = "Consecutivo.findByFechaCreacion", query = "SELECT c FROM Consecutivo c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Consecutivo.findByFechaModificacion", query = "SELECT c FROM Consecutivo c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Consecutivo.findByBorrado", query = "SELECT c FROM Consecutivo c WHERE c.borrado = :borrado")
+    , @NamedQuery(name = "Consecutivo.findByPrefijo", query = "SELECT c FROM Consecutivo c WHERE c.prefijo = :prefijo")
+    , @NamedQuery(name = "Consecutivo.findBySufijo", query = "SELECT c FROM Consecutivo c WHERE c.sufijo = :sufijo")
     , @NamedQuery(name = "Consecutivo.findByTipoConsecutivo", query = "SELECT c FROM Consecutivo c WHERE c.tipoConsecutivo = :tipoConsecutivo")})
 public class Consecutivo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Consecutivo")
     private String consecutivo;
-    @Column(name = "Prefijo")
-    private String prefijo;
-    @Column(name = "Sufijo")
-    private String sufijo;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Prefijo")
+    private String prefijo;
+    @Column(name = "Sufijo")
+    private String sufijo;
     @Column(name = "TipoConsecutivo")
     private String tipoConsecutivo;
-    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
-    @ManyToOne
-    private TipoDocumento tipoDocumento;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
 
     public Consecutivo() {
     }
@@ -88,28 +88,20 @@ public class Consecutivo implements Serializable {
         this.id = id;
     }
 
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
     public String getConsecutivo() {
         return consecutivo;
     }
 
     public void setConsecutivo(String consecutivo) {
         this.consecutivo = consecutivo;
-    }
-
-    public String getPrefijo() {
-        return prefijo;
-    }
-
-    public void setPrefijo(String prefijo) {
-        this.prefijo = prefijo;
-    }
-
-    public String getSufijo() {
-        return sufijo;
-    }
-
-    public void setSufijo(String sufijo) {
-        this.sufijo = sufijo;
     }
 
     public Date getFechaCreacion() {
@@ -128,12 +120,20 @@ public class Consecutivo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getPrefijo() {
+        return prefijo;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setPrefijo(String prefijo) {
+        this.prefijo = prefijo;
+    }
+
+    public String getSufijo() {
+        return sufijo;
+    }
+
+    public void setSufijo(String sufijo) {
+        this.sufijo = sufijo;
     }
 
     public String getTipoConsecutivo() {
@@ -142,14 +142,6 @@ public class Consecutivo implements Serializable {
 
     public void setTipoConsecutivo(String tipoConsecutivo) {
         this.tipoConsecutivo = tipoConsecutivo;
-    }
-
-    public TipoDocumento getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
     }
 
     public Usuario getCreadoPor() {
@@ -166,6 +158,14 @@ public class Consecutivo implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     @Override

@@ -11,10 +11,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,16 +34,11 @@ public class ConsecutivoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Consecutivo consecutivo) throws PreexistingEntityException, Exception {
+    public void create(Consecutivo consecutivo) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            TipoDocumento tipoDocumento = consecutivo.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
-                consecutivo.setTipoDocumento(tipoDocumento);
-            }
             Usuario creadoPor = consecutivo.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -55,11 +49,12 @@ public class ConsecutivoJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 consecutivo.setModificadoPor(modificadoPor);
             }
-            em.persist(consecutivo);
+            TipoDocumento tipoDocumento = consecutivo.getTipoDocumento();
             if (tipoDocumento != null) {
-                tipoDocumento.getConsecutivoCollection().add(consecutivo);
-                tipoDocumento = em.merge(tipoDocumento);
+                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
+                consecutivo.setTipoDocumento(tipoDocumento);
             }
+            em.persist(consecutivo);
             if (creadoPor != null) {
                 creadoPor.getConsecutivoCollection().add(consecutivo);
                 creadoPor = em.merge(creadoPor);
@@ -68,12 +63,11 @@ public class ConsecutivoJpaController implements Serializable {
                 modificadoPor.getConsecutivoCollection().add(consecutivo);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findConsecutivo(consecutivo.getId()) != null) {
-                throw new PreexistingEntityException("Consecutivo " + consecutivo + " already exists.", ex);
+            if (tipoDocumento != null) {
+                tipoDocumento.getConsecutivoCollection().add(consecutivo);
+                tipoDocumento = em.merge(tipoDocumento);
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -87,16 +81,12 @@ public class ConsecutivoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Consecutivo persistentConsecutivo = em.find(Consecutivo.class, consecutivo.getId());
-            TipoDocumento tipoDocumentoOld = persistentConsecutivo.getTipoDocumento();
-            TipoDocumento tipoDocumentoNew = consecutivo.getTipoDocumento();
             Usuario creadoPorOld = persistentConsecutivo.getCreadoPor();
             Usuario creadoPorNew = consecutivo.getCreadoPor();
             Usuario modificadoPorOld = persistentConsecutivo.getModificadoPor();
             Usuario modificadoPorNew = consecutivo.getModificadoPor();
-            if (tipoDocumentoNew != null) {
-                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
-                consecutivo.setTipoDocumento(tipoDocumentoNew);
-            }
+            TipoDocumento tipoDocumentoOld = persistentConsecutivo.getTipoDocumento();
+            TipoDocumento tipoDocumentoNew = consecutivo.getTipoDocumento();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 consecutivo.setCreadoPor(creadoPorNew);
@@ -105,15 +95,11 @@ public class ConsecutivoJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 consecutivo.setModificadoPor(modificadoPorNew);
             }
+            if (tipoDocumentoNew != null) {
+                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
+                consecutivo.setTipoDocumento(tipoDocumentoNew);
+            }
             consecutivo = em.merge(consecutivo);
-            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
-                tipoDocumentoOld.getConsecutivoCollection().remove(consecutivo);
-                tipoDocumentoOld = em.merge(tipoDocumentoOld);
-            }
-            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
-                tipoDocumentoNew.getConsecutivoCollection().add(consecutivo);
-                tipoDocumentoNew = em.merge(tipoDocumentoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getConsecutivoCollection().remove(consecutivo);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -129,6 +115,14 @@ public class ConsecutivoJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getConsecutivoCollection().add(consecutivo);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
+                tipoDocumentoOld.getConsecutivoCollection().remove(consecutivo);
+                tipoDocumentoOld = em.merge(tipoDocumentoOld);
+            }
+            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
+                tipoDocumentoNew.getConsecutivoCollection().add(consecutivo);
+                tipoDocumentoNew = em.merge(tipoDocumentoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -159,11 +153,6 @@ public class ConsecutivoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The consecutivo with id " + id + " no longer exists.", enfe);
             }
-            TipoDocumento tipoDocumento = consecutivo.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento.getConsecutivoCollection().remove(consecutivo);
-                tipoDocumento = em.merge(tipoDocumento);
-            }
             Usuario creadoPor = consecutivo.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getConsecutivoCollection().remove(consecutivo);
@@ -173,6 +162,11 @@ public class ConsecutivoJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getConsecutivoCollection().remove(consecutivo);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            TipoDocumento tipoDocumento = consecutivo.getTipoDocumento();
+            if (tipoDocumento != null) {
+                tipoDocumento.getConsecutivoCollection().remove(consecutivo);
+                tipoDocumento = em.merge(tipoDocumento);
             }
             em.remove(consecutivo);
             em.getTransaction().commit();

@@ -27,42 +27,42 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "ProcesoTipoDocumento")
+@Table(name = "procesotipodocumento", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProcesoTipoDocumento.findAll", query = "SELECT p FROM ProcesoTipoDocumento p")
     , @NamedQuery(name = "ProcesoTipoDocumento.findById", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.id = :id")
+    , @NamedQuery(name = "ProcesoTipoDocumento.findByBorrado", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.borrado = :borrado")
     , @NamedQuery(name = "ProcesoTipoDocumento.findByFechaCreacion", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "ProcesoTipoDocumento.findByFechaModificacion", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "ProcesoTipoDocumento.findByBorrado", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.borrado = :borrado")})
+    , @NamedQuery(name = "ProcesoTipoDocumento.findByFechaModificacion", query = "SELECT p FROM ProcesoTipoDocumento p WHERE p.fechaModificacion = :fechaModificacion")})
 public class ProcesoTipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Long id;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
-    @ManyToOne
-    private ProcesoNegocio proceso;
-    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
-    @ManyToOne
-    private TipoDocumento tipoDocumento;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
+    @ManyToOne
+    private ProcesoNegocio proceso;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
 
     public ProcesoTipoDocumento() {
     }
@@ -77,6 +77,14 @@ public class ProcesoTipoDocumento implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public Date getFechaCreacion() {
@@ -95,12 +103,20 @@ public class ProcesoTipoDocumento implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     public ProcesoNegocio getProceso() {
@@ -117,22 +133,6 @@ public class ProcesoTipoDocumento implements Serializable {
 
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
-    }
-
-    public Usuario getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Usuario creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public Usuario getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(Usuario modificadoPor) {
-        this.modificadoPor = modificadoPor;
     }
 
     @Override

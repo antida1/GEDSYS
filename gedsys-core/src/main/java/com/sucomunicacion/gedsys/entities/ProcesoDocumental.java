@@ -27,67 +27,67 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "ProcesoDocumental")
+@Table(name = "procesodocumental", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProcesoDocumental.findAll", query = "SELECT p FROM ProcesoDocumental p")
     , @NamedQuery(name = "ProcesoDocumental.findById", query = "SELECT p FROM ProcesoDocumental p WHERE p.id = :id")
-    , @NamedQuery(name = "ProcesoDocumental.findByFechaCreacion", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "ProcesoDocumental.findByFechaModificacion", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "ProcesoDocumental.findByBorrado", query = "SELECT p FROM ProcesoDocumental p WHERE p.borrado = :borrado")
     , @NamedQuery(name = "ProcesoDocumental.findByEstado", query = "SELECT p FROM ProcesoDocumental p WHERE p.estado = :estado")
     , @NamedQuery(name = "ProcesoDocumental.findByEstadoProceso", query = "SELECT p FROM ProcesoDocumental p WHERE p.estadoProceso = :estadoProceso")
-    , @NamedQuery(name = "ProcesoDocumental.findBySalidaProceso", query = "SELECT p FROM ProcesoDocumental p WHERE p.salidaProceso = :salidaProceso")
-    , @NamedQuery(name = "ProcesoDocumental.findByFechaInicioEstimada", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaInicioEstimada = :fechaInicioEstimada")
+    , @NamedQuery(name = "ProcesoDocumental.findByFechaCreacion", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "ProcesoDocumental.findByFechaFinalizacionEstimada", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaFinalizacionEstimada = :fechaFinalizacionEstimada")
+    , @NamedQuery(name = "ProcesoDocumental.findByFechaFinalizacionReal", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaFinalizacionReal = :fechaFinalizacionReal")
+    , @NamedQuery(name = "ProcesoDocumental.findByFechaInicioEstimada", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaInicioEstimada = :fechaInicioEstimada")
     , @NamedQuery(name = "ProcesoDocumental.findByFechaInicioReal", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaInicioReal = :fechaInicioReal")
-    , @NamedQuery(name = "ProcesoDocumental.findByFechaFinalizacionReal", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaFinalizacionReal = :fechaFinalizacionReal")})
+    , @NamedQuery(name = "ProcesoDocumental.findByFechaModificacion", query = "SELECT p FROM ProcesoDocumental p WHERE p.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "ProcesoDocumental.findBySalidaProceso", query = "SELECT p FROM ProcesoDocumental p WHERE p.salidaProceso = :salidaProceso")})
 public class ProcesoDocumental implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "FechaCreacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion;
-    @Column(name = "FechaModificacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;
     @Column(name = "Borrado")
     private Boolean borrado;
     @Column(name = "Estado")
     private Integer estado;
     @Column(name = "EstadoProceso")
     private Integer estadoProceso;
-    @Column(name = "SalidaProceso")
-    private Integer salidaProceso;
-    @Column(name = "FechaInicioEstimada")
+    @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicioEstimada;
+    private Date fechaCreacion;
     @Column(name = "FechaFinalizacionEstimada")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinalizacionEstimada;
-    @Column(name = "FechaInicioReal")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaInicioReal;
     @Column(name = "FechaFinalizacionReal")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinalizacionReal;
-    @JoinColumn(name = "Documento", referencedColumnName = "Id")
-    @ManyToOne
-    private Documento documento;
-    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
-    @ManyToOne
-    private ProcesoNegocio proceso;
+    @Column(name = "FechaInicioEstimada")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicioEstimada;
+    @Column(name = "FechaInicioReal")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicioReal;
+    @Column(name = "FechaModificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaModificacion;
+    @Column(name = "SalidaProceso")
+    private Integer salidaProceso;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    @JoinColumn(name = "Documento", referencedColumnName = "Id")
+    @ManyToOne
+    private Documento documento;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "Proceso", referencedColumnName = "Id")
+    @ManyToOne
+    private ProcesoNegocio proceso;
 
     public ProcesoDocumental() {
     }
@@ -102,22 +102,6 @@ public class ProcesoDocumental implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Date getFechaModificacion() {
-        return fechaModificacion;
-    }
-
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
     }
 
     public Boolean getBorrado() {
@@ -144,20 +128,12 @@ public class ProcesoDocumental implements Serializable {
         this.estadoProceso = estadoProceso;
     }
 
-    public Integer getSalidaProceso() {
-        return salidaProceso;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setSalidaProceso(Integer salidaProceso) {
-        this.salidaProceso = salidaProceso;
-    }
-
-    public Date getFechaInicioEstimada() {
-        return fechaInicioEstimada;
-    }
-
-    public void setFechaInicioEstimada(Date fechaInicioEstimada) {
-        this.fechaInicioEstimada = fechaInicioEstimada;
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public Date getFechaFinalizacionEstimada() {
@@ -168,14 +144,6 @@ public class ProcesoDocumental implements Serializable {
         this.fechaFinalizacionEstimada = fechaFinalizacionEstimada;
     }
 
-    public Date getFechaInicioReal() {
-        return fechaInicioReal;
-    }
-
-    public void setFechaInicioReal(Date fechaInicioReal) {
-        this.fechaInicioReal = fechaInicioReal;
-    }
-
     public Date getFechaFinalizacionReal() {
         return fechaFinalizacionReal;
     }
@@ -184,20 +152,36 @@ public class ProcesoDocumental implements Serializable {
         this.fechaFinalizacionReal = fechaFinalizacionReal;
     }
 
-    public Documento getDocumento() {
-        return documento;
+    public Date getFechaInicioEstimada() {
+        return fechaInicioEstimada;
     }
 
-    public void setDocumento(Documento documento) {
-        this.documento = documento;
+    public void setFechaInicioEstimada(Date fechaInicioEstimada) {
+        this.fechaInicioEstimada = fechaInicioEstimada;
     }
 
-    public ProcesoNegocio getProceso() {
-        return proceso;
+    public Date getFechaInicioReal() {
+        return fechaInicioReal;
     }
 
-    public void setProceso(ProcesoNegocio proceso) {
-        this.proceso = proceso;
+    public void setFechaInicioReal(Date fechaInicioReal) {
+        this.fechaInicioReal = fechaInicioReal;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public Integer getSalidaProceso() {
+        return salidaProceso;
+    }
+
+    public void setSalidaProceso(Integer salidaProceso) {
+        this.salidaProceso = salidaProceso;
     }
 
     public Usuario getCreadoPor() {
@@ -208,12 +192,28 @@ public class ProcesoDocumental implements Serializable {
         this.creadoPor = creadoPor;
     }
 
+    public Documento getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
+
     public Usuario getModificadoPor() {
         return modificadoPor;
     }
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public ProcesoNegocio getProceso() {
+        return proceso;
+    }
+
+    public void setProceso(ProcesoNegocio proceso) {
+        this.proceso = proceso;
     }
 
     @Override

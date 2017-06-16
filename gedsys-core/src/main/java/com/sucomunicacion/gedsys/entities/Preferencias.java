@@ -27,42 +27,42 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "Preferencias")
+@Table(name = "preferencias", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Preferencias.findAll", query = "SELECT p FROM Preferencias p")
     , @NamedQuery(name = "Preferencias.findById", query = "SELECT p FROM Preferencias p WHERE p.id = :id")
-    , @NamedQuery(name = "Preferencias.findByNombre", query = "SELECT p FROM Preferencias p WHERE p.nombre = :nombre")
-    , @NamedQuery(name = "Preferencias.findByValor", query = "SELECT p FROM Preferencias p WHERE p.valor = :valor")
+    , @NamedQuery(name = "Preferencias.findByBorrado", query = "SELECT p FROM Preferencias p WHERE p.borrado = :borrado")
+    , @NamedQuery(name = "Preferencias.findByCreadoPor", query = "SELECT p FROM Preferencias p WHERE p.creadoPor = :creadoPor")
     , @NamedQuery(name = "Preferencias.findByFechaCreacion", query = "SELECT p FROM Preferencias p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Preferencias.findByFechaModificacion", query = "SELECT p FROM Preferencias p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Preferencias.findByCreadoPor", query = "SELECT p FROM Preferencias p WHERE p.creadoPor = :creadoPor")
     , @NamedQuery(name = "Preferencias.findByModificadoPor", query = "SELECT p FROM Preferencias p WHERE p.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Preferencias.findByBorrado", query = "SELECT p FROM Preferencias p WHERE p.borrado = :borrado")})
+    , @NamedQuery(name = "Preferencias.findByNombre", query = "SELECT p FROM Preferencias p WHERE p.nombre = :nombre")
+    , @NamedQuery(name = "Preferencias.findByValor", query = "SELECT p FROM Preferencias p WHERE p.valor = :valor")})
 public class Preferencias implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
-    @Column(name = "Valor")
-    private String valor;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "CreadoPor")
+    private Integer creadoPor;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
     @Column(name = "ModificadoPor")
     private Integer modificadoPor;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
+    @Column(name = "Valor")
+    private String valor;
     @JoinColumn(name = "Usuario", referencedColumnName = "Id")
     @ManyToOne
     private Usuario usuario;
@@ -82,20 +82,20 @@ public class Preferencias implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
-    public String getValor() {
-        return valor;
+    public Integer getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setCreadoPor(Integer creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Date getFechaCreacion() {
@@ -114,14 +114,6 @@ public class Preferencias implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public Integer getModificadoPor() {
         return modificadoPor;
     }
@@ -130,12 +122,20 @@ public class Preferencias implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
     public Usuario getUsuario() {

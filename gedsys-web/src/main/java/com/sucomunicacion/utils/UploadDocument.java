@@ -5,7 +5,6 @@
  */
 package com.sucomunicacion.utils;
 
-import com.sucomunicacion.gedsys.bean.UsuarioBean;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +24,16 @@ import org.primefaces.model.UploadedFile;
  * @author rober
  */
 public class UploadDocument {
-    public void upload(UploadedFile file){
+    public void upload(UploadedFile file ){
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+        String path = servletContext.getRealPath("/resources/images");
+        upload(file, path);
+    }
+    
+    public void upload(UploadedFile file, String path){
         if(file != null){
             try {
-                FacesContext context = FacesContext.getCurrentInstance();
-                ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-                String path = servletContext.getRealPath("/resources/images");
                 String fileName =  FilenameUtils.getBaseName(file.getFileName());
                 String extension = FilenameUtils.getExtension(file.getFileName());
                 Path folder = Paths.get(path + File.separatorChar + fileName + "." + extension  );
@@ -45,6 +48,7 @@ public class UploadDocument {
             }
         }
     }
+    
     
     public String getFileName(UploadedFile file){
         if(file != null){

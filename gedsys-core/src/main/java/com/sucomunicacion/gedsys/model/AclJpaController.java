@@ -11,11 +11,10 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Grupo;
 import com.sucomunicacion.gedsys.entities.Modulo;
-import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,54 +34,49 @@ public class AclJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Acl acl) throws PreexistingEntityException, Exception {
+    public void create(Acl acl) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Grupo grupo = acl.getGrupo();
-            if (grupo != null) {
-                grupo = em.getReference(grupo.getClass(), grupo.getId());
-                acl.setGrupo(grupo);
-            }
-            Modulo modulo = acl.getModulo();
-            if (modulo != null) {
-                modulo = em.getReference(modulo.getClass(), modulo.getId());
-                acl.setModulo(modulo);
-            }
             Usuario creadoPor = acl.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
                 acl.setCreadoPor(creadoPor);
+            }
+            Grupo grupo = acl.getGrupo();
+            if (grupo != null) {
+                grupo = em.getReference(grupo.getClass(), grupo.getId());
+                acl.setGrupo(grupo);
             }
             Usuario modificadoPor = acl.getModificadoPor();
             if (modificadoPor != null) {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 acl.setModificadoPor(modificadoPor);
             }
-            em.persist(acl);
-            if (grupo != null) {
-                grupo.getAclCollection().add(acl);
-                grupo = em.merge(grupo);
-            }
+            Modulo modulo = acl.getModulo();
             if (modulo != null) {
-                modulo.getAclCollection().add(acl);
-                modulo = em.merge(modulo);
+                modulo = em.getReference(modulo.getClass(), modulo.getId());
+                acl.setModulo(modulo);
             }
+            em.persist(acl);
             if (creadoPor != null) {
                 creadoPor.getAclCollection().add(acl);
                 creadoPor = em.merge(creadoPor);
+            }
+            if (grupo != null) {
+                grupo.getAclCollection().add(acl);
+                grupo = em.merge(grupo);
             }
             if (modificadoPor != null) {
                 modificadoPor.getAclCollection().add(acl);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findAcl(acl.getId()) != null) {
-                throw new PreexistingEntityException("Acl " + acl + " already exists.", ex);
+            if (modulo != null) {
+                modulo.getAclCollection().add(acl);
+                modulo = em.merge(modulo);
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -96,47 +90,31 @@ public class AclJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Acl persistentAcl = em.find(Acl.class, acl.getId());
-            Grupo grupoOld = persistentAcl.getGrupo();
-            Grupo grupoNew = acl.getGrupo();
-            Modulo moduloOld = persistentAcl.getModulo();
-            Modulo moduloNew = acl.getModulo();
             Usuario creadoPorOld = persistentAcl.getCreadoPor();
             Usuario creadoPorNew = acl.getCreadoPor();
+            Grupo grupoOld = persistentAcl.getGrupo();
+            Grupo grupoNew = acl.getGrupo();
             Usuario modificadoPorOld = persistentAcl.getModificadoPor();
             Usuario modificadoPorNew = acl.getModificadoPor();
-            if (grupoNew != null) {
-                grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getId());
-                acl.setGrupo(grupoNew);
-            }
-            if (moduloNew != null) {
-                moduloNew = em.getReference(moduloNew.getClass(), moduloNew.getId());
-                acl.setModulo(moduloNew);
-            }
+            Modulo moduloOld = persistentAcl.getModulo();
+            Modulo moduloNew = acl.getModulo();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 acl.setCreadoPor(creadoPorNew);
+            }
+            if (grupoNew != null) {
+                grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getId());
+                acl.setGrupo(grupoNew);
             }
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 acl.setModificadoPor(modificadoPorNew);
             }
+            if (moduloNew != null) {
+                moduloNew = em.getReference(moduloNew.getClass(), moduloNew.getId());
+                acl.setModulo(moduloNew);
+            }
             acl = em.merge(acl);
-            if (grupoOld != null && !grupoOld.equals(grupoNew)) {
-                grupoOld.getAclCollection().remove(acl);
-                grupoOld = em.merge(grupoOld);
-            }
-            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
-                grupoNew.getAclCollection().add(acl);
-                grupoNew = em.merge(grupoNew);
-            }
-            if (moduloOld != null && !moduloOld.equals(moduloNew)) {
-                moduloOld.getAclCollection().remove(acl);
-                moduloOld = em.merge(moduloOld);
-            }
-            if (moduloNew != null && !moduloNew.equals(moduloOld)) {
-                moduloNew.getAclCollection().add(acl);
-                moduloNew = em.merge(moduloNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getAclCollection().remove(acl);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -145,6 +123,14 @@ public class AclJpaController implements Serializable {
                 creadoPorNew.getAclCollection().add(acl);
                 creadoPorNew = em.merge(creadoPorNew);
             }
+            if (grupoOld != null && !grupoOld.equals(grupoNew)) {
+                grupoOld.getAclCollection().remove(acl);
+                grupoOld = em.merge(grupoOld);
+            }
+            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
+                grupoNew.getAclCollection().add(acl);
+                grupoNew = em.merge(grupoNew);
+            }
             if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
                 modificadoPorOld.getAclCollection().remove(acl);
                 modificadoPorOld = em.merge(modificadoPorOld);
@@ -152,6 +138,14 @@ public class AclJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getAclCollection().add(acl);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (moduloOld != null && !moduloOld.equals(moduloNew)) {
+                moduloOld.getAclCollection().remove(acl);
+                moduloOld = em.merge(moduloOld);
+            }
+            if (moduloNew != null && !moduloNew.equals(moduloOld)) {
+                moduloNew.getAclCollection().add(acl);
+                moduloNew = em.merge(moduloNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -182,25 +176,25 @@ public class AclJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The acl with id " + id + " no longer exists.", enfe);
             }
-            Grupo grupo = acl.getGrupo();
-            if (grupo != null) {
-                grupo.getAclCollection().remove(acl);
-                grupo = em.merge(grupo);
-            }
-            Modulo modulo = acl.getModulo();
-            if (modulo != null) {
-                modulo.getAclCollection().remove(acl);
-                modulo = em.merge(modulo);
-            }
             Usuario creadoPor = acl.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getAclCollection().remove(acl);
                 creadoPor = em.merge(creadoPor);
             }
+            Grupo grupo = acl.getGrupo();
+            if (grupo != null) {
+                grupo.getAclCollection().remove(acl);
+                grupo = em.merge(grupo);
+            }
             Usuario modificadoPor = acl.getModificadoPor();
             if (modificadoPor != null) {
                 modificadoPor.getAclCollection().remove(acl);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            Modulo modulo = acl.getModulo();
+            if (modulo != null) {
+                modulo.getAclCollection().remove(acl);
+                modulo = em.merge(modulo);
             }
             em.remove(acl);
             em.getTransaction().commit();

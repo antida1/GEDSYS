@@ -10,12 +10,11 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
 import com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento;
 import com.sucomunicacion.gedsys.entities.TipoDocumento;
-import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,21 +34,11 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ProcesoTipoDocumento procesoTipoDocumento) throws PreexistingEntityException, Exception {
+    public void create(ProcesoTipoDocumento procesoTipoDocumento) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ProcesoNegocio proceso = procesoTipoDocumento.getProceso();
-            if (proceso != null) {
-                proceso = em.getReference(proceso.getClass(), proceso.getId());
-                procesoTipoDocumento.setProceso(proceso);
-            }
-            TipoDocumento tipoDocumento = procesoTipoDocumento.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
-                procesoTipoDocumento.setTipoDocumento(tipoDocumento);
-            }
             Usuario creadoPor = procesoTipoDocumento.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -60,15 +49,17 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 procesoTipoDocumento.setModificadoPor(modificadoPor);
             }
-            em.persist(procesoTipoDocumento);
+            ProcesoNegocio proceso = procesoTipoDocumento.getProceso();
             if (proceso != null) {
-                proceso.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
-                proceso = em.merge(proceso);
+                proceso = em.getReference(proceso.getClass(), proceso.getId());
+                procesoTipoDocumento.setProceso(proceso);
             }
+            TipoDocumento tipoDocumento = procesoTipoDocumento.getTipoDocumento();
             if (tipoDocumento != null) {
-                tipoDocumento.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
-                tipoDocumento = em.merge(tipoDocumento);
+                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
+                procesoTipoDocumento.setTipoDocumento(tipoDocumento);
             }
+            em.persist(procesoTipoDocumento);
             if (creadoPor != null) {
                 creadoPor.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
                 creadoPor = em.merge(creadoPor);
@@ -77,12 +68,15 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
                 modificadoPor.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findProcesoTipoDocumento(procesoTipoDocumento.getId()) != null) {
-                throw new PreexistingEntityException("ProcesoTipoDocumento " + procesoTipoDocumento + " already exists.", ex);
+            if (proceso != null) {
+                proceso.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
+                proceso = em.merge(proceso);
             }
-            throw ex;
+            if (tipoDocumento != null) {
+                tipoDocumento.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
+                tipoDocumento = em.merge(tipoDocumento);
+            }
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -96,22 +90,14 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             ProcesoTipoDocumento persistentProcesoTipoDocumento = em.find(ProcesoTipoDocumento.class, procesoTipoDocumento.getId());
-            ProcesoNegocio procesoOld = persistentProcesoTipoDocumento.getProceso();
-            ProcesoNegocio procesoNew = procesoTipoDocumento.getProceso();
-            TipoDocumento tipoDocumentoOld = persistentProcesoTipoDocumento.getTipoDocumento();
-            TipoDocumento tipoDocumentoNew = procesoTipoDocumento.getTipoDocumento();
             Usuario creadoPorOld = persistentProcesoTipoDocumento.getCreadoPor();
             Usuario creadoPorNew = procesoTipoDocumento.getCreadoPor();
             Usuario modificadoPorOld = persistentProcesoTipoDocumento.getModificadoPor();
             Usuario modificadoPorNew = procesoTipoDocumento.getModificadoPor();
-            if (procesoNew != null) {
-                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
-                procesoTipoDocumento.setProceso(procesoNew);
-            }
-            if (tipoDocumentoNew != null) {
-                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
-                procesoTipoDocumento.setTipoDocumento(tipoDocumentoNew);
-            }
+            ProcesoNegocio procesoOld = persistentProcesoTipoDocumento.getProceso();
+            ProcesoNegocio procesoNew = procesoTipoDocumento.getProceso();
+            TipoDocumento tipoDocumentoOld = persistentProcesoTipoDocumento.getTipoDocumento();
+            TipoDocumento tipoDocumentoNew = procesoTipoDocumento.getTipoDocumento();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 procesoTipoDocumento.setCreadoPor(creadoPorNew);
@@ -120,23 +106,15 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 procesoTipoDocumento.setModificadoPor(modificadoPorNew);
             }
+            if (procesoNew != null) {
+                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
+                procesoTipoDocumento.setProceso(procesoNew);
+            }
+            if (tipoDocumentoNew != null) {
+                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
+                procesoTipoDocumento.setTipoDocumento(tipoDocumentoNew);
+            }
             procesoTipoDocumento = em.merge(procesoTipoDocumento);
-            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
-                procesoOld.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
-                procesoOld = em.merge(procesoOld);
-            }
-            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
-                procesoNew.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
-                procesoNew = em.merge(procesoNew);
-            }
-            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
-                tipoDocumentoOld.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
-                tipoDocumentoOld = em.merge(tipoDocumentoOld);
-            }
-            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
-                tipoDocumentoNew.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
-                tipoDocumentoNew = em.merge(tipoDocumentoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -152,6 +130,22 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
+                procesoOld.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
+                procesoOld = em.merge(procesoOld);
+            }
+            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
+                procesoNew.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
+                procesoNew = em.merge(procesoNew);
+            }
+            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
+                tipoDocumentoOld.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
+                tipoDocumentoOld = em.merge(tipoDocumentoOld);
+            }
+            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
+                tipoDocumentoNew.getProcesoTipoDocumentoCollection().add(procesoTipoDocumento);
+                tipoDocumentoNew = em.merge(tipoDocumentoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -182,16 +176,6 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The procesoTipoDocumento with id " + id + " no longer exists.", enfe);
             }
-            ProcesoNegocio proceso = procesoTipoDocumento.getProceso();
-            if (proceso != null) {
-                proceso.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
-                proceso = em.merge(proceso);
-            }
-            TipoDocumento tipoDocumento = procesoTipoDocumento.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
-                tipoDocumento = em.merge(tipoDocumento);
-            }
             Usuario creadoPor = procesoTipoDocumento.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
@@ -201,6 +185,16 @@ public class ProcesoTipoDocumentoJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            ProcesoNegocio proceso = procesoTipoDocumento.getProceso();
+            if (proceso != null) {
+                proceso.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
+                proceso = em.merge(proceso);
+            }
+            TipoDocumento tipoDocumento = procesoTipoDocumento.getTipoDocumento();
+            if (tipoDocumento != null) {
+                tipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumento);
+                tipoDocumento = em.merge(tipoDocumento);
             }
             em.remove(procesoTipoDocumento);
             em.getTransaction().commit();

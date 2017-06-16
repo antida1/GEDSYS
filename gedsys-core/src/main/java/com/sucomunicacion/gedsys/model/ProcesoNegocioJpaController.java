@@ -10,15 +10,14 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
 import com.sucomunicacion.gedsys.entities.Usuario;
-import com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento;
+import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
 import java.util.ArrayList;
 import java.util.Collection;
 import com.sucomunicacion.gedsys.entities.ProcesoDocumental;
+import com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento;
 import com.sucomunicacion.gedsys.entities.MonitoresProceso;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,15 +37,15 @@ public class ProcesoNegocioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ProcesoNegocio procesoNegocio) throws PreexistingEntityException, Exception {
-        if (procesoNegocio.getProcesoTipoDocumentoCollection() == null) {
-            procesoNegocio.setProcesoTipoDocumentoCollection(new ArrayList<ProcesoTipoDocumento>());
-        }
+    public void create(ProcesoNegocio procesoNegocio) {
         if (procesoNegocio.getProcesoNegocioCollection() == null) {
             procesoNegocio.setProcesoNegocioCollection(new ArrayList<ProcesoNegocio>());
         }
-        if (procesoNegocio.getProcesoDocumentalCollection() == null) {
-            procesoNegocio.setProcesoDocumentalCollection(new ArrayList<ProcesoDocumental>());
+        if (procesoNegocio.getProcesodocumentalCollection() == null) {
+            procesoNegocio.setProcesodocumentalCollection(new ArrayList<ProcesoDocumental>());
+        }
+        if (procesoNegocio.getProcesoTipoDocumentoCollection() == null) {
+            procesoNegocio.setProcesoTipoDocumentoCollection(new ArrayList<ProcesoTipoDocumento>());
         }
         if (procesoNegocio.getMonitoresProcesoCollection() == null) {
             procesoNegocio.setMonitoresProcesoCollection(new ArrayList<MonitoresProceso>());
@@ -55,11 +54,6 @@ public class ProcesoNegocioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ProcesoNegocio siguienteProceso = procesoNegocio.getSiguienteProceso();
-            if (siguienteProceso != null) {
-                siguienteProceso = em.getReference(siguienteProceso.getClass(), siguienteProceso.getId());
-                procesoNegocio.setSiguienteProceso(siguienteProceso);
-            }
             Usuario creadoPor = procesoNegocio.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -70,24 +64,29 @@ public class ProcesoNegocioJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 procesoNegocio.setModificadoPor(modificadoPor);
             }
-            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollection = new ArrayList<ProcesoTipoDocumento>();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach : procesoNegocio.getProcesoTipoDocumentoCollection()) {
-                procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getId());
-                attachedProcesoTipoDocumentoCollection.add(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach);
+            ProcesoNegocio siguienteProceso = procesoNegocio.getSiguienteProceso();
+            if (siguienteProceso != null) {
+                siguienteProceso = em.getReference(siguienteProceso.getClass(), siguienteProceso.getId());
+                procesoNegocio.setSiguienteProceso(siguienteProceso);
             }
-            procesoNegocio.setProcesoTipoDocumentoCollection(attachedProcesoTipoDocumentoCollection);
             Collection<ProcesoNegocio> attachedProcesoNegocioCollection = new ArrayList<ProcesoNegocio>();
             for (ProcesoNegocio procesoNegocioCollectionProcesoNegocioToAttach : procesoNegocio.getProcesoNegocioCollection()) {
                 procesoNegocioCollectionProcesoNegocioToAttach = em.getReference(procesoNegocioCollectionProcesoNegocioToAttach.getClass(), procesoNegocioCollectionProcesoNegocioToAttach.getId());
                 attachedProcesoNegocioCollection.add(procesoNegocioCollectionProcesoNegocioToAttach);
             }
             procesoNegocio.setProcesoNegocioCollection(attachedProcesoNegocioCollection);
-            Collection<ProcesoDocumental> attachedProcesoDocumentalCollection = new ArrayList<ProcesoDocumental>();
-            for (ProcesoDocumental procesoDocumentalCollectionProcesoDocumentalToAttach : procesoNegocio.getProcesoDocumentalCollection()) {
-                procesoDocumentalCollectionProcesoDocumentalToAttach = em.getReference(procesoDocumentalCollectionProcesoDocumentalToAttach.getClass(), procesoDocumentalCollectionProcesoDocumentalToAttach.getId());
-                attachedProcesoDocumentalCollection.add(procesoDocumentalCollectionProcesoDocumentalToAttach);
+            Collection<ProcesoDocumental> attachedProcesodocumentalCollection = new ArrayList<ProcesoDocumental>();
+            for (ProcesoDocumental procesodocumentalCollectionProcesoDocumentalToAttach : procesoNegocio.getProcesodocumentalCollection()) {
+                procesodocumentalCollectionProcesoDocumentalToAttach = em.getReference(procesodocumentalCollectionProcesoDocumentalToAttach.getClass(), procesodocumentalCollectionProcesoDocumentalToAttach.getId());
+                attachedProcesodocumentalCollection.add(procesodocumentalCollectionProcesoDocumentalToAttach);
             }
-            procesoNegocio.setProcesoDocumentalCollection(attachedProcesoDocumentalCollection);
+            procesoNegocio.setProcesodocumentalCollection(attachedProcesodocumentalCollection);
+            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollection = new ArrayList<ProcesoTipoDocumento>();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach : procesoNegocio.getProcesoTipoDocumentoCollection()) {
+                procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getId());
+                attachedProcesoTipoDocumentoCollection.add(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach);
+            }
+            procesoNegocio.setProcesoTipoDocumentoCollection(attachedProcesoTipoDocumentoCollection);
             Collection<MonitoresProceso> attachedMonitoresProcesoCollection = new ArrayList<MonitoresProceso>();
             for (MonitoresProceso monitoresProcesoCollectionMonitoresProcesoToAttach : procesoNegocio.getMonitoresProcesoCollection()) {
                 monitoresProcesoCollectionMonitoresProcesoToAttach = em.getReference(monitoresProcesoCollectionMonitoresProcesoToAttach.getClass(), monitoresProcesoCollectionMonitoresProcesoToAttach.getId());
@@ -95,10 +94,6 @@ public class ProcesoNegocioJpaController implements Serializable {
             }
             procesoNegocio.setMonitoresProcesoCollection(attachedMonitoresProcesoCollection);
             em.persist(procesoNegocio);
-            if (siguienteProceso != null) {
-                siguienteProceso.getProcesoNegocioCollection().add(procesoNegocio);
-                siguienteProceso = em.merge(siguienteProceso);
-            }
             if (creadoPor != null) {
                 creadoPor.getProcesoNegocioCollection().add(procesoNegocio);
                 creadoPor = em.merge(creadoPor);
@@ -107,14 +102,9 @@ public class ProcesoNegocioJpaController implements Serializable {
                 modificadoPor.getProcesoNegocioCollection().add(procesoNegocio);
                 modificadoPor = em.merge(modificadoPor);
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoNegocio.getProcesoTipoDocumentoCollection()) {
-                ProcesoNegocio oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = procesoTipoDocumentoCollectionProcesoTipoDocumento.getProceso();
-                procesoTipoDocumentoCollectionProcesoTipoDocumento.setProceso(procesoNegocio);
-                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
-                if (oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento != null) {
-                    oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionProcesoTipoDocumento);
-                    oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento);
-                }
+            if (siguienteProceso != null) {
+                siguienteProceso.getProcesoNegocioCollection().add(procesoNegocio);
+                siguienteProceso = em.merge(siguienteProceso);
             }
             for (ProcesoNegocio procesoNegocioCollectionProcesoNegocio : procesoNegocio.getProcesoNegocioCollection()) {
                 ProcesoNegocio oldSiguienteProcesoOfProcesoNegocioCollectionProcesoNegocio = procesoNegocioCollectionProcesoNegocio.getSiguienteProceso();
@@ -125,13 +115,22 @@ public class ProcesoNegocioJpaController implements Serializable {
                     oldSiguienteProcesoOfProcesoNegocioCollectionProcesoNegocio = em.merge(oldSiguienteProcesoOfProcesoNegocioCollectionProcesoNegocio);
                 }
             }
-            for (ProcesoDocumental procesoDocumentalCollectionProcesoDocumental : procesoNegocio.getProcesoDocumentalCollection()) {
-                ProcesoNegocio oldProcesoOfProcesoDocumentalCollectionProcesoDocumental = procesoDocumentalCollectionProcesoDocumental.getProceso();
-                procesoDocumentalCollectionProcesoDocumental.setProceso(procesoNegocio);
-                procesoDocumentalCollectionProcesoDocumental = em.merge(procesoDocumentalCollectionProcesoDocumental);
-                if (oldProcesoOfProcesoDocumentalCollectionProcesoDocumental != null) {
-                    oldProcesoOfProcesoDocumentalCollectionProcesoDocumental.getProcesoDocumentalCollection().remove(procesoDocumentalCollectionProcesoDocumental);
-                    oldProcesoOfProcesoDocumentalCollectionProcesoDocumental = em.merge(oldProcesoOfProcesoDocumentalCollectionProcesoDocumental);
+            for (ProcesoDocumental procesodocumentalCollectionProcesoDocumental : procesoNegocio.getProcesodocumentalCollection()) {
+                ProcesoNegocio oldProcesoOfProcesodocumentalCollectionProcesoDocumental = procesodocumentalCollectionProcesoDocumental.getProceso();
+                procesodocumentalCollectionProcesoDocumental.setProceso(procesoNegocio);
+                procesodocumentalCollectionProcesoDocumental = em.merge(procesodocumentalCollectionProcesoDocumental);
+                if (oldProcesoOfProcesodocumentalCollectionProcesoDocumental != null) {
+                    oldProcesoOfProcesodocumentalCollectionProcesoDocumental.getProcesodocumentalCollection().remove(procesodocumentalCollectionProcesoDocumental);
+                    oldProcesoOfProcesodocumentalCollectionProcesoDocumental = em.merge(oldProcesoOfProcesodocumentalCollectionProcesoDocumental);
+                }
+            }
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoNegocio.getProcesoTipoDocumentoCollection()) {
+                ProcesoNegocio oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = procesoTipoDocumentoCollectionProcesoTipoDocumento.getProceso();
+                procesoTipoDocumentoCollectionProcesoTipoDocumento.setProceso(procesoNegocio);
+                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+                if (oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento != null) {
+                    oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+                    oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(oldProcesoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento);
                 }
             }
             for (MonitoresProceso monitoresProcesoCollectionMonitoresProceso : procesoNegocio.getMonitoresProcesoCollection()) {
@@ -144,11 +143,6 @@ public class ProcesoNegocioJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findProcesoNegocio(procesoNegocio.getId()) != null) {
-                throw new PreexistingEntityException("ProcesoNegocio " + procesoNegocio + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -162,24 +156,20 @@ public class ProcesoNegocioJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             ProcesoNegocio persistentProcesoNegocio = em.find(ProcesoNegocio.class, procesoNegocio.getId());
-            ProcesoNegocio siguienteProcesoOld = persistentProcesoNegocio.getSiguienteProceso();
-            ProcesoNegocio siguienteProcesoNew = procesoNegocio.getSiguienteProceso();
             Usuario creadoPorOld = persistentProcesoNegocio.getCreadoPor();
             Usuario creadoPorNew = procesoNegocio.getCreadoPor();
             Usuario modificadoPorOld = persistentProcesoNegocio.getModificadoPor();
             Usuario modificadoPorNew = procesoNegocio.getModificadoPor();
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionOld = persistentProcesoNegocio.getProcesoTipoDocumentoCollection();
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionNew = procesoNegocio.getProcesoTipoDocumentoCollection();
+            ProcesoNegocio siguienteProcesoOld = persistentProcesoNegocio.getSiguienteProceso();
+            ProcesoNegocio siguienteProcesoNew = procesoNegocio.getSiguienteProceso();
             Collection<ProcesoNegocio> procesoNegocioCollectionOld = persistentProcesoNegocio.getProcesoNegocioCollection();
             Collection<ProcesoNegocio> procesoNegocioCollectionNew = procesoNegocio.getProcesoNegocioCollection();
-            Collection<ProcesoDocumental> procesoDocumentalCollectionOld = persistentProcesoNegocio.getProcesoDocumentalCollection();
-            Collection<ProcesoDocumental> procesoDocumentalCollectionNew = procesoNegocio.getProcesoDocumentalCollection();
+            Collection<ProcesoDocumental> procesodocumentalCollectionOld = persistentProcesoNegocio.getProcesodocumentalCollection();
+            Collection<ProcesoDocumental> procesodocumentalCollectionNew = procesoNegocio.getProcesodocumentalCollection();
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionOld = persistentProcesoNegocio.getProcesoTipoDocumentoCollection();
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionNew = procesoNegocio.getProcesoTipoDocumentoCollection();
             Collection<MonitoresProceso> monitoresProcesoCollectionOld = persistentProcesoNegocio.getMonitoresProcesoCollection();
             Collection<MonitoresProceso> monitoresProcesoCollectionNew = procesoNegocio.getMonitoresProcesoCollection();
-            if (siguienteProcesoNew != null) {
-                siguienteProcesoNew = em.getReference(siguienteProcesoNew.getClass(), siguienteProcesoNew.getId());
-                procesoNegocio.setSiguienteProceso(siguienteProcesoNew);
-            }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 procesoNegocio.setCreadoPor(creadoPorNew);
@@ -188,13 +178,10 @@ public class ProcesoNegocioJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 procesoNegocio.setModificadoPor(modificadoPorNew);
             }
-            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollectionNew = new ArrayList<ProcesoTipoDocumento>();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach : procesoTipoDocumentoCollectionNew) {
-                procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getId());
-                attachedProcesoTipoDocumentoCollectionNew.add(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach);
+            if (siguienteProcesoNew != null) {
+                siguienteProcesoNew = em.getReference(siguienteProcesoNew.getClass(), siguienteProcesoNew.getId());
+                procesoNegocio.setSiguienteProceso(siguienteProcesoNew);
             }
-            procesoTipoDocumentoCollectionNew = attachedProcesoTipoDocumentoCollectionNew;
-            procesoNegocio.setProcesoTipoDocumentoCollection(procesoTipoDocumentoCollectionNew);
             Collection<ProcesoNegocio> attachedProcesoNegocioCollectionNew = new ArrayList<ProcesoNegocio>();
             for (ProcesoNegocio procesoNegocioCollectionNewProcesoNegocioToAttach : procesoNegocioCollectionNew) {
                 procesoNegocioCollectionNewProcesoNegocioToAttach = em.getReference(procesoNegocioCollectionNewProcesoNegocioToAttach.getClass(), procesoNegocioCollectionNewProcesoNegocioToAttach.getId());
@@ -202,13 +189,20 @@ public class ProcesoNegocioJpaController implements Serializable {
             }
             procesoNegocioCollectionNew = attachedProcesoNegocioCollectionNew;
             procesoNegocio.setProcesoNegocioCollection(procesoNegocioCollectionNew);
-            Collection<ProcesoDocumental> attachedProcesoDocumentalCollectionNew = new ArrayList<ProcesoDocumental>();
-            for (ProcesoDocumental procesoDocumentalCollectionNewProcesoDocumentalToAttach : procesoDocumentalCollectionNew) {
-                procesoDocumentalCollectionNewProcesoDocumentalToAttach = em.getReference(procesoDocumentalCollectionNewProcesoDocumentalToAttach.getClass(), procesoDocumentalCollectionNewProcesoDocumentalToAttach.getId());
-                attachedProcesoDocumentalCollectionNew.add(procesoDocumentalCollectionNewProcesoDocumentalToAttach);
+            Collection<ProcesoDocumental> attachedProcesodocumentalCollectionNew = new ArrayList<ProcesoDocumental>();
+            for (ProcesoDocumental procesodocumentalCollectionNewProcesoDocumentalToAttach : procesodocumentalCollectionNew) {
+                procesodocumentalCollectionNewProcesoDocumentalToAttach = em.getReference(procesodocumentalCollectionNewProcesoDocumentalToAttach.getClass(), procesodocumentalCollectionNewProcesoDocumentalToAttach.getId());
+                attachedProcesodocumentalCollectionNew.add(procesodocumentalCollectionNewProcesoDocumentalToAttach);
             }
-            procesoDocumentalCollectionNew = attachedProcesoDocumentalCollectionNew;
-            procesoNegocio.setProcesoDocumentalCollection(procesoDocumentalCollectionNew);
+            procesodocumentalCollectionNew = attachedProcesodocumentalCollectionNew;
+            procesoNegocio.setProcesodocumentalCollection(procesodocumentalCollectionNew);
+            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollectionNew = new ArrayList<ProcesoTipoDocumento>();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach : procesoTipoDocumentoCollectionNew) {
+                procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getId());
+                attachedProcesoTipoDocumentoCollectionNew.add(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach);
+            }
+            procesoTipoDocumentoCollectionNew = attachedProcesoTipoDocumentoCollectionNew;
+            procesoNegocio.setProcesoTipoDocumentoCollection(procesoTipoDocumentoCollectionNew);
             Collection<MonitoresProceso> attachedMonitoresProcesoCollectionNew = new ArrayList<MonitoresProceso>();
             for (MonitoresProceso monitoresProcesoCollectionNewMonitoresProcesoToAttach : monitoresProcesoCollectionNew) {
                 monitoresProcesoCollectionNewMonitoresProcesoToAttach = em.getReference(monitoresProcesoCollectionNewMonitoresProcesoToAttach.getClass(), monitoresProcesoCollectionNewMonitoresProcesoToAttach.getId());
@@ -217,14 +211,6 @@ public class ProcesoNegocioJpaController implements Serializable {
             monitoresProcesoCollectionNew = attachedMonitoresProcesoCollectionNew;
             procesoNegocio.setMonitoresProcesoCollection(monitoresProcesoCollectionNew);
             procesoNegocio = em.merge(procesoNegocio);
-            if (siguienteProcesoOld != null && !siguienteProcesoOld.equals(siguienteProcesoNew)) {
-                siguienteProcesoOld.getProcesoNegocioCollection().remove(procesoNegocio);
-                siguienteProcesoOld = em.merge(siguienteProcesoOld);
-            }
-            if (siguienteProcesoNew != null && !siguienteProcesoNew.equals(siguienteProcesoOld)) {
-                siguienteProcesoNew.getProcesoNegocioCollection().add(procesoNegocio);
-                siguienteProcesoNew = em.merge(siguienteProcesoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getProcesoNegocioCollection().remove(procesoNegocio);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -241,22 +227,13 @@ public class ProcesoNegocioJpaController implements Serializable {
                 modificadoPorNew.getProcesoNegocioCollection().add(procesoNegocio);
                 modificadoPorNew = em.merge(modificadoPorNew);
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionOldProcesoTipoDocumento : procesoTipoDocumentoCollectionOld) {
-                if (!procesoTipoDocumentoCollectionNew.contains(procesoTipoDocumentoCollectionOldProcesoTipoDocumento)) {
-                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento.setProceso(null);
-                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionOldProcesoTipoDocumento);
-                }
+            if (siguienteProcesoOld != null && !siguienteProcesoOld.equals(siguienteProcesoNew)) {
+                siguienteProcesoOld.getProcesoNegocioCollection().remove(procesoNegocio);
+                siguienteProcesoOld = em.merge(siguienteProcesoOld);
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumento : procesoTipoDocumentoCollectionNew) {
-                if (!procesoTipoDocumentoCollectionOld.contains(procesoTipoDocumentoCollectionNewProcesoTipoDocumento)) {
-                    ProcesoNegocio oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = procesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProceso();
-                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento.setProceso(procesoNegocio);
-                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
-                    if (oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento != null && !oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.equals(procesoNegocio)) {
-                        oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
-                        oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento);
-                    }
-                }
+            if (siguienteProcesoNew != null && !siguienteProcesoNew.equals(siguienteProcesoOld)) {
+                siguienteProcesoNew.getProcesoNegocioCollection().add(procesoNegocio);
+                siguienteProcesoNew = em.merge(siguienteProcesoNew);
             }
             for (ProcesoNegocio procesoNegocioCollectionOldProcesoNegocio : procesoNegocioCollectionOld) {
                 if (!procesoNegocioCollectionNew.contains(procesoNegocioCollectionOldProcesoNegocio)) {
@@ -275,20 +252,37 @@ public class ProcesoNegocioJpaController implements Serializable {
                     }
                 }
             }
-            for (ProcesoDocumental procesoDocumentalCollectionOldProcesoDocumental : procesoDocumentalCollectionOld) {
-                if (!procesoDocumentalCollectionNew.contains(procesoDocumentalCollectionOldProcesoDocumental)) {
-                    procesoDocumentalCollectionOldProcesoDocumental.setProceso(null);
-                    procesoDocumentalCollectionOldProcesoDocumental = em.merge(procesoDocumentalCollectionOldProcesoDocumental);
+            for (ProcesoDocumental procesodocumentalCollectionOldProcesoDocumental : procesodocumentalCollectionOld) {
+                if (!procesodocumentalCollectionNew.contains(procesodocumentalCollectionOldProcesoDocumental)) {
+                    procesodocumentalCollectionOldProcesoDocumental.setProceso(null);
+                    procesodocumentalCollectionOldProcesoDocumental = em.merge(procesodocumentalCollectionOldProcesoDocumental);
                 }
             }
-            for (ProcesoDocumental procesoDocumentalCollectionNewProcesoDocumental : procesoDocumentalCollectionNew) {
-                if (!procesoDocumentalCollectionOld.contains(procesoDocumentalCollectionNewProcesoDocumental)) {
-                    ProcesoNegocio oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental = procesoDocumentalCollectionNewProcesoDocumental.getProceso();
-                    procesoDocumentalCollectionNewProcesoDocumental.setProceso(procesoNegocio);
-                    procesoDocumentalCollectionNewProcesoDocumental = em.merge(procesoDocumentalCollectionNewProcesoDocumental);
-                    if (oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental != null && !oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental.equals(procesoNegocio)) {
-                        oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental.getProcesoDocumentalCollection().remove(procesoDocumentalCollectionNewProcesoDocumental);
-                        oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental = em.merge(oldProcesoOfProcesoDocumentalCollectionNewProcesoDocumental);
+            for (ProcesoDocumental procesodocumentalCollectionNewProcesoDocumental : procesodocumentalCollectionNew) {
+                if (!procesodocumentalCollectionOld.contains(procesodocumentalCollectionNewProcesoDocumental)) {
+                    ProcesoNegocio oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental = procesodocumentalCollectionNewProcesoDocumental.getProceso();
+                    procesodocumentalCollectionNewProcesoDocumental.setProceso(procesoNegocio);
+                    procesodocumentalCollectionNewProcesoDocumental = em.merge(procesodocumentalCollectionNewProcesoDocumental);
+                    if (oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental != null && !oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental.equals(procesoNegocio)) {
+                        oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental.getProcesodocumentalCollection().remove(procesodocumentalCollectionNewProcesoDocumental);
+                        oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental = em.merge(oldProcesoOfProcesodocumentalCollectionNewProcesoDocumental);
+                    }
+                }
+            }
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionOldProcesoTipoDocumento : procesoTipoDocumentoCollectionOld) {
+                if (!procesoTipoDocumentoCollectionNew.contains(procesoTipoDocumentoCollectionOldProcesoTipoDocumento)) {
+                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento.setProceso(null);
+                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionOldProcesoTipoDocumento);
+                }
+            }
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumento : procesoTipoDocumentoCollectionNew) {
+                if (!procesoTipoDocumentoCollectionOld.contains(procesoTipoDocumentoCollectionNewProcesoTipoDocumento)) {
+                    ProcesoNegocio oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = procesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProceso();
+                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento.setProceso(procesoNegocio);
+                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
+                    if (oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento != null && !oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.equals(procesoNegocio)) {
+                        oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
+                        oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(oldProcesoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento);
                     }
                 }
             }
@@ -338,11 +332,6 @@ public class ProcesoNegocioJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The procesoNegocio with id " + id + " no longer exists.", enfe);
             }
-            ProcesoNegocio siguienteProceso = procesoNegocio.getSiguienteProceso();
-            if (siguienteProceso != null) {
-                siguienteProceso.getProcesoNegocioCollection().remove(procesoNegocio);
-                siguienteProceso = em.merge(siguienteProceso);
-            }
             Usuario creadoPor = procesoNegocio.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getProcesoNegocioCollection().remove(procesoNegocio);
@@ -353,20 +342,25 @@ public class ProcesoNegocioJpaController implements Serializable {
                 modificadoPor.getProcesoNegocioCollection().remove(procesoNegocio);
                 modificadoPor = em.merge(modificadoPor);
             }
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection = procesoNegocio.getProcesoTipoDocumentoCollection();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoTipoDocumentoCollection) {
-                procesoTipoDocumentoCollectionProcesoTipoDocumento.setProceso(null);
-                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+            ProcesoNegocio siguienteProceso = procesoNegocio.getSiguienteProceso();
+            if (siguienteProceso != null) {
+                siguienteProceso.getProcesoNegocioCollection().remove(procesoNegocio);
+                siguienteProceso = em.merge(siguienteProceso);
             }
             Collection<ProcesoNegocio> procesoNegocioCollection = procesoNegocio.getProcesoNegocioCollection();
             for (ProcesoNegocio procesoNegocioCollectionProcesoNegocio : procesoNegocioCollection) {
                 procesoNegocioCollectionProcesoNegocio.setSiguienteProceso(null);
                 procesoNegocioCollectionProcesoNegocio = em.merge(procesoNegocioCollectionProcesoNegocio);
             }
-            Collection<ProcesoDocumental> procesoDocumentalCollection = procesoNegocio.getProcesoDocumentalCollection();
-            for (ProcesoDocumental procesoDocumentalCollectionProcesoDocumental : procesoDocumentalCollection) {
-                procesoDocumentalCollectionProcesoDocumental.setProceso(null);
-                procesoDocumentalCollectionProcesoDocumental = em.merge(procesoDocumentalCollectionProcesoDocumental);
+            Collection<ProcesoDocumental> procesodocumentalCollection = procesoNegocio.getProcesodocumentalCollection();
+            for (ProcesoDocumental procesodocumentalCollectionProcesoDocumental : procesodocumentalCollection) {
+                procesodocumentalCollectionProcesoDocumental.setProceso(null);
+                procesodocumentalCollectionProcesoDocumental = em.merge(procesodocumentalCollectionProcesoDocumental);
+            }
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection = procesoNegocio.getProcesoTipoDocumentoCollection();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoTipoDocumentoCollection) {
+                procesoTipoDocumentoCollectionProcesoTipoDocumento.setProceso(null);
+                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
             }
             Collection<MonitoresProceso> monitoresProcesoCollection = procesoNegocio.getMonitoresProcesoCollection();
             for (MonitoresProceso monitoresProcesoCollectionMonitoresProceso : monitoresProcesoCollection) {

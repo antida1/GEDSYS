@@ -31,27 +31,27 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Modulo")
+@Table(name = "modulo", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Modulo.findAll", query = "SELECT m FROM Modulo m")
     , @NamedQuery(name = "Modulo.findById", query = "SELECT m FROM Modulo m WHERE m.id = :id")
-    , @NamedQuery(name = "Modulo.findByNombre", query = "SELECT m FROM Modulo m WHERE m.nombre = :nombre")
+    , @NamedQuery(name = "Modulo.findByBorrado", query = "SELECT m FROM Modulo m WHERE m.borrado = :borrado")
     , @NamedQuery(name = "Modulo.findByDescripcion", query = "SELECT m FROM Modulo m WHERE m.descripcion = :descripcion")
     , @NamedQuery(name = "Modulo.findByFechaCreacion", query = "SELECT m FROM Modulo m WHERE m.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Modulo.findByFechaModificacion", query = "SELECT m FROM Modulo m WHERE m.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Modulo.findByBorrado", query = "SELECT m FROM Modulo m WHERE m.borrado = :borrado")
+    , @NamedQuery(name = "Modulo.findByNombre", query = "SELECT m FROM Modulo m WHERE m.nombre = :nombre")
     , @NamedQuery(name = "Modulo.findByOculto", query = "SELECT m FROM Modulo m WHERE m.oculto = :oculto")})
 public class Modulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
     @Column(name = "Descripcion")
     private String descripcion;
     @Column(name = "FechaCreacion")
@@ -60,18 +60,18 @@ public class Modulo implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @Column(name = "Oculto")
     private Boolean oculto;
+    @OneToMany(mappedBy = "modulo")
+    private Collection<Acl> aclCollection;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @OneToMany(mappedBy = "modulo")
-    private Collection<Acl> aclCollection;
 
     public Modulo() {
     }
@@ -88,12 +88,12 @@ public class Modulo implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
     public String getDescripcion() {
@@ -120,12 +120,12 @@ public class Modulo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Boolean getOculto() {
@@ -134,6 +134,16 @@ public class Modulo implements Serializable {
 
     public void setOculto(Boolean oculto) {
         this.oculto = oculto;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Acl> getAclCollection() {
+        return aclCollection;
+    }
+
+    public void setAclCollection(Collection<Acl> aclCollection) {
+        this.aclCollection = aclCollection;
     }
 
     public Usuario getCreadoPor() {
@@ -150,16 +160,6 @@ public class Modulo implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Acl> getAclCollection() {
-        return aclCollection;
-    }
-
-    public void setAclCollection(Collection<Acl> aclCollection) {
-        this.aclCollection = aclCollection;
     }
 
     @Override

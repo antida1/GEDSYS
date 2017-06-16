@@ -25,42 +25,42 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "Configuracion")
+@Table(name = "configuracion", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Configuracion.findAll", query = "SELECT c FROM Configuracion c")
     , @NamedQuery(name = "Configuracion.findById", query = "SELECT c FROM Configuracion c WHERE c.id = :id")
-    , @NamedQuery(name = "Configuracion.findByNombre", query = "SELECT c FROM Configuracion c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Configuracion.findByValor", query = "SELECT c FROM Configuracion c WHERE c.valor = :valor")
+    , @NamedQuery(name = "Configuracion.findByBorrado", query = "SELECT c FROM Configuracion c WHERE c.borrado = :borrado")
+    , @NamedQuery(name = "Configuracion.findByCreadoPor", query = "SELECT c FROM Configuracion c WHERE c.creadoPor = :creadoPor")
     , @NamedQuery(name = "Configuracion.findByFechaCreacion", query = "SELECT c FROM Configuracion c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Configuracion.findByFechaModificacion", query = "SELECT c FROM Configuracion c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Configuracion.findByCreadoPor", query = "SELECT c FROM Configuracion c WHERE c.creadoPor = :creadoPor")
     , @NamedQuery(name = "Configuracion.findByModificadoPor", query = "SELECT c FROM Configuracion c WHERE c.modificadoPor = :modificadoPor")
-    , @NamedQuery(name = "Configuracion.findByBorrado", query = "SELECT c FROM Configuracion c WHERE c.borrado = :borrado")})
+    , @NamedQuery(name = "Configuracion.findByNombre", query = "SELECT c FROM Configuracion c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Configuracion.findByValor", query = "SELECT c FROM Configuracion c WHERE c.valor = :valor")})
 public class Configuracion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
-    @Column(name = "Valor")
-    private String valor;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "CreadoPor")
+    private String creadoPor;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private String creadoPor;
     @Column(name = "ModificadoPor")
     private String modificadoPor;
-    @Column(name = "Borrado")
-    private Boolean borrado;
+    @Column(name = "Nombre")
+    private String nombre;
+    @Column(name = "Valor")
+    private String valor;
 
     public Configuracion() {
     }
@@ -77,20 +77,20 @@ public class Configuracion implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
     }
 
-    public String getValor() {
-        return valor;
+    public String getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setCreadoPor(String creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
     public Date getFechaCreacion() {
@@ -109,14 +109,6 @@ public class Configuracion implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
     public String getModificadoPor() {
         return modificadoPor;
     }
@@ -125,12 +117,20 @@ public class Configuracion implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    public Boolean getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
     @Override

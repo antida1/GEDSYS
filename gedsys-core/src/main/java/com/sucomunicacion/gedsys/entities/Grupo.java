@@ -31,46 +31,46 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "Grupo")
+@Table(name = "grupo", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g")
     , @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id")
-    , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")
+    , @NamedQuery(name = "Grupo.findByBorrado", query = "SELECT g FROM Grupo g WHERE g.borrado = :borrado")
+    , @NamedQuery(name = "Grupo.findByCreadoPor", query = "SELECT g FROM Grupo g WHERE g.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Grupo.findByEstado", query = "SELECT g FROM Grupo g WHERE g.estado = :estado")
     , @NamedQuery(name = "Grupo.findByFechaCreacion", query = "SELECT g FROM Grupo g WHERE g.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Grupo.findByFechaModificacion", query = "SELECT g FROM Grupo g WHERE g.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Grupo.findByCreadoPor", query = "SELECT g FROM Grupo g WHERE g.creadoPor = :creadoPor")
-    , @NamedQuery(name = "Grupo.findByBorrado", query = "SELECT g FROM Grupo g WHERE g.borrado = :borrado")
-    , @NamedQuery(name = "Grupo.findByEstado", query = "SELECT g FROM Grupo g WHERE g.estado = :estado")})
+    , @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")})
 public class Grupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "CreadoPor")
+    private Integer creadoPor;
+    @Column(name = "Estado")
+    private Boolean estado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @Column(name = "Estado")
-    private Boolean estado;
+    @Column(name = "Nombre")
+    private String nombre;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
     @OneToMany(mappedBy = "grupo")
-    private Collection<GrupoUsuario> grupoUsuarioCollection;
-    @OneToMany(mappedBy = "grupo")
     private Collection<Acl> aclCollection;
+    @OneToMany(mappedBy = "grupo")
+    private Collection<GrupoUsuario> grupoUsuarioCollection;
 
     public Grupo() {
     }
@@ -87,12 +87,28 @@ public class Grupo implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Boolean getBorrado() {
+        return borrado;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBorrado(Boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public Integer getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Integer creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     public Date getFechaCreacion() {
@@ -111,28 +127,12 @@ public class Grupo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public Boolean getBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(Boolean borrado) {
-        this.borrado = borrado;
-    }
-
-    public Boolean getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Usuario getModificadoPor() {
@@ -145,22 +145,22 @@ public class Grupo implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<GrupoUsuario> getGrupoUsuarioCollection() {
-        return grupoUsuarioCollection;
-    }
-
-    public void setGrupoUsuarioCollection(Collection<GrupoUsuario> grupoUsuarioCollection) {
-        this.grupoUsuarioCollection = grupoUsuarioCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
     public Collection<Acl> getAclCollection() {
         return aclCollection;
     }
 
     public void setAclCollection(Collection<Acl> aclCollection) {
         this.aclCollection = aclCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<GrupoUsuario> getGrupoUsuarioCollection() {
+        return grupoUsuarioCollection;
+    }
+
+    public void setGrupoUsuarioCollection(Collection<GrupoUsuario> grupoUsuarioCollection) {
+        this.grupoUsuarioCollection = grupoUsuarioCollection;
     }
 
     @Override

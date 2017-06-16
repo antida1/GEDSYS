@@ -28,48 +28,48 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "PlantillaDocumental")
+@Table(name = "plantilladocumental", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PlantillaDocumental.findAll", query = "SELECT p FROM PlantillaDocumental p")
     , @NamedQuery(name = "PlantillaDocumental.findById", query = "SELECT p FROM PlantillaDocumental p WHERE p.id = :id")
-    , @NamedQuery(name = "PlantillaDocumental.findByNombre", query = "SELECT p FROM PlantillaDocumental p WHERE p.nombre = :nombre")
+    , @NamedQuery(name = "PlantillaDocumental.findByBorrado", query = "SELECT p FROM PlantillaDocumental p WHERE p.borrado = :borrado")
+    , @NamedQuery(name = "PlantillaDocumental.findByEstado", query = "SELECT p FROM PlantillaDocumental p WHERE p.estado = :estado")
     , @NamedQuery(name = "PlantillaDocumental.findByFechaCreacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "PlantillaDocumental.findByFechaModificacion", query = "SELECT p FROM PlantillaDocumental p WHERE p.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "PlantillaDocumental.findByBorrado", query = "SELECT p FROM PlantillaDocumental p WHERE p.borrado = :borrado")
-    , @NamedQuery(name = "PlantillaDocumental.findByEstado", query = "SELECT p FROM PlantillaDocumental p WHERE p.estado = :estado")})
+    , @NamedQuery(name = "PlantillaDocumental.findByNombre", query = "SELECT p FROM PlantillaDocumental p WHERE p.nombre = :nombre")})
 public class PlantillaDocumental implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Column(name = "Nombre")
-    private String nombre;
-    @Lob
-    @Column(name = "Texto")
-    private String texto;
+    @Column(name = "Borrado")
+    private Boolean borrado;
+    @Column(name = "Estado")
+    private Boolean estado;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Boolean borrado;
-    @Column(name = "Estado")
-    private Boolean estado;
-    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
-    @ManyToOne
-    private TipoDocumento tipoDocumento;
+    @Column(name = "Nombre")
+    private String nombre;
+    @Lob
+    @Column(name = "Texto")
+    private String texto;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
 
     public PlantillaDocumental() {
     }
@@ -84,38 +84,6 @@ public class PlantillaDocumental implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Date getFechaModificacion() {
-        return fechaModificacion;
-    }
-
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
     }
 
     public Boolean getBorrado() {
@@ -134,12 +102,36 @@ public class PlantillaDocumental implements Serializable {
         this.estado = estado;
     }
 
-    public TipoDocumento getTipoDocumento() {
-        return tipoDocumento;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Usuario getCreadoPor() {
@@ -156,6 +148,14 @@ public class PlantillaDocumental implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     @Override

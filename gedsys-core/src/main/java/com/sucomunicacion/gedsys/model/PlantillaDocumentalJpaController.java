@@ -11,10 +11,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,16 +33,11 @@ public class PlantillaDocumentalJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(PlantillaDocumental plantillaDocumental) throws PreexistingEntityException, Exception {
+    public void create(PlantillaDocumental plantillaDocumental) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            TipoDocumento tipoDocumento = plantillaDocumental.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
-                plantillaDocumental.setTipoDocumento(tipoDocumento);
-            }
             Usuario creadoPor = plantillaDocumental.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -54,11 +48,12 @@ public class PlantillaDocumentalJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 plantillaDocumental.setModificadoPor(modificadoPor);
             }
-            em.persist(plantillaDocumental);
+            TipoDocumento tipoDocumento = plantillaDocumental.getTipoDocumento();
             if (tipoDocumento != null) {
-                tipoDocumento.getPlantillaDocumentalCollection().add(plantillaDocumental);
-                tipoDocumento = em.merge(tipoDocumento);
+                tipoDocumento = em.getReference(tipoDocumento.getClass(), tipoDocumento.getId());
+                plantillaDocumental.setTipoDocumento(tipoDocumento);
             }
+            em.persist(plantillaDocumental);
             if (creadoPor != null) {
                 creadoPor.getPlantillaDocumentalCollection().add(plantillaDocumental);
                 creadoPor = em.merge(creadoPor);
@@ -67,12 +62,11 @@ public class PlantillaDocumentalJpaController implements Serializable {
                 modificadoPor.getPlantillaDocumentalCollection().add(plantillaDocumental);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findPlantillaDocumental(plantillaDocumental.getId()) != null) {
-                throw new PreexistingEntityException("PlantillaDocumental " + plantillaDocumental + " already exists.", ex);
+            if (tipoDocumento != null) {
+                tipoDocumento.getPlantillaDocumentalCollection().add(plantillaDocumental);
+                tipoDocumento = em.merge(tipoDocumento);
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -86,16 +80,12 @@ public class PlantillaDocumentalJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             PlantillaDocumental persistentPlantillaDocumental = em.find(PlantillaDocumental.class, plantillaDocumental.getId());
-            TipoDocumento tipoDocumentoOld = persistentPlantillaDocumental.getTipoDocumento();
-            TipoDocumento tipoDocumentoNew = plantillaDocumental.getTipoDocumento();
             Usuario creadoPorOld = persistentPlantillaDocumental.getCreadoPor();
             Usuario creadoPorNew = plantillaDocumental.getCreadoPor();
             Usuario modificadoPorOld = persistentPlantillaDocumental.getModificadoPor();
             Usuario modificadoPorNew = plantillaDocumental.getModificadoPor();
-            if (tipoDocumentoNew != null) {
-                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
-                plantillaDocumental.setTipoDocumento(tipoDocumentoNew);
-            }
+            TipoDocumento tipoDocumentoOld = persistentPlantillaDocumental.getTipoDocumento();
+            TipoDocumento tipoDocumentoNew = plantillaDocumental.getTipoDocumento();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 plantillaDocumental.setCreadoPor(creadoPorNew);
@@ -104,15 +94,11 @@ public class PlantillaDocumentalJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 plantillaDocumental.setModificadoPor(modificadoPorNew);
             }
+            if (tipoDocumentoNew != null) {
+                tipoDocumentoNew = em.getReference(tipoDocumentoNew.getClass(), tipoDocumentoNew.getId());
+                plantillaDocumental.setTipoDocumento(tipoDocumentoNew);
+            }
             plantillaDocumental = em.merge(plantillaDocumental);
-            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
-                tipoDocumentoOld.getPlantillaDocumentalCollection().remove(plantillaDocumental);
-                tipoDocumentoOld = em.merge(tipoDocumentoOld);
-            }
-            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
-                tipoDocumentoNew.getPlantillaDocumentalCollection().add(plantillaDocumental);
-                tipoDocumentoNew = em.merge(tipoDocumentoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getPlantillaDocumentalCollection().remove(plantillaDocumental);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -128,6 +114,14 @@ public class PlantillaDocumentalJpaController implements Serializable {
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
                 modificadoPorNew.getPlantillaDocumentalCollection().add(plantillaDocumental);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (tipoDocumentoOld != null && !tipoDocumentoOld.equals(tipoDocumentoNew)) {
+                tipoDocumentoOld.getPlantillaDocumentalCollection().remove(plantillaDocumental);
+                tipoDocumentoOld = em.merge(tipoDocumentoOld);
+            }
+            if (tipoDocumentoNew != null && !tipoDocumentoNew.equals(tipoDocumentoOld)) {
+                tipoDocumentoNew.getPlantillaDocumentalCollection().add(plantillaDocumental);
+                tipoDocumentoNew = em.merge(tipoDocumentoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -158,11 +152,6 @@ public class PlantillaDocumentalJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The plantillaDocumental with id " + id + " no longer exists.", enfe);
             }
-            TipoDocumento tipoDocumento = plantillaDocumental.getTipoDocumento();
-            if (tipoDocumento != null) {
-                tipoDocumento.getPlantillaDocumentalCollection().remove(plantillaDocumental);
-                tipoDocumento = em.merge(tipoDocumento);
-            }
             Usuario creadoPor = plantillaDocumental.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor.getPlantillaDocumentalCollection().remove(plantillaDocumental);
@@ -172,6 +161,11 @@ public class PlantillaDocumentalJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getPlantillaDocumentalCollection().remove(plantillaDocumental);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            TipoDocumento tipoDocumento = plantillaDocumental.getTipoDocumento();
+            if (tipoDocumento != null) {
+                tipoDocumento.getPlantillaDocumentalCollection().remove(plantillaDocumental);
+                tipoDocumento = em.merge(tipoDocumento);
             }
             em.remove(plantillaDocumental);
             em.getTransaction().commit();

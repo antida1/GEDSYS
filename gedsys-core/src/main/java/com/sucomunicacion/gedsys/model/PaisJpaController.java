@@ -14,7 +14,6 @@ import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Departamento;
 import com.sucomunicacion.gedsys.entities.Pais;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class PaisJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Pais pais) throws PreexistingEntityException, Exception {
+    public void create(Pais pais) {
         if (pais.getDepartamentoCollection() == null) {
             pais.setDepartamentoCollection(new ArrayList<Departamento>());
         }
@@ -79,11 +78,6 @@ public class PaisJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findPais(pais.getId()) != null) {
-                throw new PreexistingEntityException("Pais " + pais + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

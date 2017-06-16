@@ -11,15 +11,14 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.sucomunicacion.gedsys.entities.Usuario;
-import com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento;
+import com.sucomunicacion.gedsys.entities.Documento;
 import java.util.ArrayList;
 import java.util.Collection;
 import com.sucomunicacion.gedsys.entities.PlantillaDocumental;
 import com.sucomunicacion.gedsys.entities.Consecutivo;
-import com.sucomunicacion.gedsys.entities.Documento;
+import com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento;
 import com.sucomunicacion.gedsys.entities.TipoDocumento;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,9 +38,9 @@ public class TipoDocumentoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(TipoDocumento tipoDocumento) throws PreexistingEntityException, Exception {
-        if (tipoDocumento.getProcesoTipoDocumentoCollection() == null) {
-            tipoDocumento.setProcesoTipoDocumentoCollection(new ArrayList<ProcesoTipoDocumento>());
+    public void create(TipoDocumento tipoDocumento) {
+        if (tipoDocumento.getDocumentoCollection() == null) {
+            tipoDocumento.setDocumentoCollection(new ArrayList<Documento>());
         }
         if (tipoDocumento.getPlantillaDocumentalCollection() == null) {
             tipoDocumento.setPlantillaDocumentalCollection(new ArrayList<PlantillaDocumental>());
@@ -49,8 +48,8 @@ public class TipoDocumentoJpaController implements Serializable {
         if (tipoDocumento.getConsecutivoCollection() == null) {
             tipoDocumento.setConsecutivoCollection(new ArrayList<Consecutivo>());
         }
-        if (tipoDocumento.getDocumentoCollection() == null) {
-            tipoDocumento.setDocumentoCollection(new ArrayList<Documento>());
+        if (tipoDocumento.getProcesoTipoDocumentoCollection() == null) {
+            tipoDocumento.setProcesoTipoDocumentoCollection(new ArrayList<ProcesoTipoDocumento>());
         }
         EntityManager em = null;
         try {
@@ -66,12 +65,12 @@ public class TipoDocumentoJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 tipoDocumento.setModificadoPor(modificadoPor);
             }
-            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollection = new ArrayList<ProcesoTipoDocumento>();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach : tipoDocumento.getProcesoTipoDocumentoCollection()) {
-                procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getId());
-                attachedProcesoTipoDocumentoCollection.add(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach);
+            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
+            for (Documento documentoCollectionDocumentoToAttach : tipoDocumento.getDocumentoCollection()) {
+                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
+                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
             }
-            tipoDocumento.setProcesoTipoDocumentoCollection(attachedProcesoTipoDocumentoCollection);
+            tipoDocumento.setDocumentoCollection(attachedDocumentoCollection);
             Collection<PlantillaDocumental> attachedPlantillaDocumentalCollection = new ArrayList<PlantillaDocumental>();
             for (PlantillaDocumental plantillaDocumentalCollectionPlantillaDocumentalToAttach : tipoDocumento.getPlantillaDocumentalCollection()) {
                 plantillaDocumentalCollectionPlantillaDocumentalToAttach = em.getReference(plantillaDocumentalCollectionPlantillaDocumentalToAttach.getClass(), plantillaDocumentalCollectionPlantillaDocumentalToAttach.getId());
@@ -84,12 +83,12 @@ public class TipoDocumentoJpaController implements Serializable {
                 attachedConsecutivoCollection.add(consecutivoCollectionConsecutivoToAttach);
             }
             tipoDocumento.setConsecutivoCollection(attachedConsecutivoCollection);
-            Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
-            for (Documento documentoCollectionDocumentoToAttach : tipoDocumento.getDocumentoCollection()) {
-                documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
-                attachedDocumentoCollection.add(documentoCollectionDocumentoToAttach);
+            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollection = new ArrayList<ProcesoTipoDocumento>();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach : tipoDocumento.getProcesoTipoDocumentoCollection()) {
+                procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach.getId());
+                attachedProcesoTipoDocumentoCollection.add(procesoTipoDocumentoCollectionProcesoTipoDocumentoToAttach);
             }
-            tipoDocumento.setDocumentoCollection(attachedDocumentoCollection);
+            tipoDocumento.setProcesoTipoDocumentoCollection(attachedProcesoTipoDocumentoCollection);
             em.persist(tipoDocumento);
             if (creadoPor != null) {
                 creadoPor.getTipoDocumentoCollection().add(tipoDocumento);
@@ -99,13 +98,13 @@ public class TipoDocumentoJpaController implements Serializable {
                 modificadoPor.getTipoDocumentoCollection().add(tipoDocumento);
                 modificadoPor = em.merge(modificadoPor);
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : tipoDocumento.getProcesoTipoDocumentoCollection()) {
-                TipoDocumento oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = procesoTipoDocumentoCollectionProcesoTipoDocumento.getTipoDocumento();
-                procesoTipoDocumentoCollectionProcesoTipoDocumento.setTipoDocumento(tipoDocumento);
-                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
-                if (oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento != null) {
-                    oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionProcesoTipoDocumento);
-                    oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento);
+            for (Documento documentoCollectionDocumento : tipoDocumento.getDocumentoCollection()) {
+                TipoDocumento oldTipoDocumentoOfDocumentoCollectionDocumento = documentoCollectionDocumento.getTipoDocumento();
+                documentoCollectionDocumento.setTipoDocumento(tipoDocumento);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+                if (oldTipoDocumentoOfDocumentoCollectionDocumento != null) {
+                    oldTipoDocumentoOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
+                    oldTipoDocumentoOfDocumentoCollectionDocumento = em.merge(oldTipoDocumentoOfDocumentoCollectionDocumento);
                 }
             }
             for (PlantillaDocumental plantillaDocumentalCollectionPlantillaDocumental : tipoDocumento.getPlantillaDocumentalCollection()) {
@@ -126,21 +125,16 @@ public class TipoDocumentoJpaController implements Serializable {
                     oldTipoDocumentoOfConsecutivoCollectionConsecutivo = em.merge(oldTipoDocumentoOfConsecutivoCollectionConsecutivo);
                 }
             }
-            for (Documento documentoCollectionDocumento : tipoDocumento.getDocumentoCollection()) {
-                TipoDocumento oldTipoDocumentoOfDocumentoCollectionDocumento = documentoCollectionDocumento.getTipoDocumento();
-                documentoCollectionDocumento.setTipoDocumento(tipoDocumento);
-                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
-                if (oldTipoDocumentoOfDocumentoCollectionDocumento != null) {
-                    oldTipoDocumentoOfDocumentoCollectionDocumento.getDocumentoCollection().remove(documentoCollectionDocumento);
-                    oldTipoDocumentoOfDocumentoCollectionDocumento = em.merge(oldTipoDocumentoOfDocumentoCollectionDocumento);
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : tipoDocumento.getProcesoTipoDocumentoCollection()) {
+                TipoDocumento oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = procesoTipoDocumentoCollectionProcesoTipoDocumento.getTipoDocumento();
+                procesoTipoDocumentoCollectionProcesoTipoDocumento.setTipoDocumento(tipoDocumento);
+                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+                if (oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento != null) {
+                    oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+                    oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(oldTipoDocumentoOfProcesoTipoDocumentoCollectionProcesoTipoDocumento);
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findTipoDocumento(tipoDocumento.getId()) != null) {
-                throw new PreexistingEntityException("TipoDocumento " + tipoDocumento + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -158,14 +152,14 @@ public class TipoDocumentoJpaController implements Serializable {
             Usuario creadoPorNew = tipoDocumento.getCreadoPor();
             Usuario modificadoPorOld = persistentTipoDocumento.getModificadoPor();
             Usuario modificadoPorNew = tipoDocumento.getModificadoPor();
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionOld = persistentTipoDocumento.getProcesoTipoDocumentoCollection();
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionNew = tipoDocumento.getProcesoTipoDocumentoCollection();
+            Collection<Documento> documentoCollectionOld = persistentTipoDocumento.getDocumentoCollection();
+            Collection<Documento> documentoCollectionNew = tipoDocumento.getDocumentoCollection();
             Collection<PlantillaDocumental> plantillaDocumentalCollectionOld = persistentTipoDocumento.getPlantillaDocumentalCollection();
             Collection<PlantillaDocumental> plantillaDocumentalCollectionNew = tipoDocumento.getPlantillaDocumentalCollection();
             Collection<Consecutivo> consecutivoCollectionOld = persistentTipoDocumento.getConsecutivoCollection();
             Collection<Consecutivo> consecutivoCollectionNew = tipoDocumento.getConsecutivoCollection();
-            Collection<Documento> documentoCollectionOld = persistentTipoDocumento.getDocumentoCollection();
-            Collection<Documento> documentoCollectionNew = tipoDocumento.getDocumentoCollection();
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionOld = persistentTipoDocumento.getProcesoTipoDocumentoCollection();
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollectionNew = tipoDocumento.getProcesoTipoDocumentoCollection();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 tipoDocumento.setCreadoPor(creadoPorNew);
@@ -174,13 +168,13 @@ public class TipoDocumentoJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 tipoDocumento.setModificadoPor(modificadoPorNew);
             }
-            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollectionNew = new ArrayList<ProcesoTipoDocumento>();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach : procesoTipoDocumentoCollectionNew) {
-                procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getId());
-                attachedProcesoTipoDocumentoCollectionNew.add(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach);
+            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
+            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
+                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
+                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
             }
-            procesoTipoDocumentoCollectionNew = attachedProcesoTipoDocumentoCollectionNew;
-            tipoDocumento.setProcesoTipoDocumentoCollection(procesoTipoDocumentoCollectionNew);
+            documentoCollectionNew = attachedDocumentoCollectionNew;
+            tipoDocumento.setDocumentoCollection(documentoCollectionNew);
             Collection<PlantillaDocumental> attachedPlantillaDocumentalCollectionNew = new ArrayList<PlantillaDocumental>();
             for (PlantillaDocumental plantillaDocumentalCollectionNewPlantillaDocumentalToAttach : plantillaDocumentalCollectionNew) {
                 plantillaDocumentalCollectionNewPlantillaDocumentalToAttach = em.getReference(plantillaDocumentalCollectionNewPlantillaDocumentalToAttach.getClass(), plantillaDocumentalCollectionNewPlantillaDocumentalToAttach.getId());
@@ -195,13 +189,13 @@ public class TipoDocumentoJpaController implements Serializable {
             }
             consecutivoCollectionNew = attachedConsecutivoCollectionNew;
             tipoDocumento.setConsecutivoCollection(consecutivoCollectionNew);
-            Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
-            for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
-                documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
-                attachedDocumentoCollectionNew.add(documentoCollectionNewDocumentoToAttach);
+            Collection<ProcesoTipoDocumento> attachedProcesoTipoDocumentoCollectionNew = new ArrayList<ProcesoTipoDocumento>();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach : procesoTipoDocumentoCollectionNew) {
+                procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach = em.getReference(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getClass(), procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach.getId());
+                attachedProcesoTipoDocumentoCollectionNew.add(procesoTipoDocumentoCollectionNewProcesoTipoDocumentoToAttach);
             }
-            documentoCollectionNew = attachedDocumentoCollectionNew;
-            tipoDocumento.setDocumentoCollection(documentoCollectionNew);
+            procesoTipoDocumentoCollectionNew = attachedProcesoTipoDocumentoCollectionNew;
+            tipoDocumento.setProcesoTipoDocumentoCollection(procesoTipoDocumentoCollectionNew);
             tipoDocumento = em.merge(tipoDocumento);
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getTipoDocumentoCollection().remove(tipoDocumento);
@@ -219,20 +213,20 @@ public class TipoDocumentoJpaController implements Serializable {
                 modificadoPorNew.getTipoDocumentoCollection().add(tipoDocumento);
                 modificadoPorNew = em.merge(modificadoPorNew);
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionOldProcesoTipoDocumento : procesoTipoDocumentoCollectionOld) {
-                if (!procesoTipoDocumentoCollectionNew.contains(procesoTipoDocumentoCollectionOldProcesoTipoDocumento)) {
-                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento.setTipoDocumento(null);
-                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionOldProcesoTipoDocumento);
+            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
+                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
+                    documentoCollectionOldDocumento.setTipoDocumento(null);
+                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
                 }
             }
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumento : procesoTipoDocumentoCollectionNew) {
-                if (!procesoTipoDocumentoCollectionOld.contains(procesoTipoDocumentoCollectionNewProcesoTipoDocumento)) {
-                    TipoDocumento oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = procesoTipoDocumentoCollectionNewProcesoTipoDocumento.getTipoDocumento();
-                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento.setTipoDocumento(tipoDocumento);
-                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
-                    if (oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento != null && !oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.equals(tipoDocumento)) {
-                        oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
-                        oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento);
+            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
+                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
+                    TipoDocumento oldTipoDocumentoOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getTipoDocumento();
+                    documentoCollectionNewDocumento.setTipoDocumento(tipoDocumento);
+                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
+                    if (oldTipoDocumentoOfDocumentoCollectionNewDocumento != null && !oldTipoDocumentoOfDocumentoCollectionNewDocumento.equals(tipoDocumento)) {
+                        oldTipoDocumentoOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
+                        oldTipoDocumentoOfDocumentoCollectionNewDocumento = em.merge(oldTipoDocumentoOfDocumentoCollectionNewDocumento);
                     }
                 }
             }
@@ -270,20 +264,20 @@ public class TipoDocumentoJpaController implements Serializable {
                     }
                 }
             }
-            for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
-                if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
-                    documentoCollectionOldDocumento.setTipoDocumento(null);
-                    documentoCollectionOldDocumento = em.merge(documentoCollectionOldDocumento);
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionOldProcesoTipoDocumento : procesoTipoDocumentoCollectionOld) {
+                if (!procesoTipoDocumentoCollectionNew.contains(procesoTipoDocumentoCollectionOldProcesoTipoDocumento)) {
+                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento.setTipoDocumento(null);
+                    procesoTipoDocumentoCollectionOldProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionOldProcesoTipoDocumento);
                 }
             }
-            for (Documento documentoCollectionNewDocumento : documentoCollectionNew) {
-                if (!documentoCollectionOld.contains(documentoCollectionNewDocumento)) {
-                    TipoDocumento oldTipoDocumentoOfDocumentoCollectionNewDocumento = documentoCollectionNewDocumento.getTipoDocumento();
-                    documentoCollectionNewDocumento.setTipoDocumento(tipoDocumento);
-                    documentoCollectionNewDocumento = em.merge(documentoCollectionNewDocumento);
-                    if (oldTipoDocumentoOfDocumentoCollectionNewDocumento != null && !oldTipoDocumentoOfDocumentoCollectionNewDocumento.equals(tipoDocumento)) {
-                        oldTipoDocumentoOfDocumentoCollectionNewDocumento.getDocumentoCollection().remove(documentoCollectionNewDocumento);
-                        oldTipoDocumentoOfDocumentoCollectionNewDocumento = em.merge(oldTipoDocumentoOfDocumentoCollectionNewDocumento);
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionNewProcesoTipoDocumento : procesoTipoDocumentoCollectionNew) {
+                if (!procesoTipoDocumentoCollectionOld.contains(procesoTipoDocumentoCollectionNewProcesoTipoDocumento)) {
+                    TipoDocumento oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = procesoTipoDocumentoCollectionNewProcesoTipoDocumento.getTipoDocumento();
+                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento.setTipoDocumento(tipoDocumento);
+                    procesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
+                    if (oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento != null && !oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.equals(tipoDocumento)) {
+                        oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento.getProcesoTipoDocumentoCollection().remove(procesoTipoDocumentoCollectionNewProcesoTipoDocumento);
+                        oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento = em.merge(oldTipoDocumentoOfProcesoTipoDocumentoCollectionNewProcesoTipoDocumento);
                     }
                 }
             }
@@ -326,10 +320,10 @@ public class TipoDocumentoJpaController implements Serializable {
                 modificadoPor.getTipoDocumentoCollection().remove(tipoDocumento);
                 modificadoPor = em.merge(modificadoPor);
             }
-            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection = tipoDocumento.getProcesoTipoDocumentoCollection();
-            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoTipoDocumentoCollection) {
-                procesoTipoDocumentoCollectionProcesoTipoDocumento.setTipoDocumento(null);
-                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
+            Collection<Documento> documentoCollection = tipoDocumento.getDocumentoCollection();
+            for (Documento documentoCollectionDocumento : documentoCollection) {
+                documentoCollectionDocumento.setTipoDocumento(null);
+                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
             }
             Collection<PlantillaDocumental> plantillaDocumentalCollection = tipoDocumento.getPlantillaDocumentalCollection();
             for (PlantillaDocumental plantillaDocumentalCollectionPlantillaDocumental : plantillaDocumentalCollection) {
@@ -341,10 +335,10 @@ public class TipoDocumentoJpaController implements Serializable {
                 consecutivoCollectionConsecutivo.setTipoDocumento(null);
                 consecutivoCollectionConsecutivo = em.merge(consecutivoCollectionConsecutivo);
             }
-            Collection<Documento> documentoCollection = tipoDocumento.getDocumentoCollection();
-            for (Documento documentoCollectionDocumento : documentoCollection) {
-                documentoCollectionDocumento.setTipoDocumento(null);
-                documentoCollectionDocumento = em.merge(documentoCollectionDocumento);
+            Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection = tipoDocumento.getProcesoTipoDocumentoCollection();
+            for (ProcesoTipoDocumento procesoTipoDocumentoCollectionProcesoTipoDocumento : procesoTipoDocumentoCollection) {
+                procesoTipoDocumentoCollectionProcesoTipoDocumento.setTipoDocumento(null);
+                procesoTipoDocumentoCollectionProcesoTipoDocumento = em.merge(procesoTipoDocumentoCollectionProcesoTipoDocumento);
             }
             em.remove(tipoDocumento);
             em.getTransaction().commit();

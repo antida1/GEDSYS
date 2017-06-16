@@ -7,7 +7,6 @@ package com.sucomunicacion.gedsys.model;
 
 import com.sucomunicacion.gedsys.entities.Configuracion;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -33,18 +32,13 @@ public class ConfiguracionJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Configuracion configuracion) throws PreexistingEntityException, Exception {
+    public void create(Configuracion configuracion) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(configuracion);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findConfiguracion(configuracion.getId()) != null) {
-                throw new PreexistingEntityException("Configuracion " + configuracion + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -156,5 +150,5 @@ public class ConfiguracionJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

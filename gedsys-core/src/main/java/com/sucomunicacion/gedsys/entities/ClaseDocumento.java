@@ -32,28 +32,28 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "ClaseDocumento")
+@Table(name = "clasedocumento", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ClaseDocumento.findAll", query = "SELECT c FROM ClaseDocumento c")
     , @NamedQuery(name = "ClaseDocumento.findById", query = "SELECT c FROM ClaseDocumento c WHERE c.id = :id")
+    , @NamedQuery(name = "ClaseDocumento.findByBorrado", query = "SELECT c FROM ClaseDocumento c WHERE c.borrado = :borrado")
     , @NamedQuery(name = "ClaseDocumento.findByCodigo", query = "SELECT c FROM ClaseDocumento c WHERE c.codigo = :codigo")
-    , @NamedQuery(name = "ClaseDocumento.findByNombre", query = "SELECT c FROM ClaseDocumento c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "ClaseDocumento.findByFechaCreacion", query = "SELECT c FROM ClaseDocumento c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "ClaseDocumento.findByFechaModificacion", query = "SELECT c FROM ClaseDocumento c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "ClaseDocumento.findByBorrado", query = "SELECT c FROM ClaseDocumento c WHERE c.borrado = :borrado")})
+    , @NamedQuery(name = "ClaseDocumento.findByNombre", query = "SELECT c FROM ClaseDocumento c WHERE c.nombre = :nombre")})
 public class ClaseDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "Borrado")
+    private Integer borrado;
     @Column(name = "Codigo")
     private String codigo;
-    @Column(name = "Nombre")
-    private String nombre;
     @Lob
     @Column(name = "Descripcion")
     private String descripcion;
@@ -63,8 +63,8 @@ public class ClaseDocumento implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "Borrado")
-    private Integer borrado;
+    @Column(name = "Nombre")
+    private String nombre;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -89,20 +89,20 @@ public class ClaseDocumento implements Serializable {
         this.id = id;
     }
 
+    public Integer getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(Integer borrado) {
+        this.borrado = borrado;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -129,12 +129,12 @@ public class ClaseDocumento implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getBorrado() {
-        return borrado;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setBorrado(Integer borrado) {
-        this.borrado = borrado;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Usuario getCreadoPor() {

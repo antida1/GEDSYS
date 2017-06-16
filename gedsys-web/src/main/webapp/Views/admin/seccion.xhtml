@@ -11,19 +11,23 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
-                <f:event type="preRenderView" listener="#{seccionBean.listar()}" />
+                <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <h:form id="form">
-                    <h3>Secciones</h3>
+                    <h3>Sección y SubSecciones</h3>
                     <p:menubar>
-                        <p:menuitem oncomplete="PF('sessionDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{seccionBean.setAccion('Crear')}" update=":dlgDetalle" >
+                        <p:menuitem oncomplete="PF('sessionDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{seccionSubSeccionBean.setAccion('Crear')}" update=":dlgDetalle" >
                         </p:menuitem>
                     </p:menubar>
                     <p:separator/>
-                    <p:dataTable id="lstSecciones" var="sec" value="#{seccionBean.secciones}" style="margin-bottom:0">
+                    <p:dataTable id="lstSecciones" var="sec" value="#{seccionSubSeccionBean.secciones}" style="margin-bottom:0">
                          <p:column headerText="Codigo">
                             <h:outputText value="#{sec.codigo}" />
                         </p:column>
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{sec.dependeDe.nombre}" />
+                        </p:column>
+                        
                         <p:column headerText="Nombre">
                             <h:outputText value="#{sec.nombre}" />
                         </p:column>
@@ -34,13 +38,13 @@
                             <h:outputText value="#{sec.fechaModificacion}" />
                         </p:column>
                         <p:column headerText="Creado Por">
-                            <h:outputText value="#{sec.creadoPor}" />
+                            <h:outputText value="#{sec.creadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Modificado Por">
-                            <h:outputText value="#{sec.modificadoPor}" />
+                            <h:outputText value="#{sec.modificadoPor.nombres}" />
                         </p:column>
                         <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{seccionBean.getSessionById(sec)}" 
+                            <p:commandButton actionListener="#{seccionSubSeccionBean.getSessionById(sec)}" 
                                              update=":dlgDetalle" oncomplete="PF('sessionDialog').show()" 
                                              icon="ui-icon-pencil" title="Editar">
                             </p:commandButton>
@@ -48,29 +52,38 @@
                         <p:column headerText="Borrar">
                             <p:commandButton icon="ui-icon-eraser" 
                                              title="Borrar"
-                                             actionListener="#{seccionBean.eliminar(sec)}" 
+                                             actionListener="#{seccionSubSeccionBean.eliminar(sec)}" 
                                              update=":form:lstSecciones messages"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Sección" widgetVar="sessionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="Sección" widgetVar="sessionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
                     <h:form>
-                        <h:inputHidden id="id" value="#{seccionBean.seccion.id}" />
+                        <h:inputHidden id="id" value="#{seccionSubSeccionBean.seccion.id}" />
+                        <div class="form-group row">
+                            <p:outputLabel value="seccion" for="seccion" class="col-xs-3 col-form-label"/>
+                            <div class="col-xs-9">
+                                <p:selectOneMenu id="seccion" value="#{seccionSubSeccionBean.seccion.dependeDe}" converter="omnifaces.SelectItemsConverter" class="form-control">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                                    <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="seccion" itemLabel="#{seccion.nombre}" itemValue="#{seccion}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <p:outputLabel value="Codigo" for="Codigo" class="col-xs-2 col-form-label"/>
                             <div class="col-xs-10">
-                                <p:inputText id="Codigo" required="true" value="#{seccionBean.seccion.codigo}" class="form-control" />
+                                <p:inputText id="Codigo" required="true" value="#{seccionSubSeccionBean.seccion.codigo}" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
                             <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{seccionBean.seccion.nombre}" class="form-control"/>
+                                <p:inputText id="Nombre" required="true" value="#{seccionSubSeccionBean.seccion.nombre}" class="form-control"/>
                             </div>
                         </div>
                         <p:spacer/>
                         <div> 
-                            <p:commandButton update=":form:lstSecciones messages" icon="ui-icon-disk" value="#{seccionBean.accion}" actionListener="#{seccionBean.procesar()}" oncomplete="PF('sessionDialog').hide()" />
+                            <p:commandButton update=":form:lstSecciones messages" icon="ui-icon-disk" value="#{seccionSubSeccionBean.accion}" actionListener="#{seccionSubSeccionBean.procesar()}" oncomplete="PF('sessionDialog').hide()" />
                             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('sessionDialog').hide()"></p:commandButton>
                         </div>
                     </h:form>

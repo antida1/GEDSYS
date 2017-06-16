@@ -10,12 +10,11 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Documento;
 import com.sucomunicacion.gedsys.entities.ProcesoDocumental;
 import com.sucomunicacion.gedsys.entities.ProcesoNegocio;
-import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,54 +34,49 @@ public class ProcesoDocumentalJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(ProcesoDocumental procesoDocumental) throws PreexistingEntityException, Exception {
+    public void create(ProcesoDocumental procesoDocumental) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Documento documento = procesoDocumental.getDocumento();
-            if (documento != null) {
-                documento = em.getReference(documento.getClass(), documento.getId());
-                procesoDocumental.setDocumento(documento);
-            }
-            ProcesoNegocio proceso = procesoDocumental.getProceso();
-            if (proceso != null) {
-                proceso = em.getReference(proceso.getClass(), proceso.getId());
-                procesoDocumental.setProceso(proceso);
-            }
             Usuario creadoPor = procesoDocumental.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
                 procesoDocumental.setCreadoPor(creadoPor);
+            }
+            Documento documento = procesoDocumental.getDocumento();
+            if (documento != null) {
+                documento = em.getReference(documento.getClass(), documento.getId());
+                procesoDocumental.setDocumento(documento);
             }
             Usuario modificadoPor = procesoDocumental.getModificadoPor();
             if (modificadoPor != null) {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 procesoDocumental.setModificadoPor(modificadoPor);
             }
-            em.persist(procesoDocumental);
-            if (documento != null) {
-                documento.getProcesoDocumentalCollection().add(procesoDocumental);
-                documento = em.merge(documento);
-            }
+            ProcesoNegocio proceso = procesoDocumental.getProceso();
             if (proceso != null) {
-                proceso.getProcesoDocumentalCollection().add(procesoDocumental);
-                proceso = em.merge(proceso);
+                proceso = em.getReference(proceso.getClass(), proceso.getId());
+                procesoDocumental.setProceso(proceso);
             }
+            em.persist(procesoDocumental);
             if (creadoPor != null) {
-                creadoPor.getProcesoDocumentalCollection().add(procesoDocumental);
+                creadoPor.getProcesodocumentalCollection().add(procesoDocumental);
                 creadoPor = em.merge(creadoPor);
             }
+            if (documento != null) {
+                documento.getProcesodocumentalCollection().add(procesoDocumental);
+                documento = em.merge(documento);
+            }
             if (modificadoPor != null) {
-                modificadoPor.getProcesoDocumentalCollection().add(procesoDocumental);
+                modificadoPor.getProcesodocumentalCollection().add(procesoDocumental);
                 modificadoPor = em.merge(modificadoPor);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findProcesoDocumental(procesoDocumental.getId()) != null) {
-                throw new PreexistingEntityException("ProcesoDocumental " + procesoDocumental + " already exists.", ex);
+            if (proceso != null) {
+                proceso.getProcesodocumentalCollection().add(procesoDocumental);
+                proceso = em.merge(proceso);
             }
-            throw ex;
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -96,62 +90,62 @@ public class ProcesoDocumentalJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             ProcesoDocumental persistentProcesoDocumental = em.find(ProcesoDocumental.class, procesoDocumental.getId());
-            Documento documentoOld = persistentProcesoDocumental.getDocumento();
-            Documento documentoNew = procesoDocumental.getDocumento();
-            ProcesoNegocio procesoOld = persistentProcesoDocumental.getProceso();
-            ProcesoNegocio procesoNew = procesoDocumental.getProceso();
             Usuario creadoPorOld = persistentProcesoDocumental.getCreadoPor();
             Usuario creadoPorNew = procesoDocumental.getCreadoPor();
+            Documento documentoOld = persistentProcesoDocumental.getDocumento();
+            Documento documentoNew = procesoDocumental.getDocumento();
             Usuario modificadoPorOld = persistentProcesoDocumental.getModificadoPor();
             Usuario modificadoPorNew = procesoDocumental.getModificadoPor();
-            if (documentoNew != null) {
-                documentoNew = em.getReference(documentoNew.getClass(), documentoNew.getId());
-                procesoDocumental.setDocumento(documentoNew);
-            }
-            if (procesoNew != null) {
-                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
-                procesoDocumental.setProceso(procesoNew);
-            }
+            ProcesoNegocio procesoOld = persistentProcesoDocumental.getProceso();
+            ProcesoNegocio procesoNew = procesoDocumental.getProceso();
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
                 procesoDocumental.setCreadoPor(creadoPorNew);
+            }
+            if (documentoNew != null) {
+                documentoNew = em.getReference(documentoNew.getClass(), documentoNew.getId());
+                procesoDocumental.setDocumento(documentoNew);
             }
             if (modificadoPorNew != null) {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 procesoDocumental.setModificadoPor(modificadoPorNew);
             }
+            if (procesoNew != null) {
+                procesoNew = em.getReference(procesoNew.getClass(), procesoNew.getId());
+                procesoDocumental.setProceso(procesoNew);
+            }
             procesoDocumental = em.merge(procesoDocumental);
-            if (documentoOld != null && !documentoOld.equals(documentoNew)) {
-                documentoOld.getProcesoDocumentalCollection().remove(procesoDocumental);
-                documentoOld = em.merge(documentoOld);
-            }
-            if (documentoNew != null && !documentoNew.equals(documentoOld)) {
-                documentoNew.getProcesoDocumentalCollection().add(procesoDocumental);
-                documentoNew = em.merge(documentoNew);
-            }
-            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
-                procesoOld.getProcesoDocumentalCollection().remove(procesoDocumental);
-                procesoOld = em.merge(procesoOld);
-            }
-            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
-                procesoNew.getProcesoDocumentalCollection().add(procesoDocumental);
-                procesoNew = em.merge(procesoNew);
-            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
-                creadoPorOld.getProcesoDocumentalCollection().remove(procesoDocumental);
+                creadoPorOld.getProcesodocumentalCollection().remove(procesoDocumental);
                 creadoPorOld = em.merge(creadoPorOld);
             }
             if (creadoPorNew != null && !creadoPorNew.equals(creadoPorOld)) {
-                creadoPorNew.getProcesoDocumentalCollection().add(procesoDocumental);
+                creadoPorNew.getProcesodocumentalCollection().add(procesoDocumental);
                 creadoPorNew = em.merge(creadoPorNew);
             }
+            if (documentoOld != null && !documentoOld.equals(documentoNew)) {
+                documentoOld.getProcesodocumentalCollection().remove(procesoDocumental);
+                documentoOld = em.merge(documentoOld);
+            }
+            if (documentoNew != null && !documentoNew.equals(documentoOld)) {
+                documentoNew.getProcesodocumentalCollection().add(procesoDocumental);
+                documentoNew = em.merge(documentoNew);
+            }
             if (modificadoPorOld != null && !modificadoPorOld.equals(modificadoPorNew)) {
-                modificadoPorOld.getProcesoDocumentalCollection().remove(procesoDocumental);
+                modificadoPorOld.getProcesodocumentalCollection().remove(procesoDocumental);
                 modificadoPorOld = em.merge(modificadoPorOld);
             }
             if (modificadoPorNew != null && !modificadoPorNew.equals(modificadoPorOld)) {
-                modificadoPorNew.getProcesoDocumentalCollection().add(procesoDocumental);
+                modificadoPorNew.getProcesodocumentalCollection().add(procesoDocumental);
                 modificadoPorNew = em.merge(modificadoPorNew);
+            }
+            if (procesoOld != null && !procesoOld.equals(procesoNew)) {
+                procesoOld.getProcesodocumentalCollection().remove(procesoDocumental);
+                procesoOld = em.merge(procesoOld);
+            }
+            if (procesoNew != null && !procesoNew.equals(procesoOld)) {
+                procesoNew.getProcesodocumentalCollection().add(procesoDocumental);
+                procesoNew = em.merge(procesoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -182,25 +176,25 @@ public class ProcesoDocumentalJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The procesoDocumental with id " + id + " no longer exists.", enfe);
             }
-            Documento documento = procesoDocumental.getDocumento();
-            if (documento != null) {
-                documento.getProcesoDocumentalCollection().remove(procesoDocumental);
-                documento = em.merge(documento);
-            }
-            ProcesoNegocio proceso = procesoDocumental.getProceso();
-            if (proceso != null) {
-                proceso.getProcesoDocumentalCollection().remove(procesoDocumental);
-                proceso = em.merge(proceso);
-            }
             Usuario creadoPor = procesoDocumental.getCreadoPor();
             if (creadoPor != null) {
-                creadoPor.getProcesoDocumentalCollection().remove(procesoDocumental);
+                creadoPor.getProcesodocumentalCollection().remove(procesoDocumental);
                 creadoPor = em.merge(creadoPor);
+            }
+            Documento documento = procesoDocumental.getDocumento();
+            if (documento != null) {
+                documento.getProcesodocumentalCollection().remove(procesoDocumental);
+                documento = em.merge(documento);
             }
             Usuario modificadoPor = procesoDocumental.getModificadoPor();
             if (modificadoPor != null) {
-                modificadoPor.getProcesoDocumentalCollection().remove(procesoDocumental);
+                modificadoPor.getProcesodocumentalCollection().remove(procesoDocumental);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            ProcesoNegocio proceso = procesoDocumental.getProceso();
+            if (proceso != null) {
+                proceso.getProcesodocumentalCollection().remove(procesoDocumental);
+                proceso = em.merge(proceso);
             }
             em.remove(procesoDocumental);
             em.getTransaction().commit();

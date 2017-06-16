@@ -7,7 +7,6 @@ package com.sucomunicacion.gedsys.model;
 
 import com.sucomunicacion.gedsys.entities.DiaFestivo;
 import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
-import com.sucomunicacion.gedsys.model.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -32,18 +31,13 @@ public class DiaFestivoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(DiaFestivo diaFestivo) throws PreexistingEntityException, Exception {
+    public void create(DiaFestivo diaFestivo) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(diaFestivo);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findDiaFestivo(diaFestivo.getId()) != null) {
-                throw new PreexistingEntityException("DiaFestivo " + diaFestivo + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
