@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author rober
  */
-@ManagedBean
 @ViewScoped
+@ManagedBean
 public class PlantillaBean extends BaseBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -146,5 +146,6 @@ public class PlantillaBean extends BaseBean implements Serializable {
     
     private void limpiar(){
         this.plantillaDocumental = null;
+        this.plantillaDocumental = new PlantillaDocumental();
     }
 }
