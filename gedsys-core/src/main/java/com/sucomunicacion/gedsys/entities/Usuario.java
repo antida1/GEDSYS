@@ -84,6 +84,8 @@ public class Usuario implements Serializable {
     private String telefono;
     @Column(name = "Usuario")
     private String usuario;
+    @Column(name = "isAdmin")
+    private Boolean isAdmin;
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ClaseDocumento> claseDocumentoCollection;
     @OneToMany(mappedBy = "modificadoPor")
@@ -316,6 +318,15 @@ public class Usuario implements Serializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    
 
     @XmlTransient
     @JsonIgnore

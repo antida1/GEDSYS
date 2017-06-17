@@ -4,78 +4,84 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
     <body>
 
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
-                <f:event type="preRenderView" listener="#{paisBean.listar()}" />
-                <p:growl id="messages"  showDetail="true" />
-                <h:form id="form">
-                    <h3>Paises</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('paisDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{paisBean.setAccion('Crear')}" update=":dlgDetalle" >
-                        </p:menuitem>
-                    </p:menubar>
-                    <p:separator/>
-                    <p:dataTable id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0">
-                         <p:column headerText="Codigo">
-                             <h:outputText value="#{pais.codigo}" />
-                        </p:column>
-                        <p:column headerText="Nombre">
-                            <h:outputText value="#{pais.nombre}" />
-                        </p:column>
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{pais.fechaCreacion}" />
-                        </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{pais.fechaModificacion}" />
-                        </p:column>
-                        <p:column headerText="Creado Por">
-                            <h:outputText value="#{pais.creadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Modificado Por">
-                            <h:outputText value="#{pais.modificadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
-                                             update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                       </p:column>
-                        <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
-                                             title="Borrar"
-                                             actionListener="#{paisBean.eliminar(pais)}" 
-                                             update=":form:lstPaises messages"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog id="dlgDetalle" header="Sección" widgetVar="paisDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{paisBean.pais.id}" />
-                        <div class="form-group row">
-                            <p:outputLabel value="Codigo" for="Codigo" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
-                                <p:inputText id="Codigo" required="true" value="#{paisBean.pais.codigo}" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{paisBean.pais.nombre}" class="form-control"/>
-                            </div>
-                        </div>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
-                        </div>
+                <c:if test="#{autorizationBean.hasAccess('pais') == true}">
+
+                    <f:event type="preRenderView" listener="#{paisBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <h:form id="form">
+                        <h3>Paises</h3>
+                        <p:menubar>
+                            <p:menuitem oncomplete="PF('paisDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{paisBean.setAccion('Crear')}" update=":dlgDetalle" >
+                            </p:menuitem>
+                        </p:menubar>
+                        <p:separator/>
+                        <p:dataTable id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0">
+                            <p:column headerText="Codigo">
+                                <h:outputText value="#{pais.codigo}" />
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{pais.nombre}" />
+                            </p:column>
+                            <p:column headerText="Fecha Creación">
+                                <h:outputText value="#{pais.fechaCreacion}" />
+                            </p:column>
+                            <p:column headerText="Fecha Modificación">
+                                <h:outputText value="#{pais.fechaModificacion}" />
+                            </p:column>
+                            <p:column headerText="Creado Por">
+                                <h:outputText value="#{pais.creadoPor.nombres}" />
+                            </p:column>
+                            <p:column headerText="Modificado Por">
+                                <h:outputText value="#{pais.modificadoPor.nombres}" />
+                            </p:column>
+                            <p:column headerText="Editar">
+                                <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
+                                                 update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
+                                                 icon="ui-icon-pencil" title="Editar">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Borrar">
+                                <p:commandButton icon="ui-icon-eraser" 
+                                                 title="Borrar"
+                                                 actionListener="#{paisBean.eliminar(pais)}" 
+                                                 update=":form:lstPaises messages"/>
+                            </p:column>
+                        </p:dataTable>
                     </h:form>
-                </p:dialog>
-                
+                    <p:dialog id="dlgDetalle" header="Sección" widgetVar="paisDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <h:form>
+                            <h:inputHidden id="id" value="#{paisBean.pais.id}" />
+                            <div class="form-group row">
+                                <p:outputLabel value="Codigo" for="Codigo" class="col-xs-2 col-form-label"/>
+                                <div class="col-xs-10">
+                                    <p:inputText id="Codigo" required="true" value="#{paisBean.pais.codigo}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
+                                <div class="col-xs-10">
+                                    <p:inputText id="Nombre" required="true" value="#{paisBean.pais.nombre}" class="form-control"/>
+                                </div>
+                            </div>
+                            <p:spacer/>
+                            <div> 
+                                <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
+                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('pais') == false}">
+                    <h3>Lo sentimos no tiene acceso a este modulo!!!</h3>
+                </c:if>
             </ui:define>
         </ui:composition>
     </body>

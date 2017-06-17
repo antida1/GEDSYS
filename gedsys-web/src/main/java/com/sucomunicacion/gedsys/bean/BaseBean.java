@@ -5,7 +5,11 @@
  */
 package com.sucomunicacion.gedsys.bean;
 
+import com.sucomunicacion.gedsys.entities.Usuario;
+import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import com.sucomunicacion.gedsys.web.utils.WebConfiguration;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -14,7 +18,7 @@ import com.sucomunicacion.gedsys.web.utils.WebConfiguration;
 public class BaseBean {
     
     String configFilePath = "";
-    
+   
     public BaseBean() {
         configFilePath = WebConfiguration.configFilePath();
     }  
@@ -22,5 +26,12 @@ public class BaseBean {
     public String getConfigFilePath() {
         return configFilePath;
     }
-        
+    
+    public void addMessage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public Usuario getCurrentUser(){
+        return (Usuario) SessionUtils.getUsuario();
+    }
 }

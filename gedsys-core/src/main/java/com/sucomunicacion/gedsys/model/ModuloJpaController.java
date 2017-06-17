@@ -245,4 +245,17 @@ public class ModuloJpaController implements Serializable {
         }
     }
     
+    public Modulo findModuloByNombre(String nombre){
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Modulo.class));
+            Query q = em.createNamedQuery("Modulo.findByNombre", Modulo.class)
+                    .setParameter("nombre", nombre);
+            return ((Modulo) q.getSingleResult());
+        } finally {
+            em.close();
+        }
+    }
+    
 }

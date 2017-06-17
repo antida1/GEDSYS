@@ -142,6 +142,21 @@ public class GrupoBean extends BaseBean implements Serializable {
         }
     }
     
+    public void getGrupoByNombre(String nombre){
+        GrupoJpaController gJpa;
+        Grupo grupoTemp;
+        try {
+           EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+           gJpa =  new GrupoJpaController(emf);
+           grupoTemp =  gJpa.findGrupoByNombre(nombre);
+           if(grupoTemp != null){
+               this.grupo =  grupoTemp;
+           }
+        } catch (Exception e) {
+            
+        }
+    }
+    
     public void limpiar(){
         this.grupo = null;
         this.grupo =  new Grupo();

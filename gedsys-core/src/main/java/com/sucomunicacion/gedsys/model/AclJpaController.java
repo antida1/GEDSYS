@@ -18,6 +18,7 @@ import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -249,6 +250,18 @@ public class AclJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public Acl getAclByGrupoIdAndModuleId( Integer grupoId, Integer moduleId  ) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Acl> query = em.createQuery("SELECT a FROM Acl a WHERE a.grupo = :grupo AND a.modulo = :modulo", Acl.class);
+            query.setParameter("grupo", grupoId);
+            query.setParameter("modulo", moduleId);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        } 
     }
     
 }

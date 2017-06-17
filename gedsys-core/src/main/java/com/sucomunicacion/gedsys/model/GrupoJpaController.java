@@ -20,6 +20,7 @@ import com.sucomunicacion.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -262,6 +263,19 @@ public class GrupoJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Grupo findGrupoByNombre(String nombre) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Grupo.class));
+            Query q = em.createNamedQuery("Grupo.findByNombre", Grupo.class)
+                    .setParameter("nombre", nombre );
+            return ((Grupo) q.getSingleResult());
         } finally {
             em.close();
         }
