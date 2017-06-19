@@ -118,6 +118,13 @@ public class Documento implements Serializable {
     private Boolean requiereRespuesta;
     @Column(name = "RutaArchivo")
     private String rutaArchivo;
+    @Column(name = "FechaEnvio")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaEnvio;
+    @Column(name = "FechaRecepcion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRecepcion;
+
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -150,9 +157,6 @@ public class Documento implements Serializable {
     @JoinColumn(name = "Transportador", referencedColumnName = "Id")
     @ManyToOne
     private Transportador transportador;
-    @JoinColumn(name = "Session", referencedColumnName = "Id")
-    @ManyToOne
-    private SeccionSubSeccion session;
     @JoinColumn(name = "SignaturaTopografica", referencedColumnName = "Id")
     @ManyToOne
     private SignaturaTopografica signaturaTopografica;
@@ -387,6 +391,30 @@ public class Documento implements Serializable {
         this.corregimiento = corregimiento;
     }
 
+    public String getClase() {
+        return clase;
+    }
+
+    public void setClase(String clase) {
+        this.clase = clase;
+    }
+
+    public Date getFechaEnvio() {
+        return fechaEnvio;
+    }
+
+    public void setFechaEnvio(Date fechaEnvio) {
+        this.fechaEnvio = fechaEnvio;
+    }
+
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+
     @XmlTransient
     @JsonIgnore
     public Collection<Documento> getDocumentoCollection() {
@@ -443,14 +471,6 @@ public class Documento implements Serializable {
 
     public void setTransportador(Transportador transportador) {
         this.transportador = transportador;
-    }
-
-    public SeccionSubSeccion getSession() {
-        return session;
-    }
-
-    public void setSession(SeccionSubSeccion session) {
-        this.session = session;
     }
 
     public SignaturaTopografica getSignaturaTopografica() {
@@ -514,12 +534,4 @@ public class Documento implements Serializable {
         return "com.sucomunicacion.gedsys.entities.Documento[ id=" + id + " ]";
     }
 
-    public String getClase() {
-        return clase;
-    }
-
-    public void setClase(String clase) {
-        this.clase = clase;
-    }
-    
 }
