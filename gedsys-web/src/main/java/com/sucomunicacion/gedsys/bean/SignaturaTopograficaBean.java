@@ -151,6 +151,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
     
     public void limpiar() {
         this.signaturaTopografica = null;
+        this.signaturaTopografica =  new SignaturaTopografica();
     }
     
 }
