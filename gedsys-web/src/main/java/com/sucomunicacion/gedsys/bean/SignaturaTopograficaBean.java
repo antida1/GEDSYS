@@ -103,6 +103,8 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             sJpa = new SignaturaTopograficaJpaController(emf);
             this.signaturaTopografica.setFechaCracion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.signaturaTopografica.setFechaModificacion(new Date());
+            this.signaturaTopografica.setModificadoPor(usuario);
             sJpa.edit(signaturaTopografica);
             this.listar();
         } catch (Exception e) {

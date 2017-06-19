@@ -5,72 +5,84 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <body>
 
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
-                <f:event type="preRenderView" listener="#{aclBean}" />
+                <f:event type="preRenderView" listener="#{aclBean.listar()}" />
+                <f:event type="preRenderView" listener="#{grupoBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <h:form id="form">
                     <h3>Lista de Control de Acceso</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('sessionDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{seccionBean.setAccion('Crear')}" update=":dlgDetalle" >
-                        </p:menuitem>
-                    </p:menubar>
+                    <div>
+                        <p:outputLabel value="Grupo" for="grupo" class="col-xs-2 col-form-label"/>
+                        <div class="col-xs-10">
+                            <p:selectOneMenu id="grupo" value="#{aclBean.acl.grupo}">
+                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione un grupo" itemValue="#{null}" />
+                                <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
                     <p:separator/>
-                    <p:dataTable id="lstSecciones" var="sec" value="#{seccionBean.secciones}" style="margin-bottom:0">
-                         <p:column headerText="Codigo">
-                            <h:outputText value="#{sec.codigo}" />
+                    <p:dataTable id="lstListas" var="lista" value="#{aclBean.acls}" editable="true" style="margin-bottom:20px">
+                        <p:ajax event="rowEdit" listener="#{aclBean.onRowEdit}" update="messages" />
+                        <p:ajax event="rowEditCancel" listener="#{aclBean.onRowCancel}" update="messages" />
+
+                        <p:column headerText="Módulo">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{lista.modulo.nombre}" /></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Nombre">
-                            <h:outputText value="#{sec.nombre}" />
+                        <p:column headerText="Acceso">
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canRead}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canRead}" /></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{sec.fechaCreacion}" />
+                        <p:column headerText="Crear">
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canCreate}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canCreate}" /></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{sec.fechaModificacion}" />
+                        <p:column headerText="Actualizar">
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canUpdate}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canUpdate}" /></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Creado Por">
-                            <h:outputText value="#{sec.creadoPor}" />
+                        <p:column headerText="Exportar">
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canExport}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canExport}" /></f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Modificado Por">
-                            <h:outputText value="#{sec.modificadoPor}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{seccionBean.getSessionById(sec)}" 
-                                             update=":dlgDetalle" oncomplete="PF('sessionDialog').show()" 
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                       </p:column>
                         <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
-                                             title="Borrar"
-                                             actionListener="#{seccionBean.eliminar(sec)}" 
-                                             update=":form:lstSecciones messages"/>
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canDelete}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canDelete}" /></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Imprimir">
+                            <p:cellEditor>
+                                <f:facet name="output"><p:selectBooleanCheckbox value="#{lista.canGeneratePDF}" disabled="true" /></f:facet>
+                                <f:facet name="input"><p:selectBooleanCheckbox value="#{lista.canGeneratePDF}" /></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:32px">
+                            <p:rowEditor />
                         </p:column>
                     </p:dataTable>
+                    <p:spacer/>
+                    <div> 
+                        <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="Guardar" actionListener="#{aclBean.procesar()}" oncomplete="PF('listaDialog').hide()" />
+                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('listaDialog').hide()"></p:commandButton>
+                    </div>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Sección" widgetVar="sessionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{seccionBean.seccion.id}" />
-                        <p:panelGrid  columns="2" columnClasses="label,value">
-                            <p:outputLabel value="Codigo" for="Codigo" />
-                            <p:inputText id="Codigo" required="true" value="#{seccionBean.seccion.codigo}" />
 
-                            <p:outputLabel value="Nombre" for="Nombre" />
-                            <p:inputText id="Nombre" required="true" value="#{seccionBean.seccion.nombre}" />
-                        </p:panelGrid>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstSecciones messages" icon="ui-icon-disk" value="#{seccionBean.accion}" actionListener="#{seccionBean.procesar()}" oncomplete="PF('sessionDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('sessionDialog').hide()"></p:commandButton>
-                        </div>
-                    </h:form>
-                </p:dialog>
-                
+
             </ui:define>
         </ui:composition>
     </body>

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../Template/plantilla.xhtml">
+            <ui:define name="content">
+                <p:growl id="messages"  showDetail="true" />
+                <h:form id="form">
+                    <h3>Control de préstamos</h3>
+                    <div class="form-group row">
+                    <div class='btn-group btn-group-right col-xs-2'>
+                        <p:commandButton icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
+                    </div>
+                    <div class="col-xs-10"></div>
+                    </div>
+                    
+                    <p:separator/>
+                    <div class="form-group row">
+                        <p:outputLabel value="Buscar" for="buscar" class="col-xs-2 col-form-label"/>
+                        <div class="col-xs-10">
+                            <p:outputLabel id="buscar">
+                            </p:outputLabel>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <p:outputLabel for="fechaInicial" value="Fecha inicial" class="col-xs-2 col-form-label"/>
+                        <div class="col-xs-4">
+                            <p:calendar id="fechaInicial" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
+                        </div>
+                        <p:outputLabel for="fechaFinal" value="Fecha final" class="col-xs-2 col-form-label"/>
+                        <div class="col-xs-4">
+                            <p:calendar id="fechaFinal" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <p:outputLabel value="Tipo documental" for="tipoDocumental" class="col-xs-2 col-form-label"/>
+                        <div class="col-xs-3">
+                            <p:selectOneMenu id="tipoDocumental" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
+                                <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="tipoDocumental" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="col-xs-10"></div>
+                    <div class='btn-group btn-group-right col-xs-2'>
+                        <p:commandButton icon="fa fa-fw fa-search" type="button" value="Buscar" onclick="PF('denBuscar').show()"></p:commandButton>
+                    </div>
+                    <p:separator></p:separator>
+                    
+                    <div class="col-xs-12">
+
+                        <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0">
+                            <p:column headerText="Fecha inicial">
+                                <h:outputText value="fi" />
+                            </p:column>
+                            <p:column headerText="Prestado a">
+                                <h:outputText value="pa" />
+                            </p:column>
+                            <p:column headerText="Nombre del documento">
+                                <h:outputText value="nd" />
+                            </p:column>
+                            <p:column headerText="Tipo de documento">   
+                                <h:outputText value="tp" />
+                            </p:column>
+                            <p:column headerText="Nombre de quien prestó">
+                                <h:outputText value="np" />
+                            </p:column>
+                            <p:column headerText="Fecha de vencimiento">
+                                <h:outputText value="fv" />
+                            </p:column>
+                            <p:column headerText="Fecha devolución">
+                                <h:outputText value="fd" />
+                            </p:column>
+                            <p:column headerText="Nombre de quien devuelve">
+                                <h:outputText value="nd" />
+                            </p:column>
+                            <p:column headerText="Nombre de quien recibe">
+                                <h:outputText value="nr" />
+                            </p:column>
+                             <p:column headerText="Reintegrar">
+                                 <p:commandButton icon="fa fa-fw fa-rotate-left" type="button" title="Reintegrar" onclick="PF('denReintegrar').show()"></p:commandButton>
+                            </p:column>
+                           
+
+                        </p:dataTable>
+                    </div>
+                    <p:dialog id="dlgReintegrar" header="Reintegrar" widgetVar="denReintegrar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="500">
+                        <ui:include src="reintegrar.xhtml">
+                        </ui:include>
+                    </p:dialog>
+                    <p:dialog id="dlgNuevo" header="Préstamo de documentos" widgetVar="denNuevo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" height="600">
+                        <ui:include src="nuevoPrestamo.xhtml">
+                        </ui:include>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

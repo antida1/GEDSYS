@@ -1,12 +1,29 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>  
+        
+        <h:inputHidden id="id" value="#{null}"/>
+        <p:tree value="#{signaturaTree.root}" var="signatura">
+            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                <h:outputText value="#{signatura}"/>
+            </p:treeNode>
+            
+
+
+        </p:tree>
+
+        <p:spacer/>
+        <div>
+            <p:commandButton icon="ui-icon-disk" value="Guardar" oncomplete="PF('signaturaDialog').hide()" />
+            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
+        </div>
+
+
+    </body>
 </html>
 

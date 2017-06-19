@@ -21,11 +21,11 @@
                     </p:menubar>
                     <p:separator/>
                     <p:dataTable id="lstSignatura" var="signatura" value="#{signaturaTopograficaBean.signaturasTopograficas}" style="margin-bottom:0">
-                         <p:column headerText="Código">
-                             <h:outputText value="#{signatura.codigo}" />
+                        <p:column headerText="Código">
+                            <h:outputText value="#{signatura.codigo}" />
                         </p:column>
-                         <p:column headerText="Dependencia">
-                             <h:outputText value="#{signatura.dependeDe.nombre}" />
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{signatura.dependeDe.nombre}" />
                         </p:column>
                         <p:column headerText="Nombre">
                             <h:outputText value="#{signatura.nombre}" />
@@ -50,36 +50,57 @@
                                              update=":dlgDetalle" oncomplete="PF('signaturaDialog').show()" 
                                              icon="ui-icon-pencil" title="Editar">
                             </p:commandButton>
-                       </p:column>
+                        </p:column>
                         <p:column headerText="Borrar">
                             <p:commandButton icon="ui-icon-eraser" 
                                              title="Borrar"
                                              actionListener="#{signaturaTopograficaBean.eliminar(signatura)}"
                                              update=":form:lstSignatura messages"/>
                         </p:column>
-                        
+
                     </p:dataTable>    
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Signatura Topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
+                <p:dialog id="dlgDetalle" header="Signatura Topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="800">
                     <h:form>
-                        <h:inputHidden id="id" value="#{signaturaTopograficaBean.signaturaTopografica.id}" />
-                         <div class="form-group row">
-                            <p:outputLabel value="Código" for="Codigo" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
-                                <p:inputText id="Codigo" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.codigo}" class="form-control" />
+                        
+
+                        <div class="row">
+                            <div class="col-xs-5">
+
+                                <h:inputHidden id="id" value="#{null}"/>
+                                <p:tree value="#{signaturaTree.root}" var="signatura" class="col-xs-12"> 
+                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                        <h:outputText value="#{signatura}"/>
+                                    </p:treeNode>
+                                </p:tree>
+                            </div>
+
+
+                            <div class="col-xs-7">
+                                <div class="form-group row">
+                                    <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Codigo" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.codigo}" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Nombre" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" class="form-control"/>
+                                    </div>
+                                </div>
+                                <p:spacer/>
+                                <div class="form-group row">
+                                    <div class="col-xs-7"></div>
+                                <div class="col-xs-5"> 
+                                    <p:commandButton update=":form:lstSignatura messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" class="form-control"/>
-                            </div>
-                        </div>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstSignatura messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
-                        </div>
+
                     </h:form>
                 </p:dialog>  
             </ui:define>
