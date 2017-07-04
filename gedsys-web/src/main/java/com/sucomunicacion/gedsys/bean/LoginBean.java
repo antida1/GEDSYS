@@ -85,7 +85,7 @@ public class LoginBean extends BaseBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("isLogin", logeado);
         if(logeado){
-            context.addCallbackParam("view", "faces/index.xhtml");
+            context.addCallbackParam("view", "index.xhtml");
         }
     }
     

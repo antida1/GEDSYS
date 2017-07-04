@@ -62,21 +62,29 @@
                 </h:form>
                 <p:dialog id="dlgDetalle" header="Signatura Topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="800">
                     <h:form>
-                        
-
                         <div class="row">
                             <div class="col-xs-5">
-
-                                <h:inputHidden id="id" value="#{null}"/>
-                                <p:tree value="#{signaturaTree.root}" var="signatura" class="col-xs-12"> 
-                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                <h:inputHidden id="id" value="#{signaturaTopograficaBean.signaturaTopografica.id}"/>
+                                <p:outputLabel value="Depende de" for="depende" class="col-xs-3 col-form-label"/>
+                                <p:tree id="depende" value="#{signaturaTree.root}" var="signatura" class="col-xs-12" dynamic="true" selectionMode="single">
+                                    <p:ajax event="select" listener="#{signaturaTopograficaBean.selectDependencia}" />
+                                    <p:treeNode  expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed" >
                                         <h:outputText value="#{signatura}"/>
                                     </p:treeNode>
                                 </p:tree>
                             </div>
-
-
                             <div class="col-xs-7">
+                                <!--
+                                <div class="form-group row">
+                                    <p:outputLabel value="Depende de" for="depende" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
+                                        <p:selectOneMenu id="depende" value="#{signaturaTopograficaBean.signaturaTopografica.dependeDe}" converter="omnifaces.SelectItemsConverter" >
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                                            <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="signaturaList" itemLabel="#{signaturaList.nombre}" itemValue="#{signaturaList}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                -->
                                 <div class="form-group row">
                                     <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">

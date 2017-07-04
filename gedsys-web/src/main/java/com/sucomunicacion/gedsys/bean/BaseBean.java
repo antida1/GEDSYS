@@ -20,7 +20,7 @@ public class BaseBean {
     String configFilePath = "";
    
     public BaseBean() {
-        configFilePath = WebConfiguration.configFilePath();
+        configFilePath = WebConfiguration.getInstance().getConfigFilePath();
     }  
     
     public String getConfigFilePath() {

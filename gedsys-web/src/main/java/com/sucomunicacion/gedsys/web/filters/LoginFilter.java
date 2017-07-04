@@ -5,7 +5,7 @@
  */
 package com.sucomunicacion.gedsys.web.filters;
 
-import com.sucomunicacion.gedsys.bean.LoginBean;
+import com.sucomunicacion.gedsys.web.utils.WebConfiguration;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -107,30 +107,36 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession ses = req.getSession(false);
-        
 
         String strUrl = req.getRequestURL().toString().toLowerCase();
-        
-        
 
         if (debug) {
             log("LoginFilter:doFilter()");
         }
 
         doBeforeProcessing(request, response);
-
+        String result = WebConfiguration.getInstance().getProperty("installationLock");
+        
         Throwable problem = null;
         try {
-            if(strUrl.indexOf("/login.xhtml") >= 0 
-                || (ses != null && 
-                ses.getAttribute("usuario")!= null) 
-                || strUrl.indexOf("/public/")>= 0
-                || strUrl.contains("javax.faces.resource")
-                || strUrl.contains("/resources/")){
-                
+            if (strUrl.indexOf("/login.xhtml") >= 0
+                    || (ses != null
+                    && ses.getAttribute("usuario") != null && result.equals("true"))
+                    || strUrl.indexOf("/public/") >= 0
+                    || strUrl.contains("javax.faces.resource")
+                    || strUrl.contains("/resources/")
+                     ) {
                 chain.doFilter(request, response);
             } else {
-                res.sendRedirect(req.getContextPath() + "/faces/login.xhtml");
+                if(strUrl.indexOf("/config.xhtml") >= 0
+                        && result.equals("false")){
+                    chain.doFilter(request, response);
+                } else {
+                    if(result.equals("true"))
+                       res.sendRedirect(req.getContextPath() + "/faces/login.xhtml");
+                    else
+                       res.sendRedirect(req.getContextPath() + "/faces/config.xhtml");
+                }
             }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,

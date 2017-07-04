@@ -13,13 +13,14 @@ import com.sucomunicacion.gedsys.utils.JpaUtils;
 import com.sucomunicacion.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.event.NodeSelectEvent;
 
 /**
  *
@@ -32,8 +33,9 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private SignaturaTopografica signaturaTopografica = new SignaturaTopografica();
-    private List<SignaturaTopografica> signaturasTopograficas;
+    private List<SignaturaTopografica> signaturasTopograficas = new LinkedList<>();
     private String accion;
+    private SignaturaTopografica selectNode;
 
     public SignaturaTopografica getSignaturaTopografica() {
         return signaturaTopografica;
@@ -85,7 +87,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             sJpa = new SignaturaTopograficaJpaController(emf);
             
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            
+            this.signaturaTopografica.setDependeDe(selectNode);
             this.signaturaTopografica.setFechaCracion(new Date());
             this.signaturaTopografica.setCreadoPor(usuario);
             sJpa.create(signaturaTopografica);
@@ -93,7 +95,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         } catch (Exception e) {
             Logger.getLogger(SignaturaTopograficaBean.class.getName()).log(Level.SEVERE, null, e);
         }
-        
+   
     }
 
     private void modificar() {
@@ -102,6 +104,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new SignaturaTopograficaJpaController(emf);
             this.signaturaTopografica.setFechaCracion(new Date());
+            this.signaturaTopografica.setDependeDe(selectNode);
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.signaturaTopografica.setFechaModificacion(new Date());
             this.signaturaTopografica.setModificadoPor(usuario);
@@ -151,7 +154,34 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         }
     }
     
+    public void getSignaturaTopograficaByDependencia( SignaturaTopografica sig){
+        SignaturaTopograficaJpaController sJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            sJpa = new SignaturaTopograficaJpaController(emf);
+            signaturasTopograficas = sJpa.findSignaturaTopograficaByDependencia(sig);
+        } catch (Exception e) {
+             Logger.getLogger(SignaturaTopograficaBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void getSignaturaTopograficaRoots(){
+        SignaturaTopograficaJpaController sJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            sJpa = new SignaturaTopograficaJpaController(emf);
+            signaturasTopograficas = sJpa.findSignaturaTopograficaRoots();
+        } catch (Exception e) {
+             Logger.getLogger(SignaturaTopograficaBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+     public void selectDependencia(NodeSelectEvent event) {
+        selectNode = (SignaturaTopografica) event.getTreeNode().getData();
+    }
+    
     public void limpiar() {
+        this.selectNode = null;
         this.signaturaTopografica = null;
         this.signaturaTopografica =  new SignaturaTopografica();
     }

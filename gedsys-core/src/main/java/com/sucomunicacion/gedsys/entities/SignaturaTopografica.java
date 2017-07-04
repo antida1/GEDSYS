@@ -41,7 +41,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "SignaturaTopografica.findByFechaCracion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaCracion = :fechaCracion")
     , @NamedQuery(name = "SignaturaTopografica.findByFechaModificacion", query = "SELECT s FROM SignaturaTopografica s WHERE s.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "SignaturaTopografica.findByNivel", query = "SELECT s FROM SignaturaTopografica s WHERE s.nivel = :nivel")
-    , @NamedQuery(name = "SignaturaTopografica.findByNombre", query = "SELECT s FROM SignaturaTopografica s WHERE s.nombre = :nombre")})
+    , @NamedQuery(name = "SignaturaTopografica.findByNombre", query = "SELECT s FROM SignaturaTopografica s WHERE s.nombre = :nombre")
+    , @NamedQuery(name = "SignaturaTopografica.findByDependeDe", query = "SELECT s FROM SignaturaTopografica s WHERE s.dependeDe = :dependeDe")
+    , @NamedQuery(name = "SignaturaTopografica.findRoots", query = "SELECT s FROM SignaturaTopografica s WHERE s.dependeDe is null")})
+
 public class SignaturaTopografica implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -207,7 +210,7 @@ public class SignaturaTopografica implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.SignaturaTopografica[ id=" + id + " ]";
+        return this.nombre;
     }
-    
+
 }

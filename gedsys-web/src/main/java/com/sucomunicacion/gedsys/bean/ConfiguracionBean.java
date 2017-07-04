@@ -5,10 +5,15 @@
  */
 package com.sucomunicacion.gedsys.bean;
 
+import com.sucomunicacion.gedsys.entities.Acl;
 import com.sucomunicacion.gedsys.entities.Usuario;
 import com.sucomunicacion.gedsys.entities.Configuracion;
+import com.sucomunicacion.gedsys.entities.Modulo;
 import com.sucomunicacion.gedsys.model.ConfiguracionJpaController;
+import com.sucomunicacion.gedsys.system.AclBean;
+import com.sucomunicacion.gedsys.system.ModuloBean;
 import com.sucomunicacion.gedsys.utils.JpaUtils;
+import com.sucomunicacion.gedsys.web.utils.WebConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,16 +24,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.message.Message;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -43,9 +49,9 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
      * Creates a new instance of ConfiguracionBean
      */
     private String pathResource;
-    private String pathData;
+    private String pathData = "";
     private Boolean encriptFiles;
-   
+
     private String companyName;
     private String direccion;
     private String telefono;
@@ -59,7 +65,16 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     private Boolean mailSSLTLS;
     private String mail;
     private UploadedFile logoFile;
-    
+
+    private String driver;
+    private String urlConnection;
+    private String usuarioDataBase;
+    private String passwordDataBase;
+
+    private Usuario usuario = new Usuario();
+
+    private String licenseMode;
+    private String licenseNumber;
 
     public String getPathResource() {
         return pathResource;
@@ -160,12 +175,76 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     public void setLogoFile(UploadedFile logoFile) {
         this.logoFile = logoFile;
     }
-    
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    public String getUrlConnection() {
+        return urlConnection;
+    }
+
+    public void setUrlConnection(String urlConnection) {
+        this.urlConnection = urlConnection;
+    }
+
+    public String getUsuarioDataBase() {
+        return usuarioDataBase;
+    }
+
+    public void setUsuarioDataBase(String usuarioDataBase) {
+        this.usuarioDataBase = usuarioDataBase;
+    }
+
+    public String getPasswordDataBase() {
+        return passwordDataBase;
+    }
+
+    public void setPasswordDataBase(String passwordDataBase) {
+        this.passwordDataBase = passwordDataBase;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getLicenseMode() {
+        return licenseMode;
+    }
+
+    public void setLicenseMode(String licenseMode) {
+        this.licenseMode = licenseMode;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
     public ConfiguracionBean() {
     }
-    
-    public void uploadLogo(){
-        if(logoFile != null){
+
+    public void uploadLogo() {
+        if (logoFile != null) {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
                 ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
@@ -174,9 +253,9 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
                 String extension = FilenameUtils.getExtension(logoFile.getFileName());
                 File[] roots = File.listRoots();
                 //Directorio por defecto para la carga de imagenes.
-                Path folder = Paths.get(roots[0].getPath() + File.separatorChar+ "gedsys" + File.separatorChar + fileName+ "." + extension);
+                Path folder = Paths.get(roots[0].getPath() + File.separatorChar + "gedsys" + File.separatorChar + fileName + "." + extension);
                 Path file = Files.createFile(folder);
-                try (InputStream input = logoFile.getInputstream()){
+                try (InputStream input = logoFile.getInputstream()) {
                     Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
                 } catch (Exception e) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
@@ -189,34 +268,97 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
             }
         }
     }
-    
-    public void guardar(){
-        try {
 
+    public void guardar() {
+        try {
+            /*
             //Config Manager Resources and Docs.
             saveRegister("logo", logoFile.getFileName());
             saveRegister("pathResource", logoFile.getFileName());
             saveRegister("pathData", logoFile.getFileName());
             saveRegister("encriptFiles", logoFile.getFileName());
-
-
             //Company
             saveRegister("companyName", logoFile.getFileName());
             saveRegister("direccion", logoFile.getFileName());
             saveRegister("telefono", logoFile.getFileName());
             saveRegister("razonSocial", logoFile.getFileName());
-
-
             //SMTP Account
             saveRegister("mailAccount", logoFile.getFileName());
             saveRegister("mailPassword", logoFile.getFileName());
             saveRegister("mailPort", logoFile.getFileName());
             saveRegister("mailServer", logoFile.getFileName());
             saveRegister("mailSSLTLS", logoFile.getFileName());
-
-
+             */
 
             uploadLogo();
+
+            WebConfiguration wc = WebConfiguration.getInstance();
+
+            //Data Base Configuration
+            wc.setProperty("jdbc_driver", this.getDriver());
+            wc.setProperty("jdbc_url", this.getUrlConnection());
+            wc.setProperty("jdbc_user", this.getUsuarioDataBase());
+            wc.setProperty("jdbc_password", this.getPasswordDataBase());
+
+            //Installation Lock
+            wc.setProperty("installationLock", "true");
+
+            //Email Settings
+            wc.setProperty("mailAccount", this.getMailAccount());
+            wc.setProperty("mailPassword", this.getMailPassword());
+            wc.setProperty("mailPort", this.getMailPort());
+            wc.setProperty("mailServer", this.getMailServer());
+            wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
+
+            //License
+            wc.setProperty("licenseMode", "DEMO");
+            wc.setProperty("licenseNumber", "1");
+
+            //Data File
+            wc.setProperty("PathData", "");
+            wc.setProperty("protectFile", "false");
+
+            wc.save();
+            String path = wc.getConfigFilePath();
+            JpaUtils.createSchema(path);
+
+            //Insertar Crear Usuario
+            UsuarioBean ub = new UsuarioBean();
+            ub.setAccion("Crear");
+            ub.setUsuario(usuario);
+            ub.procesar();
+
+            //Insertar Modulos
+            String[] modules = {"Entidades", "Empresas de Mensajeria", "Tipos de Documento", 
+                "Paises", "Departamentos", "Municipios", "Consecutivos",
+                "Signatura Topografica", "Plantilla Documental", "Dias Festivos", 
+                "Usuarios", "Cargos", "ACL", "Grupos", "Modulos", "Secciones", "Serie",
+                "SubSerie", "Unidad Documental", "Tipo Documental", "Creacion de Documentos", 
+                "Recepcion de Documentos", "Gestion de Documentos", "Control de Prestamos"};
+            
+            ModuloBean mb = new ModuloBean();
+            for (String nombre : modules) {
+                Modulo modulo = new Modulo();
+                modulo.setNombre(nombre);
+                mb.setAccion("Crear");
+                mb.setModulo(modulo);
+                mb.procesar();
+            }
+            
+            //Insertar ACL
+            List<Modulo> modulos = mb.getModulos();
+            AclBean ab = new AclBean();
+            for (Modulo modulo : modulos) {
+                Acl acl = new Acl();
+                acl.setModulo(modulo);
+                ab.setAcl(acl);
+                ab.setAccion("Crear");
+                ab.procesar();
+            }
+            
+            FacesContext fContext = FacesContext.getCurrentInstance();
+            ExternalContext extContext = fContext.getExternalContext();
+            extContext.redirect(extContext.getRequestContextPath() + "/faces/login.xhtml");
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
@@ -224,16 +366,15 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
 
     }
 
-    private void saveRegister(String name, String value) throws Exception{
+    private void saveRegister(String name, String value) throws Exception {
         ConfiguracionJpaController confJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            EntityManager em =  emf.createEntityManager();
+            EntityManager em = emf.createEntityManager();
             confJpa = new ConfiguracionJpaController(emf);
 
-            
             Configuracion conf = confJpa.findConfigurationByName("logo");
-            if(conf !=null){
+            if (conf != null) {
                 conf.setNombre(name);
                 conf.setValor(value);
                 confJpa.edit(conf);
@@ -246,5 +387,5 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
             throw e;
         }
     }
-    
+
 }

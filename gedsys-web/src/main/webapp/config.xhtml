@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>GEDSYS</title>
+    </h:head>
+    <h:body styleClass="cyan ligthen-5">
+        <h:form>
+
+            <p:growl id="growl" sticky="true" showDetail="true"/>
+
+            <p:wizard>
+                <p:tab id="DataBase" title="Configuracion de Base de Datos">
+                    <p:panel header="Base de Datos">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Drivers: *" />
+
+                            <p:selectOneMenu id="driver" value="#{configuracionBean.driver}" converter="omnifaces.SelectItemsConverter" required="true" >
+                                <f:selectItem noSelectionOption="true" itemLabel="Driver de Base de datos" itemValue="#{null}"/>
+                                <f:selectItem itemValue="com.mysql.cj.jdbc.Driver" itemLabel="Mysql"/>
+                                <f:selectItem itemValue="com.microsoft.sqlserver.jdbc.SQLServerDriver" itemLabel="SQL Server"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputText value="Url de Conexion *" />
+                            <p:inputText value="#{configuracionBean.urlConnection}" required="true" label="Url de conexion"/>
+
+                            <h:outputText value="Usuario: " />
+                            <p:inputText value="#{configuracionBean.usuarioDataBase}" />
+
+                            <h:outputText value="Password: " />
+                            <p:password value="#{configuracionBean.passwordDataBase}" />
+                        </h:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab id="admin" title="Administracion">
+                    <p:panel header="Usuario Administrador">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Nombre:" />
+                            <p:inputText value="#{configuracionBean.usuario.nombres}" />
+
+                            <h:outputText value="Apellido: " />
+                            <p:inputText value="#{configuracionBean.usuario.apelidos}" />
+
+                            <h:outputText value="Usuario: " />
+                            <p:inputText value="#{configuracionBean.usuario.usuario}" />
+
+                            <h:outputText value="Password: " />
+                            <p:password value="#{configuracionBean.usuario.clave}" />
+
+                            <h:outputText value="Correo electronico: " />
+                            <p:inputText value="#{configuracionBean.usuario.email}" />
+
+                        </h:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab id="email" title="Email y Notificaciones">
+                    <p:panel header="Email Server">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Email: *" />
+                            <p:inputText value="#{configuracionBean.mail}" required="true" label="Email"/>
+
+                            <h:outputText value="Server: " />
+                            <p:inputText value="#{configuracionBean.mailServer}"/>
+
+                            <h:outputText value=":Usuario: " />
+                            <p:inputText value="#{configuracionBean.mailAccount}"/>
+
+                            <h:outputText value="Password: " />
+                            <p:password value="#{configuracionBean.mailPassword}"/>
+
+                            <h:outputText value="Smtp Port: " />
+                            <p:inputText value="#{configuracionBean.mailPort}"/>
+
+                            <h:outputText value="Requiere SSL: " />
+                            <p:selectBooleanCheckbox value="#{configuracionBean.mailSSLTLS}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab id="licencias" title="Licencias">
+                    <p:panel header="Licencia Gedsys">
+                        <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Tipo de Licencia" />
+                                <p:selectOneMenu id="modeLicencia" value="#{configuracionBean.licenseMode}" required="true" >
+                                    <f:selectItem noSelectionOption="true" itemLabel="Tipo de Liceccia" itemValue="#{null}"/>
+                                    <f:selectItem itemValue="demo" itemLabel="Demo"/>
+                                    <f:selectItem itemValue="pro" itemLabel="Profesional"/>
+                                </p:selectOneMenu>
+                                <h:outputText value="Numero de Licencia" />
+                                <p:inputText value="#{configuracionBean.licenseNumber}"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:commandButton value="Submit" actionListener="#{configuracionBean.guardar()}" update="growl" process="@this"/>
+                    </p:panel>
+                </p:tab>
+            </p:wizard>
+
+        </h:form>
+    </h:body>
+</html>
+

@@ -321,5 +321,30 @@ public class SignaturaTopograficaJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<SignaturaTopografica> findSignaturaTopograficaByDependencia(SignaturaTopografica signatura) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(SignaturaTopografica.class));
+            Query q = em.createNamedQuery("SignaturaTopografica.findByDependeDe", SignaturaTopografica.class)
+                    .setParameter("dependeDe", signatura);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<SignaturaTopografica> findSignaturaTopograficaRoots() {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(SignaturaTopografica.class));
+            Query q = em.createNamedQuery("SignaturaTopografica.findRoots", SignaturaTopografica.class);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
     
 }
