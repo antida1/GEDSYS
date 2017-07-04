@@ -1,0 +1,60 @@
+.grid {
+    padding: 0;
+    .hour {
+        @include transition(0.3s);
+        padding: 0;
+        height: 10vh;
+        border-bottom: solid 1px whitesmoke;
+        div{
+            padding: 2vh 1vw;
+            &.left{
+                font-size: 2vh;
+                color: lightgray;
+            }
+            &.right{
+                div{
+                    @include transition(0.3s);
+                    cursor: pointer;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                text-align: center;
+                $Day-notif-border: 3px;
+                .warn{
+                    background: $warnBackground;
+                    color: $warnText;
+                    border-left: solid $Day-notif-border $warnBackgroundAccent;
+                    border-radius: 3px;
+                    &:hover{
+                        background: darken($warnBackground,20%)
+                    }
+                }
+                .danger{
+                    background: $dangerBackground;
+                    color: $dangerText;
+                    border-left: solid $Day-notif-border $dangerBackgroundAccent;
+                    border-radius: 3px;
+                    &:hover{
+                        background: darken($dangerBackground,20%);
+                    }
+                }
+                .notif{
+                    background: $MCAccentClear;
+                    color: $MCAccent;
+                    border-left: solid $Day-notif-border $MCAccent;
+                    border-radius: 3px;
+                    &:hover{
+                        background: darken($MCAccentClear,20%);
+                    }
+                }
+            }
+        }
+        &.current{
+            background: $mainBackgroundMuted;
+            .left{
+                color: $MCAccent;
+            }
+        }
+    }
+}

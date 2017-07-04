@@ -1,0 +1,207 @@
+body {
+    .base {
+        background: white;
+        padding: 0;
+        overflow: hidden;
+        .menu {
+            overflow: hidden;
+            padding: 0;
+            @include OverrideSelect();
+            @include transition(0.4s);
+            @include shadow(20px, 1px);
+            background: $MCAccent;
+            height: 10vh;
+            .xs {
+                .tab {
+                    cursor: pointer;
+                    &:hover {
+                        background: $MCAccentDark;
+                    }
+                }
+            }
+            @media #{$xs} {
+                overflow-x: hidden;
+                .xs {
+                    @include transition(0.4s);
+                    padding: 0;
+                    .tab {
+                        cursor: pointer;
+                        top: -32vh;
+                        height: 8vh;
+                        @include transition(0.4s);
+                        padding: 1vh 1vw;
+                        border-left: solid 3px $MCAccentDark;
+                        color: lighten($MCAccent, 10%);
+                        text-align: center;
+                        &.active {
+                            background: lighten($MCAccent, 10%);
+                            border-left: solid 3px white;
+                            color: $MCAccent;
+                            @include shadow(2px, 1px);
+                        }
+                        &:hover {
+                            background: $MCAccentDark;
+                        }
+                    }
+                    #Hamburger {
+                        cursor: pointer;
+                        @include transition(0.4s);
+                        padding: 3vh 1vw;
+                        left: 5vw;
+                        top: 0;
+                        position: absolute;
+                        span {
+                            @include transition(0.6s);
+                            display: block;
+                            margin-bottom: 7px;
+                            height: 3px;
+                            width: 30px;
+                            background-color: white;
+                        }
+                        &.active {
+                            @include transition(0.4s);
+                            span {
+                                &:nth-child(1) {
+                                    transform: rotate(-45deg) scaleX(0.5) translateX(-15px);
+                                    -webkit-transform: rotate(-45deg) scaleX(0.5) translateX(-15px);
+                                }
+                                &:nth-child(2) {
+                                    transform: translateY(-10px) scale(0);
+                                    -webkit-transform: translateY(-10px) scale(0);
+                                }
+                                &:nth-child(3) {
+                                    transform: translateY(-20px) rotate(45deg) translateX(7px) scaleX(0.5);
+                                    -webkit-transform: translateY(-20px) rotate(45deg) translateX(7px) scaleX(0.5);
+                                }
+                            }
+                        }
+                    }
+                    .title {
+                        @include transition(0.4s);
+                        padding: 0vh 1vw;
+                        text-align: center;
+                        .content {
+                            padding: 1vh 0vw;
+                            left: -1vw;
+                            @include transition(0.4s);
+                            position: absolute;
+                            top: -32vh;
+                            h4 {
+                                color: $mainBackground;
+                                font-weight: 500;
+                                font-size: 180%;
+                            }
+                        }
+                        .logo {
+                            @include transition(0.4s);
+                            left: 65vw;
+                            margin-right: 3vw;
+                            top: -30vh;
+                            height: 8vh;
+                            cursor: pointer;
+                            padding: 0;
+                            span {
+                                @include transition(0.4s);
+                                font-size: 6vh;
+                                color: $mainBackground;
+                            }
+                            img {
+                                @include transition(0.4s);
+                                height: 36px;
+                                width: 36px;
+                                background: $mainBackground;
+                                border-radius: 50%;
+                                border: solid 2px $mainBackground;
+                            }
+                            .badge {
+                                display: block;
+                                position: absolute;
+                                top: -15%;
+                                right: 25%;
+                                background: $mainBackground;
+                                border-radius: 5px;
+                                padding: 3%;
+                                color: $MCAccent;
+                                font-size: 14px;
+                                display: none;
+                                &.active{
+                                    display: inherit;
+                                }
+                            }
+                        }
+                    }
+                }
+                &.active {
+                    height: 40vh;
+                    #Hamburger {
+                        top: 32vh;
+                    }
+                    .title {
+                        .content {
+                            top: -1vh;
+                            h4 {
+                                color: white;
+                            }
+                        }
+                        .logo {
+                            top: 1vh;
+                            background-repeat: no-repeat;
+                            span {
+                                &:hover,
+                                &:focus,
+                                &:active {
+                                    color: white;
+                                }
+                            }
+                        }
+                    }
+                    .tab {
+                        top: 0;
+                        display: inherit;
+                    }
+                }
+            }
+        }
+        .Content {
+            padding: 0;
+            @import 'include/notifications';
+            @import 'include/calendar';
+            @import 'include/docs';
+            @import 'include/day';
+            @import 'include/config';
+            @import 'include/detail';
+        }
+    }
+    @media #{$not-xs} {
+        .base {
+            max-width: none;
+            width: 100%;
+            .menu {
+                height: auto;
+                .xs {
+                    padding: 0;
+                    div {
+                        @include transition(0.3s);
+                        h4 {
+                            @include transition(0.3s);
+                            line-height: 6vh;
+                            text-align: center;
+                            font-size: 24px;
+                            color: $MCAccentLighten;
+                        }
+                    }
+                    .title {
+                        padding: 0;
+                        display: none;
+                    }
+                    .active {
+                        background: $MCAccentDark;
+                        h4 {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

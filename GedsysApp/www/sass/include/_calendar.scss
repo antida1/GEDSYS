@@ -1,0 +1,179 @@
+#calendar {
+    .clndr {
+        .clndr-controls {
+            background: $MCAccent;
+            color: white;
+            .clndr-control-button {
+                @include transition(0.3s);
+                cursor: pointer;
+                text-align: center;
+                background: $MCAccent;
+                width: 16.66666667%;
+                position: relative;
+                float: left;
+                min-height: 1px;
+                padding: 2vh 1vw;
+                &:hover {
+                    color: $MCAccentDark;
+                }
+            }
+            .month {
+                background: $MCAccent;
+                width: 66.66666667%;
+                position: relative;
+                float: left;
+                min-height: 1px;
+                text-align: center;
+                padding: 2vh 1vw;
+            }
+        }
+        .clndr-table {
+            .header-days {
+                z-index: 2;
+                background: $MCAccent;
+                color: white;
+                @include shadow(20px, 2px);
+                .header-day {
+                    background: $MCAccent;
+                    text-align: center;
+                    padding: 2vh 0vw;
+                    border-radius: 0;
+                }
+            }
+            tbody {
+                z-index: 1;
+                tr {
+                    td {
+                        cursor: pointer;
+                        @include transition(0.4s);
+                        text-align: center;
+                        color: $mainText;
+                        border-radius: 0;
+                        padding: 2vh 1vw;
+                        background: $mainBackground;
+                        margin: 1px;
+                        -webkit-box-shadow: inset 0px 0px 1px 1px $mainTextMuted;
+                        -moz-box-shadow: inset 0px 0px 1px 1px $mainTextMuted;
+                        box-shadow: inset 0px 0px 1px 1px $mainTextMuted;
+                        &.notif {
+                            color: $MCAccent !important;
+                            background: $MCAccentClear;
+                            -webkit-box-shadow: inset 0px 0px 1px 1px $MCAccent;
+                            -moz-box-shadow: inset 0px 0px 1px 1px $MCAccent;
+                            box-shadow: inset 0px 0px 1px 1px $MCAccent;
+                        }
+                        &.warn {
+                            color: $warnText !important;
+                            background: $warnBackground;
+                            -webkit-box-shadow: inset 0px 0px 1px 1px $warnBackgroundAccent;
+                            -moz-box-shadow: inset 0px 0px 1px 1px $warnBackgroundAccent;
+                            box-shadow: inset 0px 0px 1px 1px $warnBackgroundAccent;
+                        }
+                        &.danger {
+                            color: $dangerText !important;
+                            background: $dangerBackground;
+                            -webkit-box-shadow: inset 0px 0px 1px 1px $dangerBackgroundAccent;
+                            -moz-box-shadow: inset 0px 0px 1px 1px $dangerBackgroundAccent;
+                            box-shadow: inset 0px 0px 1px 1px $dangerBackgroundAccent;
+                        }
+                        &.today {
+                            background: rgba($MCAccentClear, 0.5);
+                            color: $mainBackground;
+                        }
+                        &.adjacent-month {
+                            background: $mainBackgroundMuted;
+                            color: $mainTextMuted;
+                        }
+                        &:hover {
+                            background: darken($mainBackground, 10%);
+                            &.today {
+                                background: rgba($MCAccentClear, 0.9);
+                            }
+                            &.notif {
+                                background: rgba($MCAccentClear, 0.4);
+                            }
+                            &.warn {
+                                background: rgba($warnBackground,0.4);
+                            }
+                            &.danger{
+                                background: rgba($dangerBackground,0.4);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.nav-wrapper {
+    background: $mainBackground;
+    text-align: center;
+    p {
+        color: $MCAccent;
+    }
+}
+
+.alerts {
+    padding: 0;
+    background: whitesmoke;
+    cursor: pointer;
+    .alert {
+        padding: 1vh 0vw;
+        border: solid 1px lightgray;
+        border-radius: 0;
+        margin: 0;
+        .time {
+            color: $mainText;
+        }
+        .content {
+            top: 1vh;
+            padding: 0;
+            h5 {
+                color: darkslategray;
+                margin: 0;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+        .tag {
+            span {
+                display: block;
+                height: 20px;
+                width: 20px;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                background-color: lightgray;
+                text-align: center;
+            }
+        }
+        &.danger {
+            border-color: $dangerBackgroundAccent;
+            background: $dangerBackground;
+            .tag {
+                span {
+                    background-color: $dangerBackgroundAccent;
+                }
+            }
+        }
+        &.warn {
+            border-color: $warnBackgroundAccent;
+            background: $warnBackground;
+            .tag {
+                span {
+                    background-color: $warnBackgroundAccent;
+                }
+            }
+        }
+        &.notif {
+            border-color: $MCAccent;
+            background: $MCAccentClear;
+            .tag {
+                span {
+                    background-color: $MCAccent;
+                }
+            }
+        }
+    }
+}

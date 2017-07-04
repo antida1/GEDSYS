@@ -1,0 +1,355 @@
+$(function () {
+    var current, previous;
+    current = "notifications.html";
+    previous = "notifications.html";
+    var nonActive = $('.content > h4').html();
+    var notifications;
+    $.getJSON("JSON/Notifications.json", function (json) {
+        json.sort(function (a, b) {
+            return a.date - b.date;
+        });
+        notifications = json;
+    });
+
+    function deleteNotification(id, reload) {
+        for (var i = 0; i < notifications.length; i++) {
+            if (notifications[i].id == id) {
+                notifications.splice(i, i + 1);
+                if (reload) {
+                    loadView($('.notifications'));
+                }
+            }
+        }
+    }
+
+    function DetailView(id) {
+        var title, content, type, date, icon;
+        for (var i = 0; i < notifications.length; i++) {
+            if (notifications[i].id == id) {
+                title = notifications[i].title;
+                content = notifications[i].content;
+                type = notifications[i].type;
+                date = Number(notifications[i].date);
+                icon = notifications[i].icon;
+                break;
+            }
+        }
+        $('.detail').addClass(type);
+        $('.title > h1').html(title);
+        $('.content > p').html(content);
+        $('.Date > h6').html(moment(date).format("MMMM Do YYYY, h:mm:ss a"));
+        $('.icon > h1 > span').addClass("glyphicon-" + icon);
+        $('.restore').on("click", function () {
+            $('body').click();
+        });
+        $('.modal').modal({
+            ready: function (modal, trigger) {
+                $('.modal-close').on('click', function () {
+                    deleteNotification(id, true);
+                })
+            }
+        });
+        $('.title > .content > h4').html('Detalle');
+    }
+
+    function NotificationsView() {
+        function appendNotification(title, content, date, type, icon, id) {
+            var notification = "<div class='col-xs-12 notification " + type + "' id='" + id + "'><div class='wrap col-xs-12'><div class='icon col-xs-2'><h2><span class='glyphicon glyphicon-" + icon + "'></span></h2></div><div class='col-xs-8 content'><div class='col-xs-12 title'><h4>" + title + "</h4> </div><div class='col-xs-12 desc'><h6>" + content + "</h6> </div></div><div class='col-xs-2 date'><h6><span data-livestamp='" + date + "'></span></h6> </div></div><div class='col-xs-4 slide'><div class='col-xs-6'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </div><div class='col-xs-6 toggle'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </div></div></div>";
+            $('.Content > .notifications').append(notification);
+        }
+        var length = Object.keys(notifications).length;
+        for (var i = 0; i < notifications.length; i++) {
+            var title = notifications[i].title;
+            var content = notifications[i].content;
+            var type = notifications[i].type;
+            var id = notifications[i].id;
+            var date = Number(notifications[i].date);
+            var icon = notifications[i].icon;
+            appendNotification(title, content, date, type, icon, id);
+        }
+        $('.notification').on('swipeleft', function (e) {
+            e.stopPropagation;
+            $(this).addClass('slid');
+        });
+        $('.notification').on('swiperight', function (e) {
+            e.stopPropagation;
+            $(this).removeClass('slid');
+        });
+        $('.notification').on('click', function (e) {
+            e.stopPropagation;
+            if (e.target == $(this).find('.glyphicon-eye-open')[0]) {
+                e.stopPropagation;
+                $(this).toggleClass('read');
+            }
+            if (e.target == $(this).find('.glyphicon-trash')[0]) {
+                e.stopPropagation;
+                $(this).remove();
+                var id = $(this).attr('id');
+                deleteNotification(id, false);
+            }
+        });
+        $('.notification > .wrap').on('click', function () {
+            $($(this).parent()[0]).addClass('read');
+            var currentId = $(this).parent().attr('id');
+            $('.base > .Content').load('views/detail.html', function () {
+                DetailView(currentId);
+            });
+        });
+    }
+
+    function alertCreate(time, content, type, id) {
+        var alert = "<div class='col-xs-12 alert " + type + "' id='" + id + "'><div class='col-xs-3 time'><h6><span data-livestamp='" + time + "'></span></h6></div><div class='col-xs-7 content'><h5>" + content + "</h5></div><div class='col-xs-2 tag'><span></span></div></div>";
+        $('.alerts').append(alert);
+    }
+
+    function CalendarView() {
+        var calendar = $('#calendar').clndr({
+            weekOffset: 1
+            , targets: {
+                day: 'day'
+                , empty: 'empty'
+                , nextButton: 'clndr-next-button'
+                , todayButton: 'clndr-today-button'
+                , previousButton: 'clndr-previous-button'
+                , nextYearButton: 'clndr-next-year-button'
+                , previousYearButton: 'clndr-previous-year-button'
+            }
+            , classes: {
+                past: "past"
+                , today: "today"
+                , event: "event"
+                , selected: "selected"
+                , inactive: "inactive"
+                , lastMonth: "last-month"
+                , nextMonth: "next-month"
+                , adjacentMonth: "adjacent-month"
+            }
+            , doneRendering: function () {
+                $('.clndr-next-button').html("").addClass('glyphicon glyphicon-menu-right');
+                $('.clndr-previous-button').html("").addClass('glyphicon glyphicon-menu-left');
+                var length = Object.keys(notifications).length;
+                for (var i = 0; i < length; i++) {
+                    var title = notifications[i].title;
+                    var content = notifications[i].content;
+                    var type = notifications[i].type;
+                    var id = notifications[i].id;
+                    var date = Number(notifications[i].date);
+                    $('.calendar-day-' + moment.unix(date).format("YYYY-MM-DD")).addClass(type);
+                    if (date > moment().unix()) {
+                        if ($('.alert')[i]) {
+                            $('.alert')[i].remove();
+                        }
+                        alertCreate(date, title, type, id);
+                    }
+                }
+                $('.day').on('click', function () {
+                    var currentDay = $(this).hasClass('today');
+                    var currentDayClass = $(this).prop('classList');
+                    for (var i = 0; i < currentDayClass.length; i++) {
+                        if (currentDayClass[i].match('^calendar-day')) {
+                            currentDayClass = currentDayClass[i];
+                            break;
+                        }
+                    }
+                    $('.base > .Content').load('views/day.html', function () {
+                        if (currentDay) {
+                            var day = moment().format("HH");
+                            $('.' + day).addClass('current');
+                        }
+                        $('.grid').addClass(currentDayClass);
+                        var date = currentDayClass.split('-').slice(2, 5);
+                        var day = date[2];
+                        var month = date[1];
+                        var year = date[0];
+                        var date = day + month + year;
+                        for (var i = 0; i < notifications.length; i++) {
+                            var currentDate = moment.unix(Number(notifications[i].date));
+                            if (currentDate.format("DDMMYYYY") == date) {
+                                var hour = moment(currentDate).format("HH");
+                                $('.' + hour + ' > .right').append('<div id="' + notifications[i].id + '" class="col-xs-12 ' + notifications[i].type + '">' + notifications[i].title + '</div>');
+                            }
+                        }
+                        $('.right').on('click', function () {
+                            var id = $($(this)[0].children[0]).attr('id');
+                            console.log(id);
+                            $('.Content').load('views/detail.html', function () {
+                                DetailView(id);
+                            })
+                        })
+                    });
+                });
+                $('.alert').on('click tap', function () {
+                    var id = $(this).attr('id');
+                    $('.base > .Content').load('views/detail.html', function () {
+                        DetailView(id);
+                    });
+                });
+            }
+            , adjacentDaysChangeMonth: true
+        });
+    }
+
+    function DocsView() {
+        var focus = function () {
+            if (!($($('.collapsible-header')[1]).hasClass('active'))) {
+                $('.collapsible-header')[1].click();
+            }
+        }
+        $('.uncheck').on('click', function () {
+            $('body').click();
+        });
+        var viewer = function (url) {
+            $('.canvas-container').html();
+            $('.canvas-container').html("<canvas id='docView' class='center-block' style='width:90vw;'></canvas>");
+            PDFJS.disableWorker = true;
+            PDFJS.workerSrc = '/../js/pdf.worker.js';
+            // Asynchronous download of PDF
+            var loadingTask = PDFJS.getDocument(url);
+            loadingTask.promise.then(function (pdf) {
+                // Fetch the first page
+                var pageNumber = 1;
+                pdf.getPage(pageNumber).then(function (page) {
+                    var canvas = $('#docView')[0];
+                    var viewport = page.getViewport(canvas.width / page.getViewport(0.1).width);
+                    // Prepare canvas using PDF page dimensions
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    // Render PDF page into canvas context
+                    var renderContext = {
+                        canvasContext: context
+                        , viewport: viewport
+                    };
+                    var renderTask = page.render(renderContext);
+                    renderTask.then(function () {});
+                });
+            });
+        }
+
+        function appendDoc(section) {
+            for (var i = 0; i < notifications.length; i++) {
+                var toFind;
+                if (section == "incoming.html") {
+                    toFind = notifications[i].properties.sent == "false";
+                }
+                else if (section == "outgoing.html") {
+                    toFind = notifications[i].properties.sent == "true";
+                }
+                else if (section == "archived.html") {
+                    toFind = notifications[i].properties.archived == "true";
+                }
+                if (toFind) {
+                    var title = notifications[i].title;
+                    var content = notifications[i].content;
+                    var type = notifications[i].type;
+                    var id = notifications[i].id;
+                    var build = "<div class='col s12 m6 l4 " + type + "'><div class='card horizontal'><div class='card-image'></div><div class='card-stacked'><div class='card-content'><p> <b>" + title + "</b><br>" + content + " </p></div><div class='card-action'><a id=" + id + ">Abrir documento</a></div></div></div></div>";
+                    var div = $('.collapsible-body > span > .row > .wrap');
+                    div.append(build);
+                }
+            }
+            $(".card-action > a").on('click', function () {})
+        }
+        var load = function (link) {
+            $('span > .row').load('views/' + link, function () {
+                appendDoc(link);
+                $('.card-action > a').on('click', function () {
+                    $('.collapsible-header')[0].click();
+                    var url = '../docs/Test_document_PDF.pdf';
+                    viewer(url);
+                });
+            });
+            var title = link.slice(0, -5).toUpperCase();
+            switch (title) {
+            case "INCOMING":
+                title = "Entrantes";
+                break;
+            case "OUTGOING":
+                title = "Enviados";
+                break;
+            case "ARCHIVED":
+                title = "Archivados";
+                break;
+            }
+            $($('.nav-wrapper > .brand-logo')[1]).html(title);
+            focus();
+        }
+        $('.float-btn').on("click", function () {
+            var link = $(this).find("a").attr("id");
+            load(link);
+        })
+        $(document).ready(function () {
+            load('incoming.html');
+            $('.collapsible').collapsible();
+            var url = '../docs/Test_document_PDF.pdf';
+            viewer(url);
+        });
+    }
+
+    function ConfigView() {
+        console.log("Documents");
+    }
+
+    function loadView(cur) {
+        for (var i = 1; i <= 4; i++) {
+            $('.tab:nth-child(' + i + ')').removeClass('active');
+        }
+        $(cur).addClass('active');
+        previous = current;
+        current = $($(cur)[0]).attr('href');
+        if (current == undefined) {
+            current = "notifications.html";
+        }
+        $('.app > .Content').load("views/" + current, function () {
+            switch (current) {
+            case "notifications.html":
+                NotificationsView();
+                break;
+            case "calendar.html":
+                CalendarView();
+                break;
+            case "config.html":
+                ConfigView();
+                break;
+            case "docs.html":
+                DocsView();
+                break;
+            }
+        });
+        nonActive = $(cur).attr('name');
+        console.log(nonActive);
+    }
+    loadView($('.notifications'));
+    $('.hamburger').on('click', function () {
+        $(this).toggleClass('active');
+        $('.menu').toggleClass('active');
+        if ($(".menu").hasClass("active")) {
+            $(".content > h4").html("Menú");
+            $('.title > .logo > span').removeClass();
+            $('.title > .logo > span').addClass('glyphicon glyphicon-user');
+        }
+        else {
+            $(".content > h4").html(nonActive);
+            $('.title > .logo > span').removeClass();
+            var logo = "user";
+            switch (nonActive) {
+            case "Notificaciones":
+                logo = "bell";
+                break;
+            case "Calendario":
+                logo = "calendar";
+                break;
+            case "Documentos":
+                logo = "paperclip";
+                break;
+            case "Configuracion":
+                logo = "cog";
+                break;
+            }
+            $('.title > .logo > span').addClass('glyphicon glyphicon-' + logo);
+        }
+    });
+    $('.tab').on("click", function () {
+        loadView($(this)[0]);
+    });
+});

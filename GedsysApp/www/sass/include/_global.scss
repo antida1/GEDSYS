@@ -1,0 +1,197 @@
+::-webkit-scrollbar {
+    display: none;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+        color: inherit;
+    }
+}
+
+$base: 10;
+$inc: 10;
+$border: 2px;
+$duration: 3000ms;
+$stagger: 100ms;
+$easing: cubic-bezier(0.680, -0.750, 0.265, 1.750);
+.loader {
+    margin: 0;
+    background: transparent;
+    bottom: 0;
+    left: 0;
+    overflow: visible;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.loader-ring {
+    animation: spin $duration $easing infinite forwards;
+    -webkit-animation: spin $duration $easing infinite forwards;
+    border-radius: 50%;
+    border: $border solid transparent;
+    border-top-color: #188986;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    @for $i from 1 through 100 {
+        &:nth-child( #{ $i }) {
+            animation-delay: ( $i) * $stagger;
+            height: $base + ( $i - 1px) * $inc;
+            width: $base + ( $i - 1px) * $inc;
+        }
+    }
+}
+
+@keyframes spin {
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate( 360deg);
+    }
+}
+
+$light: $MCAccentLight;
+$white: $mainBackground;
+$dark: $MCAccentDark;
+.logoSpinner {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    height: 300px;
+    width: 300px;
+    padding: 0;
+    .circunference {
+        transform: rotate(0deg);
+        transition: all 0.2s ease;
+        //animation: spin 50s linear infinite;
+        display: block;
+        background: transparent;
+        border: dashed 2px $white;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        .circunference-1 {
+            transform: rotate(0deg);
+            transition: all 0.2s ease;
+            position: relative;
+            height: 70%;
+            width: 70%;
+            top: 15%;
+            left: 15%;
+            .circle {
+                &:nth-child(1) {
+                    top: 70%;
+                    background: $light;
+                }
+                &:nth-child(2) {
+                    bottom: 5%;
+                    height: 15%;
+                    width: 15%;
+                }
+                &:nth-child(3) {
+                    left: 90%;
+                    background: $dark;
+                }
+            }
+        }
+        .circle {
+            position: relative;
+            height: 20%;
+            width: 20%;
+            background: $white;
+            display: block;
+            border-radius: 50%;
+            &.circle-2 {
+                &:nth-child(2) {
+                    background: $light;
+                    height: 15%;
+                    width: 15%;
+                    left: 93%;
+                    bottom: 25%;
+                }
+                &:nth-child(3) {
+                    background: $dark;
+                    height: 15%;
+                    width: 15%;
+                    bottom: 68%;
+                }
+                &:nth-child(4) {
+                    background: $white;
+                    height: 14%;
+                    width: 14%;
+                    bottom: 100%;
+                    left: 68%;
+                }
+                &:nth-child(5) {
+                    background: $white;
+                    height: 16%;
+                    width: 16%;
+                    bottom: 29%;
+                    left: 66%;
+                }
+                &:nth-child(6) {
+                    background: $dark;
+                    height: 15%;
+                    width: 15%;
+                    bottom: 45%;
+                    left: 17%;
+                }
+            }
+        }
+    }
+    .title {
+        color: $white;
+        font-size: 110px;
+        position: relative;
+        display: block;
+        bottom: 83%;
+        left: 25%;
+    }
+    .subtitle {
+        color: $white;
+        font-size: 15px;
+        position: relative;
+        display: block;
+        bottom: 90%;
+        left: 28%;
+    }
+    &.loading {
+        .circunference {
+            animation: spin 4s ease-in-out infinite;
+            -webkit-animation: spin 4s ease-in-out infinite;
+            animation-direction: alternate;
+        }
+        .circle{
+            background: $white;
+        }
+    }
+    @media #{$xs} {
+        height: 190px;
+        width: 190px;
+        .title {
+            font-size: 65px;
+            bottom: 80%;
+            left: 27%;
+        }
+        .subtitle {
+            font-size: 9px;
+            bottom: 85%;
+            left: 30%;
+        }
+    }
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+.platform-ios.platform-cordova:not(.fullscreen) .search-bar {
+     margin-top: 20px;
+}

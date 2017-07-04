@@ -1,0 +1,38 @@
+<ul class="collapsible" data-collapsible="accordion">
+    <li>
+        <div class="collapsible-header" style="padding:0">
+            <nav>
+                <div class="nav-wrapper">
+                    <p href="#" class="brand-logo">Visor</p>
+                </div>
+            </nav>
+        </div>
+        <div class="collapsible-body canvas-container" style="padding:0;padding-top:1vh"><span><canvas id="docView" class="center-block" style="width: 90vw;"></canvas></span></div>
+    </li>
+    <li class="active">
+        <div class="collapsible-header active" style="padding:0">
+            <nav>
+                <div class="nav-wrapper">
+                    <p href="#" class="brand-logo"></p>
+                </div>
+            </nav>
+        </div>
+        <div class="collapsible-body"><span><div class="row"> </div></span></div>
+    </li>
+</ul>
+<div class="fixed-action-btn toolbar">
+    <a class="btn-floating btn-large teal darken-1 pulse"> <i class="large material-icons">add</i> </a>
+    <ul>
+        <li class="waves-effect waves-light float-btn"><a data="incoming.html"><i class="material-icons">call_received</i></a></li>
+        <li class="waves-effect waves-light float-btn"><a data="outgoing.html"><i class="material-icons">call_made</i></a></li>
+        <li class="waves-effect waves-light float-btn"><a data="archived.html"><i class="material-icons">dns</i></a></li>
+        <li class="waves-effect waves-light uncheck"><a><i class="material-icons">check</i></a></li>
+    </ul>
+</div>
+<div id="modal1" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h3>¿Está seguro?</h3>
+        <p>¿Desea archivar el documento?</p>
+    </div>
+    <div class="modal-footer"> <a class="modal-action modal-close waves-effect waves-red btn-flat">Continuar <span class="glyphicon glyphicon-trash"></span></a> </div>
+</div>

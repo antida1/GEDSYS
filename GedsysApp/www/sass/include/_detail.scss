@@ -1,0 +1,94 @@
+.detail {
+    padding: 0;
+    .title {
+        h1 {
+            color: $MCAccent;
+        }
+    }
+    .icon {
+        color: $MCAccent;
+    }
+    .content {
+        border-top: solid 1px $MCAccent;
+        padding: 2%;
+        p {
+            font-size: 18px;
+            margin: 0;
+        }
+    }
+    .Date {
+        border-top: solid 1px $mainTextMuted;
+        background: $MCAccentClear;
+        h6 {
+            padding: 1%;
+            color: $MCAccent;
+        }
+    }
+    &.warn{
+        .title {
+        h1 {
+            color: $warnText;
+        }
+    }
+    .icon {
+        color: $warnText;
+    }
+    .content {
+        border-top: solid 1px $warnBackgroundAccent;
+        padding: 2%;
+        p {
+            font-size: 18px;
+            margin: 0;
+        }
+    }
+    .Date {
+        border-top: solid 1px $mainTextMuted;
+        background: $warnBackground;
+        h6 {
+            padding: 1%;
+            color: $warnText;
+        }
+    }
+    }
+    &.danger{
+        .title {
+        h1 {
+            color: $dangerText;
+        }
+    }
+    .icon {
+        color: $dangerText;
+    }
+    .content {
+        border-top: solid 1px $dangerBackgroundAccent;
+        padding: 2%;
+        p {
+            font-size: 18px;
+            margin: 0;
+        }
+    }
+    .Date {
+        border-top: solid 1px $mainTextMuted;
+        background: $dangerBackground;
+        h6 {
+            padding: 1%;
+            color: $dangerText;
+        }
+    }
+    }
+}
+.modal{
+    .modal-content{
+        h3{
+            color: $dangerText;
+        }
+    }
+    .modal-footer{
+        .modal-action{
+            color: $dangerText;
+            &:hover,&:focus{
+                text-decoration: none;
+            }
+        }
+    }
+}

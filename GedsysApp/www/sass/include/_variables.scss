@@ -1,0 +1,34 @@
+// Main
+//// Accent
+$MCAccent: #188986;
+$MCAccentLight: lighten($MCAccent, 15%);
+$MCAccentLighten: lighten($MCAccent, 10%);
+$MCAccentDark: darken($MCAccent, 10%);
+$MCAccentClear:rgba($MCAccentDark, 0.1);
+// Back
+$mainBackground: white;
+$mainTextMuted: lightgray;
+$mainText: darkslategray;
+$mainBackgroundMuted: whitesmoke;
+// Danger
+$dangerBackground: rgba(darkred, 0.2);
+$dangerText: rgba(darkred, 0.5);
+$dangerBackgroundAccent:rgba(darken(darkred, 0%), 0.6);
+// Warn
+$warnBackground: darken(rgba(orange, 0.2), 10%);
+$warnText: rgba(darken(orange, 15%), 0.5);
+$warnBackgroundAccent: rgba(darken(orange, 10%), 0.6);
+// Media queries
+$xs: "(max-width : 767px)";
+$sm: "(min-width : 768px) and (max-width : 1023px)";
+$md: "(min-width : 1024px) and (max-width : 1439px)";
+$lg: "(min-width : 1440px)";
+$not-xs: "(min-width : 768px)";
+@keyframes load {
+    0% {
+        left: -10%;
+    }
+    100% {
+        left: 110%;
+    }
+}
