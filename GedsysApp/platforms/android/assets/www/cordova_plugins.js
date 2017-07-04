@@ -539,8 +539,7 @@ module.exports.metadata =
     "cordova-plugin-vibration": "2.1.4-dev",
     "cordova-plugin-network-information": "1.3.2-dev",
     "cordova-plugin-splashscreen": "4.0.2-dev",
-    "cordova-plugin-console": "1.0.6-dev",
-    "cordova-plugin-whitelist": "1.3.1"
+    "cordova-plugin-console": "1.0.6-dev"
 };
 // BOTTOM OF METADATA
 });

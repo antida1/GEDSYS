@@ -1,0 +1,226 @@
+.notification {
+    @include OverrideSelect();
+    @include transition(0.3s);
+    border-bottom: solid 1px lightgray;
+    right: 0;
+    position: relative;
+    padding: 0;
+    max-height: 9vh;
+    height: 9vh;
+    cursor: pointer;
+    .wrap {
+        @include transition(0.3s);
+        padding: 0;
+        overflow: hidden;
+        height: inherit;
+        background: $MCAccentClear;
+        .icon {
+            max-height: inherit;
+            height: inherit;
+            padding: 0;
+            text-align: center;
+            color: $mainText;
+            h2 {
+                text-align: center;
+                margin: 0;
+                line-height: 9vh;
+                .glyphicon {
+                    color: $MCAccent;
+                }
+            }
+        }
+        .content {
+            max-height: inherit;
+            height: auto;
+            padding: 0;
+            .title {
+                padding-top: 1vh;
+                h4 {
+                    color: $MCAccentDark;
+                    height: 4vh;
+                    margin: 0;
+                    font-size: 5vw;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+            .desc {
+                height: auto;
+                h6 {
+                    color: lighten(black, 60%);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    height: 5vh;
+                    margin: 0;
+                    text-overflow: ellipsis;
+                    font-size: 4vw;
+                }
+            }
+        }
+        .date {
+            padding: 0;
+            padding-right: 2vw;
+            height: inherit;
+            max-height: inherit;
+            h6 {
+                @include transition(0.3s);
+                text-align: center;
+                margin: 0;
+                font-size: 2.5vw;
+                padding-top: 1vh;
+                font-weight: bold;
+                color: $MCAccent;
+            }
+        }
+    }
+    .slide {
+        display: inherit;
+        padding: 1vh 2vw;
+        position: relative;
+        left: 100vw;
+        background: $MCAccent;
+        bottom: 9vh;
+        height: inherit;
+        div {
+            padding: 2vh;
+            span {
+                @include transition(0.1s);
+                padding: 0;
+                margin: 0;
+                color: $MCAccentLighten;
+                font-weight: 100;
+                font-size: 3vh;
+            }
+            &:first-child {
+                &:hover,
+                &:focus,
+                &:active {
+                    span {
+                        color: red;
+                    }
+                }
+            }
+        }
+    }
+    &.slid {
+        right: 32vw;
+    }
+    &.warn {
+        .wrap {
+            background: darken($warnBackground, 0%);
+            .icon {
+                h2 {
+                    span {
+                        color: $warnText;
+                    }
+                }
+            }
+            .date {
+                h6 {
+                    color: $warnText;
+                }
+            }
+            .content {
+                .title {
+                    h4 {
+                        color: $warnText;
+                    }
+                }
+            }
+        }
+        .slide {
+            background: $warnBackgroundAccent;
+            div {
+                span {
+                    color: $warnText;
+                }
+            }
+            .glyphicon-eye-close {
+                color: darken($warnText,10%) !important;
+            }
+        }
+    }
+    &.danger {
+        .wrap {
+            background: $dangerBackground;
+            .icon {
+                h2 {
+                    span {
+                        color: $dangerText;
+                    }
+                }
+            }
+            .date {
+                h6 {
+                    color: $dangerText;
+                }
+            }
+            .content {
+                .title {
+                    h4 {
+                        color: $dangerText;
+                    }
+                }
+            }
+        }
+        .slide {
+            background: $dangerBackgroundAccent;
+            div {
+                span {
+                    color: $dangerText;
+                }
+            }
+            .glyphicon-eye-close {
+                color: darken($dangerText,20%) !important;
+            }
+        }
+    }
+    &.read {
+        .wrap {
+            background: $mainBackground;
+            .icon {
+                h2 {
+                    span {
+                        color: $mainTextMuted;
+                    }
+                }
+            }
+            .date {
+                h6 {
+                    color: $mainTextMuted;
+                }
+            }
+        }
+        .slide {
+            .glyphicon-eye-close {
+                color: darken($MCAccent,10%);
+            }
+        }
+    }
+    @media (min-width: 600px) {
+        .wrap {
+            .content {
+                .title {
+                    h4 {
+                        font-size: 3.5vh;
+                    }
+                }
+                .desc {
+                    h6 {
+                        font-size: 2.5vh;
+                    }
+                }
+            }
+            .date {
+                h6 {
+                    font-size: 2vh;
+                    text-align: right;
+                }
+            }
+        }
+        .slide {
+            left: 100vw;
+        }
+    }
+}

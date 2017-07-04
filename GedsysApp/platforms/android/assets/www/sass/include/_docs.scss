@@ -1,0 +1,89 @@
+.collapsible {
+    margin: 0;
+    overflow: hidden;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
+    color: $MCAccentLighten;
+    white-space: nowrap;
+}
+
+.card .card-content p {
+    b {
+        color: $MCAccent;
+        font-size: 16px;
+    }
+}
+
+.card-content {
+    p {
+        height: 20vh;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 4vh;
+    }
+}
+
+.row {
+    .wrap {
+        .card {
+            .card-image {
+                width: 1vw;
+                background: $MCAccent;
+            }
+            .card-stacked {
+                .card-action {
+                    a {
+                        i {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+        .warn {
+            .card {
+                .card-image {
+                    width: 1vw;
+                    background: $warnBackgroundAccent;
+                }
+                .card-stacked {
+                    .card-content {
+                        p {
+                            b {
+                                color: $warnText;
+                            }
+                        }
+                    }
+                    .card-action {
+                        a {
+                            color: $warnText;
+                        }
+                    }
+                }
+            }
+        }
+        .danger {
+            .card {
+                .card-image {
+                    width: 1vw;
+                    background: $dangerBackgroundAccent;
+                }
+                .card-stacked {
+                    .card-content {
+                        p {
+                            b {
+                                color: $dangerText;
+                            }
+                        }
+                    }
+                    .card-action {
+                        a {
+                            color: $dangerText;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

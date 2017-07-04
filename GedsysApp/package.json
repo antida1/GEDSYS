@@ -1,8 +1,14 @@
 {
-    "name": "GedsysApp",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "rober",
-    "contributors": [],
-    "dependencies": {}
+  "name": "GedsysApp",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "rober",
+  "contributors": [],
+  "dependencies": {}
 }

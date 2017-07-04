@@ -1,0 +1,289 @@
+body {
+    .login {
+        overflow: hidden;
+        font-family: 'Palanquin', sans-serif;
+        @include frame(red);
+        height: 100vh;
+        background: $MCAccent;
+        .wrap {
+            .logo {
+                @include frame(yellow);
+                height: 60vh;
+                img {
+                    height: 60vh;
+                }
+            }
+            .input {
+                top: 10vh;
+                @include frame(black);
+                height: 60vh;
+                form {
+                    h3 {
+                        .user {
+                            @include shadow(0px, 0px);
+                            @include transition(0.3s);
+                            padding: 1vh;
+                            color: white;
+                            border-radius: 3px;
+                            outline: none;
+                            border: none;
+                            border-bottom: solid 2px transparent;
+                            background: darken($MCAccent, 3%);
+                            &::placeholder {
+                                color: rgba($MCAccent, 1);
+                            }
+                            &:focus,
+                            &:hover {
+                                background: darken($MCAccent, 10%);
+                                &::placeholder {
+                                    color: rgba($MCAccent, 0.8);
+                                }
+                            }
+                            &:focus,
+                            &:active {
+                                @include shadow(10px, 1px);
+                            }
+                        }
+                        .pass {
+                            color: white;
+                            @include shadow(0px, 0px);
+                            @include transition(0.3s);
+                            padding: 1vh;
+                            outline: none;
+                            border-radius: 3px;
+                            border: none;
+                            border-bottom: solid 2px transparent;
+                            margin-top: 2vh;
+                            background: darken($MCAccent, 3%);
+                            &::placeholder {
+                                color: rgba($MCAccent, 1);
+                            }
+                            &:focus,
+                            &:hover {
+                                background: darken($MCAccent, 10%);
+                                &::placeholder {
+                                    color: rgba($MCAccent, 0.8);
+                                }
+                            }
+                            &:focus,
+                            &:active {
+                                @include shadow(10px, 1px);
+                            }
+                        }
+                        .incorrect {
+                            border-color: orange;
+                            //border-color: $MCAccentDark;
+                        }
+                        .correct {
+                            border-color: lawngreen;
+                            //border-color: $MCAccentLight;
+                        }
+                    }
+                    .check {
+                        padding: 0;
+                        margin: 3vh 0vh;
+                        color: darken($MCAccentLight, 8%);
+                        .switch {
+                            top: 1vh;
+                            padding: 0;
+                        }
+                        h5 {
+                            padding: 0;
+                            @include OverrideSelect();
+                        }
+                    }
+                    button {
+                        @include buttonMainLight();
+                        &:after {
+                            background: $MCAccentClear;
+                            height: 10%;
+                            width: 10%;
+                            content: "";
+                            position: absolute;
+                            bottom: 0;
+                            border-radius: 0px;
+                            left: -10%;
+                        }
+                        &.loading {
+                            color: lighten($MCAccentLight,30%);
+                            background-color: lighten($MCAccentLight,30%);
+                            &:after {
+                                animation: load 2s ease infinite;
+                                -webkit-animation: load 2s ease infinite;
+                                background: $MCAccent;
+                                height: 10%;
+                                width: 10%;
+                                content: "";
+                                position: absolute;
+                                bottom: 0;
+                                border-radius: 0px;
+                                left: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .restore {
+            @include OverrideSelect();
+            @include frame(yellow);
+            @include shadow(10px, 1px);
+            @include transition(0.3s);
+            box-shadow: 0px -1px 20px 1px;
+            border-top-right-radius: 15px;
+            height: 40vh;
+            background: white;
+            padding: 1vh 5vw;
+            .title {
+                h3 {
+                    text-align: center;
+                    color: $MCAccent;
+                    font-weight: 100;
+                }
+            }
+            h2 {
+                input {
+                    @include transition(0.3s);
+                    height: 6vh;
+                    border: none;
+                    border-bottom: solid 2px $MCAccent;
+                    outline: none;
+                    color: $MCAccent;
+                    font-size: 0.7em;
+                    &::placeholder {
+                        @include transition(0.3s);
+                        color: $MCAccentDark;
+                        opacity: 0.2;
+                    }
+                    &:focus,
+                    &:active {
+                        border-bottom: solid 2px $MCAccentLight;
+                    }
+                    &.active {
+                        border-bottom: solid 2px $MCAccentLight;
+                    }
+                    &.wrong {
+                        border-bottom: solid 2px orangered;
+                        &::placeholder {
+                            color: red;
+                        }
+                    }
+                }
+                span {
+                    @include transition(0.3s);
+                    height: 6vh;
+                    text-align: center;
+                    padding: 0;
+                    top: 0;
+                    color: $MCAccent;
+                    border-bottom: solid 2px $MCAccent;
+                    &.active {
+                        border-bottom: solid 2px $MCAccentLight;
+                        color: $MCAccentLight;
+                    }
+                    &.wrong {
+                        color: lightcoral;
+                        border-bottom: solid 2px orangered;
+                    }
+                }
+            }
+            h6 {
+                color: $MCAccent;
+                opacity: 0.7;
+                font-weight: bold;
+            }
+            .restoreBtn {
+                @include buttonMainLight();
+                background-color: $MCAccentDark;
+                h3 {
+                    color: white;
+                    padding: 0;
+                    margin: 0;
+                }
+            }
+        }
+        @media #{$xs} {
+            padding: 0;
+            padding-top: 1vh;
+            background: $MCAccent;
+            .wrap {
+                .logo {
+                    padding: 0;
+                    height: 35vh;
+                }
+                .input {
+                    top: 0;
+                    height: 50vh;
+                }
+            }
+            .restore {
+                @include transition(0.3s);
+                z-index: 2;
+                position: relative;
+                height: 15vh;
+                top: 0;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                .title {
+                    //margin-bottom: 3vh;
+                    h3 {
+                        padding: 0;
+                    }
+                }
+                h2 {
+                    display: none;
+                    input {
+                        margin-top: 5vh;
+                    }
+                    span {
+                        margin-top: 5vh;
+                    }
+                }
+                h6 {
+                    display: none;
+                }
+                .restoreBtn {
+                    display: none;
+                    height: 12vh;
+                    margin: 0;
+                    margin-top: 15vh;
+                    //background-color: $MCAccentLight;
+                    h3 {
+                        padding: 1vh;
+                        margin: 0;
+                        //color: $MCAccent;
+                        font-weight: 200;
+                    }
+                }
+                &.active {
+                    //                    @include transform3d(
+                    //                        translate3d(0vh,-50vh,0vh)
+                    //                        );
+                    top: -50vh;
+                    height: 65vh;
+                    input {
+                        display: inherit;
+                    }
+                    h2 {
+                        display: inherit;
+                    }
+                    h6 {
+                        display: inherit;
+                    }
+                    .restoreBtn {
+                        display: inherit;
+                    }
+                }
+            }
+        }
+    }
+    @media #{$not-xs} {
+        .login {
+            .restore {
+                border-radius: 0;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+            }
+        }
+    }
+}
