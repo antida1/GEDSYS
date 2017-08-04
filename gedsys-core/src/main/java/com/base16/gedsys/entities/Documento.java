@@ -78,8 +78,6 @@ public class Documento implements Serializable {
     private String codigoPostal;
     @Column(name = "Consecutivo")
     private String consecutivo;
-    @Column(name = "Destinatario")
-    private Integer destinatario;
     @Lob
     @Column(name = "Detalle")
     private String detalle;
@@ -125,6 +123,10 @@ public class Documento implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRecepcion;
 
+    @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario destinatario;
+     
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -215,11 +217,11 @@ public class Documento implements Serializable {
         this.consecutivo = consecutivo;
     }
 
-    public Integer getDestinatario() {
+    public Usuario getDestinatario() {
         return destinatario;
     }
 
-    public void setDestinatario(Integer destinatario) {
+    public void setDestinatario(Usuario destinatario) {
         this.destinatario = destinatario;
     }
 

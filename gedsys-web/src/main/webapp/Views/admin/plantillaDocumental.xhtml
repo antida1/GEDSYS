@@ -79,7 +79,7 @@
                         <div class="form-group row">
                             <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
                             <div class="col-xs-10">
-                                <p:selectOneMenu required="true" id="tipoDocumento" value="#{plantillaBean.plantillaDocumental.tipoDocumento}" converter="omnifaces.SelectItemsConverter" class="form-control">
+                                <p:selectOneMenu required="true" id="tipoDocumento" value="#{plantillaBean.plantillaDocumental.tipoDocumento}" converter="omnifaces.SelectItemsConverter" >
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                     <f:selectItems value="#{tipoDocumentoBean.tipoDocumentos}" var="tipdocs" itemLabel="#{tipdocs.nombre}" itemValue="#{tipdocs}"> </f:selectItems>
                                 </p:selectOneMenu>

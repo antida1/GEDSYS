@@ -25,7 +25,7 @@
                          <p:column headerText="Sub Serie">
                              <h:outputText value="#{ud.subSerie.nombre}" />
                         </p:column>
-                        <p:column headerText="Nombre">
+                        <p:column headerText="Unidad Documental">
                             <h:outputText value="#{ud.nombre}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
@@ -54,20 +54,20 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Sección" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="Unidad Documental" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
                     <h:form>
                         <h:inputHidden id="id" value="#{unidadDocumentalBean.unidadDocumental.id}" />
                          <div class="form-group row">
                             <p:outputLabel value="Sub Serie" for="SubSerie" class="col-xs-3 col-form-label"/>
                             <div class="col-xs-9">
-                                <p:selectOneMenu id="SubSerie" value="#{unidadDocumentalBean.unidadDocumental.subSerie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="SubSerie" value="#{unidadDocumentalBean.unidadDocumental.subSerie}" converter="omnifaces.SelectItemsConverter" required="true">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                     <f:selectItems value="#{subSerieBean.subSeries}" var="subserie" itemLabel="#{subserie.nombre}" itemValue="#{subserie}" />
                                 </p:selectOneMenu>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                            <p:outputLabel value="Unidad Documental" for="Nombre" class="col-xs-3 col-form-label" />
                             <div class="col-xs-9">
                                 <p:inputText id="Nombre" required="true" value="#{unidadDocumentalBean.unidadDocumental.nombre}" />
                             </div>

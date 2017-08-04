@@ -24,7 +24,33 @@ var app = {
     //
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
-    onDeviceReady: function () {}
+    onDeviceReady: function () {
+        this.receivedEvent('deviceready');
+        FCMPlugin.getToken(function(token){
+            alert(token);
+            console.log(token);
+        });
+        this.pushNotification();
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function (id) {
+        var parentElement = document.getElementById(id);
+        //var listeningElement = parentElement.querySelector('.listening');
+        //var receivedElement = parentElement.querySelector('.received');
+        //listeningElement.setAttribute('style', 'display:none;');
+        //receivedElement.setAttribute('style', 'display:block;');
+        console.log('Received Event: ' + id);
+    },
+    pushNotification: function () {
+        FCMPlugin.onNotification(function (data) {
+            if (data.wasTapped) {
+                alert(JSON.stringify(data));
+            } else {
+                alert(JSON.stringify(data));
+            }
+        });
+    }
 };
 app.initialize();
 $(function () {
@@ -55,8 +81,7 @@ $(function () {
                 if (e.which == 13) {
                     if ($(this).hasClass('user')) {
                         $('.pass').focus();
-                    }
-                    else if ($(this).hasClass('pass')) {
+                    } else if ($(this).hasClass('pass')) {
                         login();
                     }
                 }
@@ -67,14 +92,12 @@ $(function () {
                         if (e.target == $('.restoreBtn')[0] || e.target == $('.restoreBtn').children()[0]) {
                             if (emailAccess) {
                                 $('.restore').toggleClass('active');
-                            }
-                            else {
+                            } else {
                                 $('.glyphicon-envelope').addClass('wrong');
                                 $('.mail').addClass('wrong');
                             }
                         }
-                    }
-                    else {
+                    } else {
                         $(this).toggleClass('active');
                     }
                 }
@@ -82,8 +105,7 @@ $(function () {
             $('.wrap > .input > form > button').on('click', function () {
                 if ($(this).hasClass('loading')) {
                     console.error("Already logging in...");
-                }
-                else {
+                } else {
                     login();
                 }
             });
@@ -107,8 +129,7 @@ $(function () {
                             }, 4000);
                             break;
                         }
-                    }
-                    else if (i == users.length - 1) {
+                    } else if (i == users.length - 1) {
                         tryNumber++;
                         if (tryNumber == 3) {
                             $('.restore').toggleClass('active');
@@ -139,8 +160,7 @@ $(function () {
                         $('.user').removeClass('incorrect');
                         return i;
                         break;
-                    }
-                    else if (i == users.length - 1) {
+                    } else if (i == users.length - 1) {
                         $('.user').addClass('incorrect');
                         $('.user').removeClass('correct');
                     }
@@ -152,8 +172,7 @@ $(function () {
                         $('.pass').addClass('correct');
                         $('.pass').removeClass('incorrect');
                         break;
-                    }
-                    else if (i == users.length - 1) {
+                    } else if (i == users.length - 1) {
                         $('.pass').addClass('incorrect');
                         $('.pass').removeClass('correct');
                     }
@@ -163,7 +182,8 @@ $(function () {
                 function isValidEmailAddress(emailAddress) {
                     var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
                     return pattern.test(emailAddress);
-                };
+                }
+                ;
                 if (isValidEmailAddress(mail)) {
                     $('.glyphicon-envelope').addClass('active');
                     $('.mail').addClass('active');
@@ -172,8 +192,7 @@ $(function () {
                         $('.mail').removeClass("wrong");
                         $('.glyphicon-envelope').removeClass("wrong");
                     }
-                }
-                else {
+                } else {
                     $('.glyphicon-envelope').removeClass('active');
                     $('.mail').removeClass('active');
                     emailAccess = false;
@@ -191,8 +210,7 @@ $(function () {
                     $.cookie('remember', true, {
                         expires: 7
                     });
-                }
-                else {
+                } else {
                     $.cookie('user', null);
                     $.cookie('pass', null);
                     $.cookie('remember', false);
@@ -234,8 +252,7 @@ $(function () {
                 setTimeout(function () {
                     logoPlace();
                 }, 100);
-            }
-            else {
+            } else {
                 logoPlaceNotXS();
             }
         }
@@ -432,8 +449,7 @@ $(function () {
                                                         $($('.right')[i]).children()[6].remove();
                                                         length--;
                                                         removeRightDiv(length);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         return length;
                                                     }
                                                 }
@@ -507,12 +523,10 @@ $(function () {
                                 var toFind;
                                 if (section == "incoming.html") {
                                     toFind = (notifications[i].properties.sent == "false") && notifications[i].properties.archived == "false";
-                                }
-                                else if (section == "outgoing.html") {
+                                } else if (section == "outgoing.html") {
                                     toFind = notifications[i].properties.sent == "true";
                                     archiveSection = true;
-                                }
-                                else if (section == "archived.html") {
+                                } else if (section == "archived.html") {
                                     toFind = notifications[i].properties.archived == "true";
                                 }
                                 if (toFind) {
@@ -535,8 +549,7 @@ $(function () {
                                 var tempBool = notifications[index].properties.archived;
                                 if (tempBool == "true") {
                                     tempBool = "false";
-                                }
-                                else {
+                                } else {
                                     tempBool = "true";
                                 }
                                 notifications[index].properties.archived = tempBool;
@@ -558,15 +571,15 @@ $(function () {
                             });
                             var title = link.slice(0, -5).toUpperCase();
                             switch (title) {
-                            case "INCOMING":
-                                title = "Entrantes";
-                                break;
-                            case "OUTGOING":
-                                title = "Enviados";
-                                break;
-                            case "ARCHIVED":
-                                title = "Archivados";
-                                break;
+                                case "INCOMING":
+                                    title = "Entrantes";
+                                    break;
+                                case "OUTGOING":
+                                    title = "Enviados";
+                                    break;
+                                case "ARCHIVED":
+                                    title = "Archivados";
+                                    break;
                             }
                             $($('.nav-wrapper > .brand-logo')[1]).html(title);
                         }
@@ -589,8 +602,7 @@ $(function () {
                         }
                         if (user.logo.visible == "true") {
                             $('.profilePic > .circleContainer > img').attr('src', user.logo.url);
-                        }
-                        else {
+                        } else {
                             $('.profilePic > .circleContainer > img').attr('src', "https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg");
                         }
                     }
@@ -607,18 +619,18 @@ $(function () {
                         }
                         $('.app > .Content').load("views/" + current, function () {
                             switch (current) {
-                            case "notifications.html":
-                                NotificationsView();
-                                break;
-                            case "calendar.html":
-                                CalendarView();
-                                break;
-                            case "config.html":
-                                ConfigView();
-                                break;
-                            case "docs.html":
-                                DocsView();
-                                break;
+                                case "notifications.html":
+                                    NotificationsView();
+                                    break;
+                                case "calendar.html":
+                                    CalendarView();
+                                    break;
+                                case "config.html":
+                                    ConfigView();
+                                    break;
+                                case "docs.html":
+                                    DocsView();
+                                    break;
                             }
                         });
                         nonActive = $(cur).attr('name');
@@ -633,35 +645,33 @@ $(function () {
                             $('.title > .logo').html('<img src="' + user.logo + '" alt="">');
                             if (user.logo.visible == "true") {
                                 $('.title > .logo').html('<img src="' + user.logo.url + '" alt="">');
-                            }
-                            else {
+                            } else {
                                 $('.title > .logo').html('<img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="">');
                             }
                             $('.title > .logo > img').on('click', function () {
                                 loadView($('.config'));
                             });
-                        }
-                        else {
+                        } else {
                             $('.title > .logo').html('<span class="glyphicon" aria-hidden="true"></span><div class="badge active"></div>');
                             setBadgeTitle();
                             var logo = "user";
                             $('.title > .logo > .badge').removeClass('active');
                             switch (nonActive) {
-                            case "Notificaciones":
-                                logo = "bell";
-                                nonActive = "Notificaciones";
-                                $('.title > .logo > .badge').addClass('active');
-                                break;
-                            case "Calendario":
-                                logo = "calendar";
-                                $('.title > .logo > .badge').addClass('active');
-                                break;
-                            case "Documentos":
-                                logo = "paperclip";
-                                break;
-                            case "Configuracion":
-                                logo = "cog";
-                                break;
+                                case "Notificaciones":
+                                    logo = "bell";
+                                    nonActive = "Notificaciones";
+                                    $('.title > .logo > .badge').addClass('active');
+                                    break;
+                                case "Calendario":
+                                    logo = "calendar";
+                                    $('.title > .logo > .badge').addClass('active');
+                                    break;
+                                case "Documentos":
+                                    logo = "paperclip";
+                                    break;
+                                case "Configuracion":
+                                    logo = "cog";
+                                    break;
                             }
                             $(".content > h4").html(nonActive);
                             $('.title > .logo > span').removeClass();

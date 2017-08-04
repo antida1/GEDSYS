@@ -44,6 +44,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "TipoDocumental.findByNombre", query = "SELECT t FROM TipoDocumental t WHERE t.nombre = :nombre")
     , @NamedQuery(name = "TipoDocumental.findByRequiereRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "TipoDocumental.findByTiempoRespuesta", query = "SELECT t FROM TipoDocumental t WHERE t.tiempoRespuesta = :tiempoRespuesta")
+    , @NamedQuery(name = "TipoDocumental.findByUnidadDocumental", query = "SELECT t FROM TipoDocumental t WHERE t.unidadDocumental = :unidadDocumental")
     , @NamedQuery(name = "TipoDocumental.findByTipoCalendario", query = "SELECT t FROM TipoDocumental t WHERE t.tipoCalendario = :tipoCalendario")})
 public class TipoDocumental implements Serializable {
 
@@ -228,7 +229,7 @@ public class TipoDocumental implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.TipoDocumental[ id=" + id + " ]";
+        return this.nombre;
     }
     
 }

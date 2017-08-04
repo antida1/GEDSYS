@@ -39,8 +39,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Serie.findByBorrado", query = "SELECT s FROM Serie s WHERE s.borrado = :borrado")
     , @NamedQuery(name = "Serie.findByFechaCreacion", query = "SELECT s FROM Serie s WHERE s.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Serie.findByFechaModificacion", query = "SELECT s FROM Serie s WHERE s.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "Serie.findBySeccionSubSeccion", query = "SELECT s FROM Serie s WHERE s.seccionSubseccion = :seccionSubseccion")
     , @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")})
+
 public class Serie implements Serializable {
+
+    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,10 +70,12 @@ public class Serie implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @JoinColumn(name = "SeccionSubseccion_Id", referencedColumnName = "Id")
+    @JoinColumn(name = "SeccionSubseccion", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-    private SeccionSubSeccion seccionSubseccionId;
-
+    private SeccionSubSeccion seccionSubseccion;
+    @Column(name = "Codigo")
+    private String codigo;
+    
     public Serie() {
     }
 
@@ -143,12 +149,12 @@ public class Serie implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
-    public SeccionSubSeccion getSeccionSubseccionId() {
-        return seccionSubseccionId;
+    public SeccionSubSeccion getSeccionSubseccion() {
+        return seccionSubseccion;
     }
 
-    public void setSeccionSubseccionId(SeccionSubSeccion seccionSubseccionId) {
-        this.seccionSubseccionId = seccionSubseccionId;
+    public void setSeccionSubseccion(SeccionSubSeccion seccionSubseccionId) {
+        this.seccionSubseccion = seccionSubseccionId;
     }
 
     @Override
@@ -173,7 +179,15 @@ public class Serie implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.Serie[ id=" + id + " ]";
+        return this.nombre;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
     
 }

@@ -22,9 +22,12 @@
                     <p:separator/>
                     <p:dataTable id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0">
                          <p:column headerText="SubSección">
-                             <h:outputText value="#{ser.seccionSubseccionId.nombre}" />
+                             <h:outputText value="#{ser.seccionSubseccion.nombre}" />
                         </p:column>
-                        <p:column headerText="Nombre">
+                         <p:column headerText="Codigo">
+                            <h:outputText value="#{ser.codigo}" />
+                        </p:column>
+                        <p:column headerText="Serie">
                             <h:outputText value="#{ser.nombre}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
@@ -53,20 +56,26 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Serie" widgetVar="serieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="Serie" widgetVar="serieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="200" width="580">
                     <h:form>
                         <h:inputHidden id="id" value="#{serieBean.serie.id}" />
                         <div class="form-group row">
-                            <p:outputLabel value="Seccion" for="Seccion" class="col-xs-3 col-form-label"/>
+                            <p:outputLabel value="SubSeccion" for="Seccion" class="col-xs-3 col-form-label"/>
                             <div class="col-xs-9">
-                                <p:selectOneMenu id="Seccion" value="#{serieBean.serie.seccionSubseccionId}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="Seccion" value="#{serieBean.serie.seccionSubseccion}" converter="omnifaces.SelectItemsConverter" required="true">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                     <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="subsec" itemLabel="#{subsec.nombre}" itemValue="#{subsec}" />
                                 </p:selectOneMenu>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                            <p:outputLabel value="Codigo" for="Codigo" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Codigo" required="true" value="#{serieBean.serie.codigo}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="Serie" for="Nombre" class="col-xs-3 col-form-label" />
                             <div class="col-xs-9">
                                 <p:inputText id="Nombre" required="true" value="#{serieBean.serie.nombre}" class="form-control" />
                             </div>

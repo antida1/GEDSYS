@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <body>
-        <pe:documentViewer library="images" name="EXPOSICION.pdf" height="800"/>  
-    </body>
+
+    <pe:documentViewer height="800" value="#{documentViewerBean.content}"/>  
+
 </html>

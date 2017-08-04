@@ -57,6 +57,9 @@
         },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.base16.GedsysApp"
+        },
+        "cordova-plugin-fcm": {
+            "PACKAGE_NAME": "com.base16.GedsysApp"
         }
     },
     "dependent_plugins": {

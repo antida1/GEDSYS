@@ -517,6 +517,14 @@ module.exports = [
         "clobbers": [
             "navigator.splashscreen"
         ]
+    },
+    {
+        "id": "cordova-plugin-fcm.FCMPlugin",
+        "file": "plugins/cordova-plugin-fcm/www/FCMPlugin.js",
+        "pluginId": "cordova-plugin-fcm",
+        "clobbers": [
+            "FCMPlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -539,7 +547,8 @@ module.exports.metadata =
     "cordova-plugin-vibration": "2.1.4-dev",
     "cordova-plugin-network-information": "1.3.2-dev",
     "cordova-plugin-splashscreen": "4.0.2-dev",
-    "cordova-plugin-console": "1.0.6-dev"
+    "cordova-plugin-console": "1.0.6-dev",
+    "cordova-plugin-fcm": "2.1.2"
 };
 // BOTTOM OF METADATA
 });

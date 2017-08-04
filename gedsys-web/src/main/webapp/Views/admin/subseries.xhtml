@@ -25,7 +25,10 @@
                          <p:column headerText="Serie">
                              <h:outputText value="#{subser.serie.nombre}" />
                         </p:column>
-                        <p:column headerText="Nombre">
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{subser.codigo}" />
+                        </p:column>
+                        <p:column headerText="SubSerie">
                             <h:outputText value="#{subser.nombre}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
@@ -54,20 +57,26 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="SubSerie" widgetVar="subSerieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="SubSerie" widgetVar="subSerieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="200" width="700">
                     <h:form>
                         <h:inputHidden id="id" value="#{subSerieBean.subSerie.id}" />
                         <div class="form-group row">
                             <p:outputLabel value="Serie" for="Serie" class="col-xs-3 col-form-label"/>
                             <div class="col-xs-9">
-                                <p:selectOneMenu id="Serie" value="#{subSerieBean.subSerie.serie}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                <p:selectOneMenu id="Serie" value="#{subSerieBean.subSerie.serie}" converter="omnifaces.SelectItemsConverter" required="true" filter="true" filterMatchMode="contains">
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
-                                    <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.nombre}" itemValue="#{serie}" />
+                                    <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.seccionSubseccionId.nombre} - #{serie.nombre}" itemValue="#{serie}" />
                                 </p:selectOneMenu>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                            <p:outputLabel value="Codigo" for="Codigo" class="col-xs-3 col-form-label" />
+                            <div class="col-xs-9">
+                                <p:inputText id="Codigo" required="true" value="#{subSerieBean.subSerie.codigo}" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <p:outputLabel value="SubSerie" for="Nombre" class="col-xs-3 col-form-label" />
                             <div class="col-xs-9">
                                 <p:inputText id="Nombre" required="true" value="#{subSerieBean.subSerie.nombre}" />
                             </div>

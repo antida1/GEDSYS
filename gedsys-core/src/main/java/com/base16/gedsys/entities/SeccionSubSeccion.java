@@ -40,7 +40,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "SeccionSubSeccion.findByCodigo", query = "SELECT s FROM SeccionSubSeccion s WHERE s.codigo = :codigo")
     , @NamedQuery(name = "SeccionSubSeccion.findByFechaCreacion", query = "SELECT s FROM SeccionSubSeccion s WHERE s.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "SeccionSubSeccion.findByFechaModificacion", query = "SELECT s FROM SeccionSubSeccion s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "SeccionSubSeccion.findByNombre", query = "SELECT s FROM SeccionSubSeccion s WHERE s.nombre = :nombre")})
+    , @NamedQuery(name = "SeccionSubSeccion.findByNombre", query = "SELECT s FROM SeccionSubSeccion s WHERE s.nombre = :nombre")
+    , @NamedQuery(name = "SeccionSubSeccion.findByDependeDe", query = "SELECT s FROM SeccionSubSeccion s WHERE s.dependeDe = :dependeDe")
+    , @NamedQuery(name = "SeccionSubSeccion.findRoots", query = "SELECT s FROM SeccionSubSeccion s WHERE s.dependeDe is null")})
 public class SeccionSubSeccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,6 +74,10 @@ public class SeccionSubSeccion implements Serializable {
     @JoinColumn(name = "DependeDe", referencedColumnName = "Id")
     @ManyToOne
     private SeccionSubSeccion dependeDe;
+    
+    @JoinColumn(name = "Responsable", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario responsable;
 
     public SeccionSubSeccion() {
     }
@@ -184,7 +190,15 @@ public class SeccionSubSeccion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.SeccionSubSeccion[ id=" + id + " ]";
+        return this.nombre;
+    }
+
+    public Usuario getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(Usuario responsable) {
+        this.responsable = responsable;
     }
     
 }

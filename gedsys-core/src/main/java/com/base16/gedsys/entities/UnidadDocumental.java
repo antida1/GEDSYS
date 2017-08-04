@@ -39,8 +39,13 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "UnidadDocumental.findByBorrado", query = "SELECT u FROM UnidadDocumental u WHERE u.borrado = :borrado")
     , @NamedQuery(name = "UnidadDocumental.findByFechaCreacion", query = "SELECT u FROM UnidadDocumental u WHERE u.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "UnidadDocumental.findByFechaModificacion", query = "SELECT u FROM UnidadDocumental u WHERE u.fechaModificacion = :fechaModificacion")
+    , @NamedQuery(name = "UnidadDocumental.findBySubSerie", query = "SELECT u FROM UnidadDocumental u WHERE u.subSerie = :subSerie")
     , @NamedQuery(name = "UnidadDocumental.findByNombre", query = "SELECT u FROM UnidadDocumental u WHERE u.nombre = :nombre")})
+
 public class UnidadDocumental implements Serializable {
+
+    @Column(name = "Codigo")
+    private String codigo;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -173,7 +178,15 @@ public class UnidadDocumental implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sucomunicacion.gedsys.entities.UnidadDocumental[ id=" + id + " ]";
+        return this.nombre;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
     
 }

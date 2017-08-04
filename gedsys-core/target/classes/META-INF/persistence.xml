@@ -2,40 +2,41 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="com.sucomunicacion_gedsys-core_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>com.sucomunicacion.gedsys.entities.Acl</class>
-    <class>com.sucomunicacion.gedsys.entities.Autor</class>
-    <class>com.sucomunicacion.gedsys.entities.Cargo</class>
-    <class>com.sucomunicacion.gedsys.entities.ClaseDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.Configuracion</class>
-    <class>com.sucomunicacion.gedsys.entities.Consecutivo</class>
-    <class>com.sucomunicacion.gedsys.entities.Corregimiento</class>
-    <class>com.sucomunicacion.gedsys.entities.Departamento</class>
-    <class>com.sucomunicacion.gedsys.entities.DestinatariosDoc</class>
-    <class>com.sucomunicacion.gedsys.entities.DiaFestivo</class>
-    <class>com.sucomunicacion.gedsys.entities.Documento</class>
-    <class>com.sucomunicacion.gedsys.entities.Entidad</class>
-    <class>com.sucomunicacion.gedsys.entities.Grupo</class>
-    <class>com.sucomunicacion.gedsys.entities.GrupoUsuario</class>
-    <class>com.sucomunicacion.gedsys.entities.Log</class>
-    <class>com.sucomunicacion.gedsys.entities.Modulo</class>
-    <class>com.sucomunicacion.gedsys.entities.MonitoresProceso</class>
-    <class>com.sucomunicacion.gedsys.entities.Municipio</class>
-    <class>com.sucomunicacion.gedsys.entities.Notificacion</class>
-    <class>com.sucomunicacion.gedsys.entities.Pais</class>
-    <class>com.sucomunicacion.gedsys.entities.PlantillaDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Preferencias</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoNegocio</class>
-    <class>com.sucomunicacion.gedsys.entities.ProcesoTipoDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.SeccionSubSeccion</class>
-    <class>com.sucomunicacion.gedsys.entities.Serie</class>
-    <class>com.sucomunicacion.gedsys.entities.SignaturaTopografica</class>
-    <class>com.sucomunicacion.gedsys.entities.SubSerie</class>
-    <class>com.sucomunicacion.gedsys.entities.TipoDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.TipoDocumento</class>
-    <class>com.sucomunicacion.gedsys.entities.Transportador</class>
-    <class>com.sucomunicacion.gedsys.entities.UnidadDocumental</class>
-    <class>com.sucomunicacion.gedsys.entities.Usuario</class>
+    <class>com.base16.gedsys.entities.Corregimiento</class>
+    <class>com.base16.gedsys.entities.Notificacion</class>
+    <class>com.base16.gedsys.entities.Cargo</class>
+    <class>com.base16.gedsys.entities.Usuario</class>
+    <class>com.base16.gedsys.entities.Departamento</class>
+    <class>com.base16.gedsys.entities.Documento</class>
+    <class>com.base16.gedsys.entities.Municipio</class>
+    <class>com.base16.gedsys.entities.GrupoUsuario</class>
+    <class>com.base16.gedsys.entities.UnidadDocumental</class>
+    <class>com.base16.gedsys.entities.MonitoresProceso</class>
+    <class>com.base16.gedsys.entities.Grupo</class>
+    <class>com.base16.gedsys.entities.Acl</class>
+    <class>com.base16.gedsys.entities.ProcesoTipoDocumento</class>
+    <class>com.base16.gedsys.entities.Serie</class>
+    <class>com.base16.gedsys.entities.ClaseDocumento</class>
+    <class>com.base16.gedsys.entities.TipoDocumento</class>
+    <class>com.base16.gedsys.entities.DiaFestivo</class>
+    <class>com.base16.gedsys.entities.Consecutivo</class>
+    <class>com.base16.gedsys.entities.PlantillaDocumental</class>
+    <class>com.base16.gedsys.entities.Autor</class>
+    <class>com.base16.gedsys.entities.Modulo</class>
+    <class>com.base16.gedsys.entities.SubSerie</class>
+    <class>com.base16.gedsys.entities.Log</class>
+    <class>com.base16.gedsys.entities.Pais</class>
+    <class>com.base16.gedsys.entities.DestinatariosDoc</class>
+    <class>com.base16.gedsys.entities.ProcesoDocumental</class>
+    <class>com.base16.gedsys.entities.Configuracion</class>
+    <class>com.base16.gedsys.entities.SignaturaTopografica</class>
+    <class>com.base16.gedsys.entities.Transportador</class>
+    <class>com.base16.gedsys.entities.ProcesoNegocio</class>
+    <class>com.base16.gedsys.entities.Entidad</class>
+    <class>com.base16.gedsys.entities.Preferencias</class>
+    <class>com.base16.gedsys.entities.TipoDocumental</class>
+    <class>com.base16.gedsys.entities.SeccionSubSeccion</class>
+    <class>com.base16.gedsys.entities.Devices</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

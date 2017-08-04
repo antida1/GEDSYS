@@ -1,35 +1,37 @@
 .filter {
-  padding: 2%; }
-  .filter .collapse form .row .input-group .input-group-btn button {
+    padding: 2%; }
+.filter .collapse form .row .input-group .input-group-btn button {
     transition: all 0.3s ease;
     background: #172D44;
     color: #1ABB9C; }
 
 .tab-content .tab-pane .doc-container {
-  padding: 2% 0; }
-  .tab-content .tab-pane .doc-container .doc .paper {
+    padding: 2% 0; }
+.tab-content .tab-pane .doc-container .doc .paper {
     background: #f2f2f2;
     margin-bottom: 2vh;
     padding: 5%; }
-    .tab-content .tab-pane .doc-container .doc .paper .content p {
-      height: 90px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 20px;
-      line-height: 15px; }
-    .tab-content .tab-pane .doc-container .doc .paper .title h4 {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; }
-    .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary {
-      transition: all 0.3s ease;
-      background: #172D44;
-      border: none;
-      color: #5A738E; }
-      .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover {
-        background: #24466a;
-        color: #1ABB9C; }
-        .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover:nth-child(4) {
-          color: red; }
+.tab-content .tab-pane .doc-container .doc .paper .content p {
+    height: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 20px;
+    line-height: 15px; }
+.tab-content .tab-pane .doc-container .doc .paper .title h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary {
+    transition: all 0.3s ease;
+    background: #172D44;
+    border: none;
+    color: #5A738E; }
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover {
+    background: #24466a;
+    color: #1ABB9C; }
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover:nth-child(4) {
+    color: red; }
 
-/*# sourceMappingURL=docs.css.map */
+.someclass {
+    background: red;
+}
