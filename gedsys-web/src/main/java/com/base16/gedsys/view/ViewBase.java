@@ -7,7 +7,7 @@ package com.base16.gedsys.view;
 
 /**
  *
- * @author Robert Alexis Mejia <rmejia@base16.co>
+ * @author Robert Alexis Mejia
  */
 public class ViewBase {
     

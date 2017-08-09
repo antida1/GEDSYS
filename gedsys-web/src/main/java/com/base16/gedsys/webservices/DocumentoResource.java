@@ -11,7 +11,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
-import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
@@ -39,12 +38,12 @@ public class DocumentoResource {
     }
 
     /**
-     * Retrieves representation of an instance of com.base16.gedsys.webservices.DocumentoResource
-     * @return an instance of org.codehaus.jettison.json.JSONObject
+     * Retrieves representation of an instance of com.base16.gedsys.servicios.DocumentoResource
+     * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject getJson() {
+    public String getJson() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
@@ -55,7 +54,7 @@ public class DocumentoResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(JSONObject content) {
+    public void putJson(String content) {
     }
 
     /**

@@ -57,7 +57,6 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     private String telefono;
     private String razonSocial;
 
-    
     private String mailAccount;
     private String mailPassword;
     private String mailPort;
@@ -291,71 +290,11 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
              */
 
             uploadLogo();
+            saveConfig();
+            createSchema();
+            createAdmin();
+            initializeModules();
 
-            WebConfiguration wc = WebConfiguration.getInstance();
-
-            //Data Base Configuration
-            wc.setProperty("jdbc_driver", this.getDriver());
-            wc.setProperty("jdbc_url", this.getUrlConnection());
-            wc.setProperty("jdbc_user", this.getUsuarioDataBase());
-            wc.setProperty("jdbc_password", this.getPasswordDataBase());
-
-            //Installation Lock
-            wc.setProperty("installationLock", "true");
-
-            //Email Settings
-            wc.setProperty("mailAccount", this.getMailAccount());
-            wc.setProperty("mailPassword", this.getMailPassword());
-            wc.setProperty("mailPort", this.getMailPort());
-            wc.setProperty("mailServer", this.getMailServer());
-            wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
-
-            //License
-            wc.setProperty("licenseMode", "DEMO");
-            wc.setProperty("licenseNumber", "1");
-
-            //Data File
-            wc.setProperty("PathData", "");
-            wc.setProperty("protectFile", "false");
-
-            wc.save();
-            String path = wc.getConfigFilePath();
-            JpaUtils.createSchema(path);
-
-            //Insertar Crear Usuario
-            UsuarioBean ub = new UsuarioBean();
-            ub.setAccion("Crear");
-            ub.setUsuario(usuario);
-            ub.procesar();
-
-            //Insertar Modulos
-            String[] modules = {"Entidades", "Empresas de Mensajeria", "Tipos de Documento", 
-                "Paises", "Departamentos", "Municipios", "Consecutivos",
-                "Signatura Topografica", "Plantilla Documental", "Dias Festivos", 
-                "Usuarios", "Cargos", "ACL", "Grupos", "Modulos", "Secciones", "Serie",
-                "SubSerie", "Unidad Documental", "Tipo Documental", "Creacion de Documentos", 
-                "Recepcion de Documentos", "Gestion de Documentos", "Control de Prestamos"};
-            
-            ModuloBean mb = new ModuloBean();
-            for (String nombre : modules) {
-                Modulo modulo = new Modulo();
-                modulo.setNombre(nombre);
-                mb.setAccion("Crear");
-                mb.setModulo(modulo);
-                mb.procesar();
-            }
-            
-            //Insertar ACL
-            List<Modulo> modulos = mb.getModulos();
-            AclBean ab = new AclBean();
-            for (Modulo modulo : modulos) {
-                Acl acl = new Acl();
-                acl.setModulo(modulo);
-                ab.setAcl(acl);
-                ab.setAccion("Crear");
-                ab.procesar();
-            }
-            
             FacesContext fContext = FacesContext.getCurrentInstance();
             ExternalContext extContext = fContext.getExternalContext();
             extContext.redirect(extContext.getRequestContextPath() + "/faces/login.xhtml");
@@ -364,6 +303,75 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
         }
 
+    }
+
+    private void createAdmin() {
+        //Insertar Crear Usuario
+        UsuarioBean ub = new UsuarioBean();
+        ub.setAccion("Crear");
+        ub.setUsuario(usuario);
+        ub.procesar();
+    }
+
+    private void createSchema() {
+        WebConfiguration wc = WebConfiguration.getInstance();
+        String path = wc.getConfigFilePath();
+        JpaUtils.createSchema(path);
+    }
+
+    private void saveConfig() {
+        WebConfiguration wc = WebConfiguration.getInstance();
+        //Data Base Configuration
+        wc.setProperty("jdbc_driver", this.getDriver());
+        wc.setProperty("jdbc_url", this.getUrlConnection());
+        wc.setProperty("jdbc_user", this.getUsuarioDataBase());
+        wc.setProperty("jdbc_password", this.getPasswordDataBase());
+        //Installation Lock
+        wc.setProperty("installationLock", "true");
+        //Email Settings
+        wc.setProperty("mailAccount", this.getMailAccount());
+        wc.setProperty("mailPassword", this.getMailPassword());
+        wc.setProperty("mailPort", this.getMailPort());
+        wc.setProperty("mailServer", this.getMailServer());
+        wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
+        //License
+        wc.setProperty("licenseMode", this.licenseMode);
+        wc.setProperty("licenseNumber", this.licenseNumber);
+        //Data File
+        wc.setProperty("PathData", this.getPathData());
+        wc.setProperty("protectFile", "false");
+        wc.save();
+    }
+
+    private void initializeModules() {
+
+        //Insertar Modulos
+        String[] modules = {"Entidades", "Empresas de Mensajeria", "Tipos de Documento",
+            "Paises", "Departamentos", "Municipios", "Consecutivos",
+            "Signatura Topografica", "Plantilla Documental", "Dias Festivos",
+            "Usuarios", "Cargos", "ACL", "Grupos", "Modulos", "Secciones", "Serie",
+            "SubSerie", "Unidad Documental", "Tipo Documental", "Creacion de Documentos",
+            "Recepcion de Documentos", "Gestion de Documentos", "Control de Prestamos"};
+
+        ModuloBean mb = new ModuloBean();
+        for (String nombre : modules) {
+            Modulo modulo = new Modulo();
+            modulo.setNombre(nombre);
+            mb.setAccion("Crear");
+            mb.setModulo(modulo);
+            mb.procesar();
+        }
+
+        //Insertar ACL
+        List<Modulo> modulos = mb.getModulos();
+        AclBean ab = new AclBean();
+        for (Modulo modulo : modulos) {
+            Acl acl = new Acl();
+            acl.setModulo(modulo);
+            ab.setAcl(acl);
+            ab.setAccion("Crear");
+            ab.procesar();
+        }
     }
 
     private void saveRegister(String name, String value) throws Exception {
