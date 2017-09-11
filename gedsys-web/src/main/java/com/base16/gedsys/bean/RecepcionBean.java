@@ -6,6 +6,7 @@
 package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.DestinatariosDoc;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.TipoDocumento;
@@ -48,7 +49,9 @@ public class RecepcionBean extends BaseBean implements Serializable {
     private List<TipoDocumento> tipoDocumentos;
     private List<Entidad> entidades;
     private List<Transportador> transportadores;
-
+    private List<Usuario> destinatarios;
+    
+    
     private String accion; 
     private int MunicipioId;
     private UploadedFile documentFile;
@@ -150,7 +153,14 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setTransportadores(List<Transportador> transportadores) {
         this.transportadores = transportadores;
     }   
-    
+
+    public List<Usuario> getDestinatarios() {
+        return destinatarios;
+    }
+
+    public void setDestinatarios(List<Usuario> destinatarios) {
+        this.destinatarios = destinatarios;
+    }
     
     public void generarConsectivo(){
         try {
@@ -160,7 +170,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
 
             em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
-            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("Externo");
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("recepcion");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             consec.setConsecutivo(intConsec.toString());
@@ -189,7 +199,8 @@ public class RecepcionBean extends BaseBean implements Serializable {
             this.documento.setCreadoPor(usuario);
             UploadDocument uDoc = new UploadDocument();
             uDoc.upload(documentFile, this.documenstSavePath);
-           
+          
+            
             this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
             sJpa.create(documento);
             this.limpiar();

@@ -28,7 +28,8 @@
             <h:outputStylesheet library="css" name="daterangepicker.css" />
             <!-- Custom Theme Style -->
             <h:outputStylesheet library="css" name="custom.min.css" />
-            <h:outputStylesheet library="css" name="docs.css" /> </f:facet>
+            <h:outputStylesheet library="css" name="docs.css" /> 
+        </f:facet>
         <title>GEDSYS</title>
         <ui:insert name="head" />
         <script>
@@ -68,15 +69,18 @@
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title text-center" style="border: 0;">
                             <p:link outcome="/index" class="site_title">
-                                <h:graphicImage library="images" name="logo.png" width="40px" height="40px" /> </p:link>
+                                <h:graphicImage library="images" name="logo.png" width="40px" height="40px" />
+                            </p:link>
                         </div>
                         <div class="clearfix"></div>
                         <!-- menu profile quick info -->
                         <div class="profile">
                             <div class="profile_pic">
-                                <h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" /> </div>
+                                <!--<h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" /> -->
+                            </div>
                             <div class="profile_info"> <span>Bienvenido,</span>
-                                <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2> </div>
+                                <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2>
+                            </div>
                         </div>
                         <!-- /menu profile quick info -->
                         <br />
@@ -96,7 +100,7 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <h:graphicImage library="images" name="#{login.usuario.foto}" />
+                                        <!--<h:graphicImage library="images" name="#{login.usuario.foto}" /> -->
                                         <h:outputText value="#{login.usuario.nombres}" />&#160;
                                         <h:outputText value="#{login.usuario.apelidos}" /> <span class=" fa fa-angle-down"></span> </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -114,7 +118,10 @@
                                     <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i> <span class="badge bg-green">1</span> </a>
                                     <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                                         <li>
-                                            <a> <span class="image"><h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /></span> <span>
+                                            <a> <span class="image">
+                                                    <!-- <h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /> -->
+                                                    </span> 
+                                                    <span>
                                                     <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">Hace 3 minutos</span> </span> <span class="message">
                                                     Inicio de proceso documental con Gedsys
                                                 </span> </a>

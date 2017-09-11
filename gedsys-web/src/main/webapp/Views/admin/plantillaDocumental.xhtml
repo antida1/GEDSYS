@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
 
 
     <body>
@@ -67,37 +68,73 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Plantilla" widgetVar="plantillaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="570" width="90%">
+                <p:dialog id="dlgDetalle" header="Creación de Plantillas" widgetVar="plantillaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="570" width="100%">
                     <h:form>
                         <h:inputHidden id="id" value="#{plantillaBean.plantillaDocumental.id}"/>
-                        <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
+                        <div class="form-group">
+                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 control-label" />
+                            <div class="col-xs-4">
                                 <p:inputText id="Nombre" required="true" value="#{plantillaBean.plantillaDocumental.nombre}" class="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
+                        <div class="form-group">
+                            <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 control-label"/>
+                            <div class="col-xs-4">
                                 <p:selectOneMenu required="true" id="tipoDocumento" value="#{plantillaBean.plantillaDocumental.tipoDocumento}" converter="omnifaces.SelectItemsConverter" >
                                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                     <f:selectItems value="#{tipoDocumentoBean.tipoDocumentos}" var="tipdocs" itemLabel="#{tipdocs.nombre}" itemValue="#{tipdocs}"> </f:selectItems>
                                 </p:selectOneMenu>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Activo:" for="estado" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
+                        <div class="form-group">
+                            <p:outputLabel value="Activo:" for="estado" class="col-xs-2 control-label"/>
+                            <div class="col-xs-4">
                                 <p:inputSwitch id="estado" required="true" value="#{plantillaBean.plantillaDocumental.estado}" onLabel="Sí" offLabel="No" />
+                            </div>
+                            <div class="col-lx-offset-6">&nbsp;</div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="control-label col-xs-2">Modulo</label>
+                            <div class="col-xs-4">
+                                <p:selectOneMenu>
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el modulo" itemValue="#{null}"/>
+                                    <f:selectItems value="#{plantillaBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}"> </f:selectItems>
+                                </p:selectOneMenu>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <p:textEditor widgetVar="texto" value="#{plantillaBean.plantillaDocumental.texto}" height="300" style="margin-bottom:10px"/>                 
+                        <div class="form-group">
+                            <label class="control-label col-xs-2">Campo</label>
+                            <div class="col-xs-3">
+                                <p:selectOneMenu>
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el campo" itemValue="#{null}"/>
+                                    <f:selectItems value="#{plantillaBean.moduloFields}" var="campos" itemLabel="#{campos}" itemValue="#{campos}"> </f:selectItems>
+                                </p:selectOneMenu>
+                                
+                            </div>
+                            <div class="col-xs-1">
+                                <p:commandButton value="Agrear" immediate="true" ></p:commandButton>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-xs-2">Encabezado</label>
+                            <p:textEditor class="col-xs-12" widgetVar="encabezado" value="#{plantillaBean.plantillaDocumental.encabezado}" height="100" style="margin-bottom:10px"/>                 
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-2">Cuerpo</label>
+                            <p:textEditor class="col-xs-12" widgetVar="cuerpo" value="#{plantillaBean.plantillaDocumental.cuerpo}" height="100" style="margin-bottom:10px"/>                 
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-2">Pie de Pagina</label>
+                            <p:textEditor class="col-xs-12" widgetVar="piedePagina" value="#{plantillaBean.plantillaDocumental.pie}" height="100" style="margin-bottom:10px"/>                 
                         </div>
                         <p:spacer/>
-                        <div>
+                        <div class="col-xs-12">
+                            <p:commandButton value="Preview" ></p:commandButton>
                             <p:commandButton update=":form:lstPlantillas messages" icon="ui-icon-disk" value="#{plantillaBean.accion}" actionListener="#{plantillaBean.procesar()}" oncomplete="PF('plantillaDialog').hide()" />
+                            <p:commandButton update=":form:lstPlantillas messages" icon="ui-icon-disk" value="Publicar" actionListener="#{plantillaBean.procesar()}" oncomplete="PF('plantillaDialog').hide()" />
                             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('plantillaDialog').hide()"></p:commandButton>
                         </div>
                     </h:form>

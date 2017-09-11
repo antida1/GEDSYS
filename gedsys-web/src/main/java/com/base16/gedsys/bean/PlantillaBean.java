@@ -5,9 +5,11 @@
  */
 package com.base16.gedsys.bean;
 
+import com.base16.gedsys.entities.Modulo;
 import com.base16.gedsys.entities.PlantillaDocumental;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.PlantillaDocumentalJpaController;
+import com.base16.gedsys.system.ModuloBean;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -31,8 +34,23 @@ public class PlantillaBean extends BaseBean implements Serializable {
     
     private PlantillaDocumental plantillaDocumental = new PlantillaDocumental();
     private List<PlantillaDocumental> plantillasDocumentales;
+    private List<Modulo> modulos;
+    private List<String> moduloFields;
+    
     private String accion;
 
+    @PostConstruct
+    public void init(){
+        try {
+            ModuloBean mb = new ModuloBean();
+            mb.listar();
+            this.modulos = mb.getModulos();
+        } catch (Exception ex) {
+            Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public PlantillaDocumental getPlantillaDocumental() {
         return plantillaDocumental;
     }
@@ -49,6 +67,22 @@ public class PlantillaBean extends BaseBean implements Serializable {
         this.plantillasDocumentales = plantillasDocumentales;
     }
 
+    public List<Modulo> getModulos() {
+        return modulos;
+    }
+
+    public void setModulos(List<Modulo> modulos) {
+        this.modulos = modulos;
+    }
+
+    public List<String> getModuloFields() {
+        return moduloFields;
+    }
+
+    public void setModuloFields(List<String> moduloFields) {
+        this.moduloFields = moduloFields;
+    }
+    
     public String getAccion() {
         return accion;
     }

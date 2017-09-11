@@ -20,7 +20,7 @@ public class PushFCMNotification {
     public final static String AUTH_KEY_FCM = "AIzaSyCakiGah18Sw3aejnyREc-JbQ0-G9fFdWw";
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
-    public static void PushFCMNotification(String userDeviceIdKey) throws Exception {
+    public static void PushFCMNotification(String userDeviceIdKey, String titulo, String mensaje) throws Exception {
         String authKey = AUTH_KEY_FCM; // You FCM AUTH key
         String FMCurl = API_URL_FCM;
 
@@ -36,10 +36,11 @@ public class PushFCMNotification {
         conn.setRequestProperty("Content-Type", "application/json");
 
         JSONObject json = new JSONObject();
-        json.put("to", "eLpabhs4Wbk:APA91bENwU-1iqJAfCbSNZXvO_PDZGAvmnJfjCNslRfxlol9SPmWdyQOWK_JKKZvPnRps8ME9HTzuN2jqRzUqPd8ZkSuZCG6y-dDoJexa4CrUzjwnlgVT4fp_9gal0FtK0NXDWjVVywm");
+        //json.put("to", "eLpabhs4Wbk:APA91bENwU-1iqJAfCbSNZXvO_PDZGAvmnJfjCNslRfxlol9SPmWdyQOWK_JKKZvPnRps8ME9HTzuN2jqRzUqPd8ZkSuZCG6y-dDoJexa4CrUzjwnlgVT4fp_9gal0FtK0NXDWjVVywm");
+        json.put("to", userDeviceIdKey);
         JSONObject info = new JSONObject();
-        info.put("title", "Notificatoin Title"); // Notification title
-        info.put("body", "Hello Test notification"); // Notification body
+        info.put("title", titulo); // Notification title
+        info.put("body", mensaje); // Notification body
         info.put("sound","default");
         json.put("notification", info);
         json.put("priority", "high");

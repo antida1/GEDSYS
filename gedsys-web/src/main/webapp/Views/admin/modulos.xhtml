@@ -22,6 +22,9 @@
                     </p:menubar>
                     <p:separator/>
                     <p:dataTable id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0">
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{modulo.dependeDe}"/>
+                        </p:column>
                         <p:column headerText="Nombre">
                             <h:outputText value="#{modulo.nombre}"/>
                         </p:column>
@@ -65,9 +68,32 @@
                     <h:form>
                         <h:inputHidden id="id" value="#{moduloBean.modulo.nombre}"/>
                         <div class="form-group row">
+                            <p:outputLabel value="Dependencia" for="dependeDe" class="col-xs-2 col-form-label"/>
+                            <div class="col-xs-10">
+                                <p:selectOneMenu id="dependeDe" value="#{moduloBean.modulo.dependeDe}" converter="omnifaces.SelectItemsConverter" >
+                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el nodo padre" itemValue="#{null}"/>
+                                    <f:selectItems value="#{moduloBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
                             <div class="col-xs-10">
                                 <p:inputText id="Nombre" required="true" value="#{moduloBean.modulo.nombre}" class="form-control"/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <p:outputLabel value="Url" for="UrlModulo" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="UrlModulo" required="true" value="#{moduloBean.modulo.urlModulo}" class="form-control"/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <p:outputLabel value="Icon" for="Icon" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="Icon" required="true" value="#{moduloBean.modulo.moduloIcon}" class="form-control"/>
                             </div>
                         </div>
 
@@ -80,7 +106,7 @@
 
                                 </p:selectOneMenu>
                                 <div class="form-group row">
-                                    <p:textEditor widgetVar="descripcion" value="#{moduloBean.modulo.descripcion}" height="300" style="margin-bottom:10px"/>                 
+                                    <p:textEditor widgetVar="descripcion" value="#{moduloBean.modulo.descripcion}" height="100" style="margin-bottom:10px"/>                 
                                 </div>
                             </div>
                         </div>

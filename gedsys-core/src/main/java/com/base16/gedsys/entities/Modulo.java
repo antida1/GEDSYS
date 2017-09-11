@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Modulo.findByFechaCreacion", query = "SELECT m FROM Modulo m WHERE m.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Modulo.findByFechaModificacion", query = "SELECT m FROM Modulo m WHERE m.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "Modulo.findByNombre", query = "SELECT m FROM Modulo m WHERE m.nombre = :nombre")
-    , @NamedQuery(name = "Modulo.findByOculto", query = "SELECT m FROM Modulo m WHERE m.oculto = :oculto")})
+    , @NamedQuery(name = "Modulo.findByOculto", query = "SELECT m FROM Modulo m WHERE m.oculto = :oculto")
+    , @NamedQuery(name = "Modulo.findByDependeDe", query = "SELECT m FROM Modulo m WHERE m.dependeDe = :dependeDe")
+    , @NamedQuery(name = "Modulo.findRoots", query = "SELECT m FROM Modulo m WHERE m.dependeDe is null")})
 public class Modulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,7 +75,19 @@ public class Modulo implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-
+    @OneToMany(mappedBy = "dependeDe")
+    private Collection<Modulo> moduloCollection;
+    @JoinColumn(name = "DependeDe", referencedColumnName = "Id")
+    @ManyToOne
+    private Modulo dependeDe;
+    @Column(name = "UrlModulo")
+    private String urlModulo;
+    @Column(name = "ModuloIcon")
+    private String moduloIcon;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
+    private Collection<Campos> camposCollection;
+    
+    
     public Modulo() {
     }
 
@@ -136,6 +151,24 @@ public class Modulo implements Serializable {
         this.oculto = oculto;
     }
 
+    public String getUrlModulo() {
+        return urlModulo;
+    }
+
+    public void setUrlModulo(String urlModulo) {
+        this.urlModulo = urlModulo;
+    }
+
+    public String getModuloIcon() {
+        return moduloIcon;
+    }
+
+    public void setModuloIcon(String moduloIcon) {
+        this.moduloIcon = moduloIcon;
+    }
+
+    
+    
     @XmlTransient
     @JsonIgnore
     public Collection<Acl> getAclCollection() {
@@ -162,6 +195,26 @@ public class Modulo implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Modulo> getModuloCollection() {
+        return moduloCollection;
+    }
+
+    public void setModuloCollection(Collection<Modulo> moduloCollection) {
+        this.moduloCollection = moduloCollection;
+    }
+
+    public Modulo getDependeDe() {
+        return dependeDe;
+    }
+
+    public void setDependeDe(Modulo dependeDe) {
+        this.dependeDe = dependeDe;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -185,6 +238,16 @@ public class Modulo implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Modulo[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Campos> getCamposCollection() {
+        return camposCollection;
+    }
+
+    public void setCamposCollection(Collection<Campos> camposCollection) {
+        this.camposCollection = camposCollection;
     }
     
 }

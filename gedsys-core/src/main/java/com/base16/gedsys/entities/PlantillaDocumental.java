@@ -59,8 +59,8 @@ public class PlantillaDocumental implements Serializable {
     @Column(name = "Nombre")
     private String nombre;
     @Lob
-    @Column(name = "Texto")
-    private String texto;
+    @Column(name = "Cuerpo")
+    private String cuerpo;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -71,6 +71,15 @@ public class PlantillaDocumental implements Serializable {
     @ManyToOne
     private TipoDocumento tipoDocumento;
 
+    @Lob
+    @Column(name = "Encabezado")
+    private String Encabezado;
+    
+    @Lob
+    @Column(name = "Pie")
+    private String Pie;
+    
+    
     public PlantillaDocumental() {
     }
 
@@ -127,11 +136,11 @@ public class PlantillaDocumental implements Serializable {
     }
 
     public String getTexto() {
-        return texto;
+        return cuerpo;
     }
 
     public void setTexto(String texto) {
-        this.texto = texto;
+        this.cuerpo = texto;
     }
 
     public Usuario getCreadoPor() {
@@ -158,6 +167,32 @@ public class PlantillaDocumental implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
+    public String getCuerpo() {
+        return cuerpo;
+    }
+
+    public void setCuerpo(String cuerpo) {
+        this.cuerpo = cuerpo;
+    }
+
+    public String getEncabezado() {
+        return Encabezado;
+    }
+
+    public void setEncabezado(String Encabezado) {
+        this.Encabezado = Encabezado;
+    }
+
+    public String getPie() {
+        return Pie;
+    }
+
+    public void setPie(String Pie) {
+        this.Pie = Pie;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

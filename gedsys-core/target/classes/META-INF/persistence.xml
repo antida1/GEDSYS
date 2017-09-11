@@ -37,6 +37,8 @@
     <class>com.base16.gedsys.entities.TipoDocumental</class>
     <class>com.base16.gedsys.entities.SeccionSubSeccion</class>
     <class>com.base16.gedsys.entities.Devices</class>
+    <class>com.base16.gedsys.entities.Fields</class>
+    <class>com.base16.gedsys.entities.Campos</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

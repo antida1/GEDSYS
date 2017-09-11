@@ -77,6 +77,7 @@
                                         <p:inputText value="#{recepcionBean.documento.remitente}" id="remitente" required="true" style="width: 100%" />
                                     </div>
                                 </div>
+                                <!--
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="last-name">Destinatario <span class="required">*</span>
                                     </label>
@@ -87,16 +88,17 @@
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
+                                -->
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
-                                    <label class=" col-xs-4" for="conCopia">Con Copia a <span class="required">*</span>
+                                    <label class=" col-xs-4" for="Destinatarios">Destinatarios <span class="required">*</span>
                                     </label>
                                     <div class="col-xs-8">
-                                        <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
-                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usrCopia" itemLabel="#{usrCopia.nombres}" itemValue="#{usrCopia}"/>
+                                        <p:selectManyMenu value="#{recepcionBean.destinatarios}" id="Destinatarios" var="dest" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                                            <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
                                             <p:column>
-                                                <h:outputText value="#{u.nombres} #{u.apelidos} - #{u.cargo.nombre}"/>
+                                                <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                                             </p:column>
                                         </p:selectManyMenu>
                                     </div>
@@ -191,7 +193,7 @@
                                     <p:commandButton update="messages"  value="Radicar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false"/>
                                     <p:commandButton value="Cancelar" immediate="true"></p:commandButton>
                                     <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
-                                        <ui:include src="newRadicadoExterno.xhtml">
+                                        <ui:include src="newRadicadoRecepcion.xhtml">
                                             <ui:param name="tipoRadicado" value="externo" />
                                             <ui:param name="consectivoExterno" value="#{recepcionBean.documento.consecutivo}" />
                                         </ui:include>

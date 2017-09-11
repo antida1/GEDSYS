@@ -11,11 +11,15 @@
     "author": "rober",
     "contributors": [],
     "dependencies": {
+        "cordova-android": "^6.2.2",
         "cordova-plugin-fcm": "^2.1.2"
     },
     "cordova": {
         "plugins": {
             "cordova-plugin-fcm": {}
-        }
+        },
+        "platforms": [
+            "android"
+        ]
     }
 }

@@ -335,8 +335,8 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
         wc.setProperty("mailServer", this.getMailServer());
         wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
         //License
-        wc.setProperty("licenseMode", this.licenseMode);
-        wc.setProperty("licenseNumber", this.licenseNumber);
+        //wc.setProperty("licenseMode", this.getLicenseMode());
+        //wc.setProperty("licenseNumber", this.getLicenseNumber());
         //Data File
         wc.setProperty("PathData", this.getPathData());
         wc.setProperty("protectFile", "false");

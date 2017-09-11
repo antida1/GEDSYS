@@ -101,8 +101,7 @@ public class LoginFilter implements Filter {
      * @exception ServletException if a servlet error occurs
      */
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
+            FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
@@ -114,11 +113,14 @@ public class LoginFilter implements Filter {
             log("LoginFilter:doFilter()");
         }
 
-        doBeforeProcessing(request, response);
-        String result = WebConfiguration.getInstance().getProperty("installationLock");
+        
         
         Throwable problem = null;
         try {
+            
+            doBeforeProcessing(request, response);
+            String result = WebConfiguration.getInstance().getProperty("installationLock");
+            
             if (strUrl.indexOf("/login.xhtml") >= 0
                     || (ses != null
                     && ses.getAttribute("usuario") != null && result.equals("true"))
@@ -138,27 +140,31 @@ public class LoginFilter implements Filter {
                        res.sendRedirect(req.getContextPath() + "/faces/config.xhtml");
                 }
             }
+            doAfterProcessing(request, response);
+
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
+            // If there was a problem, we want to rethrow it if it is
+        
+            // a known type, otherwise log it.
+            if (problem != null) {
+                if (problem instanceof ServletException) {
+                    throw (ServletException) problem;
+                }
+                if (problem instanceof IOException) {
+                    throw (IOException) problem;
+                }
+                sendProcessingError(problem, response);
+            }
+        
         }
 
-        doAfterProcessing(request, response);
 
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
-        if (problem != null) {
-            if (problem instanceof ServletException) {
-                throw (ServletException) problem;
-            }
-            if (problem instanceof IOException) {
-                throw (IOException) problem;
-            }
-            sendProcessingError(problem, response);
-        }
+        
     }
 
     /**
