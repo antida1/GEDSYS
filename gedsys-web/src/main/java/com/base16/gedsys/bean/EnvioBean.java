@@ -152,14 +152,14 @@ public class EnvioBean extends BaseBean implements Serializable {
     }   
     
     public void generarConsectivo(){
-        try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
-            EntityManager em = emf.createEntityManager();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {     
             ConsecutivoJpaController cJpa;
-
-            em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("envio");
+            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE,"No hay consecutivos para envio");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             consec.setConsecutivo(intConsec.toString());
@@ -167,13 +167,15 @@ public class EnvioBean extends BaseBean implements Serializable {
             em.flush();
             em.getTransaction().commit();
             this.documento.setConsecutivo(consec.getConsecutivo());
-        } catch (NumberFormatException e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos",  "Consecutivo Generado Exitosamente"));
+        } catch ( Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Redicacion de Documentos", e.getMessage()  ));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos", e.getMessage()  ));
+            em.getTransaction().rollback();
         }
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Redicacion de Documentos",  "Consecutivo Generado Exitosamente"));
+        
     }
     
     public void radicar() {
