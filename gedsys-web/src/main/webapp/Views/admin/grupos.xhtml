@@ -12,6 +12,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('grupos') == true}">
                 <f:event type="preRenderView" listener="#{grupoBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
                 <h:form id="form">
@@ -90,6 +91,10 @@
                         </div>
                     </h:form>
                 </p:dialog>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('grupos') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
 
         </ui:composition>

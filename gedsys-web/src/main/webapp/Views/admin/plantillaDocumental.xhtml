@@ -14,6 +14,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('plantillaDocumental') == true}">
                 <f:event type="preRenderView" listener="#{plantillaBean.listar()}" />
                 <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
@@ -139,7 +140,10 @@
                         </div>
                     </h:form>
                 </p:dialog>
-
+</c:if>
+                <c:if test="#{autorizationBean.hasAccess('plantillaDocumental') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
 
         </ui:composition>

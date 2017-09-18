@@ -4,10 +4,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('acl') == true}">
                 <f:event type="preRenderView" listener="#{aclBean.listar()}" />
                 <f:event type="preRenderView" listener="#{grupoBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
@@ -78,6 +81,10 @@
                         <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('listaDialog').hide()"></p:commandButton>
                     </div>
                 </h:form>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('acl') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
         </ui:composition>
     </body>

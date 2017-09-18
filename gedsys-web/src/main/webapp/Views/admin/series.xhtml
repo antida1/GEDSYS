@@ -4,12 +4,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <body>
 
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('series') == true}">
                 <f:event type="preRenderView" listener="#{serieBean.listar()}" />
                 <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
                 <p:growl id="messages"  showDetail="true" />
@@ -87,7 +89,10 @@
                         </div>
                     </h:form>
                 </p:dialog>
-                
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('series') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
         </ui:composition>
     </body>

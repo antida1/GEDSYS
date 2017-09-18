@@ -11,6 +11,7 @@
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == true}">
                 <f:event type="preRenderView" listener="#{documentosBean.listarPorDestinatario}"></f:event>
                 <h:form> 
                     <div class="col-md-12 col-xs-12">
@@ -131,6 +132,10 @@
                         <p:graphicImage height="800"  value="#{documentViewerBean.content}"/>  
                     </c:if>
                 </p:dialog>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
         </ui:composition>
     </body>

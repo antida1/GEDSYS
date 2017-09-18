@@ -6,6 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      
 
     <body>
 
@@ -80,7 +81,7 @@
                     </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('pais') == false}">
-                    <h3>Lo sentimos no tiene acceso a este modulo!!!</h3>
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>
             </ui:define>
         </ui:composition>
