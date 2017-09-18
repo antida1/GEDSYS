@@ -48,7 +48,7 @@ public class CamposPlantilla implements Serializable {
     @Column(name = "CreadoPor")
     private Integer creadoPor;
     @Column(name = "ModificadoPro")
-    private Integer modificadoPro;
+    private Integer modificadoPor;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -92,12 +92,12 @@ public class CamposPlantilla implements Serializable {
         this.creadoPor = creadoPor;
     }
 
-    public Integer getModificadoPro() {
-        return modificadoPro;
+    public Integer getModificadoPor() {
+        return modificadoPor;
     }
 
-    public void setModificadoPro(Integer modificadoPro) {
-        this.modificadoPro = modificadoPro;
+    public void setModificadoPor(Integer modificadoPro) {
+        this.modificadoPor = modificadoPro;
     }
 
     public Date getFechaCreacion() {
