@@ -39,6 +39,7 @@
     <class>com.base16.gedsys.entities.Devices</class>
     <class>com.base16.gedsys.entities.Fields</class>
     <class>com.base16.gedsys.entities.Campos</class>
+    <class>com.base16.gedsys.entities.CamposPlantilla</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

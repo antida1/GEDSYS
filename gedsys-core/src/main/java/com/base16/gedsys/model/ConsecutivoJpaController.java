@@ -231,8 +231,8 @@ public class ConsecutivoJpaController implements Serializable {
                     em.createNamedQuery("Consecutivo.findByTipoConsecutivo", Consecutivo.class);
             consultaConsecutivo.setParameter("tipoConsecutivo", tipoConsecutivo);
             consec = consultaConsecutivo.getSingleResult();
-        } catch (Exception e) {
-            throw e;
+        } finally{
+            em.close();
         }
         return consec;
     }

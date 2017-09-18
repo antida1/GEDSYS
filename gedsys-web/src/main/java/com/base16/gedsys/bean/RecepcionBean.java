@@ -14,11 +14,13 @@ import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.entities.Entidad;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.UploadDocument;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -189,9 +191,11 @@ public class RecepcionBean extends BaseBean implements Serializable {
     
     public void radicar() {
         DocumentoJpaController sJpa;
+        DestinatariosDocJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new DocumentoJpaController(emf);
+            dJpa = new DestinatariosDocJpaController(emf);
             
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.documento.setFechaCreacion(new Date());
@@ -199,9 +203,16 @@ public class RecepcionBean extends BaseBean implements Serializable {
             this.documento.setCreadoPor(usuario);
             UploadDocument uDoc = new UploadDocument();
             uDoc.upload(documentFile, this.documenstSavePath);
-          
-            
             this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
+              List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
+            for (Usuario dest : destinatarios) {
+                 DestinatariosDoc destinatarioDoc = new DestinatariosDoc();
+                 destinatarioDoc.setCreadoPor(usuario);
+                 destinatarioDoc.setDestinatarioId(dest);
+                 dJpa.create(destinatarioDoc);
+                 destinatariosDocCollection.add(destinatarioDoc);       
+            }
+            this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
             sJpa.create(documento);
             this.limpiar();
             FacesContext context = FacesContext.getCurrentInstance();
