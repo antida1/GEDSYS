@@ -47,6 +47,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Modulo.findRoots", query = "SELECT m FROM Modulo m WHERE m.dependeDe is null")})
 public class Modulo implements Serializable {
 
+    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,8 +87,7 @@ public class Modulo implements Serializable {
     @Column(name = "ModuloIcon")
     private String moduloIcon;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modulo")
-    private Collection<Campos> camposCollection;
-    
+    private Collection<CamposPlantilla> camposPlantillaCollection;
     
     public Modulo() {
     }
@@ -242,12 +243,12 @@ public class Modulo implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Campos> getCamposCollection() {
-        return camposCollection;
+    public Collection<CamposPlantilla> getCamposPlantillaCollection() {
+        return camposPlantillaCollection;
     }
 
-    public void setCamposCollection(Collection<Campos> camposCollection) {
-        this.camposCollection = camposCollection;
+    public void setCamposPlantillaCollection(Collection<CamposPlantilla> camposPlantillaCollection) {
+        this.camposPlantillaCollection = camposPlantillaCollection;
     }
     
 }
