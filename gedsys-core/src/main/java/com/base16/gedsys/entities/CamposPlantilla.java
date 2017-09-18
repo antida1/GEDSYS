@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "CamposPlantilla.findById", query = "SELECT c FROM CamposPlantilla c WHERE c.id = :id")
     , @NamedQuery(name = "CamposPlantilla.findByNombre", query = "SELECT c FROM CamposPlantilla c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "CamposPlantilla.findByCreadoPor", query = "SELECT c FROM CamposPlantilla c WHERE c.creadoPor = :creadoPor")
-    , @NamedQuery(name = "CamposPlantilla.findByModificadoPro", query = "SELECT c FROM CamposPlantilla c WHERE c.modificadoPro = :modificadoPro")
+    , @NamedQuery(name = "CamposPlantilla.findByModificadoPro", query = "SELECT c FROM CamposPlantilla c WHERE c.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "CamposPlantilla.findByFechaCreacion", query = "SELECT c FROM CamposPlantilla c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "CamposPlantilla.findByFechaModificacion", query = "SELECT c FROM CamposPlantilla c WHERE c.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "CamposPlantilla.findByEstado", query = "SELECT c FROM CamposPlantilla c WHERE c.estado = :estado")})
@@ -47,7 +47,7 @@ public class CamposPlantilla implements Serializable {
     private String nombre;
     @Column(name = "CreadoPor")
     private Integer creadoPor;
-    @Column(name = "ModificadoPro")
+    @Column(name = "ModificadoPor")
     private Integer modificadoPor;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
