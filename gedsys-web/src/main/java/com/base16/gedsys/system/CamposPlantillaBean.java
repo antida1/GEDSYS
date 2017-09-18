@@ -8,6 +8,7 @@ package com.base16.gedsys.system;
 import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.config.CamposPlantillaJpaController;
+import com.base16.gedsys.config.exceptions.NonexistentEntityException;
 import com.base16.gedsys.entities.CamposPlantilla;
 import com.base16.gedsys.entities.Modulo;
 import com.base16.gedsys.entities.Usuario;
@@ -112,14 +113,14 @@ public class CamposPlantillaBean extends BaseBean implements Serializable {
         }
     }
     
-    public void eliminar(Modulo modulo) {
+    public void eliminar(CamposPlantilla campoPlantilla) {
         CamposPlantillaJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new CamposPlantillaJpaController(emf);
             cJpa.destroy(campoPlantilla.getId());
             this.listar();
-        } catch (Exception e) {
+        } catch (NonexistentEntityException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
