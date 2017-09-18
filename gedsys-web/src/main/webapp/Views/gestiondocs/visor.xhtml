@@ -8,5 +8,9 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
 
     <pe:documentViewer height="800" value="#{documentViewerBean.content}"/>  
-
+    <div>
+        <p:commandButton icon="ui-icon-disk" value="Firma" oncomplete="PF('dlgVisor').hide()" ></p:commandButton>
+        <p:commandButton icon="fa fa-fw fa-rotate-left" value="Devolver" oncomplete="PF('dlgVisor').hide()"></p:commandButton>
+        <p:commandButton icon="fa fa-fw fa-rotate-left" value="Cerrar" immediate="true" oncomplete="PF('dlgVisor').hide()"></p:commandButton>
+    </div>
 </html>
