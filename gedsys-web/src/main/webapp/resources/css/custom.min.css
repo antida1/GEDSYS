@@ -1566,7 +1566,7 @@ span.right {
     margin-top: 10px;
 }
 @media (min-width: 992px) {
-    .tile_count .tile_stats_count: first-child:before {
+    .tile_count .tile_stats_count:first-child:before {
     border-left: 0;
 }
 }.tile_count .tile_stats_count .count {
