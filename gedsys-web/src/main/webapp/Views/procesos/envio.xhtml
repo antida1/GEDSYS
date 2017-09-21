@@ -11,19 +11,17 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('envio') == true}">
-                <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
-                <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
-                <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
-                <p:growl id="messages"  showDetail="true" />
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Envio de Documentos<small>Digitalización o Carga</small></h2>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="x_content">
-                        <h:form id="form" enctype="multipart/form-data">
-                            <div class="row">
+                    <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <div class="x_title">
+                            <h2>Envio de Documentos<small>Digitalización o Carga</small></h2>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="x_content">
+                            <h:form id="form" enctype="multipart/form-data">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="entidad">Entidad Destino <span class="required">*</span>
                                     </label>
@@ -34,8 +32,6 @@
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="direccion">Dirección <span class="required">*</span></label>
                                     <div class="col-xs-8">
@@ -53,8 +49,6 @@
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <h:inputHidden id="consecutivo" value="#{envioBean.documento.consecutivo}" />
                                     <label class=" col-xs-4" for="tipoDocumentoExterno">Tipo de Documento<span class="required">*</span></label>
@@ -71,8 +65,6 @@
                                         <p:calendar id="fechaRecepcion" value="#{envioBean.documento.fechaCreacion}" showOn="button" locale="es" style="width: 100%" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="asunto">Asunto <span class="required">*</span>
                                     </label>
@@ -82,8 +74,6 @@
                                 </div>
 
                                 <div class="col-xs-6 col-xs-offset-6"></div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-12 form-group">
                                     <label class=" col-xs-2" for="detalle">Detalle <span class="required">*</span>
                                     </label>
@@ -92,8 +82,6 @@
                                         <h:outputText id="counter" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="anexos">Anexos <span class="required">*</span>
                                     </label>
@@ -108,8 +96,6 @@
                                         <p:inputNumber id="folios" value="#{envioBean.documento.folios}" decimalPlaces="0" minValue="0" style="width: 100%"/>
                                     </div>
                                 </div>
-                            </div>
-                            <div  class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4" for="libros">Descripción del Anexo <span class="required">*</span>
                                     </label>
@@ -130,8 +116,6 @@
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class="col-xs-4" for="tercero">Empresa/Tercero de Mensajería <span class="required">*</span>
                                     </label>
@@ -143,34 +127,29 @@
 
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label class=" col-xs-4">Adjuntar Documento</label>
                                     <div class="col-xs-8">
                                         <p:fileUpload value="#{envioBean.documentFile}" fileUploadListener="#{envioBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
                                     </div>
                                 </div>
-                            </div>
-                                                        
-                            <div class="ln_solid"></div>
-                            <div class="form-group">
-                                <div class="col-xs-6 col-sm-6 col-xs-12 col-xs-offset-6">
-                                    <p:commandButton update=":form messages"  value="Generar Radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true"/>
-                                    <p:commandButton icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir Radicado" onclick="PF('denRadicado').show()" partialSubmit="false"></p:commandButton>
-                                    <p:commandButton update="messages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false"/>
-                                    <p:commandButton value="Cancelar" immediate="true"></p:commandButton>
-                                    <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
-                                        <ui:include src="newRadicadoSalida.xhtml">
-                                            <ui:param name="tipoRadicado" value="externo" />
-                                            <ui:param name="consectivoExterno" value="#{envioBean.documento.consecutivo}" />
-                                        </ui:include>
-                                    </p:dialog>
+                                <div class="form-group">
+                                    <div class="col-xs-6 col-sm-6 col-xs-12 col-xs-offset-6">
+                                        <p:commandButton update=":form messages"  value="Generar Radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true"/>
+                                        <p:commandButton icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir Radicado" onclick="PF('denRadicado').show()" partialSubmit="false"></p:commandButton>
+                                        <p:commandButton update="messages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false"/>
+                                        <p:commandButton value="Cancelar" immediate="true"></p:commandButton>
+                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                                            <ui:include src="newRadicadoSalida.xhtml">
+                                                <ui:param name="tipoRadicado" value="externo" />
+                                                <ui:param name="consectivoExterno" value="#{envioBean.documento.consecutivo}" />
+                                            </ui:include>
+                                        </p:dialog>
+                                    </div>
                                 </div>
-                            </div>
-                        </h:form>
-                    </div>    
-                </div>
+                            </h:form>
+                        </div>    
+                    </div>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('envio') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

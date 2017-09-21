@@ -1,3 +1,6 @@
+.col-xs-12{
+    padding : 5px 15px;
+}
 .daterangepicker .ranges li {
     color: #73879C;
 }
@@ -119,6 +122,7 @@
 
 .left_col {
     background: #188986;
+/*    position : sticky;*/
 }
 .nav-sm .container.body .col-md-3.left_col {
     min-height: 100%;
@@ -140,6 +144,7 @@
     padding: 10px 20px;
     margin-left: 70px;
     z-index: 2;
+    overflow : hidden;
 }
 .nav-sm .navbar.nav_title {
     width: 70px;
@@ -307,7 +312,7 @@
     float: left;
     background: #EDEDED;
     border-bottom: 1px solid #D9DEE4;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     width: 100%;
     position: relative;
 }
@@ -928,7 +933,6 @@ h2 {
 }
 .x_panel {
     position: relative;
-    width: 100%;
     margin-bottom: 10px;
     padding: 10px 17px;
     display: inline-block;
@@ -941,9 +945,8 @@ h2 {
     transition: all .2s ease;
 }
 .x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 1px 5px 6px;
-    margin-bottom: 10px;
+    padding: 10px 5px 10px;
+    border-bottom : solid 1px #1ABB9C;
 }
 .x_title .filter {
     width: 40%;
@@ -964,12 +967,11 @@ h2 {
     color: #BDBDBD;
 }
 .x_content {
-    padding: 0 5px 6px;
+    padding: 5% 6px;
     position: relative;
     width: 100%;
     float: left;
     clear: both;
-    margin-top: 5px;
 }
 .x_content h4 {
     font-size: 16px;
@@ -2038,6 +2040,7 @@ legend {
 }
 .form-group {
     margin-bottom: 10px;
+    padding : 1% 15px;
 }
 .validate {
     margin-top: 10px;
@@ -3913,4 +3916,30 @@ body{
 }
 .ui-menu.ui-widget .ui-menuitem-link .ui-menuitem-icon{
     display : none;
+}
+.ui-tree{
+    width : 100% !important;
+    transition : all .3s ease;
+}
+.ui-inputnumber input{
+    width : 100%;
+}
+.ui-datepicker-trigger{
+    float : right;
+}
+td{
+    padding : 5px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    background-image : none;
+}
+.btn,.ui-button{
+    transition : all .3s ease;
+    padding : 7.5px ;
+}
+.ui-selectlistbox-listcontainer{
+    height: 75px !important;
+}
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary {
+    color : white !important;
 }
