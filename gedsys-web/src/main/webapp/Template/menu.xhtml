@@ -8,24 +8,18 @@
 
     <body>
         <p:cache region="menuCache" key="sideMenu">
+            <div class="col-xs-12 sidebar-footer">
+                <a data-toggle="tooltip" data-placement="top" title="Ajustes"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a>
+                <a data-toggle="tooltip" data-placement="top" title="Pantalla Completa"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span> </a>
+                <a data-toggle="tooltip" data-placement="top" title="Lock"> <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> </a>
+                <a data-toggle="tooltip" data-placement="top" title="Cerrar Sessión"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </a>
+            </div>
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu ">
                 <div class="menu_section">
-                    <h3>General</h3>
                     <ul class="nav side-menu">
                         <li title="Indicadores"><p:link outcome="/index"><i class="fa fa-bar-chart"></i>Indicadores</p:link>
                         </li>
-                        <li title="Procesos"><a><i class="fa fa-cogs"></i>Procesos<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li class="col-xs-4"><p:link outcome="/Views/procesos/producciondoc"><h:graphicImage library="images" name="produccion de documentos.svg"/> Producción de documentos</p:link></li>
-                                <li class="col-xs-4"><p:link outcome="/Views/procesos/recepcion"><h:graphicImage library="images" name="ventanilla unica.svg"/>Ventanilla Única</p:link></li>
-                                <li class="col-xs-4"><p:link outcome="/Views/procesos/envio"><h:graphicImage library="images" name="envio de documentos.svg"/>Envio de documentos</p:link></li>
-                            
-                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/cargadocs"><h:graphicImage library="images" name="carga de documentos internos.svg"/>Carga de documentos internos</p:link></li>
-                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/paneldocumentos"><h:graphicImage library="images" name="gestion de documentos.svg"/>Gestión de documentos</p:link></li>
-                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/controlPrestamos"><h:graphicImage library="images" name="control de prestamos.svg"/>Control de prestamos</p:link></li>
-                            </ul>
-                        </li>
-                        <li title="Maestros"><a><i class="fa fa-clone"></i>Maestros<span class="fa fa-chevron-down"></span></a>
+                        <li title="Maestros"><a><i class="fa fa-clone"></i>Maestros</a>
                             <ul class="nav child_menu">
                                 <li class="col-xs-3"><p:link outcome="/Views/admin/entidad"><h:graphicImage library="images" name="entidades.svg"/>Entidades </p:link></li>
                                 <li class="col-xs-3"><p:link outcome="/Views/admin/transportador"> <h:graphicImage library="images" name="empresas de mensajeria.svg"/>Empresas de Mensajeria</p:link></li>
@@ -40,7 +34,18 @@
                                 <li class="col-xs-3"><p:link outcome="/Views/agenda/agenda"><h:graphicImage library="images" name="programador de reuniones y alertas.svg"/>Programador de Reuniones y Alertas</p:link></li>
                             </ul>
                         </li>
-                        <li title="Tablas de Retención Documental"><a><i class="fa fa-table"></i>Tablas de Retención Documental<span class="fa fa-chevron-down"></span></a>
+                        <li title="Procesos"><a><i class="fa fa-cogs"></i>Procesos</a>
+                            <ul class="nav child_menu">
+                                <li class="col-xs-4"><p:link outcome="/Views/procesos/producciondoc"><h:graphicImage library="images" name="produccion de documentos.svg"/> Producción de documentos</p:link></li>
+                                <li class="col-xs-4"><p:link outcome="/Views/procesos/recepcion"><h:graphicImage library="images" name="ventanilla unica.svg"/>Ventanilla Única</p:link></li>
+                                <li class="col-xs-4"><p:link outcome="/Views/procesos/envio"><h:graphicImage library="images" name="envio de documentos.svg"/>Envio de documentos</p:link></li>
+
+                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/cargadocs"><h:graphicImage library="images" name="carga de documentos internos.svg"/>Carga de documentos internos</p:link></li>
+                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/paneldocumentos"><h:graphicImage library="images" name="gestion de documentos.svg"/>Gestión de documentos</p:link></li>
+                                <li class="col-xs-4"><p:link outcome="/Views/gestiondocs/controlPrestamos"><h:graphicImage library="images" name="control de prestamos.svg"/>Control de prestamos</p:link></li>
+                            </ul>
+                        </li>
+                        <li title="Tablas de Retención Documental"><a><i class="fa fa-table"></i>Tablas de Retención Documental</a>
                             <ul class="nav child_menu">
                                 <li class="col-xs-4"><p:link outcome="/Views/admin/seccion"><h:graphicImage library="images" name="secciones.svg"/>Secciones</p:link></li>
                                 <!-- <li><p:link outcome="/Views/admin/subsecciones" value="Sub Seccion" /> </li> -->
@@ -50,7 +55,7 @@
                                 <li class="col-xs-4"><p:link outcome="/Views/admin/tipodoc"><h:graphicImage library="images" name="tipo documental.svg"/>Tipo Documental</p:link> </li>
                             </ul>
                         </li>
-                        <li title="Administración"><a><i class="fa fa-database"></i>Administración<span class="fa fa-chevron-down"></span></a>
+                        <li title="Administración"><a><i class="fa fa-database"></i>Administración</a>
                             <ul class="nav child_menu">
                                 <li class="col-xs-4"><p:link outcome="/Views/admin/usuarios" ><h:graphicImage library="images" name="usuarios.svg"/>Usuarios</p:link> </li>
                                 <li class="col-xs-4"><p:link outcome="/Views/admin/cargo"><h:graphicImage library="images" name="cargos.svg"/>Cargos</p:link> </li>
@@ -88,13 +93,6 @@
                 -->
             </div>
             <!-- /sidebar menu -->
-            <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
-                <a data-toggle="tooltip" data-placement="top" title="Ajustes"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a>
-                <a data-toggle="tooltip" data-placement="top" title="Pantalla Completa"> <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span> </a>
-                <a data-toggle="tooltip" data-placement="top" title="Lock"> <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> </a>
-                <a data-toggle="tooltip" data-placement="top" title="Cerrar Sessión"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </a>
-            </div>
         </p:cache>
     </body>
 </html>

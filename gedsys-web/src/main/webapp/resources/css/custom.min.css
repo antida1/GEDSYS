@@ -142,12 +142,13 @@
 }
 .nav-sm .container.body .right_col {
     padding: 10px 20px;
-    margin-left: 70px;
+    margin-left: 0px;
     z-index: 2;
     overflow : hidden;
 }
 .nav-sm .navbar.nav_title {
-    width: 70px;
+    width: 70%;
+    margin-left: 15%;
 }
 .nav-sm .navbar.nav_title a span {
     display: none;
@@ -162,7 +163,8 @@
     border-radius: 50%}
 .nav-sm .main_container .top_nav {
     display: block;
-    margin-left: 70px;
+    margin-left: 0px;
+    padding : 0;
     z-index: 2;
 }
 .nav-sm .nav.side-menu li a {
@@ -194,7 +196,7 @@
     margin-bottom: 5px;
 }
 .nav-sm ul.nav.child_menu {
-    left: 100%;
+    left: 102.5%;
     position: absolute;
     top: 0;
     width: 30vw;
@@ -302,9 +304,6 @@
 .nav-sm .menu_section {
     margin: 0;
 }
-.nav-sm span.fa, .nav-sm .menu_section h3 {
-    display: none;
-}
 .nav-sm li li span.fa {
     display: inline-block;
 }
@@ -335,6 +334,7 @@
 }
 body .container.body .right_col {
     background: #F7F7F7;
+    min-height : 85.25vh !important;
 }
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
@@ -788,6 +788,7 @@ a:hover, a:focus {
 }
 .main_menu_side {
     padding: 0;
+    display : inline-block;
 }
 .bs-docs-sidebar .nav>li>a {
     display: block;
@@ -797,9 +798,7 @@ footer {
     background: #fff;
     padding: 15px 20px;
     display: block;
-}
-.nav-sm footer {
-    margin-left: 70px;
+    margin-bottom: 5px;
 }
 .footer_fixed footer {
     position: fixed;
@@ -1519,10 +1518,8 @@ span.right {
 .sidebar-footer {
     bottom: 0px;
     clear: both;
-    display: block;
+    display: none;
     padding: 5px 0 0 0;
-    position: fixed;
-    width: 230px;
     background: #188986;
 }
 .sidebar-footer a {
@@ -3942,4 +3939,18 @@ td{
 }
 .tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary {
     color : white !important;
+}
+.col-form-label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.ui-trigger-calendar input {
+    width : 80%;
+}
+.ui-trigger-calendar button {
+    width : 15%;
+}
+.main_container{
+    padding : 0;
 }

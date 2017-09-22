@@ -18,7 +18,6 @@
                             <div class="clear"></div>
                         </div>
                         <div class="x_content">
-                            <p:separator/>
                             <div class="col-xs-12 form-group">
                                 <div class='col-xs-2'>
                                     <p:commandButton class="btn btn-info" icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
@@ -28,7 +27,7 @@
                             <p:separator/>
                             <div class="col-xs-12 form-group">
                                 <div class="col-xs-12">
-                                    <p:outputLabel value="Buscar" for="buscar" class="col-xs-2 col-form-label"/>
+                                    <p:outputLabel value="Buscador" for="buscar" class="col-xs-2 col-form-label" style='font-size: 1.5em;'/>
                                     <div class="col-xs-10">
                                         <p:outputLabel id="buscar">
                                         </p:outputLabel>
@@ -36,36 +35,34 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 form-group">
-                                <div class="col-xs-12">
-                                    <p:outputLabel for="fechaInicial" value="Fecha inicial" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-4">
+                                <div class="col-xs-4">
+                                    <p:outputLabel for="fechaInicial" value="Fecha inicial" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:calendar id="fechaInicial" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
                                     </div>
                                 </div>
-                                <div class="col-xs-12">
-                                    <p:outputLabel for="fechaFinal" value="Fecha final" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-4">
+                                <div class="col-xs-4">
+                                    <p:outputLabel for="fechaFinal" value="Fecha final" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:calendar id="fechaFinal" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Tipo documental" for="tipoDocumental" class="col-xs-2 col-form-label"/>
-                                <div class="col-xs-3">
-                                    <p:selectOneMenu id="tipoDocumental" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
-                                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
-                                        <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="tipoDocumental" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
-                                    </p:selectOneMenu>
+                                <div class="col-xs-4">
+                                    <p:outputLabel value="Tipo documental" for="tipoDocumental" class="col-xs-5 col-form-label"/>
+                                    <div class="col-xs-7">
+                                        <p:selectOneMenu id="tipoDocumental" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
+                                            <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="tipoDocumental" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class='col-xs-12 text-right' style='margin-top:2vh;'>
+                                    <p:commandButton class="btn-success" icon="fa fa-fw fa-search" type="button" value="Buscar" onclick="PF('denBuscar').show()"></p:commandButton>
                                 </div>
                             </div>
-                            <div class="col-xs-10"></div>
-                            <div class='btn-group btn-group-right col-xs-2'>
-                                <p:commandButton icon="fa fa-fw fa-search" type="button" value="Buscar" onclick="PF('denBuscar').show()"></p:commandButton>
-                            </div>
+
                             <p:separator></p:separator>
-
                             <div class="col-xs-12">
-
                                 <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0">
                                     <p:column headerText="Fecha inicial">
                                         <h:outputText value="fi" />
@@ -97,8 +94,6 @@
                                     <p:column headerText="Reintegrar">
                                         <p:commandButton icon="fa fa-fw fa-rotate-left" type="button" title="Reintegrar" onclick="PF('denReintegrar').show()"></p:commandButton>
                                     </p:column>
-
-
                                 </p:dataTable>
                             </div>
                             <p:dialog id="dlgReintegrar" header="Reintegrar" widgetVar="denReintegrar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="500">
