@@ -200,9 +200,13 @@
     position: absolute;
     top: 0;
     width: 30vw;
-    z-index: 4000;
+    z-index: 10;
     background: #177977;
     display: none;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
 }
 .nav-sm ul.nav.child_menu li {
     padding: 0 10px;
@@ -619,6 +623,7 @@ a:hover, a:focus {
     position: relative;
     display: block;
     cursor: pointer;
+    transition : all .3s ease;
 }
 .nav.side-menu>li>a {
     margin-bottom: 6px;
@@ -3953,4 +3958,30 @@ td{
 }
 .main_container{
     padding : 0;
+}
+.ui-dialog-mask{
+    display : none;
+}
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary{
+    background: #188986 !important;
+}
+.tab-content .tab-pane .doc-container .doc .paper .btn-group .btn-primary:hover{
+    background: #166e6c !important;
+}
+.tab-content .tab-pane .doc-container .doc .paper{
+    border-radius : 5px;
+    /*border : dashed 1px #188986;*/
+    background : white !important;
+}
+.tab-pane{
+    border: 1px solid #ddd;
+    border-top: none;
+    background : whitesmoke;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #169F85;
+    cursor: default;
+    background-color: whitesmoke;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
 }

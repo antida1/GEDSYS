@@ -19,13 +19,6 @@
                         </div>
                         <div class="x_content">
                             <div class="col-xs-12 form-group">
-                                <div class='col-xs-2'>
-                                    <p:commandButton class="btn btn-info" icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
-                                </div>
-                                <div class="col-xs-10"></div>
-                            </div>
-                            <p:separator/>
-                            <div class="col-xs-12 form-group">
                                 <div class="col-xs-12">
                                     <p:outputLabel value="Buscador" for="buscar" class="col-xs-2 col-form-label" style='font-size: 1.5em;'/>
                                     <div class="col-xs-10">
@@ -60,8 +53,13 @@
                                     <p:commandButton class="btn-success" icon="fa fa-fw fa-search" type="button" value="Buscar" onclick="PF('denBuscar').show()"></p:commandButton>
                                 </div>
                             </div>
-
                             <p:separator></p:separator>
+                            <div class="col-xs-12 form-group">
+                                <div class='col-xs-2'>
+                                    <p:commandButton class="btn btn-info" icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
+                                </div>
+                                <div class="col-xs-10"></div>
+                            </div>
                             <div class="col-xs-12">
                                 <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0">
                                     <p:column headerText="Fecha inicial">

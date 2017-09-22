@@ -16,89 +16,95 @@
                     <h:form> 
                         <div class="col-md-12 col-xs-12">
                             <div class="col-xs-10 col-xs-offset-1 x_panel">
-                                <div class="col-xs-12 filter">
-                                    <div id="Collapse" class="collapse">
-                                        <form action="" method="GET">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Titulo" id="txtSearch" />
-                                                        <div class="input-group-btn">
-                                                            <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Fecha" id="txtSearch" />
-                                                        <div class="input-group-btn">
-                                                            <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Search" id="txtSearch" />
-                                                        <div class="input-group-btn">
-                                                            <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Radicado" id="txtSearch" />
-                                                        <div class="input-group-btn">
-                                                            <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                <div class="x_title">
+                                    <h2>Gestión de documentos</h2>
+                                    <div class="clear"></div>
                                 </div>
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab1">Enviados</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab2">Archivados</a></li>
-                                    <button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
-                                </ul>
-                                <div class="tab-content">
-                                    <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
-                                        <div class="col-xs-12 doc-container">
-
-                                            <ui:repeat value="#{documentosBean.documentos}" var="doc" varStatus="status">
-                                                <c:if test='#{doc.requiereRespuesta}'> 
-                                                    <c:set value="someclass" var="cssClass"></c:set>
-                                                </c:if> 
-                                                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3 doc ${cssClass}'>
-                                                    <div class='col-xs-12 paper'>
-                                                        <div class='col-xs-6 title'><h4><h:outputText value="#{doc.asunto}"/></h4><h6><h:outputText value="#{doc.fechaCreacion}"/></h6></div>
-                                                        <div class='col-xs-6 based text-right'><h5><h:outputText value="#{doc.tipoDocumento.nombre}" /></h5></div>
-                                                        <div class='col-xs-10 col-xs-offset-1 content text-justify'><p><h:outputText value="#{doc.detalle}" /> </p></div>
-
-                                                        <div class='btn-group btn-group-justified col-xs-12'>
-
-                                                            <a href="#" class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
-                                                            <a href="#" class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
-                                                            <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
-                                                            <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denDevolver').show()"><span class="glyphicon fa fa-fw fa-rotate-left" aria-hidden="true"></span></a>
+                                <div class='x_content'>
+                                     <div class="col-xs-12 filter">
+                                        <div id="Collapse" class="collapse">
+                                            <form action="" method="GET">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Titulo" id="txtSearch" />
+                                                            <div class="input-group-btn">
+                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Fecha" id="txtSearch" />
+                                                            <div class="input-group-btn">
+                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Search" id="txtSearch" />
+                                                            <div class="input-group-btn">
+                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Radicado" id="txtSearch" />
+                                                            <div class="input-group-btn">
+                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </ui:repeat>
+                                            </form>
                                         </div>
                                     </div>
-                                    <div id="menuTab1" class="tab-pane fade">
-                                        <div class="col-xs-12 doc-container"> </div>
-                                    </div>
-                                    <div id="menuTab2" class="tab-pane fade">
-                                        <div class="col-xs-12 doc-container">
-                                            <p:tree value="#{treeIconView.root}" var="doc">
-                                                <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                                    <h:outputText value="#{doc.name}"/>
-                                                </p:treeNode>
-                                            </p:tree>
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab1">Enviados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2">Archivados</a></li>
+                                        <button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
+                                            <div class="col-xs-12 doc-container">
+
+                                                <ui:repeat value="#{documentosBean.documentos}" var="doc" varStatus="status">
+                                                    <c:if test='#{doc.requiereRespuesta}'> 
+                                                        <c:set value="someclass" var="cssClass"></c:set>
+                                                    </c:if> 
+                                                    <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3 doc ${cssClass}'>
+                                                        <div class='col-xs-12 paper'>
+                                                            <div class='col-xs-6 title'><h4><h:outputText value="#{doc.asunto}"/></h4><h6><h:outputText value="#{doc.fechaCreacion}"/></h6></div>
+                                                            <div class='col-xs-6 based text-right'><h5><h:outputText value="#{doc.tipoDocumento.nombre}" /></h5></div>
+                                                            <div class='col-xs-10 col-xs-offset-1 content text-justify'><p><h:outputText value="#{doc.detalle}" /> </p></div>
+
+                                                            <div class='btn-group btn-group-justified col-xs-12'>
+
+                                                                <a href="#" class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denDevolver').show()"><span class="glyphicon fa fa-fw fa-rotate-left" aria-hidden="true"></span></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ui:repeat>
+                                            </div>
+                                        </div>
+                                        <div id="menuTab1" class="tab-pane fade">
+                                            <div class="col-xs-12 doc-container"> </div>
+                                        </div>
+                                        <div id="menuTab2" class="tab-pane fade">
+                                            <div class="col-xs-12 doc-container">
+                                                <p:tree value="#{treeIconView.root}" var="doc">
+                                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                                        <h:outputText value="#{doc.name}"/>
+                                                    </p:treeNode>
+                                                </p:tree>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -61,7 +61,6 @@
             };
         </script>
     </h:head>
-
     <body class="nav-sm">
         <div class="container body">
             <div class="col-xs-12 main_container">
@@ -87,8 +86,6 @@
                         <br />
                         <!-- sidebar menu -->
                         <ui:include src="menu.xhtml" />
-                        
-                        
                         <!-- /menu footer buttons -->
                     </div>
                 </div>
@@ -182,6 +179,11 @@
         <h:outputScript library="js" name="daterangepicker.js" />
         <!-- Custom Theme Scripts -->
         <h:outputScript library="js" name="custom.min.js" />
+        <script>
+            $(function(){
+                $('.side-menu > .active > a').click();
+            });
+        </script>
         </body>
 
 </html>
