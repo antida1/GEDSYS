@@ -6,120 +6,123 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
-
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('modulos') == true}">
-                <f:event type="preRenderView" listener="#{moduloBean.listar()}" />
-                <p:growl id="messages"  showDetail="true" />
-                <h:form id="form">
-                    <h3>Módulos</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('moduloDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{moduloBean.setAccion('Crear')}" update="dlgDetalle">
-                        </p:menuitem>
-                    </p:menubar>
-                    <p:separator/>
-                    <p:dataTable id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0">
-                        <p:column headerText="Dependencia">
-                            <h:outputText value="#{modulo.dependeDe}"/>
-                        </p:column>
-                        <p:column headerText="Nombre">
-                            <h:outputText value="#{modulo.nombre}"/>
-                        </p:column>
-                        <p:column headerText="Oculto">
-                            <h:outputText value="#{modulo.oculto}" />
-                            <c:if test="#{modulo.oculto == true}">
-                                <h:outputText value="Sí" />
-                            </c:if>
-                            <c:if test="#{modulo.oculto == false}">
-                                <h:outputText value="No" />
-                            </c:if>
-                        </p:column>
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{modulo.fechaCreacion}" />
-                        </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{modulo.fechaModificacion}" />
-                        </p:column>
-                        <p:column headerText="Creado Por">
-                            <h:outputText value="#{modulo.creadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Modificado Por">
-                            <h:outputText value="#{modulo.modificadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{moduloBean.getModuloById(modulo)}"
-                                             update=":dlgDetalle" oncomplete="PF('moduloDialog').show()"
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                        </p:column>
-                        <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser"
-                                             title="Borrar"
-                                             actionListener="#{moduloBean.eliminar(modulo)}"
-                                             update=":form:lstModulos messages"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-
-                <p:dialog id="dlgDetalle" header="Módulo" widgetVar="moduloDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="570" width="90%">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{moduloBean.modulo.nombre}"/>
-                        <div class="form-group row">
-                            <p:outputLabel value="Dependencia" for="dependeDe" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
-                                <p:selectOneMenu id="dependeDe" value="#{moduloBean.modulo.dependeDe}" converter="omnifaces.SelectItemsConverter" >
-                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el nodo padre" itemValue="#{null}"/>
-                                    <f:selectItems value="#{moduloBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
-                                </p:selectOneMenu>
+                    <f:event type="preRenderView" listener="#{moduloBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Módulos</h2>
+                                <div class="clear"></div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
-                                <p:inputText id="Nombre" required="true" value="#{moduloBean.modulo.nombre}" class="form-control"/>
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('moduloDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{moduloBean.setAccion('Crear')}" update="dlgDetalle">
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0">
+                                    <p:column headerText="Dependencia">
+                                        <h:outputText value="#{modulo.dependeDe}"/>
+                                    </p:column>
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{modulo.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Oculto">
+                                        <h:outputText value="#{modulo.oculto}" />
+                                        <c:if test="#{modulo.oculto == true}">
+                                            <h:outputText value="Sí" />
+                                        </c:if>
+                                        <c:if test="#{modulo.oculto == false}">
+                                            <h:outputText value="No" />
+                                        </c:if>
+                                    </p:column>
+                                    <p:column headerText="Fecha Creación">
+                                        <h:outputText value="#{modulo.fechaCreacion}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Modificación">
+                                        <h:outputText value="#{modulo.fechaModificacion}" />
+                                    </p:column>
+                                    <p:column headerText="Creado Por">
+                                        <h:outputText value="#{modulo.creadoPor.nombres}" />
+                                    </p:column>
+                                    <p:column headerText="Modificado Por">
+                                        <h:outputText value="#{modulo.modificadoPor.nombres}" />
+                                    </p:column>
+                                    <p:column headerText="Editar">
+                                        <p:commandButton actionListener="#{moduloBean.getModuloById(modulo)}"
+                                                         update=":dlgDetalle" oncomplete="PF('moduloDialog').show()"
+                                                         icon="ui-icon-pencil" title="Editar">
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Borrar">
+                                        <p:commandButton icon="ui-icon-eraser"
+                                                         title="Borrar"
+                                                         actionListener="#{moduloBean.eliminar(modulo)}"
+                                                         update=":form:lstModulos messages"/>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
-                        </div>
-                        
-                        <div class="form-group row">
-                            <p:outputLabel value="Url" for="UrlModulo" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
-                                <p:inputText id="UrlModulo" required="true" value="#{moduloBean.modulo.urlModulo}" class="form-control"/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group row">
-                            <p:outputLabel value="Icon" for="Icon" class="col-xs-2 col-form-label" />
-                            <div class="col-xs-10">
-                                <p:inputText id="Icon" required="true" value="#{moduloBean.modulo.moduloIcon}" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <p:outputLabel value="Oculto" for="oculto" class="col-xs-2 col-form-label"/>
-                            <div class="col-xs-10">
-                                <p:selectOneMenu id="oculto" value="#{moduloBean.modulo.oculto}">
-                                    <f:selectItem itemLabel="No" itemValue="#{false}" />
-                                    <f:selectItem itemLabel="Sí" itemValue="#{true}" />
-
-                                </p:selectOneMenu>
+                        </h:form>
+                        <p:dialog id="dlgDetalle" header="Módulo" widgetVar="moduloDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="570" width="90%">
+                            <h:form>
+                                <h:inputHidden id="id" value="#{moduloBean.modulo.nombre}"/>
                                 <div class="form-group row">
-                                    <p:textEditor widgetVar="descripcion" value="#{moduloBean.modulo.descripcion}" height="100" style="margin-bottom:10px"/>                 
+                                    <p:outputLabel value="Dependencia" for="dependeDe" class="col-xs-2 col-form-label"/>
+                                    <div class="col-xs-10">
+                                        <p:selectOneMenu id="dependeDe" value="#{moduloBean.modulo.dependeDe}" converter="omnifaces.SelectItemsConverter" >
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione el nodo padre" itemValue="#{null}"/>
+                                            <f:selectItems value="#{moduloBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
+                                        </p:selectOneMenu>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:inputText id="Nombre" required="true" value="#{moduloBean.modulo.nombre}" class="form-control"/>
+                                    </div>
+                                </div>
 
-                        <p:spacer/>
-                        <div>
-                            <p:commandButton update=":form:lstModulos messages" icon="ui-icon-disk" value="#{moduloBean.accion}" actionListener="#{moduloBean.procesar()}" oncomplete="PF('moduloDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('moduloDialog').hide()"></p:commandButton>
-                        </div>
-                    </h:form>
-                </p:dialog>
-</c:if>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Url" for="UrlModulo" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:inputText id="UrlModulo" required="true" value="#{moduloBean.modulo.urlModulo}" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <p:outputLabel value="Icon" for="Icon" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:inputText id="Icon" required="true" value="#{moduloBean.modulo.moduloIcon}" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <p:outputLabel value="Oculto" for="oculto" class="col-xs-2 col-form-label"/>
+                                    <div class="col-xs-10">
+                                        <p:selectOneMenu id="oculto" value="#{moduloBean.modulo.oculto}">
+                                            <f:selectItem itemLabel="No" itemValue="#{false}" />
+                                            <f:selectItem itemLabel="Sí" itemValue="#{true}" />
+
+                                        </p:selectOneMenu>
+                                        <div class="form-group row">
+                                            <p:textEditor widgetVar="descripcion" value="#{moduloBean.modulo.descripcion}" height="100" style="margin-bottom:10px"/>                 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p:spacer/>
+                                <div>
+                                    <p:commandButton update=":form:lstModulos messages" icon="ui-icon-disk" value="#{moduloBean.accion}" actionListener="#{moduloBean.procesar()}" oncomplete="PF('moduloDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('moduloDialog').hide()"></p:commandButton>
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                    </div>
+                </c:if>
                 <c:if test="#{autorizationBean.hasAccess('modulos') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>

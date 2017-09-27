@@ -13,53 +13,60 @@
 
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('signaturaTopografica') == true}">
-                <f:event type="preRenderView" listener="#{signaturaTopograficaBean.listar()}"></f:event>
-                <p:growl id="messages"  showDetail="true" />
-                <h:form id="form">
-                    <h3>Signatura Topográfica</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.setAccion('Crear')}" update=":dlgDetalle" ></p:menuitem>
-                        <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Editar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.getSignaturaTopograficaById(signaturaTopograficaBean.signaturaSelected)}" update=":dlgDetalle" ></p:menuitem>
-                        <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Eliminar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.eliminar(signaturaTopograficaBean.signaturaSelected)}" update="signaturaTree" ></p:menuitem>
+                    <f:event type="preRenderView" listener="#{signaturaTopograficaBean.listar()}"></f:event>
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Signatura Topográfica</h2>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.setAccion('Crear')}" update=":dlgDetalle" ></p:menuitem>
+                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Editar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.getSignaturaTopograficaById(signaturaTopograficaBean.signaturaSelected)}" update=":dlgDetalle" ></p:menuitem>
+                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Eliminar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.eliminar(signaturaTopograficaBean.signaturaSelected)}" update="signaturaTree" ></p:menuitem>
 
-                    </p:menubar>
-                    <p:separator/>
-                    <p:tree id="signaturaTree" value="#{signaturaTree.root}" var="signatura" class="col-xs-12" dynamic="true" selectionMode="single" orientation="horizontal"  >
-                        <p:ajax event="select" listener="#{signaturaTopograficaBean.selectDependencia}"/>
-                        <p:treeNode  expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed" >
-                            <h:outputText value="#{signatura}"/>
-                        </p:treeNode>
-                    </p:tree>
-                </h:form>
-                <p:dialog id="dlgDetalle" header="Signatura Topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="800">
-                    <h:form>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group row">
-                                    <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
-                                    <div class="col-xs-9">
-                                        <p:inputText id="Codigo" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.codigo}" class="form-control" />
+                                </p:menubar>
+                                <p:separator/>
+                                <p:tree id="signaturaTree" value="#{signaturaTree.root}" var="signatura" class="col-xs-12" dynamic="true" selectionMode="single" orientation="horizontal"  >
+                                    <p:ajax event="select" listener="#{signaturaTopograficaBean.selectDependencia}"/>
+                                    <p:treeNode  expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed" >
+                                        <h:outputText value="#{signatura}"/>
+                                    </p:treeNode>
+                                </p:tree>
+                            </div>
+                        </h:form>
+                    </div>
+                    <p:dialog id="dlgDetalle" header="Signatura Topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="800">
+                        <h:form>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
+                                        <div class="col-xs-9">
+                                            <p:inputText id="Codigo" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.codigo}" class="form-control" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="Nombre" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" class="form-control"/>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-9">
+                                            <p:inputText id="Nombre" required="true" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" class="form-control"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <p:spacer/>
-                                <div class="form-group row">
-                                    <div class="col-xs-7"></div>
-                                <div class="col-xs-5"> 
-                                    <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
-                                </div>
+                                    <p:spacer/>
+                                    <div class="form-group row">
+                                        <div class="col-xs-7"></div>
+                                        <div class="col-xs-5"> 
+                                            <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
+                                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </h:form>
-                </p:dialog> 
+                        </h:form>
+                    </p:dialog> 
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('signaturaTopografica') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

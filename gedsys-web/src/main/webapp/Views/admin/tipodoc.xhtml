@@ -5,82 +5,86 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
-
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('tipodoc') == true}">
-                <f:event type="preRenderView" listener="#{tipoDocumentalBean.listar()}" />
-                <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
-                <p:growl id="messages"  showDetail="true" />
-                <h:form id="form">
-                    <h3>Tipos Documentales</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('tipoDocumentalDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{tipoDocumentalBean.setAccion('Crear')}" update=":dlgDetalle" >
-                        </p:menuitem>
-                    </p:menubar>
-                    <p:separator/>
-                    <p:dataTable id="lstTiposDocumentales" var="tp" value="#{tipoDocumentalBean.tiposDocumentales}" style="margin-bottom:0">
-                         <p:column headerText="Unidad Documental">
-                             <h:outputText value="#{tp.unidadDocumental.nombre}" />
-                        </p:column>
-                        <p:column headerText="Nombre">
-                            <h:outputText value="#{tp.nombre}" />
-                        </p:column>
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{tp.fechaCreacion}" />
-                        </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{tp.fechaModificacion}" />
-                        </p:column>
-                        <p:column headerText="Creado Por">
-                            <h:outputText value="#{tp.creadoPor}" />
-                        </p:column>
-                        <p:column headerText="Modificado Por">
-                            <h:outputText value="#{tp.modificadoPor}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{tipoDocumentalBean.getTipoDocumentalById(tp)}" 
-                                             update=":dlgDetalle" oncomplete="PF('tipoDocumentalDialog').show()" 
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                       </p:column>
-                        <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
-                                             title="Borrar"
-                                             actionListener="#{tipoDocumentalBean.eliminar(sec)}" 
-                                             update=":form:lstTiposDocumentales messages"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog id="dlgDetalle" header="Sección" widgetVar="tipoDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{tipoDocumentalBean.tipoDocumental.id}" />
-                        <div class="form-group row">
-                            <p:outputLabel value="Unidad Documental" for="UnidadDocumental" class="col-xs-3 col-form-label"/>
-                            <div class="col-xs-9">
-                                <p:selectOneMenu id="UnidadDocumental" value="#{tipoDocumentalBean.tipoDocumental.unidadDocumental}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
-                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
-                                    <f:selectItems value="#{unidadDocumentalBean.unidadesDocumentales}" var="td" itemLabel="#{td.nombre}" itemValue="#{td}" />
-                                </p:selectOneMenu>
+                    <f:event type="preRenderView" listener="#{tipoDocumentalBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Tipos Documentales</h2>
+                                <div class="clear"></div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
-                            <div class="col-xs-9">
-                                <p:inputText id="Nombre" required="true" value="#{tipoDocumentalBean.tipoDocumental.nombre}" />
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('tipoDocumentalDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{tipoDocumentalBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable id="lstTiposDocumentales" var="tp" value="#{tipoDocumentalBean.tiposDocumentales}" style="margin-bottom:0">
+                                    <p:column headerText="Unidad Documental">
+                                        <h:outputText value="#{tp.unidadDocumental.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{tp.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Creación">
+                                        <h:outputText value="#{tp.fechaCreacion}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Modificación">
+                                        <h:outputText value="#{tp.fechaModificacion}" />
+                                    </p:column>
+                                    <p:column headerText="Creado Por">
+                                        <h:outputText value="#{tp.creadoPor}" />
+                                    </p:column>
+                                    <p:column headerText="Modificado Por">
+                                        <h:outputText value="#{tp.modificadoPor}" />
+                                    </p:column>
+                                    <p:column headerText="Editar">
+                                        <p:commandButton actionListener="#{tipoDocumentalBean.getTipoDocumentalById(tp)}" 
+                                                         update=":dlgDetalle" oncomplete="PF('tipoDocumentalDialog').show()" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Borrar">
+                                        <p:commandButton icon="ui-icon-eraser" 
+                                                         title="Borrar"
+                                                         actionListener="#{tipoDocumentalBean.eliminar(sec)}" 
+                                                         update=":form:lstTiposDocumentales messages"/>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
-                        </div>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstTiposDocumentales messages" icon="ui-icon-disk" value="#{tipoDocumentalBean.accion}" actionListener="#{tipoDocumentalBean.procesar()}" oncomplete="PF('tipoDocumentalDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentalDialog').hide()"></p:commandButton>
-                        </div>
-                    </h:form>
-                </p:dialog>
+                        </h:form>
+                        <p:dialog id="dlgDetalle" header="Sección" widgetVar="tipoDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                            <h:form>
+                                <h:inputHidden id="id" value="#{tipoDocumentalBean.tipoDocumental.id}" />
+                                <div class="form-group row">
+                                    <p:outputLabel value="Unidad Documental" for="UnidadDocumental" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
+                                        <p:selectOneMenu id="UnidadDocumental" value="#{tipoDocumentalBean.tipoDocumental.unidadDocumental}" converter="omnifaces.SelectItemsConverter" required="true" class="form-control">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                                            <f:selectItems value="#{unidadDocumentalBean.unidadesDocumentales}" var="td" itemLabel="#{td.nombre}" itemValue="#{td}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Nombre" required="true" value="#{tipoDocumentalBean.tipoDocumental.nombre}" />
+                                    </div>
+                                </div>
+                                <p:spacer/>
+                                <div> 
+                                    <p:commandButton update=":form:lstTiposDocumentales messages" icon="ui-icon-disk" value="#{tipoDocumentalBean.accion}" actionListener="#{tipoDocumentalBean.procesar()}" oncomplete="PF('tipoDocumentalDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentalDialog').hide()"></p:commandButton>
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                    </div>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('tipodoc') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

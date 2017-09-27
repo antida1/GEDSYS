@@ -6,66 +6,70 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
-
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('diasFestivos') == true}">
-                <f:event type="preRenderView" listener="#{diaFestivoBean.listar()}" />
-                <p:growl id="messages" showDetail="true"/>
-                <h:form id="form">
-                    <h3>Días Festivos</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('diaDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{diaFestivoBean.setAccion('Crear')}" update="dlgDetalle">
-                        </p:menuitem>
-                    </p:menubar>
-                    <p:separator/>
-                    <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0">
-                        <p:column headerText="Día Festivo">
-                            <h:outputText value="#{festivo.diaFestivo}" />
-                        </p:column>
-
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{festivo.fechaCreacion}" />
-                        </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{festivo.fechaModificacion}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 
-                                             update=":dlgDetalle" oncomplete="PF('diaDialog').show()" 
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                        </p:column>
-                        <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
-                                             title="Borrar"
-                                             actionListener="#{diaFestivoBean.eliminar(festivo)}" 
-                                             update=":form:lstDias messages"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog id="dlgDetalle" header="Día Festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{diaFestivoBean.diaFestivo.id}" />
-                        <div class="form-group row">
-                            <p:outputLabel value="Día Festivo" for="dfestivo" class="col-xs-3 col-form-label"/>
-                            <div class="col-xs-9">
-                                <p:calendar id="dfestivo" value="#{diaFestivoBean.diaFestivo.diaFestivo}" showOn="button">
-                                </p:calendar>
+                    <f:event type="preRenderView" listener="#{diaFestivoBean.listar()}" />
+                    <p:growl id="messages" showDetail="true"/>
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Días Festivos</h2>
+                                <div class="clear"></div>
                             </div>
-                        </div>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}" oncomplete="PF('diaDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
-                        </div>
-                    </h:form>
-                </p:dialog>
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('diaDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{diaFestivoBean.setAccion('Crear')}" update="dlgDetalle">
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0">
+                                    <p:column headerText="Día Festivo">
+                                        <h:outputText value="#{festivo.diaFestivo}" />
+                                    </p:column>
 
-</c:if>
+                                    <p:column headerText="Fecha Creación">
+                                        <h:outputText value="#{festivo.fechaCreacion}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Modificación">
+                                        <h:outputText value="#{festivo.fechaModificacion}" />
+                                    </p:column>
+                                    <p:column headerText="Editar">
+                                        <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 
+                                                         update=":dlgDetalle" oncomplete="PF('diaDialog').show()" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Borrar">
+                                        <p:commandButton icon="ui-icon-eraser" 
+                                                         title="Borrar"
+                                                         actionListener="#{diaFestivoBean.eliminar(festivo)}" 
+                                                         update=":form:lstDias messages"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                    <p:dialog id="dlgDetalle" header="Día Festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
+                        <h:form>
+                            <h:inputHidden id="id" value="#{diaFestivoBean.diaFestivo.id}" />
+                            <div class="form-group row">
+                                <p:outputLabel value="Día Festivo" for="dfestivo" class="col-xs-3 col-form-label"/>
+                                <div class="col-xs-9">
+                                    <p:calendar id="dfestivo" value="#{diaFestivoBean.diaFestivo.diaFestivo}" showOn="button">
+                                    </p:calendar>
+                                </div>
+                            </div>
+                            <p:spacer/>
+                            <div> 
+                                <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}" oncomplete="PF('diaDialog').hide()" />
+                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+
+                </c:if>
                 <c:if test="#{autorizationBean.hasAccess('diasFestivos') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>

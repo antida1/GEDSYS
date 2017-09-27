@@ -6,93 +6,99 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('series') == true}">
-                <f:event type="preRenderView" listener="#{serieBean.listar()}" />
-                <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
-                <p:growl id="messages"  showDetail="true" />
-                <h:form id="form">
-                    <h3>Series</h3>
-                    <p:menubar>
-                        <p:menuitem oncomplete="PF('serieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{serieBean.setAccion('Crear')}" update=":dlgDetalle" >
-                        </p:menuitem>
-                    </p:menubar>
-                    <p:separator/>
-                    <p:dataTable id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0">
-                         <p:column headerText="SubSección">
-                             <h:outputText value="#{ser.seccionSubseccion.nombre}" />
-                        </p:column>
-                         <p:column headerText="Codigo">
-                            <h:outputText value="#{ser.codigo}" />
-                        </p:column>
-                        <p:column headerText="Serie">
-                            <h:outputText value="#{ser.nombre}" />
-                        </p:column>
-                        <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{ser.fechaCreacion}" />
-                        </p:column>
-                        <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{ser.fechaModificacion}" />
-                        </p:column>
-                        <p:column headerText="Creado Por">
-                            <h:outputText value="#{ser.creadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Modificado Por">
-                            <h:outputText value="#{ser.modificadoPor.nombres}" />
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton actionListener="#{serieBean.getSerieById(ser)}" 
-                                             update=":dlgDetalle" oncomplete="PF('serieDialog').show()" 
-                                             icon="ui-icon-pencil" title="Editar">
-                            </p:commandButton>
-                       </p:column>
-                        <p:column headerText="Borrar">
-                            <p:commandButton icon="ui-icon-eraser" 
-                                             title="Borrar"
-                                             actionListener="#{serieBean.eliminar(ser)}" 
-                                             update=":form:lstSeries messages"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog id="dlgDetalle" header="Serie" widgetVar="serieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="200" width="580">
-                    <h:form>
-                        <h:inputHidden id="id" value="#{serieBean.serie.id}" />
-                        <div class="form-group row">
-                            <p:outputLabel value="SubSeccion" for="Seccion" class="col-xs-3 col-form-label"/>
-                            <div class="col-xs-9">
-                                <p:selectOneMenu id="Seccion" value="#{serieBean.serie.seccionSubseccion}" converter="omnifaces.SelectItemsConverter" required="true">
-                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
-                                    <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="subsec" itemLabel="#{subsec.nombre}" itemValue="#{subsec}" />
-                                </p:selectOneMenu>
+                    <f:event type="preRenderView" listener="#{serieBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Series</h2>
+                                <div class="clear"></div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Codigo" for="Codigo" class="col-xs-3 col-form-label" />
-                            <div class="col-xs-9">
-                                <p:inputText id="Codigo" required="true" value="#{serieBean.serie.codigo}" class="form-control" />
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('serieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{serieBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0">
+                                    <p:column headerText="SubSección">
+                                        <h:outputText value="#{ser.seccionSubseccion.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Codigo">
+                                        <h:outputText value="#{ser.codigo}" />
+                                    </p:column>
+                                    <p:column headerText="Serie">
+                                        <h:outputText value="#{ser.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Creación">
+                                        <h:outputText value="#{ser.fechaCreacion}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Modificación">
+                                        <h:outputText value="#{ser.fechaModificacion}" />
+                                    </p:column>
+                                    <p:column headerText="Creado Por">
+                                        <h:outputText value="#{ser.creadoPor.nombres}" />
+                                    </p:column>
+                                    <p:column headerText="Modificado Por">
+                                        <h:outputText value="#{ser.modificadoPor.nombres}" />
+                                    </p:column>
+                                    <p:column headerText="Editar">
+                                        <p:commandButton actionListener="#{serieBean.getSerieById(ser)}" 
+                                                         update=":dlgDetalle" oncomplete="PF('serieDialog').show()" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Borrar">
+                                        <p:commandButton icon="ui-icon-eraser" 
+                                                         title="Borrar"
+                                                         actionListener="#{serieBean.eliminar(ser)}" 
+                                                         update=":form:lstSeries messages"/>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <p:outputLabel value="Serie" for="Nombre" class="col-xs-3 col-form-label" />
-                            <div class="col-xs-9">
-                                <p:inputText id="Nombre" required="true" value="#{serieBean.serie.nombre}" class="form-control" />
-                            </div>
-                        </div>
-                        <p:spacer/>
-                        <div> 
-                            <p:commandButton update=":form:lstSeries messages" icon="ui-icon-disk" value="#{serieBean.accion}" actionListener="#{serieBean.procesar()}" oncomplete="PF('serieDialog').hide()" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('serieDialog').hide()"></p:commandButton>
-                        </div>
-                    </h:form>
-                </p:dialog>
+                        </h:form>
+                        <p:dialog id="dlgDetalle" header="Serie" widgetVar="serieDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="200" width="580">
+                            <h:form>
+                                <h:inputHidden id="id" value="#{serieBean.serie.id}" />
+                                <div class="form-group row">
+                                    <p:outputLabel value="SubSeccion" for="Seccion" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
+                                        <p:selectOneMenu id="Seccion" value="#{serieBean.serie.seccionSubseccion}" converter="omnifaces.SelectItemsConverter" required="true">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                                            <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="subsec" itemLabel="#{subsec.nombre}" itemValue="#{subsec}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Codigo" for="Codigo" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Codigo" required="true" value="#{serieBean.serie.codigo}" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Serie" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Nombre" required="true" value="#{serieBean.serie.nombre}" class="form-control" />
+                                    </div>
+                                </div>
+                                <p:spacer/>
+                                <div> 
+                                    <p:commandButton update=":form:lstSeries messages" icon="ui-icon-disk" value="#{serieBean.accion}" actionListener="#{serieBean.procesar()}" oncomplete="PF('serieDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('serieDialog').hide()"></p:commandButton>
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                    </div>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('series') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>
+
             </ui:define>
         </ui:composition>
     </body>

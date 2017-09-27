@@ -12,45 +12,42 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('agenda') == true}">
-                <h:form>
-                    <p:growl id="messages" showDetail="true" />
-
-                    <h:panelGrid columnClasses="value">
-                        <h3 style="margin-top: 0">Programador de Alertas y Eventos</h3>
-                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-5" >
-
-                            <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
-                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
-
-                        </p:schedule>
-
-                    </h:panelGrid>
-
-                    <p:dialog widgetVar="eventDialog" header="Detalle de Eventos" showEffect="clip" hideEffect="clip">
-                        <h:panelGrid id="eventDetails" columns="2">
-                            <p:outputLabel for="title" value="Titulo:" />
-                            <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
-
-                            <p:outputLabel for="from" value="Desde" />
-                            <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
-
-                            <p:outputLabel for="to" value="Hasta:" />
-                            <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
-
-                            <p:outputLabel for="allDay" value="Todo el dia:" />
-                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
-
-                            <p:commandButton type="reset" value="Limpiar" />
-                            <p:commandButton id="addButton" value="Guardar" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                        </h:panelGrid>
-                    </p:dialog>    
-                </h:form>
-                    </c:if>
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form>
+                            <p:growl id="messages" showDetail="true" />
+                            <h:panelGrid columnClasses="value">
+                                <div class="x_title">
+                                    <h2 style="margin-top: 0">Programador de Alertas y Eventos</h2>
+                                    <div class="clear"></div>
+                                </div>
+                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-5" >
+                                    <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                                    <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                                    <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
+                                    <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+                                </p:schedule>
+                            </h:panelGrid>
+                            <p:dialog widgetVar="eventDialog" header="Detalle de Eventos" showEffect="clip" hideEffect="clip">
+                                <h:panelGrid id="eventDetails" columns="2">
+                                    <p:outputLabel for="title" value="Titulo:" />
+                                    <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
+                                    <p:outputLabel for="from" value="Desde" />
+                                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:outputLabel for="to" value="Hasta:" />
+                                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:outputLabel for="allDay" value="Todo el dia:" />
+                                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
+                                    <p:commandButton type="reset" value="Limpiar" />
+                                    <p:commandButton id="addButton" value="Guardar" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                                </h:panelGrid>
+                            </p:dialog>    
+                        </h:form>
+                    </div>
+                </c:if>
                 <c:if test="#{autorizationBean.hasAccess('agenda') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>
+
             </ui:define>
         </ui:composition>
     </h:body>
