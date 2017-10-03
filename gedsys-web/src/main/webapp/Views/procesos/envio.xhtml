@@ -17,14 +17,14 @@
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <div class="x_title">
-                            <h2>Envio de Documentos<small>Digitalización o Carga</small></h2>
+                            <h2>Envío de documentos<small>Digitalización o carga</small></h2>
                             <div class="clear"></div>
                         </div>
                         <div class="x_content">
                             <h:form id="form" enctype="multipart/form-data">
                                 <div class="col-xs-6 form-group">
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4" for="entidad">Entidad Destino <span class="required">*</span>
+                                        <label class=" col-xs-4" for="entidad">Entidad destino <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectOneMenu id="Entidad" value="#{envioBean.documento.entidad}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <h:inputHidden id="consecutivo" value="#{envioBean.documento.consecutivo}" />
-                                        <label class=" col-xs-4" for="tipoDocumentoExterno">Tipo de Documento<span class="required">*</span></label>
+                                        <label class=" col-xs-4" for="tipoDocumentoExterno">Tipo de documento<span class="required">*</span></label>
                                         <div class="col-xs-8">
                                             <p:selectOneMenu id="tipoDocumento" value="#{envioBean.documento.tipoDocumento}" filter="true" filterMatchMode="startsWith" converter="omnifaces.SelectItemsConverter" style="width: 100%" required="true">
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}" />
@@ -90,18 +90,18 @@
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4" for="libros">Descripción del Anexo <span class="required">*</span>
+                                        <label class=" col-xs-4" for="libros">Descripción del anexo <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
                                             <p:inputText id="libros" value="#{envioBean.documento.libros}" style="width: 100%"/>
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class="col-xs-4" for="tercero">Empresa/Tercero de Mensajería <span class="required">*</span>
+                                        <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectOneMenu id="tercero" value="#{envioBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter" required="true">
-                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione una Empresa/Tercero " itemValue="#{null}" />
+                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione una empresa/tercero " itemValue="#{null}" />
                                                 <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                                             </p:selectOneMenu>
 
@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4" for="medioEnvio">Medío de Envío <span class="required">*</span>
+                                        <label class=" col-xs-4" for="medioEnvio">Medio de envío <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectOneMenu id="medioEnvio" value="#{envioBean.documento.medioEnvio}" filter="true" filterMatchMode="startsWith" style="width: 100%" required="true">
@@ -137,7 +137,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4">Adjuntar Documento</label>
+                                        <label class=" col-xs-4">Adjuntar documento</label>
                                         <div class="col-xs-8">
                                             <p:fileUpload value="#{envioBean.documentFile}" fileUploadListener="#{envioBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
                                         </div>
@@ -146,8 +146,8 @@
 
                                 <div class="col-xs-12 form-group">
                                     <div class="col-xs-12">
-                                        <p:commandButton class="btn-success" style="margin-left: 10px;" update=":form messages"  value="Generar Radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true"/>
-                                        <p:commandButton class="btn-info" style="margin-left: 10px;" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir Radicado" onclick="PF('denRadicado').show()" partialSubmit="false"></p:commandButton>
+                                        <p:commandButton class="btn-success" style="margin-left: 10px;" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true"/>
+                                        <p:commandButton class="btn-info" style="margin-left: 10px;" icon="ui-icon-pencil" type="button" title="Imprimr radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false"></p:commandButton>
                                         <p:commandButton class="btn-primary" style="margin-left: 10px;" update="messages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false"/>
                                         <p:commandButton class="btn-default" style="float: right;" value="Cancelar" immediate="true"></p:commandButton>
                                         <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">

@@ -27,10 +27,10 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0">
-                                    <p:column headerText="Tipo de Documento">
+                                    <p:column headerText="Tipo de documento">
                                         <h:outputText value="#{entidad.tipoDocumento}" />
                                     </p:column>
-                                    <p:column headerText="Número de Documento">
+                                    <p:column headerText="Número de documento">
                                         <h:outputText value="#{entidad.numeroDocumento}" />
                                     </p:column>
                                     <p:column headerText="Nombre">
@@ -45,7 +45,7 @@
                                     <p:column headerText="Email">
                                         <h:outputText value="#{entidad.email}" />
                                     </p:column>
-                                    <p:column headerText="Fecha de Creación">
+                                    <p:column headerText="Fecha de creación">
                                         <h:outputText value="#{entidad.fechaCreacion}" />
                                     </p:column>
                                     <p:column headerText="Editar">
@@ -67,19 +67,19 @@
                             <h:form>
                                 <h:inputHidden id="id" value="#{entidadBean.entidad.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Tipo de Documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
+                                    <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
                                     <div class="col-xs-10">
                                         <p:selectOneMenu id="tipoDocumento" value="#{entidadBean.entidad.tipoDocumento}">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                             <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
                                             <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte"/>
-                                            <f:selectItem itemLabel="Cédula de Extranjeria" itemValue="Cédula de Extranjeria"/>
+                                            <f:selectItem itemLabel="Cédula de extranjería" itemValue="Cédula de extranjería"/>
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Número de Documento" for="numeroDocumento" class="col-xs-2 col-form-label"/>
+                                    <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-2 col-form-label"/>
                                     <div class="col-xs-10">
                                         <p:inputText id="numeroDocumento" required="true" value="#{entidadBean.entidad.numeroDocumento}" class="form-control" />
                                     </div>

@@ -16,7 +16,7 @@
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
                             <div class="x_title">
-                                <h2>Unidades Documentales</h2>
+                                <h2>Unidades documentales</h2>
                                 <div class="clear"></div>
                             </div>
                             <div class="x_content">
@@ -26,22 +26,22 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable id="lstUnidadesDocumentales" var="ud" value="#{unidadDocumentalBean.unidadesDocumentales}" style="margin-bottom:0">
-                                    <p:column headerText="Sub Serie">
+                                    <p:column headerText="Subserie">
                                         <h:outputText value="#{ud.subSerie.nombre}" />
                                     </p:column>
-                                    <p:column headerText="Unidad Documental">
+                                    <p:column headerText="Unidad documental">
                                         <h:outputText value="#{ud.nombre}" />
                                     </p:column>
-                                    <p:column headerText="Fecha Creación">
+                                    <p:column headerText="Fecha creación">
                                         <h:outputText value="#{ud.fechaCreacion}" />
                                     </p:column>
-                                    <p:column headerText="Fecha Modificación">
+                                    <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{ud.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado Por">
+                                    <p:column headerText="Creado por">
                                         <h:outputText value="#{ud.creadoPor}" />
                                     </p:column>
-                                    <p:column headerText="Modificado Por">
+                                    <p:column headerText="Modificado por">
                                         <h:outputText value="#{ud.modificadoPor}" />
                                     </p:column>
                                     <p:column headerText="Editar">
@@ -59,11 +59,11 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Unidad Documental" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <p:dialog id="dlgDetalle" header="Unidad documental" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
                             <h:form>
                                 <h:inputHidden id="id" value="#{unidadDocumentalBean.unidadDocumental.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Sub Serie" for="SubSerie" class="col-xs-3 col-form-label"/>
+                                    <p:outputLabel value="Subserie" for="SubSerie" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
                                         <p:selectOneMenu id="SubSerie" value="#{unidadDocumentalBean.unidadDocumental.subSerie}" converter="omnifaces.SelectItemsConverter" required="true">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Unidad Documental" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <p:outputLabel value="Unidad documental" for="Nombre" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
                                         <p:inputText id="Nombre" required="true" value="#{unidadDocumentalBean.unidadDocumental.nombre}" />
                                     </div>

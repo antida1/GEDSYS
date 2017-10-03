@@ -39,16 +39,16 @@
                                     <p:column headerText="Consecutivo">
                                         <h:outputText value="#{consecutivo.tipoConsecutivo}" />
                                     </p:column>
-                                    <p:column headerText="Fecha Creación">
+                                    <p:column headerText="Fecha creación">
                                         <h:outputText value="#{consecutivo.fechaCreacion}" />
                                     </p:column>
-                                    <p:column headerText="Fecha Modificación">
+                                    <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{consecutivo.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado Por">
+                                    <p:column headerText="Creado por">
                                         <h:outputText value="#{consecutivo.creadoPor.nombres} #{consecutivo.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado Por">
+                                    <p:column headerText="Modificado por">
                                         <h:outputText value="#{consecutivo.modificadoPor.apelidos} #{consecutivo.creadoPor.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Editar">
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="Tipo Consecutivo" for="TipoConsecutivo" class="col-xs-2 col-form-label" />
+                                <p:outputLabel value="Tipo consecutivo" for="TipoConsecutivo" class="col-xs-2 col-form-label" />
                                 <div class="col-xs-10">
                                     <p:selectOneMenu style="width:100%" id="TipoConsecutivo" value="#{consecutivoBean.consecutivo.tipoConsecutivo}">
                                         <f:selectItem itemLabel="Envío" itemValue="envio" />
