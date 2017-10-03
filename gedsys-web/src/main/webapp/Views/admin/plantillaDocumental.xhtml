@@ -99,9 +99,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-xs-2">Modulo</label>
+                                <label class="control-label col-xs-2" for="modulo" >Modulo</label>
                                 <div class="col-xs-4">
-                                    <p:selectOneMenu>
+                                    <p:selectOneMenu id="modulo" value="#{plantillaBean.modulo}" converter="omnifaces.SelectItemsConverter">
+                                        <p:ajax listener="#{plantillaBean.onModuleChange}" update="fields" />
                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione el modulo" itemValue="#{null}"/>
                                         <f:selectItems value="#{plantillaBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}"> </f:selectItems>
                                     </p:selectOneMenu>
@@ -109,9 +110,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-xs-2">Campo</label>
+                                <label class="control-label col-xs-2" for="fields">Campo</label>
                                 <div class="col-xs-3">
-                                    <p:selectOneMenu>
+                                    <p:selectOneMenu id="fileds">
                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione el campo" itemValue="#{null}"/>
                                         <f:selectItems value="#{plantillaBean.moduloFields}" var="campos" itemLabel="#{campos}" itemValue="#{campos}"> </f:selectItems>
                                     </p:selectOneMenu>
