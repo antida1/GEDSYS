@@ -14,7 +14,7 @@
                     <div class="col-md-10 col-md-offset-1 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Producción de Documentos</h2>
+                                <h2>Producción de documentos</h2>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
@@ -24,16 +24,16 @@
                                         <div class="col-xs-12">
                                             <label class="control-label col-md-4">Fecha</label>
                                             <div class="col-md-8 pull-right">
-                                                <p:calendar id="popup" placeholder="01/30/17" /> </div>
+                                                <p:calendar id="popup" placeholder="dd/mm/aaaa" /> </div>
                                         </div>
                                         <div class="col-xs-12">
-                                            <label class="control-label col-md-4">Nro Consecutivo Radicado Interno</label>
+                                            <label class="control-label col-md-4">Nro consecutivo radicado iterno</label>
                                             <div class="col-md-8">
                                                 <input type="text" class="form-control" readonly="readonly" placeholder="Radicado Generado Automatico"></input>
                                             </div>
                                         </div>
                                         <div class="col-xs-12">
-                                            <label class=" col-md-4" for="conCopia">Con Copia a <span class="required">*</span>
+                                            <label class=" col-md-4" for="conCopia">Con copia a <span class="required">*</span>
                                             </label>
                                             <div class="col-md-8">
                                                 <p:selectManyMenu id="conCopia" var="u" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
@@ -45,10 +45,10 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12">
-                                            <label class="control-label col-xs-4">Requiere Respuesta</label>
+                                            <label class="control-label col-xs-4">Requiere respuesta</label>
                                             <div class="col-xs-8">
                                                 <p:selectOneButton value="#{selectOneView.option}">
-                                                    <f:selectItem itemLabel="Si" itemValue="0" />
+                                                    <f:selectItem itemLabel="Sí" itemValue="0" />
                                                     <f:selectItem itemLabel="No" itemValue="0" /> </p:selectOneButton>
                                             </div>
                                         </div>
@@ -85,7 +85,7 @@
                                     <div class="form-group col-xs-12"></div>
                                     <div class="col-xs-12">
                                         <div class="col-xs-5">
-                                            <button type="submit" class="btn btn-default">Cancel</button>
+                                            <button type="submit" class="btn btn-default">Cancelar</button>
                                             <button type="submit" class="btn btn-success">Guardar</button>
                                         </div>
                                     </div>

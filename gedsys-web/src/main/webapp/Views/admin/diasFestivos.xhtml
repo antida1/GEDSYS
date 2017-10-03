@@ -15,7 +15,7 @@
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
                             <div class="x_title">
-                                <h2>Días Festivos</h2>
+                                <h2>Días festivos</h2>
                                 <div class="clear"></div>
                             </div>
                             <div class="x_content">
@@ -25,14 +25,14 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0">
-                                    <p:column headerText="Día Festivo">
+                                    <p:column headerText="Día festivo">
                                         <h:outputText value="#{festivo.diaFestivo}" />
                                     </p:column>
 
-                                    <p:column headerText="Fecha Creación">
+                                    <p:column headerText="Fecha creación">
                                         <h:outputText value="#{festivo.fechaCreacion}" />
                                     </p:column>
-                                    <p:column headerText="Fecha Modificación">
+                                    <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{festivo.fechaModificacion}" />
                                     </p:column>
                                     <p:column headerText="Editar">
@@ -51,11 +51,11 @@
                             </div>
                         </h:form>
                     </div>
-                    <p:dialog id="dlgDetalle" header="Día Festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
+                    <p:dialog id="dlgDetalle" header="Día festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
                         <h:form>
                             <h:inputHidden id="id" value="#{diaFestivoBean.diaFestivo.id}" />
                             <div class="form-group row">
-                                <p:outputLabel value="Día Festivo" for="dfestivo" class="col-xs-3 col-form-label"/>
+                                <p:outputLabel value="Día festivo" for="dfestivo" class="col-xs-3 col-form-label"/>
                                 <div class="col-xs-9">
                                     <p:calendar id="dfestivo" value="#{diaFestivoBean.diaFestivo.diaFestivo}" showOn="button">
                                     </p:calendar>

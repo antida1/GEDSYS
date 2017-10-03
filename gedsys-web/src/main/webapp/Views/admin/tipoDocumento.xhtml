@@ -17,7 +17,7 @@
                 <div class="col-xs-10 col-xs-offset-1 x_panel">
                 <h:form id="form">
                     <div class="x_title">
-                    <h2>Tipos de Documentos</h2>
+                    <h2>Tipos de documentos</h2>
                     <div class="clear"></div>
                     </div>
                     <div class="x_content">
@@ -30,16 +30,16 @@
                         <p:column headerText="Nombre">
                             <h:outputText value="#{tipoDocumento.nombre}" />
                         </p:column>
-                        <p:column headerText="Fecha Creación">
+                        <p:column headerText="Fecha creación">
                             <h:outputText value="#{tipoDocumento.fechaCreacion}" />
                         </p:column>
-                        <p:column headerText="Fecha Modificación">
+                        <p:column headerText="Fecha modificación">
                             <h:outputText value="#{tipoDocumento.fechaModificacion}" />
                         </p:column>
-                        <p:column headerText="Creado Por">
+                        <p:column headerText="Creado por">
                             <h:outputText value="#{tipoDocumento.creadoPor.nombres} #{tipoDocumento.creadoPor.apelidos}" />
                         </p:column>
-                        <p:column headerText="Modificado Por">
+                        <p:column headerText="Modificado por">
                             <h:outputText value="#{tipoDocumento.modificadoPor.nombres} #{tipoDocumento.modificadoPor.apelidos}" />
                         </p:column>
                         <p:column headerText="Editar">
@@ -57,7 +57,7 @@
                     </p:dataTable>
                     </div>
                 </h:form>
-                <p:dialog id="dlgDetalle" header="Tipos de Documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                <p:dialog id="dlgDetalle" header="Tipos de documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
                     <h:form>
                         <h:inputHidden id="id" value="#{tipoDocumentoBean.tipoDocumento.id}" />
                         <div class="form-group row">
