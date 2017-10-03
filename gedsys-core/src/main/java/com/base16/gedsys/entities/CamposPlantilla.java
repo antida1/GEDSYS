@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "CamposPlantilla.findByModificadoPro", query = "SELECT c FROM CamposPlantilla c WHERE c.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "CamposPlantilla.findByFechaCreacion", query = "SELECT c FROM CamposPlantilla c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "CamposPlantilla.findByFechaModificacion", query = "SELECT c FROM CamposPlantilla c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "CamposPlantilla.findByEstado", query = "SELECT c FROM CamposPlantilla c WHERE c.estado = :estado")})
+    , @NamedQuery(name = "CamposPlantilla.findByEstado", query = "SELECT c FROM CamposPlantilla c WHERE c.estado = :estado")
+    , @NamedQuery(name = "CamposPlantilla.findByModulo", query = "SELECT d FROM CamposPlantilla d WHERE c.modulo = :modulo")})
 public class CamposPlantilla implements Serializable {
 
     private static final long serialVersionUID = 1L;

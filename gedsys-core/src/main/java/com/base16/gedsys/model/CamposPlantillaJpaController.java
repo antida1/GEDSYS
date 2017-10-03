@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.base16.gedsys.config;
+package com.base16.gedsys.model;
 
-import com.base16.gedsys.config.exceptions.NonexistentEntityException;
-import com.base16.gedsys.config.exceptions.PreexistingEntityException;
 import com.base16.gedsys.entities.CamposPlantilla;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -14,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.base16.gedsys.entities.Modulo;
+import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +32,7 @@ public class CamposPlantillaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(CamposPlantilla camposPlantilla) throws PreexistingEntityException, Exception {
+    public void create(CamposPlantilla camposPlantilla) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -49,11 +48,6 @@ public class CamposPlantillaJpaController implements Serializable {
                 modulo = em.merge(modulo);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findCamposPlantilla(camposPlantilla.getId()) != null) {
-                throw new PreexistingEntityException("CamposPlantilla " + camposPlantilla + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -166,6 +160,31 @@ public class CamposPlantillaJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+     public List<CamposPlantilla> findCamposPlantillaByModulo(Modulo modulo) {
+        return findCamposPlantillaByPais(modulo, -1, -1);
+}
+
+    public List<CamposPlantilla> findCamposPlantillaByPais(Modulo modulo, int maxResults, int firstResult) {
+        return findCamposPlantillaByPais(modulo, true, maxResults, firstResult);
+    }
+    
+    private List<CamposPlantilla> findCamposPlantillaByPais( Modulo modulo ,boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Modulo.class));
+            Query q = em.createNamedQuery("CamposPlantilla.findByModulo", Modulo.class)
+                    .setParameter("modulo", modulo);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
         } finally {
             em.close();
         }

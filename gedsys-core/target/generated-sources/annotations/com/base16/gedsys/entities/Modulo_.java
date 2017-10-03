@@ -1,7 +1,7 @@
 package com.base16.gedsys.entities;
 
 import com.base16.gedsys.entities.Acl;
-import com.base16.gedsys.entities.Campos;
+import com.base16.gedsys.entities.CamposPlantilla;
 import com.base16.gedsys.entities.Modulo;
 import com.base16.gedsys.entities.Usuario;
 import java.util.Date;
@@ -10,7 +10,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-09-18T10:40:12")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-10-02T13:32:52")
 @StaticMetamodel(Modulo.class)
 public class Modulo_ { 
 
@@ -23,11 +23,11 @@ public class Modulo_ {
     public static volatile CollectionAttribute<Modulo, Modulo> moduloCollection;
     public static volatile CollectionAttribute<Modulo, Acl> aclCollection;
     public static volatile SingularAttribute<Modulo, Boolean> oculto;
+    public static volatile CollectionAttribute<Modulo, CamposPlantilla> camposPlantillaCollection;
     public static volatile SingularAttribute<Modulo, Boolean> borrado;
     public static volatile SingularAttribute<Modulo, Modulo> dependeDe;
     public static volatile SingularAttribute<Modulo, Date> fechaCreacion;
     public static volatile SingularAttribute<Modulo, Integer> id;
     public static volatile SingularAttribute<Modulo, String> urlModulo;
-    public static volatile CollectionAttribute<Modulo, Campos> camposCollection;
 
 }
