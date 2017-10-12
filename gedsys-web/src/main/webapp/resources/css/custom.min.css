@@ -700,7 +700,7 @@ a:hover, a:focus {
     font-weight: 500;
     color: #ECF0F1 !important;
     margin-left: 0 !important;
-    line-height: 32px;
+    /*line-height: 32px;*/
 }
 .site_title {
     text-overflow: ellipsis;
@@ -976,6 +976,7 @@ h2 {
     width: 100%;
     float: left;
     clear: both;
+    padding-top : 1vh;
 }
 .x_content h4 {
     font-size: 16px;
