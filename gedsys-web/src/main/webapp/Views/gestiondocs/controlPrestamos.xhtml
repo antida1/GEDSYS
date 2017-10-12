@@ -61,7 +61,10 @@
                                 <div class="col-xs-10"></div>
                             </div>
                             <div class="col-xs-12">
-                                <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0">
+                                <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
                                     <p:column headerText="Fecha inicial">
                                         <h:outputText value="fi" />
                                     </p:column>

@@ -26,23 +26,35 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0">
-                                    <p:column headerText="Tipo de documento">
+                                <p:dataTable widgetVar="entidadTabla" id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Tipo de documento" filterBy="#{entidad.tipoDocumento}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('entidadTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
+                                                <f:selectItem itemLabel="Nit" itemValue="Nit"/>
+                                                <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
+                                                <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte"/>
+                                                <f:selectItem itemLabel="Cédula de extranjería" itemValue="Cédula de extranjería"/>
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                         <h:outputText value="#{entidad.tipoDocumento}" />
                                     </p:column>
-                                    <p:column headerText="Número de documento">
+                                    <p:column headerText="Número de documento" filterBy="#{entidad.numeroDocumento}" filterMatchMode="contains">
                                         <h:outputText value="#{entidad.numeroDocumento}" />
                                     </p:column>
-                                    <p:column headerText="Nombre">
+                                    <p:column headerText="Nombre" filterBy="#{entidad.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{entidad.nombre}" />
                                     </p:column>
-                                    <p:column headerText="Dirección">
+                                    <p:column headerText="Dirección" filterBy="#{entidad.direccion}" filterMatchMode="contains">
                                         <h:outputText value="#{entidad.direccion}" />
                                     </p:column>
-                                    <p:column headerText="Teléfono">
+                                    <p:column headerText="Teléfono" filterBy="#{entidad.telefono}" filterMatchMode="contains">
                                         <h:outputText value="#{entidad.telefono}" />
                                     </p:column>
-                                    <p:column headerText="Email">
+                                    <p:column headerText="Email" filterBy="#{entidad.email}" filterMatchMode="contains">
                                         <h:outputText value="#{entidad.email}" />
                                     </p:column>
                                     <p:column headerText="Fecha de creación">

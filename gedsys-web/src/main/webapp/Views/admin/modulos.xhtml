@@ -11,6 +11,7 @@
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('modulos') == true}">
                     <f:event type="preRenderView" listener="#{moduloBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
@@ -24,21 +25,32 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0">
-                                    <p:column headerText="Dependencia">
+                                <p:dataTable widgetVar="moduloTabla" id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Dependencia" filterBy="#{modulo.dependeDe}" filterMatchMode="contains">
                                         <h:outputText value="#{modulo.dependeDe}"/>
                                     </p:column>
-                                    <p:column headerText="Nombre">
+                                    <p:column headerText="Nombre" filterBy="#{modulo.nombre}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('moduloTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{moduloBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                         <h:outputText value="#{modulo.nombre}"/>
                                     </p:column>
-                                    <p:column headerText="Oculto">
-                                        <h:outputText value="#{modulo.oculto}" />
-                                        <c:if test="#{modulo.oculto == true}">
-                                            <h:outputText value="Sí" />
-                                        </c:if>
-                                        <c:if test="#{modulo.oculto == false}">
-                                            <h:outputText value="No" />
-                                        </c:if>
+                                    <p:column headerText="Oculto" filterBy="#{modulo.oculto}" filterMatchMode="equals">
+                                        <f:facet name="filter">
+                                            <p:selectOneButton onchange="PF('moduloTable').filter()">
+                                                <f:converter converterId="javax.faces.Boolean" />
+                                                <f:selectItem itemLabel="Todo" itemValue="" />
+                                                <f:selectItem itemLabel="Sí" itemValue="true" />
+                                                <f:selectItem itemLabel="No" itemValue="false" />
+                                            </p:selectOneButton>
+                                        </f:facet>
+                                        <h:outputText value="#{modulo.oculto ? 'Si': 'No'}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
                                         <h:outputText value="#{modulo.fechaCreacion}" />
@@ -46,11 +58,23 @@
                                     <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{modulo.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado por">
-                                        <h:outputText value="#{modulo.creadoPor.nombres}" />
+                                    <p:column headerText="Creado por" filterBy="#{modulo.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('moduloTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{modulo.creadoPor.nombres} #{modulo.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado por">
-                                        <h:outputText value="#{modulo.modificadoPor.nombres}" />
+                                    <p:column headerText="Modificado por" filterBy="#{ser.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('moduloTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{modulo.modificadoPor.nombres} #{modulo.modificadoPor.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{moduloBean.getModuloById(modulo)}"

@@ -11,6 +11,7 @@
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('grupos') == true}">
                     <f:event type="preRenderView" listener="#{grupoBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
@@ -24,11 +25,28 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0">
-                                    <p:column headerText="Nombre">
+                                <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Nombre" filterBy="#{grupo.nombre}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('grupoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                         <h:outputText value="#{grupo.nombre}"/>
                                     </p:column>
-                                    <p:column headerText="Estado">
+                                    <p:column headerText="Estado" filterBy="#{grupo.estado}" filterMatchMode="equals">
+                                        <f:facet name="filter">
+                                            <p:selectOneButton onchange="PF('grupoTable').filter()">
+                                                <f:converter converterId="javax.faces.Boolean" />
+                                                <f:selectItem itemLabel="Todo" itemValue="" />
+                                                <f:selectItem itemLabel="Sí" itemValue="true" />
+                                                <f:selectItem itemLabel="No" itemValue="false" />
+                                            </p:selectOneButton>
+                                        </f:facet>
                                         <h:outputText value="#{grupo.estado}" />
                                         <c:if test="#{grupo.estado == true}">
                                             <h:outputText value="Activo" />
@@ -44,11 +62,23 @@
                                     <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{grupo.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado por">
-                                        <h:outputText value="#{grupo.creadoPor}" />
+                                    <p:column headerText="Creado por" filterBy="#{grupo.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('grupoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{cargo.creadoPor.nombre} #{cargo.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado por">
-                                        <h:outputText value="#{grupo.modificadoPor.nombres}" />
+                                    <p:column headerText="Modificado por" filterBy="#{cargo.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('grupoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{cargo.modificadoPor.nombres} #{cargo.modificadoPor.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{grupoBean.getGrupoById(grupo)}"

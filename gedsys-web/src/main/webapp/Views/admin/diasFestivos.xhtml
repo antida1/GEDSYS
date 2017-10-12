@@ -24,7 +24,10 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0">
+                                <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
                                     <p:column headerText="Día festivo">
                                         <h:outputText value="#{festivo.diaFestivo}" />
                                     </p:column>

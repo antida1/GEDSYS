@@ -13,6 +13,7 @@
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('consecutivo') == true}">
                     <f:event type="preRenderView" listener="#{consecutivoBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
@@ -26,17 +27,20 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0">
-                                    <p:column headerText="Prefijo">
+                                <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                    <p:column headerText="Prefijo" filterBy="#{consecutivo.prefijo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.prefijo}" />
                                     </p:column>
-                                    <p:column headerText="Consecutivo">
+                                    <p:column headerText="Consecutivo" filterBy="#{consecutivo.consecutivo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.consecutivo}" />
                                     </p:column>
-                                    <p:column headerText="Sufijo">
+                                    <p:column headerText="Sufijo" filterBy="#{consecutivo.sufijo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.sufijo}" />
                                     </p:column>
-                                    <p:column headerText="Consecutivo">
+                                    <p:column headerText="Tipo de consecutivo" filterBy="#{consecutivo.tipoConsecutivo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.tipoConsecutivo}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
@@ -45,11 +49,23 @@
                                     <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{consecutivo.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado por">
+                                    <p:column headerText="Creado por" filterBy="#{consecutivo.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                         <h:outputText value="#{consecutivo.creadoPor.nombres} #{consecutivo.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado por">
-                                        <h:outputText value="#{consecutivo.modificadoPor.apelidos} #{consecutivo.creadoPor.apelidos}" />
+                                    <p:column headerText="Modificado por" filterBy="#{consecutivo.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{consecutivo.modificadoPor.nombres} #{consecutivo.modificadoPor.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{consecutivoBean.getConsecutivoById(consecutivo)}"

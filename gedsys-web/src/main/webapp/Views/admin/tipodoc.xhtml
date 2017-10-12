@@ -12,6 +12,7 @@
                 <c:if test="#{autorizationBean.hasAccess('tipodoc') == true}">
                     <f:event type="preRenderView" listener="#{tipoDocumentalBean.listar()}" />
                     <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
                         <h:form id="form">
@@ -25,11 +26,17 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable id="lstTiposDocumentales" var="tp" value="#{tipoDocumentalBean.tiposDocumentales}" style="margin-bottom:0">
-                                    <p:column headerText="Unidad documental">
+                                <p:dataTable widgetVar="tipodocTabla" id="lstTiposDocumentales" var="tp" value="#{tipoDocumentalBean.tiposDocumentales}" style="margin-bottom:0">
+                                    <p:column headerText="Unidad documental" filterBy="#{ud.nombre}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('tipodocTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{unidadDocumentalBean.unidadesDocumentales}" var="unidad" itemLabel="#{ud.nombre}" itemValue="#{unidad}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                         <h:outputText value="#{tp.unidadDocumental.nombre}" />
                                     </p:column>
-                                    <p:column headerText="Nombre">
+                                    <p:column headerText="Nombre" filterBy="#{tp.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{tp.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
@@ -38,11 +45,23 @@
                                     <p:column headerText="Fecha modificación">
                                         <h:outputText value="#{tp.fechaModificacion}" />
                                     </p:column>
-                                    <p:column headerText="Creado por">
-                                        <h:outputText value="#{tp.creadoPor.nombres}" />
+                                    <p:column headerText="Creado por" filterBy="#{tp.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('tipodocTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{tp.creadoPor.nombres} #{tp.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado por">
-                                        <h:outputText value="#{tp.modificadoPor.nombres}" />
+                                    <p:column headerText="Modificado por" filterBy="#{ser.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('tipodocTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{tp.modificadoPor.nombres} #{tp.modificadoPor.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{tipoDocumentalBean.getTipoDocumentalById(tp)}" 

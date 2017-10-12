@@ -24,18 +24,27 @@
                                 </p:menuitem>
                             </p:menubar>
                             <p:separator/>
-                            <p:dataTable id="lstSecciones" var="sec" value="#{seccionSubSeccionBean.secciones}" style="margin-bottom:0">
-                                <p:column headerText="Código">
+                            <p:dataTable widgetVar="secTabla" id="lstSecciones" var="sec" value="#{seccionSubSeccionBean.secciones}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                <p:column headerText="Código" filterBy="#{sec.codigo}" filterMatchMode="contains">
                                     <h:outputText value="#{sec.codigo}" />
                                 </p:column>
-                                <p:column headerText="Sección">
+                                <p:column headerText="Sección" filterBy="#{sec.dependeDe.nombre}" filterMatchMode="contains">
                                     <h:outputText value="#{sec.dependeDe.nombre}" />
                                 </p:column>
 
-                                <p:column headerText="Subsección">
+                                <p:column headerText="Subsección" filterBy="#{sec.nombre}" filterMatchMode="contains">
                                     <h:outputText value="#{sec.nombre}" />
                                 </p:column>
-                                <p:column headerText="Responsable">
+                                <p:column headerText="Responsable" filterBy="#{sec.responsable}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('secTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
                                     <h:outputText value="#{sec.responsable.nombres}" />
                                 </p:column>
                                 <p:column headerText="Fecha creación">
@@ -44,12 +53,24 @@
                                 <p:column headerText="Fecha modificación">
                                     <h:outputText value="#{sec.fechaModificacion}" />
                                 </p:column>
-                                <p:column headerText="Creado por">
-                                    <h:outputText value="#{sec.creadoPor.nombres}" />
-                                </p:column>
-                                <p:column headerText="Modificado por">
-                                    <h:outputText value="#{sec.modificadoPor.nombres}" />
-                                </p:column>
+                                <p:column headerText="Creado por" filterBy="#{sec.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('secTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{sec.creadoPor.nombres} #{sec.creadoPor.apelidos}" />
+                                    </p:column>
+                                    <p:column headerText="Modificado por" filterBy="#{sec.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('secTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{sec.modificadoPor.nombres} #{sec.modificadoPor.apelidos}" />
+                                    </p:column>
                                 <p:column headerText="Editar">
                                     <p:commandButton actionListener="#{seccionSubSeccionBean.getSessionById(sec)}" 
                                                      update=":dlgDetalle" oncomplete="PF('sessionDialog').show()" 

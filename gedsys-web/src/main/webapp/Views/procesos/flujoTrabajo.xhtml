@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+            <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('flujoTrabajo') == true}">
+                    <!--<f:event type="preRenderView" listener="#{flujoTrabajoBean.listar()}" /> -->
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Flujo de trabajo</h2>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('flujoTrabajoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{flujoTrabajoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable id="lstFlujoTrabajo" var="flujoTrabajo" value="#{flujoTrabajoBean.flujoTrabajo}" style="margin-bottom:0">
+                                    <p:column headerText="Tipo de documento">
+                                        <h:outputText value="#{flujoTrabajo.tipoDocumento}" />
+                                    </p:column>
+                                    <p:column headerText="Proceso">
+                                        <h:outputText value="#{flujoTrabajo.proceso}" />
+                                    </p:column>
+                        <p:column headerText="Fecha creación">
+                            <h:outputText value="#{flujoTrabajo.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="Fecha modificación">
+                            <h:outputText value="#{flujoTrabajo.fechaModificacion}" />
+                        </p:column>
+                        <p:column headerText="Creado por">
+                            <h:outputText value="#{flujoTrabajo.creadoPor}" />
+                        </p:column>
+                        <p:column headerText="Modificado por">
+                            <h:outputText value="#{flujoTrabajo.modificadoPor}" />
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton actionListener="#{flujoTrabajoBean.getFlujoTrabajoById(flujoTrabajo)}" 
+                                             update=":dlgDetalle" oncomplete="PF('flujoTrabajoDialog').show()" 
+                                             icon="ui-icon-pencil" title="Editar">
+                            </p:commandButton>
+                       </p:column>
+                        <p:column headerText="Borrar">
+                            <p:commandButton icon="ui-icon-eraser" 
+                                             title="Borrar"
+                                             actionListener="#{flujoTrabajoBean.eliminar(flujoTrabajo)}" 
+                                             update=":form:lstFlujoTrabajo messages"/>
+                        </p:column>
+                    </p:dataTable>
+                                </div>
+                </h:form>
+                <p:dialog id="dlgDetalle" header="Flujo de trabajo" widgetVar="flujoTrabajoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <h:form>
+                        <h:inputHidden id="id" value="#{flujoTrabajoBean.flujoTrabajo.id}" />
+                                                <div class="form-group row">
+                            <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
+                                    <div class="col-xs-10">
+                                        <p:selectOneMenu id="tipoDocumento" value="#{flujoTrabajoBean.flujo.tipoDocumento}">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Nit" itemValue="Nit"/>
+                                            <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
+                                            <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte"/>
+                                            <f:selectItem itemLabel="Cédula de extranjería" itemValue="Cédula de extranjería"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                            <div class="form-group row">
+                                    <p:outputLabel value="Proceso" for="proceso" class="col-xs-2 col-form-label"/>
+                                    <div class="col-xs-10">
+                                        <p:inputText id="proceso" required="true" value="#{flujoTrabajoBean.flujo.proceso}" class="form-control" />
+                                    </div>
+                                </div>
+                        </div>
+                        <!-- <div class="form-group row">
+                            <p:outputLabel value="Descripción" for="Descripcion" class="col-xs-2 col-form-label" />
+                            <div class="col-xs-10">
+                                <p:inputText id="Descripcion" required="true" value="{camposPlantillaBean.camposPlantilla.descripcion}" style="width: 100%"/>
+                            </div>
+                        </div>
+                        -->
+                        <p:spacer/>
+                        <div> 
+                            <p:commandButton update=":form:lstFlujoTrabajo messages" icon="ui-icon-disk" value="#{flujoTrabajoBean.accion}" actionListener="#{flujoTrabajoBean.procesar()}" oncomplete="PF('flujoTrabajoDialog').hide()" />
+                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('flujoTrabajoDialog').hide()"></p:commandButton>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                        </div>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('flujoTrabajo') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
