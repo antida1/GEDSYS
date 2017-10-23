@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-navbar primary color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Home</ion-title>
+        <ion-buttons end *ngIf="!user.name">
+            <button ion-button color="primary" menuToggle>Login</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+    <ion-slides pager *ngIf="!user.name">
+        <ion-slide>
+            <h2>Welcome to gedsys app</h2>
+        </ion-slide>
+        <ion-slide>
+            <h2>Please
+                <ion-row></ion-row>
+                <button ion-button menuToggle small>Login</button>
+                <ion-row></ion-row>
+                or
+                <ion-row></ion-row>
+                <button ion-button menuToggle small>Register</button>
+                <ion-row></ion-row>
+                to continue
+            </h2>
+        </ion-slide>
+    </ion-slides>
+    <ion-row *ngIf="user.name">
+        <ion-card>
+            <img [src]="user.img" *ngIf="user.img">
+            <ion-row *ngIf="!user.img">
+                <ion-icon color="primary" col-12 name="contact"></ion-icon>
+            </ion-row>
+            <ion-fab right top>
+                <button ion-fab (click)="loadSettings()">
+                    <ion-icon name="settings"></ion-icon>
+                </button>
+            </ion-fab>
+            <ion-item>
+                <h2>{{user.name}}</h2>
+                <p>{{user.role}}</p>
+            </ion-item>
+            <ion-item>
+                <span item-left>6 documents</span>
+                <button ion-button icon-left clear item-end (click)="loadNotifications()">
+                    <ion-icon name="notifications"></ion-icon>
+                    Notifications
+                </button>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <chart style="display: block;" [options]="chartOptions" type="chart"></chart>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <chart style="display: block;" [options]="chartOptions1" type="chart"></chart>
+            </ion-card-content>
+        </ion-card>
+    </ion-row>
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="login-content" padding>
+  <ion-row top class="logo-row">
+    <ion-col></ion-col>
+    <ion-col width-67>
+      <img src="http://placehold.it/300x200"/>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <div class="login-box">
+    <form #registerForm="ngForm">
+      <ion-row center>
+        <ion-col>
+          <ion-list inset>
+            <ion-item>
+              <ion-label floating color="primary">Email</ion-label>
+              <ion-input type="text"  name="email" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating color="primary">Password</ion-label>
+              <ion-input color="primary" type="password" name="password" required></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row bottom>
+        <ion-col class="signup-col">
+          <button ion-button class="submit-btn" outline block type="submit" (click)="login()">Login</button>
+          <button ion-button class="register-btn" block clear>Create New Account</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
+</ion-content>

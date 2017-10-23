@@ -1,0 +1,21 @@
+<!--
+  Generated template for the DocumentDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar color="primary">
+        <ion-title>{{pdfSrc}}</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <zoom-area>
+        <pdf-viewer [original-size]="false"
+                    [src]="pdfSrc" [render-text]="true" style="display : block;"></pdf-viewer>
+    </zoom-area>
+</ion-content>

@@ -1,0 +1,48 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-ionic-webview": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "ionic-plugin-keyboard": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-ionic": {
+      "APP_ID": "d369712a",
+      "CHANNEL_NAME": "Master",
+      "UPDATE_API": "https://api.ionicjs.com",
+      "UPDATE_METHOD": "background",
+      "MAX_STORE": "2",
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    }
+  }
+}

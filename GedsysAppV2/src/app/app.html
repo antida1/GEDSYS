@@ -1,0 +1,69 @@
+<ion-menu [content]="content">
+    <ion-header>
+        <ion-navbar [color]="navStatus ? 'primary' : ''">
+            <ion-buttons end *ngIf="userActive >= 0">
+                <button ion-button icon-only (click)="toggleNav()">
+                    <ion-icon [name]="navStatus ? 'arrow-down':'arrow-up'"></ion-icon>
+                </button>
+            </ion-buttons>
+            <span style="padding : 0 15px;" [style.color]="navStatus ? 'white' : 'inherit'" *ngIf="userActive >= 0">
+                {{navStatus ? users[userActive].name: 'Users'}}
+            </span>
+            <ion-title *ngIf="userActive == undefined">
+                Login
+            </ion-title>
+            <ion-buttons start *ngIf="navStatus">
+                <button menuClose ion-button round item-start *ngIf="users[userActive].img"
+                        (click)="openPage(pages[4],users[userActive])">
+                    <img width="50px" style="border-radius: 50px;padding : 3px;"
+                         [src]="users[userActive].img">
+                </button>
+                <button menuClose *ngIf="!users[userActive].img" ion-button icon-only
+                        (click)="openPage(pages[4],users[userActive])">
+                    <ion-icon name="contact"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+    <ion-content>
+        <ion-toolbar [class]="navStatus ? '' : 'active'">
+            <ion-list no-lines no-border>
+                <ng-container *ngFor="let user of users; let i = index">
+                    <ion-card (click)="toggle(user,i,$event)">
+                        <ion-item [color]="user.active ? 'primary' : ''">
+                            <ion-avatar item-start *ngIf="user.img">
+                                <img [src]="user.img">
+                            </ion-avatar>
+                            <ion-icon *ngIf="!user.img" [color]="user.active ? 'light' : 'primary'" name="contact"
+                                      [isActive]="user.active == true ? 'primary' : ''"
+                                      item-start></ion-icon>
+                            <h2 [style.color]="user.active ? 'white' : 'inherit'">{{user.name}}</h2>
+                            <p>{{user.role}}
+                                <ion-badge color="danger" item-end>{{notifications[i]}}</ion-badge>
+                            </p>
+                            <button ion-button icon-left clear item-end>
+                                <ion-icon name="more" [color]="user.active ? 'secondary' : 'primary'"></ion-icon>
+                            </button>
+                        </ion-item>
+                    </ion-card>
+                </ng-container>
+                <ion-card *ngIf="users.length < 5">
+                    <button menuClose ion-item (click)="openPage(loginPage)">
+                        <ion-icon name="person-add" item-start color="primary"></ion-icon>
+                        {{users.length > 0 ? 'Login with another account...' : 'Login...'}}
+                    </button>
+                </ion-card>
+            </ion-list>
+        </ion-toolbar>
+        <ion-list no-border no-lines="" *ngIf="userActive >= 0">
+            <button [class.active]="checkActivePage(i)" menuClose ion-item *ngFor="let p of pages, let i = index" (click)="openPage(p,users[userActive],i)">
+                {{p.title}}
+            </button>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav no-lines [root]="rootPage" #content
+         swipeBackEnabled="false"></ion-nav>
