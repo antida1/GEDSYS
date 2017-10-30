@@ -14,7 +14,7 @@
                 <c:if test="#{autorizationBean.hasAccess('entidad') == true}">
                     <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Entidades</h2>
