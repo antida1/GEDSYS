@@ -15,7 +15,7 @@
                     <f:event type="preRenderView" listener="#{consecutivoBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Consecutivos</h2>
@@ -28,9 +28,15 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
+                                    <f:facet name="header">
+                                        
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstConsecutivos" trigger="toggler" />
+                                    </f:facet>
                                     <p:column headerText="Prefijo" filterBy="#{consecutivo.prefijo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.prefijo}" />
                                     </p:column>
@@ -83,30 +89,30 @@
                             </div>
                         </h:form>
                     </div>
-                    <p:dialog id="dlgDetalle" header="Consecutivos" widgetVar="consecutivoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                    <p:dialog id="dlgDetalle" header="Consecutivos" widgetVar="consecutivoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="270" width="480">
                         <h:form>
                             <h:inputHidden id="id" value="#{consecutivoBean.consecutivo.id}" />
                             <div class="form-group row">
-                                <p:outputLabel value="Prefijo" for="Prefijo" class="col-xs-2 col-form-label" />
-                                <div class="col-xs-10">
+                                <p:outputLabel value="Prefijo" for="Prefijo" class="col-xs-5 col-form-label" />
+                                <div class="col-xs-7">
                                     <p:inputText id="Prefijo" value="#{consecutivoBean.consecutivo.prefijo}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="Consecutivo" for="Consecutivo" class="col-xs-2 col-form-label" />
-                                <div class="col-xs-10">
+                                <p:outputLabel value="Consecutivo" for="Consecutivo" class="col-xs-5 col-form-label" />
+                                <div class="col-xs-7">
                                     <p:inputText id="Consecutivo" required="true" value="#{consecutivoBean.consecutivo.consecutivo}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="Sufijo" for="Sufijo" class="col-xs-2 col-form-label" />
-                                <div class="col-xs-10">
+                                <p:outputLabel value="Sufijo" for="Sufijo" class="col-xs-5 col-form-label" />
+                                <div class="col-xs-7">
                                     <p:inputText id="Sufijo"  value="#{consecutivoBean.consecutivo.sufijo}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="Tipo consecutivo" for="TipoConsecutivo" class="col-xs-2 col-form-label" />
-                                <div class="col-xs-10">
+                                <p:outputLabel value="Tipo consecutivo" for="TipoConsecutivo" class="col-xs-5 col-form-label" />
+                                <div class="col-xs-7">
                                     <p:selectOneMenu style="width:100%" id="TipoConsecutivo" value="#{consecutivoBean.consecutivo.tipoConsecutivo}">
                                         <f:selectItem itemLabel="Envío" itemValue="envio" />
                                         <f:selectItem itemLabel="Recepción" itemValue="recepcion" />

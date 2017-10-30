@@ -13,7 +13,7 @@
                     <f:event type="preRenderView" listener="#{moduloBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Módulos</h2>
@@ -26,19 +26,19 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="moduloTabla" id="lstModulos" var="modulo" value="#{moduloBean.modulos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
+                                    <f:facet name="header">
+
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstModulos" trigger="toggler" />
+                                    </f:facet>
                                     <p:column headerText="Dependencia" filterBy="#{modulo.dependeDe}" filterMatchMode="contains">
                                         <h:outputText value="#{modulo.dependeDe}"/>
                                     </p:column>
-                                    <p:column headerText="Nombre" filterBy="#{modulo.nombre}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('moduloTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{moduloBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}" />
-                                            </p:selectOneMenu>
-                                        </f:facet>
+                                    <p:column headerText="Nombre" filterBy="#{modulo.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{modulo.nombre}"/>
                                     </p:column>
                                     <p:column headerText="Oculto" filterBy="#{modulo.oculto}" filterMatchMode="equals">

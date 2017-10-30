@@ -12,7 +12,7 @@
                 <c:if test="#{autorizationBean.hasAccess('diasFestivos') == true}">
                     <f:event type="preRenderView" listener="#{diaFestivoBean.listar()}" />
                     <p:growl id="messages" showDetail="true"/>
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Días festivos</h2>
@@ -25,9 +25,15 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
+                                    <f:facet name="header">
+                                        
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstDias" trigger="toggler" />
+                                    </f:facet>
                                     <p:column headerText="Día festivo">
                                         <h:outputText value="#{festivo.diaFestivo}" />
                                     </p:column>
@@ -54,7 +60,7 @@
                             </div>
                         </h:form>
                     </div>
-                    <p:dialog id="dlgDetalle" header="Día festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
+                    <p:dialog id="dlgDetalle" header="Día festivo" widgetVar="diaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="110" width="450">
                         <h:form>
                             <h:inputHidden id="id" value="#{diaFestivoBean.diaFestivo.id}" />
                             <div class="form-group row">
@@ -65,9 +71,11 @@
                                 </div>
                             </div>
                             <p:spacer/>
-                            <div> 
+                            <div>
+                                <div class="col-xs-7"></div>
                                 <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}" oncomplete="PF('diaDialog').hide()" />
                                 <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
+                                
                             </div>
                         </h:form>
                     </p:dialog>

@@ -12,7 +12,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('agenda') == true}">
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form>
                             <p:growl id="messages" showDetail="true" />
                             <h:panelGrid columnClasses="value">

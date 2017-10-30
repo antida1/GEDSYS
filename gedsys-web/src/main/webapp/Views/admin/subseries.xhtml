@@ -14,7 +14,7 @@
                     <f:event type="preRenderView" listener="#{serieBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Subserie</h2>
@@ -27,28 +27,22 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="subserTabla" id="lstSubSerie" var="subser" value="#{subSerieBean.subSeries}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
-                                    <p:column headerText="Serie" filterBy="#{subser.serie.nombre}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('subserTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.nombre}" itemValue="#{serie}" />
-                                            </p:selectOneMenu>
-                                        </f:facet>
+                                    <f:facet name="header">
+
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstSubSerie" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column headerText="Serie" filterBy="#{subser.serie.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{subser.serie.nombre}" />
                                     </p:column>
                                     <p:column headerText="Código" filterBy="#{subser.codigo}" filterMatchMode="contains">
                                         <h:outputText value="#{subser.codigo}" />
                                     </p:column>
-                                    <p:column headerText="Subserie" filterBy="#{subser.nombre}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('subserTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{subSerieBean.subSeries}" var="subserie" itemLabel="#{subser.nombre}" itemValue="#{subserie}" />
-                                            </p:selectOneMenu>
-                                        </f:facet>
+                                    <p:column headerText="Subserie" filterBy="#{subser.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{subser.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">

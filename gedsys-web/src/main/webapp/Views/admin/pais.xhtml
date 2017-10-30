@@ -18,7 +18,7 @@
                     <f:event type="preRenderView" listener="#{paisBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Países</h2>
@@ -31,9 +31,15 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="paisTabla" id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
+                                    <f:facet name="header">
+                                        
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstPaises" trigger="toggler" />
+                                    </f:facet>
                                     <p:column headerText="Código" filterBy="#{pais.codigo}" filterMatchMode="contains">
                                         <h:outputText value="#{pais.codigo}" />
                                     </p:column>
@@ -79,18 +85,18 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="País" widgetVar="paisDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <p:dialog id="dlgDetalle" header="País" widgetVar="paisDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="160" width="450">
                             <h:form>
                                 <h:inputHidden id="id" value="#{paisBean.pais.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Código" for="Codigo" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:inputText id="Codigo" required="true" value="#{paisBean.pais.codigo}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:inputText id="Nombre" required="true" value="#{paisBean.pais.nombre}" class="form-control"/>
                                     </div>
                                 </div>

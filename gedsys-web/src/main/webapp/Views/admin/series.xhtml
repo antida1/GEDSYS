@@ -14,7 +14,7 @@
                     <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Series</h2>
@@ -27,29 +27,23 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="serTabla" id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
-                                    <p:column headerText="Subsección" filterBy="#{ser.seccionSubseccion.nombre}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('serTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="seccion" itemLabel="#{seccion.nombre}" itemValue="#{seccion}" />
-                                            </p:selectOneMenu>
-                                        </f:facet>
-                                        <h:outputText value="#{ser.seccionSubseccion.nombre}" />
+                                    <f:facet name="header">
+
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstSeries" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column headerText="Subsección" filterBy="#{ser.seccionSubseccion.nombre}" filterMatchMode="contains">
+                                              <h:outputText value="#{ser.seccionSubseccion.nombre}" />
                                     </p:column>
                                     <p:column headerText="Código" filterBy="#{ser.codigo}" filterMatchMode="contains">
                                         <h:outputText value="#{ser.codigo}" />
                                     </p:column>
-                                    <p:column headerText="Serie" filterBy="#{ser.nombre}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('serTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.nombre}" itemValue="#{serie}" />
-                                            </p:selectOneMenu>
-                                        </f:facet>
-                                        <h:outputText value="#{ser.nombre}" />
+                                    <p:column headerText="Serie" filterBy="#{ser.nombre}" filterMatchMode="contains">
+                                              <h:outputText value="#{ser.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
                                         <h:outputText value="#{ser.fechaCreacion}" />
