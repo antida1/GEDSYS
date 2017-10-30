@@ -1,0 +1,18 @@
+page-home {
+  .swiper-pagination-bullet-active{
+    background: map-get($colors , primary);
+  }
+  .highcharts-credits{
+    display: none;
+  }
+  ion-card-header {
+    font-weight: bold;
+    color : map-get($colors, primary);
+  }
+  ion-row {
+    ion-icon {
+      text-align: center;
+      font-size: 70vw;
+    }
+  }
+}

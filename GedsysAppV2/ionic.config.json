@@ -1,0 +1,8 @@
+{
+  "name": "gedsys",
+  "app_id": "d369712a",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

@@ -1,0 +1,36 @@
+<!--
+  Generated template for the CalendarPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Calendar</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title color="primary">
+        Upcoming
+      </ion-card-title>
+      <ion-calendar [(ngModel)]="date"
+                    (onChange)="onChange($event)"
+                    [options]="optionsRange"
+                    [type]="type"
+                    [format]="'YYYY-MM-DD'" color="primary">
+      </ion-calendar>
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+    <ng-container *ngFor="let date_i of date">
+      <ion-item>{{date_i}}</ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

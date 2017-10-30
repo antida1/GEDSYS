@@ -1,0 +1,14 @@
+page-notifications {
+  ion-list {
+    border: none;
+    ion-item-sliding {
+      border-bottom: dashed 1px rgba(map-get($colors, primary),0.25);
+    }
+  }
+  ion-toolbar {
+    .toolbar-content {
+      overflow: inherit;
+      max-height: inherit;
+    }
+  }
+}
