@@ -72,7 +72,7 @@
                             </div>
                         </h:form>
                     </div>
-                    <p:dialog id="dlgDetalle" header="Creación de Plantillas" widgetVar="plantillaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="570" width="100%">
+                    <p:dialog id="dlgDetalle" header="Creación de Plantillas" widgetVar="plantillaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="670" width="90%">
                         <h:form>
                             <h:inputHidden id="id" value="#{plantillaBean.plantillaDocumental.id}"/>
                             <div class="form-group">
@@ -99,41 +99,71 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-xs-2" for="modulo" >Modulo</label>
-                                <div class="col-xs-4">
-                                    <p:selectOneMenu id="modulo" value="#{plantillaBean.modulo}" converter="omnifaces.SelectItemsConverter">
-                                        <p:ajax listener="#{plantillaBean.onModuleChange}" update="fields" />
-                                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione el modulo" itemValue="#{null}"/>
-                                        <f:selectItems value="#{plantillaBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}"> </f:selectItems>
-                                    </p:selectOneMenu>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-xs-2" for="fields">Campo</label>
-                                <div class="col-xs-3">
-                                    <p:selectOneMenu id="fileds">
-                                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione el campo" itemValue="#{null}"/>
-                                        <f:selectItems value="#{plantillaBean.moduloFields}" var="campos" itemLabel="#{campos}" itemValue="#{campos}"> </f:selectItems>
-                                    </p:selectOneMenu>
-
-                                </div>
-                                <div class="col-xs-1">
-                                    <p:commandButton value="Agrear" immediate="true" ></p:commandButton>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-xs-2">Encabezado</label>
-                                <p:textEditor class="col-xs-12" widgetVar="encabezado" value="#{plantillaBean.plantillaDocumental.encabezado}" height="100" style="margin-bottom:10px"/>                 
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-2">Cuerpo</label>
-                                <p:textEditor class="col-xs-12" widgetVar="cuerpo" value="#{plantillaBean.plantillaDocumental.cuerpo}" height="100" style="margin-bottom:10px"/>                 
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-2">Pie de Pagina</label>
-                                <p:textEditor class="col-xs-12" widgetVar="piedePagina" value="#{plantillaBean.plantillaDocumental.pie}" height="100" style="margin-bottom:10px"/>                 
+                                <p:textEditor class="col-xs-12" widgetVar="cuerpo" value="#{plantillaBean.plantillaDocumental.cuerpo}" height="600" style="margin-bottom:10px" placeholder="Texto del Documento">                 
+                                    <f:facet name="toolbar">
+                                        <span class="ql-formats">
+                                            <select class="ql-font"></select>
+                                            <select class="ql-size"></select>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-bold"></button>
+                                            <button class="ql-italic"></button>
+                                            <button class="ql-underline"></button>
+                                            <button class="ql-strike"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-color"></button>
+                                            <button class="ql-backgroud"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-script" value="sub" type="button"></button>
+                                            <button class="ql-script" value="super" type="button"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-header" value="1" type="button"></button>
+                                            <button class="ql-header" value="2" type="button"></button>
+                                            <button class="ql-blockquote" type="button"></button>
+                                            <button class="ql-code-block" type="button"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-list" value="ordered" type="button"></button>
+                                            <button class="ql-list" value="buller" type="button"></button>
+                                            <button class="ql-indent" value="-1" type="button" ></button>
+                                            <button class="ql-indent" value="+1" type="button"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <select class="ql-align" style="display: none;">
+                                                <option selected="selected"></option>
+                                                <option value="center"></option>
+                                                <option value="right"></option>
+                                                <option value="justify"></option>
+                                            </select>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-link" type="button"></button>
+                                            <button class="ql-image" type="button"></button>
+                                            <button class="ql-video" type="button" ></button>
+                                            <button class="ql-indent" type="button"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-clean" type="button"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <p:selectOneMenu id="modulo2" value="#{plantillaBean.modulo}" converter="omnifaces.SelectItemsConverter" widgetVar="modulo">
+                                                <p:ajax listener="#{plantillaBean.onModuleChange}" update="fields" />
+                                                <f:selectItem noSelectionOption="true" itemLabel="Modulo" itemValue="#{null}"/>
+                                                <f:selectItems value="#{plantillaBean.modulos}" var="modulo" itemLabel="#{modulo.nombre}" itemValue="#{modulo}"> </f:selectItems>
+                                            </p:selectOneMenu>
+                                            <p:selectOneMenu id="fields" widgetVar="field">
+                                                <f:selectItem noSelectionOption="true" itemLabel="Campo" itemValue="#{null}"/>
+                                                <f:selectItems value="#{plantillaBean.camposPlantilla}" var="campos" itemLabel="#{campos.nombre}" itemValue="#{campos}"> </f:selectItems>
+                                            </p:selectOneMenu>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <p:commandButton icon="ui-icon-disk" immediate="true" onclick="alert(PF('modulo').getSelectedValue()); return false" ajax="false"  ></p:commandButton>
+                                        </span>
+                                    </f:facet>
+                                </p:textEditor>
                             </div>
                             <p:spacer/>
                             <div class="col-xs-12">

@@ -264,4 +264,15 @@ public class AclJpaController implements Serializable {
         } 
     }
     
+    public List<Acl> findAclByGrupo( Grupo grupo  ) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Acl> query = em.createQuery("SELECT a FROM Acl a WHERE a.grupo = :grupo", Acl.class);
+            query.setParameter("grupo", grupo);
+            return query.getResultList();
+        } finally {
+            em.close();
+        } 
+    }
+    
 }

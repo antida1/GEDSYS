@@ -39,7 +39,8 @@ public class RadicadoBean extends BaseBean implements Serializable {
 
     private String fileName;
     private StreamedContent radicadoImg;
-
+    private String radicado;
+    
     @PostConstruct
     public void init() {
 
@@ -56,6 +57,14 @@ public class RadicadoBean extends BaseBean implements Serializable {
         return radicadoImg;
     }
 
+    public String getRadicado() {
+        return radicado;
+    }
+
+    public void setRadicado(String radicado) {
+        this.radicado = radicado;
+    }
+
     private void generar() {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
@@ -64,7 +73,7 @@ public class RadicadoBean extends BaseBean implements Serializable {
 
             em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
-            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("Externo");
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("recepcion");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             /*
@@ -80,12 +89,12 @@ public class RadicadoBean extends BaseBean implements Serializable {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-            String path = servletContext.getRealPath("/resources/images");
 
             String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
-            fileName = ri.Generar(name, path, "E:" + File.separatorChar);
+            this.radicado = name;
+            fileName = ri.Generar(name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar);
 
-            File file = new File("E:" + File.separatorChar + this.fileName);
+            File file = new File(this.documenstSavePath+ File.separatorChar + this.fileName);
             if (file.canRead()) {
                 FileInputStream fi = new FileInputStream(file);
                 this.radicadoImg = new DefaultStreamedContent(fi, null, file.getName());

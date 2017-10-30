@@ -34,6 +34,19 @@
                                     <p:column headerText="Nombre" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.nombre}" />
                                     </p:column>
+                                    
+                                    <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Días de Trámite" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Tipo de Calendario" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    </p:column>
+                                    
                                     <p:column headerText="Fecha creación">
                                         <h:outputText value="#{tipoDocumento.fechaCreacion}" />
                                     </p:column>
@@ -73,7 +86,7 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Tipos de documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <p:dialog id="dlgDetalle" header="Tipos de documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="350" width="70%">
                             <h:form>
                                 <h:inputHidden id="id" value="#{tipoDocumentoBean.tipoDocumento.id}" />
                                 <div class="form-group row">
@@ -82,6 +95,29 @@
                                         <p:inputText id="Nombre" required="true" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control"/>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Requiere respuesta" for="ReqRespuesta" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:selectBooleanCheckbox id="ReqRespuesta" value="#{tipoDocumentoBean.tipoDocumento.nombre}" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:inputText id="diasRespuesta" required="true" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-2 col-form-label" />
+                                    <div class="col-xs-10">
+                                        <p:selectOneMenu id="tipoCalendario" onchange="PF('tipoDocumentoTabla').filter()" required="true">
+                                            <f:selectItem itemLabel="Seleccione el tipo de calendario" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItem itemLabel="Corrido" itemValue="corrido" />
+                                            <f:selectItem itemLabel="Hábil" itemValue="habil" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" oncomplete="PF('tipoDocumentoDialog').hide()" />

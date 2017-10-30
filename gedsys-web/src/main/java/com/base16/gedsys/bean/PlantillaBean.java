@@ -29,8 +29,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author rober
  */
-@ViewScoped
+
 @ManagedBean
+@ViewScoped
 public class PlantillaBean extends BaseBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,7 +42,6 @@ public class PlantillaBean extends BaseBean implements Serializable {
     private List<CamposPlantilla> camposPlantilla;
 
     private Modulo modulo;
-
     private String accion;
 
     @PostConstruct

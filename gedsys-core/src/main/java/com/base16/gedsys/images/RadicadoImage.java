@@ -5,6 +5,11 @@
  */
 package com.base16.gedsys.images;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BarcodeEAN;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -13,9 +18,13 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -29,15 +38,17 @@ public class RadicadoImage {
             File path = new File(logoPath);
             BufferedImage logo = ImageIO.read(new File(path, "logo.png"));
             BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            //BufferedImage imageBar = (BufferedImage) this.GenerarCodeBar(numeroRadicado);
             int Ratio = 6;
             Graphics2D g2D = img.createGraphics();
             Font font = new Font("Monospaced", Font.PLAIN, 10);
             g2D.setFont(font);
             FontMetrics fm = g2D.getFontMetrics();
-            int width = fm.stringWidth("------------------------------") + (logo.getWidth()/5) ;
-            int height =  Math.max( fm.getHeight() *5, (logo.getHeight()/Ratio));
+            int width = fm.stringWidth("------------------------------") + (logo.getWidth() / 5);
+            //int height = Math.max(fm.getHeight() * 5, (logo.getHeight()+imageBar.getHeight() / Ratio));
+            int height = Math.max(fm.getHeight() * 5, (logo.getHeight() / Ratio));
             g2D.dispose();
-            
+
             img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             g2D = img.createGraphics();
             g2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -51,33 +62,33 @@ public class RadicadoImage {
             g2D.setFont(font);
             fm = g2D.getFontMetrics();
             g2D.setColor(Color.BLACK);
-            g2D.drawImage(logo, 0, 0, logo.getWidth()/Ratio, logo.getHeight()/Ratio, null);
-            g2D.drawString(numeroRadicado, logo.getWidth()/Ratio, fm.getAscent());
-            g2D.drawString("------------------------------", logo.getWidth()/Ratio, fm.getAscent() * 2);
-            g2D.drawString("-------- RECIBIDO POR --------", logo.getWidth()/Ratio, fm.getAscent() * 3);
-            g2D.drawString("------------------------------", logo.getWidth()/Ratio, fm.getAscent() * 4);
-            
+            g2D.drawImage(logo, 0, 0, logo.getWidth() / Ratio, logo.getHeight() / Ratio, null);
+            g2D.drawString(numeroRadicado, logo.getWidth() / Ratio, fm.getAscent());
+            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 2);
+            g2D.drawString("-------- RECIBIDO POR --------", logo.getWidth() / Ratio, fm.getAscent() * 3);
+            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 4);
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date today = new Date();
             g2D.setColor(Color.RED);
-            
-            g2D.drawString(sdf.format(today), logo.getWidth()/Ratio, fm.getAscent() * 5);
-                        
-            g2D.dispose();
 
-            ImageIO.write(img, "png", new File( destinationPath + numeroRadicado + ".png"));
+            g2D.drawString(sdf.format(today), logo.getWidth() / Ratio, fm.getAscent() * 5);
+            //g2D.drawImage(img, 0, logo.getHeight(), imageBar.getWidth() , imageBar.getHeight()/Ratio, null);
+            g2D.dispose();
+            
+            
+            ImageIO.write(img, "png", new File(destinationPath + numeroRadicado + ".png"));
         } catch (IOException e) {
         }
         return numeroRadicado + ".png";
     }
-    
+
     public Image GenerarCodeBar(String texto) {
-        return null;
-        /*BarcodeEAN codeEAN = new BarcodeEAN();
+        BarcodeEAN codeEAN;
+        codeEAN = new BarcodeEAN();
         codeEAN.setCodeType(codeEAN.EAN13);
-        codeEAN.setCode("9780201615883");
-        Image imageEAN = codeEAN.createImageWithBarcode(cb, null, null);
+        codeEAN.setCode(texto);
+        Image imageEAN = codeEAN.createAwtImage(Color.BLACK, Color.WHITE);
         return imageEAN;
-        */
     }
 }

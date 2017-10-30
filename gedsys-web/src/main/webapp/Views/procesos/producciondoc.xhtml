@@ -11,6 +11,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('producciondoc') == true}">
+                   <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" /> 
                     <div class="col-md-10 col-md-offset-1 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
@@ -21,6 +22,15 @@
                                 <br />
                                 <h:form>
                                     <div class="form-group col-xs-6">
+                                        <div class="col-xs-12">
+                                            <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="control-label col-md-4"/>
+                                            <div class="col-md-8">
+                                                <p:selectOneMenu required="true" id="tipoDocumento" value="#{plantillaBean.plantillaDocumental.tipoDocumento}" converter="omnifaces.SelectItemsConverter" >
+                                                    <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{tipoDocumentoBean.tipoDocumentos}" var="tipdocs" itemLabel="#{tipdocs.nombre}" itemValue="#{tipdocs}"> </f:selectItems>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
                                         <div class="col-xs-12">
                                             <label class="control-label col-md-4">Fecha</label>
                                             <div class="col-md-8 pull-right">

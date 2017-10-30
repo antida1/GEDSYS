@@ -173,9 +173,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-12">
-                                        <p:commandButton update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success"/>
-                                        <p:commandButton icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px;"></p:commandButton>
-                                        <p:commandButton update="messages"  value="Radicar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px;"/>
+                                        <p:commandButton widgetVar="genRad" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success" oncomplete="PF('printRad').jq.show(); PF('saveDoc').jq.show(); PF('genRad').jq.hide()"/>
+                                        <p:commandButton widgetVar="printRad" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px; display: none"></p:commandButton>
+                                        <p:commandButton widgetVar="saveDoc" update="messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px; display: none"/>
                                         <p:commandButton class="btn-default" value="Cancelar" immediate="true" style="float:right;"></p:commandButton>
                                         <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
                                             <ui:include src="newRadicadoRecepcion.xhtml">

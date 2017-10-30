@@ -19,16 +19,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.persistence.EntityManagerFactory;
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -38,11 +33,10 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class AclBean extends BaseBean implements Serializable {
 
-    
-    private Acl acl = new  Acl();
+    private Acl acl = new Acl();
     private List<Acl> acls;
     private String accion;
-    
+    private Grupo grupo;
     /**
      * Creates a new instance of AclBean
      */
@@ -65,6 +59,15 @@ public class AclBean extends BaseBean implements Serializable {
         this.acls = acls;
     }
 
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    
     public String getAccion() {
         return accion;
     }
@@ -72,10 +75,10 @@ public class AclBean extends BaseBean implements Serializable {
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
+
     public void procesar() {
         try {
-            switch(accion){
+            switch (accion) {
                 case "Crear":
                     crear();
                     break;
@@ -86,27 +89,7 @@ public class AclBean extends BaseBean implements Serializable {
         } catch (Exception e) {
         }
     }
-    
-    public void onRowEdit(RowEditEvent event){
-        FacesMessage msg = new FacesMessage("ACL Edited", ((Acl) event.getObject()).getModulo().getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-    
-    public void onRowCancel(RowEditEvent event){
-        FacesMessage msg = new FacesMessage("Edicion Cancelada", ((Acl) event.getObject()).getModulo().getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-    
-    public void onCellEdit(CellEditEvent event){
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-        
-        if(newValue  != null && newValue.equals(oldValue)){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    }
-    
+
     private void crear() {
         AclJpaController cJpa;
         try {
@@ -119,11 +102,11 @@ public class AclBean extends BaseBean implements Serializable {
             cJpa.create(acl);
             this.listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     private void modificar() {
         AclJpaController cJpa;
         try {
@@ -135,11 +118,11 @@ public class AclBean extends BaseBean implements Serializable {
             cJpa.edit(acl);
             this.listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void eliminar(Acl acl) {
         AclJpaController cJpa;
         try {
@@ -148,11 +131,11 @@ public class AclBean extends BaseBean implements Serializable {
             cJpa.destroy(acl.getId());
             this.listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void listar() {
         AclJpaController cJpa;
         try {
@@ -160,11 +143,11 @@ public class AclBean extends BaseBean implements Serializable {
             cJpa = new AclJpaController(emf);
             acls = cJpa.findAclEntities();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
+
     public void getAclById(Acl acl) {
         AclJpaController cJpa;
         Acl aclTemp;
@@ -172,22 +155,63 @@ public class AclBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new AclJpaController(emf);
             aclTemp = cJpa.findAcl(acl.getId());
-            if(aclTemp !=null){
+            if (aclTemp != null) {
                 this.acl = aclTemp;
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-    
-    public void getAclByModuloGrupo(Modulo modulo, Grupo grupo ){
+
+    public void onGroupChange() {
+        AclJpaController cJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            cJpa = new AclJpaController(emf);
+            acls = cJpa.findAclByGrupo(this.grupo);
+            if (acls.isEmpty()) {
+                populateAcl(this.grupo);
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    public void getAclByModuloGrupo(Modulo modulo, Grupo grupo) {
         AclJpaController aJpa;
         try {
-            
+
         } catch (Exception e) {
         }
     }
-    
+
+    public void populateAcl(Grupo grupo) {
+        List<Modulo> modulos;
+        ModuloBean moduloBean = new ModuloBean();
+        moduloBean.listar();;
+        modulos = moduloBean.getModulos();
+        AclJpaController cJpa;
+        for (Modulo modulo : modulos) {
+            try {
+                EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+                cJpa = new AclJpaController(emf);
+                Acl _acl;
+                _acl = new Acl();
+                _acl.setGrupo(grupo);
+                _acl.setModulo(modulo);
+                _acl.setFechaCreacion(new Date());
+                _acl.setFechaModificacion(new Date());
+                Usuario usuario = (Usuario) SessionUtils.getUsuario();
+                _acl.setCreadoPor(usuario);
+                cJpa.create(_acl);
+                acls.add(acl);
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+                Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            }
+        }
+    }
 }
