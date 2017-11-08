@@ -2,31 +2,44 @@ import {Component} from '@angular/core';
 import {Events, NavController, NavParams} from 'ionic-angular';
 import {TabsPage} from "../tabs/tabs";
 import {ConfigPage} from "../config/config";
+import {GedsysApiService} from "../../shared/gedsys-api.service";
+import {DataProvider} from "../../providers/data/data";
+import {DocumentsPage} from "../documents/documents";
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
 export class HomePage {
+    hiddenHeader:any = false;
+    contentScroll(event){
+        event.directionY == 'down' ? this.hiddenHeader = true : this.hiddenHeader = false;
+        event.scrollTop < 40 ? this.hiddenHeader = false : null;
+        return true;
+    }
     chartOptions: any;
-    user: any = {};
     chartOptions1: any;
     loadNotifications(){
-        this.navCtrl.setRoot(TabsPage,this.user);
-        this.events.publish('root:change',1)
+        this.navCtrl.setRoot(TabsPage);
+        return this.events.publish('root:change',1);
+    }
+    loadDocuments(){
+        this.navCtrl.setRoot(DocumentsPage);
+        return this.events.publish('root:change',2);
     }
     loadSettings(){
-        this.navCtrl.setRoot(ConfigPage,this.user);
-        this.events.publish('root:change',4)
+        this.navCtrl.setRoot(ConfigPage);
+        return this.events.publish('root:change',4);
     }
-    constructor(public events: Events, public navParams: NavParams, public navCtrl: NavController) {
-        this.user = this.navParams.data;
-        this.events.subscribe('user:updated', user => {
-            this.user = user;
+    getAmount(notifications){
+        let amount = 0;
+        notifications.map(notification => {
+            notification.archived ? amount: amount++;
+            return notification;
         });
-        this.events.subscribe('user:logOff', () => {
-            this.user = {};
-        });
+        return amount;
+    }
+    constructor(private dataProvider: DataProvider, private service: GedsysApiService, public events: Events, public navParams: NavParams, public navCtrl: NavController) {
         this.chartOptions = {
             chart: {
                 type: 'areaspline'

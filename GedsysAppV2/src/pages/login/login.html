@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -10,22 +10,23 @@
   <ion-row top class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
-      <img src="http://placehold.it/300x200"/>
+      <img color="primary" src="https://www.svgrepo.com/show/151032/paste-text.svg"/>
     </ion-col>
     <ion-col></ion-col>
   </ion-row>
-  <div class="login-box">
+
+  <div class="login-box" [hidden]="loading">
     <form #registerForm="ngForm">
       <ion-row center>
         <ion-col>
           <ion-list inset>
             <ion-item>
-              <ion-label floating color="primary">Email</ion-label>
-              <ion-input type="text"  name="email" required></ion-input>
+              <ion-label floating color="primary" >Email</ion-label>
+              <ion-input type="text"  name="email" required [(ngModel)]="user.email"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label floating color="primary">Password</ion-label>
-              <ion-input color="primary" type="password" name="password" required></ion-input>
+              <ion-input color="primary" type="password" name="password" required [(ngModel)]="user.password"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -33,8 +34,8 @@
 
       <ion-row bottom>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" outline block type="submit" (click)="login()">Login</button>
-          <button ion-button class="register-btn" block clear>Create New Account</button>
+          <button ion-button class="submit-btn" outline block type="submit" (click)="login(user)">Login</button>
+          <button ion-button class="register-btn" block clear (click)="loadRegister()">Create New Account</button>
         </ion-col>
       </ion-row>
 

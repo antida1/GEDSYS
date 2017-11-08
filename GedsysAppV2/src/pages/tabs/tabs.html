@@ -6,8 +6,8 @@
 -->
 
 <ion-tabs color="primary">
-  <ion-tab [rootParams]="data" [root]="unarchived" tabIcon="alert" tabTitle="Notifications"
-           [tabBadge]="notificationsCount" tabBadgeStyle="danger"></ion-tab>
-  <ion-tab [rootParams]="data" [root]="unarchived" tabIcon="archive" tabTitle="Archived"
-           [tabBadge]="archivedCount" tabBadgeStyle="light"></ion-tab>
+  <ion-tab [rootParams]="data" [root]="notificationsView" tabIcon="alert" tabTitle="Notifications"
+           [tabBadge]="getAmount(dataProvider.notifications)" tabBadgeStyle="danger"></ion-tab>
+  <ion-tab [rootParams]="data" [root]="notificationsView" tabIcon="archive" tabTitle="Archived"
+           [tabBadge]="getArchived(dataProvider.notifications)" tabBadgeStyle="light"></ion-tab>
 </ion-tabs>

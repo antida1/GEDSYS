@@ -10,13 +10,16 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Configuration</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="updateInfo()">Save</button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 
 <ion-content>
-    <super-tabs toolbarBackground="primary" toolbarColor="light" indicatorColor="light">
-        <super-tab [root]="page1" title="User" icon="person">test</super-tab>
-        <super-tab [root]="page2" title="Application" icon="cog"></super-tab>
+    <super-tabs (tabSelect)="listenTabs($event)" toolbarBackground="primary" toolbarColor="light" indicatorColor="light">
+        <super-tab [root]="page1" [rootParams]="data" title="User" icon="person">test</super-tab>
+        <super-tab [root]="page2" [rootParams]="data" title="Application" icon="cog"></super-tab>
     </super-tabs>
 </ion-content>

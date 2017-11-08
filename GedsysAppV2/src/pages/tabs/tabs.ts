@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {NotificationsPage} from "../notifications/notifications";
 import {GedsysApiService} from "../../shared/gedsys-api.service";
+import {DataProvider} from "../../providers/data/data";
 
 /**
  * Generated class for the TabsPage page.
@@ -16,30 +17,27 @@ import {GedsysApiService} from "../../shared/gedsys-api.service";
     templateUrl: 'tabs.html',
 })
 export class TabsPage {
-    unarchived: any = NotificationsPage;
-    notificationsCount: any = 0;
-    archivedCount: any = 0;
-    data: any = {
-        user : '',
-        index : 0
-    };
+    notificationsView: any = NotificationsPage;
 
-    constructor(public events: Events, private service : GedsysApiService, public navCtrl: NavController, public navParams: NavParams){
-        this.navParams.data.notifications.map(notification => {
-            notification.archived ? this.archivedCount++ : this.notificationsCount++;
+    getAmount(notifications){
+        let amount = 0;
+        notifications.map(notification =>{
+            notification.archived ? amount:amount++;
             return notification;
         });
-        this.data.index = this.service.activeUser;
-        this.data.user = this.service.users[this.data.index];
-        this.events.subscribe('user:updated',(user,index)=>{
-            this.data.user = user;
-            this.data.index = index;
-            this.notificationsCount = 0;
-            this.archivedCount = 0;
-            this.data.user.notifications.map(notification => {
-                notification.archived ? this.archivedCount++ : this.notificationsCount++;
-            })
-        })
+        return amount;
+    }
+
+    getArchived(notifications){
+        let amount = 0;
+        notifications.map(notification =>{
+            notification.archived ? amount++:amount;
+            return notification;
+        });
+        return amount;
+    }
+
+    constructor(private dataProvider: DataProvider, public events: Events, private service: GedsysApiService, public navCtrl: NavController, public navParams: NavParams) {
     }
 
     ionViewDidEnter() {

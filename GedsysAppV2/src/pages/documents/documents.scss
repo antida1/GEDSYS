@@ -1,6 +1,9 @@
 @import '../../theme/variables.scss';
 page-documents {
-  pdf-viewer{
-    //border-top:solid 1px $colors.primary;
+  ion-toolbar {
+    .toolbar-content {
+      overflow: inherit;
+      max-height: inherit;
+    }
   }
 }

@@ -28,7 +28,15 @@ import {MomentPipe} from "../pipes/moment/moment";
 import {OrderByPipe} from "../pipes/order-by/order-by";
 
 import * as highCharts from 'highcharts';
-import {ZoomAreaModule} from "ionic2-zoom-area";
+import {IonicStorageModule} from "@ionic/storage";
+import {RegisterPage} from "../pages/register/register";
+import {AuthServiceProvider} from '../providers/auth-service/auth-service';
+import {AngularFireModule} from "angularfire2";
+import {FIREBASE_CONFIG} from "../shared/app.firebase.config";
+import {AngularFireAuthModule} from "angularfire2/auth";
+import {AngularFireDatabaseModule} from "angularfire2/database";
+import {GedsysApiService} from "../shared/gedsys-api.service";
+import {DataProvider} from '../providers/data/data';
 
 @NgModule({
     declarations: [
@@ -46,7 +54,8 @@ import {ZoomAreaModule} from "ionic2-zoom-area";
         DocumentDetailPage,
         NotificationDetailPage,
         MomentPipe,
-        OrderByPipe
+        OrderByPipe,
+        RegisterPage
     ],
     imports: [
         BrowserModule,
@@ -56,7 +65,10 @@ import {ZoomAreaModule} from "ionic2-zoom-area";
         SuperTabsModule.forRoot(),
         Ng2FilterPipeModule,
         ChartModule.forRoot(highCharts),
-        ZoomAreaModule.forRoot()
+        IonicStorageModule.forRoot(),
+        AngularFireModule.initializeApp(FIREBASE_CONFIG),
+        AngularFireAuthModule,
+        AngularFireDatabaseModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -71,12 +83,16 @@ import {ZoomAreaModule} from "ionic2-zoom-area";
         UserConfigPage,
         AppConfigPage,
         DocumentDetailPage,
-        NotificationDetailPage
+        NotificationDetailPage,
+        RegisterPage
     ],
     providers: [
         StatusBar,
         SplashScreen,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        AuthServiceProvider,
+        GedsysApiService,
+        DataProvider
     ]
 })
 export class AppModule {

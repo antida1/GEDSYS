@@ -14,8 +14,8 @@
 
 
 <ion-content>
-    <zoom-area>
-        <pdf-viewer [original-size]="false"
-                    [src]="pdfSrc" [render-text]="true" style="display : block;"></pdf-viewer>
-    </zoom-area>
+    {{pinch | json}}
+    <ion-card (press)="pinchEvent($event)">
+        <pdf-viewer [zoom]=[1.0] [original-size]="false" [src]="pdfSrc"></pdf-viewer>
+    </ion-card>
 </ion-content>

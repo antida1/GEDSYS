@@ -1,1303 +1,224 @@
-
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import {Events} from "ionic-angular";
+import {Events, ToastController} from "ionic-angular";
+import {Storage} from "@ionic/storage";
+import {AngularFireDatabase} from "angularfire2/database";
+import {DataProvider} from "../providers/data/data";
 
 @Injectable()
-export class GedsysApiService{
-  private baseURL = "https://gedsys-8e06b.firebaseio.com/";
-    notifications: any = [];
-    getNotifications(){
-    return new Promise(resolve => {
-      this.http.get(`${this.baseURL}/notifications.json`)
-        .subscribe(res => resolve(res.json()));
-    })
-  }
-    pushNotifications(notifications){
+export class GedsysApiService {
+    private baseURL = "https://gedsys-8e06b.firebaseio.com/";
+
+
+    public getProfile(user) {
         return new Promise(resolve => {
-            this.http.put(`${this.baseURL}/notifications.json`,notifications,{})
+            this.http.get(`${this.baseURL}/profile/${user}.json`)
+                .subscribe(res => resolve(res.json()));
+        }).then(profile => this.dataProvider.profile = profile);
+    }
+
+    public putProfile(user, profile) {
+        return new Promise(resolve => {
+            this.http.put(`${this.baseURL}/notifications/${user}.json`, profile, {})
                 .subscribe(res => resolve(res.json()));
         })
     }
-    public users = [
-        {
-            name: 'Admin',
-            username : 'admin',
-            password : 'admin',
-            img: 'http://www.xsjjys.com/data/out/96/WHDQ-512397052.jpg',
-            role: 'Developer',
-            active: false,
-            id : 1,
-            notifications: [
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },{
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                },
-                {
-                    title: 'Notificacion 1 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 1',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 1',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                }
-            ]
-        },
-        {
-            name: 'Base 16',
-            username : 'base16dev',
-            password : 'admin123',
-            img: 'https://content-static.upwork.com/uploads/2014/10/02123010/profile-photo_friendly.jpg',
-            role: 'Admin',
-            active: false,
-            id : 2,
-            notifications: [
-                {
-                    title: 'Notificacion 1 - user 2',
-                    archived: false,
-                    date: {
-                        created: 1508441301333,
-                        max: 1508475600000
-                    }
-                },
-                {
-                    title: 'Notificacion 2 - user 2',
-                    archived: false,
-                    date: {
-                        created: 1508441301333,
-                        max: 1508562000000
-                    }
-                },
-                {
-                    title: 'Notificacion 3 - user 2',
-                    archived: false,
-                    date: {
-                        created: 1508441301333,
-                        max: 1508475600000
-                    }
-                },
-                {
-                    title: 'Notificacion 4 - user 2',
-                    archived: false,
-                    date: {
-                        created: 1508441301333,
-                        max: 1508441301333
-                    }
-                },
-                {
-                    title: 'Notificacion 5 - user 2',
-                    archived: false,
-                    date: {
-                        created: 1508441301333,
-                        max: 1508441301333
-                    }
-                }
-            ]
-        },
-        {
-            name: 'User 2',
-            role: 'Admin',
-            username : 'user2',
-            password : 'user2123',
-            active: false,
-            id : 3,
-            notifications: [
-                {
-                    title: 'Notificacion 1',
-                    archived: false,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2',
-                    archived: false,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3',
-                    archived: false,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4',
-                    archived: false,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                }, {
-                    title: 'Notificacion 5',
-                    archived: false,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                }
-            ]
-        },
-        {
-            name: 'User 3',
-            username : 'user3',
-            password : 'user3123',
-            role: 'Admin',
-            active: false,
-            id : 4,
-            notifications: [
-                {
-                    title: 'Notificacion 1',
-                    archived: true,
-                    date: {
-                        created: 1505001600,
-                        max: 1508803200
-                    }
-                },
-                {
-                    title: 'Notificacion 2',
-                    archived: true,
-                    date: {
-                        created: 1505021600,
-                        max: 1508802200
-                    }
-                },
-                {
-                    title: 'Notificacion 3',
-                    archived: true,
-                    date: {
-                        created: 1505101600,
-                        max: 1509803200
-                    }
-                },
-                {
-                    title: 'Notificacion 4',
-                    archived: true,
-                    date: {
-                        created: 1505002300,
-                        max: 1508805200
-                    }
-                }, {
-                    title: 'Notificacion 5',
-                    archived: true,
-                    date: {
-                        created: 1501001600,
-                        max: 1508303200
-                    }
-                }
-            ]
+
+    public postProfile(uid, profile) {
+        this.fireDatabase.object('profile/' + uid)
+            .set(profile)
+            .then(() => {
+                profile.active = false;
+                profile.notifications = [];
+                profile.documents = [];
+                this.events.publish('user:login', profile);
+            });
+
+    }
+
+    public getNotifications(user) {
+        return new Promise(resolve => {
+            this.http.get(`${this.baseURL}/notifications/${user}.json`)
+                .subscribe(res => resolve(res.json()));
+        }).then(notifications => this.dataProvider.notifications = notifications || []);
+    }
+
+    public getDocuments(user) {
+        return new Promise(resolve => {
+            this.http.get(`${this.baseURL}/documents/${user}.json`)
+                .subscribe(res => resolve(res.json()));
+        }).then(documents =>this.dataProvider.documents = documents || []);
+    }
+
+    public putNotifications(user, notifications) {
+        return new Promise(resolve => {
+            this.http.put(`${this.baseURL}/notifications/${user}.json`, notifications, {})
+                .subscribe(res => resolve(res.json()));
+        })
+    }
+
+
+    public updateAppConfig(data, index) {
+        let toast;
+        if (index == 0) {
+            this.storage.set('user_config', data);
+            toast = this.toastCtrl.create({
+                message: 'User info updated succesfully',
+                duration: 3000
+            });
+        } else {
+            this.storage.set('app_config', data);
+            toast = this.toastCtrl.create({
+                message: 'App configuration updated succesfully',
+                duration: 3000
+            });
         }
-    ]
-    public activeUser: any;
-  constructor(public events: Events, private http : Http) {
-      this.events.subscribe('userActive:change',index => {
-          return this.activeUser = index;
-      });
-      this.events.subscribe('user:updated',(user,index)=>{
-          return this.users[index] = user;
-      })
-  }
+        return toast.present();
+
+    }
+
+    constructor(private dataProvider: DataProvider,
+                private fireDatabase: AngularFireDatabase,
+                public toastCtrl: ToastController,
+                private storage: Storage,
+                public events: Events, private http: Http) {
+        this.storage.get('app_config').then((data) => {
+            if (data) {
+                return this.dataProvider.app_config = data;
+            }
+            this.dataProvider.app_config = [
+                {
+                    title: 'category 1',
+                    options: [
+                        {
+                            title: 'option1',
+                            data: null,
+                            type: 'input',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option2',
+                            data: null,
+                            type: 'textarea',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option3',
+                            data: null,
+                            type: 'range',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option4',
+                            data: null,
+                            type: 'toggle',
+                            icon: 'cog'
+                        }
+                    ]
+                },
+                {
+                    title: 'category 2',
+                    options: [
+                        {
+                            title: 'option6',
+                            data: null,
+                            type: 'radio-group',
+                            group: [
+                                {
+                                    name: '1'
+                                },
+                                {
+                                    name: '2'
+                                },
+                                {
+                                    name: '3'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: 'Contact',
+                    options: [
+                        {
+                            title: 'Base 16',
+                            data: null,
+                            type: 'button',
+                            icon: 'code-working',
+                            link: 'http://www.base16.co/',
+                            btnTitle: 'Go'
+                        }
+                    ]
+                }];
+        });
+        this.storage.get('user_config').then((data) => {
+            if (data) {
+                return this.dataProvider.user_config = data;
+            }
+            this.dataProvider.user_config = [
+                {
+                    title: 'category 2',
+                    options: [
+                        {
+                            title: 'option6',
+                            data: null,
+                            type: 'radio-group',
+                            group: [
+                                {
+                                    name: '1'
+                                },
+                                {
+                                    name: '2'
+                                },
+                                {
+                                    name: '3'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: 'category 1',
+                    options: [
+                        {
+                            title: 'option1',
+                            data: null,
+                            type: 'input',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option2',
+                            data: null,
+                            type: 'textarea',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option3',
+                            data: null,
+                            type: 'range',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option4',
+                            data: null,
+                            type: 'toggle',
+                            icon: 'cog'
+                        }
+                    ]
+                },
+                {
+                    title: 'Contact',
+                    options: [
+                        {
+                            title: 'Base 16',
+                            data: null,
+                            type: 'button',
+                            icon: 'code-working',
+                            link: 'http://www.base16.co/',
+                            btnTitle: 'Go'
+                        }
+                    ]
+                }];
+        });
+    }
 }

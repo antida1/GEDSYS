@@ -13,6 +13,10 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>
+    <ion-item><ion-badge [color]="checkColor(notification)">{{notification.date.max | moment}}</ion-badge><ion-chip item-start [color]="notification.archived ? 'dark':'primary'"><ion-icon name="notifications"></ion-icon></ion-chip></ion-item>
+  </ion-list>
+
 
 </ion-content>

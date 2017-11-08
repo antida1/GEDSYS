@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserConfigPage} from "../user-config/user-config";
 import {AppConfigPage} from "../app-config/app-config";
 
@@ -18,13 +18,18 @@ import {AppConfigPage} from "../app-config/app-config";
 export class ConfigPage {
     page1: any;
     page2: any;
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    data: any;
+    index: any = 0;
+    updateInfo(){
+        return this.events.publish('info:update',this.index);
+    }
+    listenTabs(event){
+        return this.index = event.index;
+    }
+    constructor(public events: Events, public navCtrl: NavController, public navParams: NavParams) {
         this.page1 = UserConfigPage;
         this.page2 = AppConfigPage;
-    }
-
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad ConfigPage');
+        this.data = navParams.data;
     }
 
 }

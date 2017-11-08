@@ -1,17 +1,17 @@
-<ion-header>
+<ion-header [style.max-height]="hiddenHeader ? '0vh': '10vh'">
     <ion-navbar primary color="primary">
         <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
+            <ion-icon name="menu" ></ion-icon>
         </button>
-        <ion-title>Home</ion-title>
-        <ion-buttons end *ngIf="!user.name">
+        <ion-title>Dashboard</ion-title>
+        <ion-buttons end *ngIf="!dataProvider.profile">
             <button ion-button color="primary" menuToggle>Login</button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
 
-<ion-content class="card-background-page">
-    <ion-slides pager *ngIf="!user.name">
+<ion-content (ionScroll)="contentScroll($event)" (ionScrollEnd)="contentScroll($event)" [class.full]="hiddenHeader">
+    <ion-slides pager *ngIf="!dataProvider.profile">
         <ion-slide>
             <h2>Welcome to gedsys app</h2>
         </ion-slide>
@@ -28,10 +28,10 @@
             </h2>
         </ion-slide>
     </ion-slides>
-    <ion-row *ngIf="user.name">
+    <ion-row *ngIf="dataProvider.profile">
         <ion-card>
-            <img [src]="user.img" *ngIf="user.img">
-            <ion-row *ngIf="!user.img">
+            <img [src]="dataProvider.profile.img" *ngIf="dataProvider.profile.img">
+            <ion-row *ngIf="!dataProvider.profile.img">
                 <ion-icon color="primary" col-12 name="contact"></ion-icon>
             </ion-row>
             <ion-fab right top>
@@ -40,14 +40,17 @@
                 </button>
             </ion-fab>
             <ion-item>
-                <h2>{{user.name}}</h2>
-                <p>{{user.role}}</p>
+                <h2>{{dataProvider.profile.name}}</h2>
+                <p>{{dataProvider.profile.role}}</p>
             </ion-item>
             <ion-item>
-                <span item-left>6 documents</span>
+                <button ion-button icon-left clear item-start (click)="loadDocuments()">
+                    <ion-icon name="copy"></ion-icon>
+                    {{dataProvider.documents.length}} Documents
+                </button>
                 <button ion-button icon-left clear item-end (click)="loadNotifications()">
                     <ion-icon name="notifications"></ion-icon>
-                    Notifications
+                    {{getAmount(dataProvider.notifications)}} Notifications
                 </button>
             </ion-item>
         </ion-card>

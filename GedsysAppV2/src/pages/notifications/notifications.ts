@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
-import {
-    ActionSheetController, Events, IonicPage, LoadingController, NavController, NavParams,
-    ToastController
-} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {NotificationDetailPage} from "../notification-detail/notification-detail";
+import {DataProvider} from "../../providers/data/data";
 
 @IonicPage()
 @Component({
@@ -11,25 +9,22 @@ import {NotificationDetailPage} from "../notification-detail/notification-detail
     templateUrl: 'notifications.html',
 })
 export class NotificationsPage {
-    user: any = [];
-    curPage: any = 0;
-    pagesPer: any = 15;
-    filterStr: any = {title : ''};
-    ammount: any = 0;
     index: any;
-    userInd : any;
-    loadNotificationDetail(notification){
-        this.navCtrl.push(NotificationDetailPage,notification);
+
+    loadNotificationDetail(notification) {
+        this.navCtrl.push(NotificationDetailPage, notification);
     }
-    checkColor(notification){
+
+    checkColor(notification) {
         let now = new Date().getTime();
-        if (notification.date.max - now < 0){
+        if (notification.date.max - now < 0) {
             return 'dark';
-        }else if (notification.date.max - now < 86400000){
+        } else if (notification.date.max - now < 86400000) {
             return 'danger';
         }
 
     }
+
     remove(notification) {
         const loading = this.loadingCtrl.create({
             content: 'Deleting, please wait....'
@@ -41,13 +36,13 @@ export class NotificationsPage {
             position: 'top',
             showCloseButton: true,
             dismissOnPageChange: true,
-            cssClass : 'toast-success'
+            cssClass: 'toast-success'
         });
-        this.user.notifications.splice(this.user.notifications.indexOf(notification),1);
-        this.events.publish('user:updated',this.user,this.userInd);
+        this.dataProvider.notifications.splice(this.dataProvider.notifications.indexOf(notification), 1);
         loading.dismiss();
         toast.present();
     }
+
     archive(notification) {
         const loading = this.loadingCtrl.create({
             content: 'Archiving, please wait....'
@@ -58,54 +53,58 @@ export class NotificationsPage {
             duration: 1500,
             position: 'top',
             showCloseButton: true,
-            closeButtonText : 'OK',
+            closeButtonText: 'OK',
             dismissOnPageChange: true,
-            cssClass : 'success'
+            cssClass: 'success'
         });
         this.index ? notification.archived = false : notification.archived = true;
-        this.events.publish('user:updated',this.user,this.userInd)
         loading.dismiss();
         toast.present();
     }
 
-    filter(event) {
-        this.filterStr.title = event.target.value;
-    }
+    filterStr: any = {title: ''};
+    filterBool: any = {archived : false};
+
 
     refresh(comp) {
-        setTimeout(()=> comp.complete(),1000);
+        setTimeout(() => comp.complete(), 1000);
     }
 
-    constructor(private events: Events, public loadingCtrl: LoadingController, public toastCtrl: ToastController,public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController) {
-        this.user = this.navParams.data.user;
-        this.index = (<any> this.navCtrl).index;
-        this.userInd = this.navParams.data.index;
-        this.user.notifications.map(notification =>{
-            if (this.index){
-                notification.archived ? this.ammount++ : this.ammount;
-            }else{
-                notification.archived ? this.ammount : this.ammount++;
+    hiddenHeader: any = false;
+
+    contentScroll(event) {
+        event.directionY == 'down' ? this.hiddenHeader = true : this.hiddenHeader = false;
+        event.scrollTop < 40 ? this.hiddenHeader = false : null;
+        return true;
+    }
+
+    getAmount(notifications, archived) {
+        let amount = 0;
+        if (notifications.length == 0 || notifications.length == undefined) {
+            return 0;
+        } else {
+            if (archived) {
+                notifications.map(notification => {
+                    notification.archived ? amount++ : amount;
+                    return notification;
+                });
+            } else {
+                notifications.map(notification => {
+                    notification.archived ? amount : amount++;
+                    return notification;
+                });
             }
-            return notification;
-        });
-        this.events.subscribe('user:updated',(user,index)=>{
-            this.user = user;
-            this.userInd = index;
-            this.ammount = 0;
-            this.user.notifications.map(notification =>{
-                if (this.index){
-                    notification.archived ? this.ammount++ : this.ammount;
-                }else{
-                    notification.archived ? this.ammount : this.ammount++;
-                }
-                return notification;
-            });
-        });
+            return amount;
+        }
+
     }
 
-
-    ionViewDidEnter() {
-    }
-    ionViewDidUpdate() {
+    constructor(private dataProvider: DataProvider,
+                public loadingCtrl: LoadingController,
+                public toastCtrl: ToastController,
+                public navCtrl: NavController,
+                public navParams: NavParams) {
+        this.index = (<any> this.navCtrl).index;
+        this.index ? this.filterBool.archived = true : this.filterBool.archived = false;
     }
 }

@@ -13,22 +13,41 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+ion-content{
+  transition: all .3s ease;
+  .fixed-content,.scroll-content{
+    transition: all .3s ease !important;
+  }
+  &.full{
+    .fixed-content,.scroll-content{
+      margin-top: 0 !important;
+    }
+  }
+}
+ion-header{
+  transition: all .3s ease;
+  overflow: hidden;
+}
+.counter{
+  margin-left: -15px !important;
+  margin-right: -8px !important;
+  top: -15px;
+  position: relative;
+}
 ion-navbar {
   &.active {
     color: white;
   }
 }
 
-.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
-  border: none;
-}
-
 ion-list {
   button {
     transition: all .3s ease;
+    font-weight: 100 !important;
     &.active {
       color: map-get($colors, primary);
       background: rgba(map-get($colors, primary), 0.1);
+      font-weight: 500 !important;
     }
   }
 }

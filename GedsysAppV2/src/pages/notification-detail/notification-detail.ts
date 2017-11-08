@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the NotificationDetailPage page.
@@ -10,16 +10,27 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-notification-detail',
-  templateUrl: 'notification-detail.html',
+    selector: 'page-notification-detail',
+    templateUrl: 'notification-detail.html',
 })
 export class NotificationDetailPage {
-  notification:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-      this.notification = this.navParams.data;
-  }
+    notification: any;
 
-  ionViewDidLoad() {
-  }
+    checkColor(notification) {
+        let now = new Date().getTime();
+        if (notification.date.max - now < 0) {
+            return 'dark';
+        } else if (notification.date.max - now < 86400000) {
+            return 'danger';
+        }
+
+    }
+
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+        this.notification = this.navParams.data;
+    }
+
+    ionViewDidLoad() {
+    }
 
 }

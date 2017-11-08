@@ -15,6 +15,10 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 })
 export class DocumentDetailPage {
     pdfSrc: any;
+    pinch: any;
+    pinchEvent(event){
+        return this.pinch = event;
+    }
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.pdfSrc = navParams.data.url;
