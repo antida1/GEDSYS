@@ -1,0 +1,8 @@
+page-tabs {
+  .tab-button:nth-child(2) {
+    ion-badge{
+      color: map-get($colors, primary) !important;
+    }
+  }
+
+}

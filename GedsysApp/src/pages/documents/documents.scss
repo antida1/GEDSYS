@@ -1,0 +1,9 @@
+@import '../../theme/variables.scss';
+page-documents {
+  ion-toolbar {
+    .toolbar-content {
+      overflow: inherit;
+      max-height: inherit;
+    }
+  }
+}

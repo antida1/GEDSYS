@@ -1,0 +1,32 @@
+<ion-content>
+    <ion-list class="outer-content" *ngFor="let data of data">
+        <ion-item-divider color="primary">
+            {{data.title}}
+        </ion-item-divider>
+        <ng-container *ngFor="let option of data.options" [ngSwitch]="option.type">
+            <ion-list-header *ngSwitchCase="'range'" color="primary">
+                {{option.title}}
+                <ion-badge item-end color="light">{{option.data}}%</ion-badge></ion-list-header>
+            <ion-item *ngIf="option.type != 'radio-group'">
+                <ion-icon *ngIf="option.type != 'range'" [name]="option.icon" item-start color="primary"></ion-icon>
+                <ion-label color="primary" *ngIf="option.type != 'range'">{{option.title}}</ion-label>
+                <ion-toggle *ngSwitchCase="'toggle'" [(ngModel)]="option.data"></ion-toggle>
+                <ion-input *ngSwitchCase="'input'" [(ngModel)]="option.data"></ion-input>
+                <ion-textarea *ngSwitchCase="'textarea'" [(ngModel)]="option.data"></ion-textarea>
+                <ion-range *ngSwitchCase="'range'" [(ngModel)]="option.data"></ion-range>
+                <a ion-button outline item-end [href]="option.link" *ngSwitchCase="'button'">{{option.btnTitle}}</a>
+            </ion-item>
+            <ion-list *ngSwitchCase="'radio-group'" radio-group [(ngModel)]="option.data">
+                <ion-list-header style="margin-top: 0;">
+                    {{option.title}}
+                </ion-list-header>
+                <ng-container *ngFor="let radio of option.group">
+                    <ion-item>
+                        <ion-label color="dark">{{radio.name}}</ion-label>
+                        <ion-radio [value]="radio.name" checked></ion-radio>
+                    </ion-item>
+                </ng-container>
+            </ion-list>
+        </ng-container>
+    </ion-list>
+</ion-content>
