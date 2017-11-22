@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {Badge} from '@ionic-native/badge';
 
 import {MyApp} from './app.component';
 import {LoginPage} from "../pages/login/login";
@@ -41,26 +42,29 @@ import {DocumentReplyPage} from "../pages/document-reply/document-reply";
 import {VariablesProvider} from '../providers/variables/variables';
 import {ComponentsModule} from "../components/components.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DocumentForwardPage} from "../pages/document-forward/document-forward";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 @NgModule({
     declarations: [
         MyApp,
         HomePage,
-        NotificationsPage,
-        CalendarPage,
-        ConfigPage,
-        DocumentsPage,
-        TabsPage,
-        LoginPage,
         UserConfigPage,
         AppConfigPage,
         PdfViewerComponent,
         DocumentDetailPage,
-        NotificationDetailPage,
         MomentPipe,
         OrderByPipe,
         RegisterPage,
-        DocumentReplyPage
+        DocumentReplyPage,
+        DocumentForwardPage,
+        NotificationsPage,
+        NotificationDetailPage,
+        DocumentsPage,
+        LoginPage,
+        TabsPage,
+        CalendarPage,
+        ConfigPage
     ],
     imports: [
         BrowserModule,
@@ -81,7 +85,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         AngularFireAuthModule,
         ComponentsModule,
         AngularFireDatabaseModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -98,7 +102,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         DocumentDetailPage,
         NotificationDetailPage,
         RegisterPage,
-        DocumentReplyPage
+        DocumentReplyPage,
+        DocumentForwardPage
     ],
     providers: [
         StatusBar,
@@ -107,7 +112,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         AuthServiceProvider,
         GedsysApiService,
         DataProvider,
-        VariablesProvider
+        VariablesProvider,
+        Badge,
+        LocalNotifications
     ]
 })
 export class AppModule {

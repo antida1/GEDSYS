@@ -3,6 +3,7 @@ import {AlertController, IonicPage, ModalController, NavController, NavParams} f
 import {VariablesProvider} from "../../providers/variables/variables";
 import {DataProvider} from "../../providers/data/data";
 import {DocumentReplyPage} from "../document-reply/document-reply";
+import {DocumentForwardPage} from "../document-forward/document-forward";
 
 @IonicPage()
 @Component({
@@ -29,17 +30,16 @@ export class DocumentDetailPage {
     err(err) {
         let errToast = this.variables.toastTemplate({
             title: err,
-            cssClass: 'toast-err',
+            cssClass: 'toast-danger',
             duration: 3000
         });
         this.docLoader.dismiss();
-        errToast.present();
-        return console.log(err);
+        return errToast.present();
     }
 
     remove(document) {
         let alert = this.alertCtrl.create({
-            title: 'Confirm remove',
+            title: 'Confirm',
             message: 'Do you want to remove this document?',
             buttons: [
                 {
@@ -52,7 +52,13 @@ export class DocumentDetailPage {
                 {
                     text: 'Remove',
                     handler: () => {
+                        let toast = this.variables.toastTemplate({
+                            message: `Successfully removed ${document.title}`,
+                            cssClass: 'toast-success',
+                            position: 'bottom'
+                        });
                         this.dataProvider.documents.splice(this.dataProvider.documents.indexOf(document), 1);
+                        toast.present();
                         this.navCtrl.pop();
                     }
                 }
@@ -67,7 +73,7 @@ export class DocumentDetailPage {
     }
 
     forward(document) {
-        let profileModal = this.modalCtrl.create(DocumentReplyPage, document);
+        let profileModal = this.modalCtrl.create(DocumentForwardPage, document);
         profileModal.present();
     }
 

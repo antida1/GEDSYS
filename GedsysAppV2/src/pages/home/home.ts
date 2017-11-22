@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {Events, NavController, NavParams} from 'ionic-angular';
-import {GedsysApiService} from "../../shared/gedsys-api.service";
 import {DataProvider} from "../../providers/data/data";
-import {VariablesProvider} from "../../providers/variables/variables";
 
 @Component({
     selector: 'page-home',
@@ -34,9 +32,8 @@ export class HomePage {
         });
         return amount;
     }
-    constructor(private variables: VariablesProvider,
-                private dataProvider: DataProvider,
-                private service: GedsysApiService,
+    constructor(/* tslint:disable */
+                private dataProvider: DataProvider,/* tslint:enable */
                 public events: Events,
                 public navParams: NavParams,
                 public navCtrl: NavController) {

@@ -1,4 +1,23 @@
 page-user-config {
+  .user-img{
+    border-bottom: dashed 2px map-get($colors, primary);
+    ion-icon.not-img{
+      text-align: center;
+      font-size: 60vw;
+    }
+  }
+  .profile-info{
+    h1{
+      font-weight: 400;
+    }
+    h3{
+      color: map-get($colors,primary);
+      font-weight: 100;
+    }
+    ion-note{
+      font-weight: 100;
+    }
+  }
   ion-list{
     margin: 0 !important;
   }

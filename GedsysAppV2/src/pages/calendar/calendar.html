@@ -10,9 +10,11 @@
 
 <ion-content (ionScroll)="contentScroll($event)" [class.full]="hiddenHeader">
     <ion-item-divider text-center color="primary">
+        <button ion-button item-start outline color="light" (click)="previousMonth()"><ion-icon name="arrow-back"></ion-icon></button>
         <h2>
             {{date | calendarDate:('month' + 'ViewTitle'):'en'}}
         </h2>
+        <button ion-button item-end outline color="light" (click)="nextMonth()"><ion-icon name="arrow-forward"></ion-icon></button>
     </ion-item-divider>
     <mwl-calendar-month-view
             [activeDayIsOpen]="activeDayIsOpen"
@@ -23,12 +25,16 @@
             (eventClicked)="loadNotificationDetail($event)"
             [events]="events">
     </mwl-calendar-month-view>
-    <ion-item-divider id="divider" color="primary">{{date | calendarDate:('day' + 'ViewTitle'):'en'}}</ion-item-divider>
+    <ion-item-divider (click)="viewOnDay()" id="divider" color="primary">
+        {{date | calendarDate:('day' + 'ViewTitle'):'en'}}
+    </ion-item-divider>
     <mwl-calendar-day-view
             [dayStartHour]="6"
             [dayEndHour]="18"
             [viewDate]="date"
-            [hourSegments]="1"
+            [hourSegments]="2"
+            [eventWidth]="125"
+            (eventClicked)="loadNotificationDetail($event)"
             [events]="events">
     </mwl-calendar-day-view>
 </ion-content>

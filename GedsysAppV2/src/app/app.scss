@@ -79,9 +79,28 @@ ion-textarea{
   border: dashed 1px map-get($colors, primary);
 }
 ion-toast{
-  &.error-toast{
+  .toast-wrapper{
+    border: solid 2px white;
+    background: darken(map-get($colors,primary),12.5%) !important;
+    opacity: 0.9;
+  }
+  &.toast-success{
     .toast-wrapper{
-      background: map-get($colors, danger);
+      border-color: lightgreen;
+      .toast-message,button{
+        color: lightgreen;
+      }
+    }
+  }
+  &.toast-danger{
+    .toast-wrapper{
+      border-color: lightcoral;
+      opacity: 0.95;
+      .toast-message,button{
+        color: lightcoral;
+        font-weight: 900;
+      }
     }
   }
 }
+

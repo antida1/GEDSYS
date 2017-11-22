@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{data.title}}</ion-title>
+    <ion-buttons padding-left left>
+      <button ion-button icon-only icon-left (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-input placeholder="Search" [(ngModel)]="data.receptor"></ion-input>
+  <ion-textarea style="padding-left: 15px;" [placeholder]="'Forward to ' + (data.receptor || '...')"></ion-textarea>
+  <ion-buttons right padding-right>
+    <button ion-button small item-end margin-top (click)="close()">Send</button>
+  </ion-buttons>
+
+</ion-content>

@@ -4557,10 +4557,10 @@ ion-alert input {
 
 .alert-wp .alert-wrapper {
   border-radius: 0;
-  width: 100%;
+  width: 80%;
   max-width: 520px;
   border: 1px solid #188986;
-  background: #e6e6e6;
+  background: white;
 }
 
 .alert-wp .alert-head {
@@ -4660,7 +4660,7 @@ ion-alert input {
 }
 
 .alert-wp [aria-checked=true] .alert-radio-label {
-  color: #000;
+  color: white;
 }
 
 .alert-wp [aria-checked=true] .alert-radio-icon {
@@ -4745,8 +4745,8 @@ ion-alert input {
   border-radius: 0;
   width: 49.5%;
   font-weight: 400;
-  color: #000;
-  background: #b8b8b8;
+  color: white;
+  background: #188986;
   padding: 5px;
 }
 
@@ -4755,7 +4755,7 @@ ion-alert input {
 }
 
 .alert-wp .alert-button.activated {
-  background: darkgray;
+  background: #2a9290;
 }
 
 audio,
@@ -28154,8 +28154,28 @@ ion-textarea {
   border: dashed 1px #188986;
 }
 
-ion-toast.error-toast .toast-wrapper {
-  background: #f53d3d;
+ion-toast .toast-wrapper {
+  border: solid 2px white;
+  background: #0e5351 !important;
+  opacity: 0.9;
+}
+
+ion-toast.toast-success .toast-wrapper {
+  border-color: lightgreen;
+}
+
+ion-toast.toast-success .toast-wrapper .toast-message, ion-toast.toast-success .toast-wrapper button {
+  color: lightgreen;
+}
+
+ion-toast.toast-danger .toast-wrapper {
+  border-color: lightcoral;
+  opacity: 0.95;
+}
+
+ion-toast.toast-danger .toast-wrapper .toast-message, ion-toast.toast-danger .toast-wrapper button {
+  color: lightcoral;
+  font-weight: 900;
 }
 
 progress-bar .progress-outer {
@@ -28634,11 +28654,6 @@ page-calendar .cal-month-view .cal-cell-row .cal-cell {
   transition: all .3s ease;
 }
 
-page-calendar .cal-month-view .cal-cell-row .cal-cell:hover {
-  background: rgba(24, 137, 134, 0.75);
-  color: white;
-}
-
 page-calendar .cal-month-view .cal-header .cal-cell {
   padding: 15px 2.5px;
   font-weight: 100;
@@ -28662,6 +28677,13 @@ page-calendar .cal-day-view .cal-hour:nth-child(odd) {
 page-calendar .cal-day-view .cal-hour-segment {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
+  /*&:hover{
+        background-color: rgba(map_get($colors,primary),0.75);
+        .cal-time{
+          font-weight: 500;
+          color: white;
+        }
+      }*/
 }
 
 page-calendar .cal-day-view .cal-hour-segment .cal-time {
@@ -28669,15 +28691,6 @@ page-calendar .cal-day-view .cal-hour-segment .cal-time {
   color: #188986;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-}
-
-page-calendar .cal-day-view .cal-hour-segment:hover {
-  background-color: rgba(24, 137, 134, 0.75);
-}
-
-page-calendar .cal-day-view .cal-hour-segment:hover .cal-time {
-  font-weight: 500;
-  color: white;
 }
 
 page-calendar .cal-month-view .cal-open-day-events {
@@ -28695,6 +28708,10 @@ page-calendar .cal-day-selected:hover {
 page-calendar .cal-day-selected .cal-day-number,
 page-calendar .cal-day-selected:hover .cal-day-number {
   font-weight: 100;
+}
+
+page-calendar .cal-day-view .cal-hour-rows {
+  overflow: hidden;
 }
 
 page-config ion-toolbar .toolbar-content {
@@ -32551,6 +32568,11 @@ page-home ion-row ion-icon {
   font-size: 70vw;
 }
 
+page-login svg {
+  display: block;
+  fill: #188986;
+}
+
 page-login ion-label {
   padding-left: 5px;
 }
@@ -32575,6 +32597,11 @@ page-notifications ion-toolbar .toolbar-content {
   max-height: inherit;
 }
 
+page-register svg {
+  display: block;
+  fill: #188986;
+}
+
 page-register ion-label {
   padding-left: 5px;
 }
@@ -32588,6 +32615,28 @@ page-register ion-input {
 
 page-tabs .tab-button:nth-child(2) ion-badge {
   color: #188986 !important;
+}
+
+page-user-config .user-img {
+  border-bottom: dashed 2px #188986;
+}
+
+page-user-config .user-img ion-icon.not-img {
+  text-align: center;
+  font-size: 60vw;
+}
+
+page-user-config .profile-info h1 {
+  font-weight: 400;
+}
+
+page-user-config .profile-info h3 {
+  color: #188986;
+  font-weight: 100;
+}
+
+page-user-config .profile-info ion-note {
+  font-weight: 100;
 }
 
 page-user-config ion-list {

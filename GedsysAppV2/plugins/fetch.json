@@ -72,7 +72,7 @@
   "de.appplant.cordova.plugin.local-notification": {
     "source": {
       "type": "registry",
-      "id": "de.appplant.cordova.plugin.local-notification"
+      "id": "de.appplant.cordova.plugin.local-notification@^0.8.5"
     },
     "is_top_level": true,
     "variables": {}
@@ -92,5 +92,23 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-badge": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-badge"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "phonegap-plugin-push": {
+    "source": {
+      "type": "registry",
+      "id": "phonegap-plugin-push@^2.1.0"
+    },
+    "is_top_level": true,
+    "variables": {
+      "SENDER_ID": "924324551571"
+    }
   }
 }

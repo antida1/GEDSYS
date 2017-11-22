@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../models/user";
 import {Profile} from "../../models/profile";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
-import {HomePage} from "../home/home";
 import {VariablesProvider} from "../../providers/variables/variables";
 import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
 
@@ -30,7 +29,7 @@ export class RegisterPage {
                 private authService: AuthServiceProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
-        this.formGroup = formBuilder.group({
+        this.formGroup = this.formBuilder.group({
             username: ['', Validators.required],
             name: ['', Validators.required],
             last_name: ['', Validators.required],
@@ -59,7 +58,7 @@ export class RegisterPage {
             if (err) {
                 let errToast = this.variables.toastTemplate({
                     message: err,
-                    cssClass: 'error-toast',
+                    cssClass: 'toast-danger',
                     duration: 5000,
                     showCloseButton: true
                 });

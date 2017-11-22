@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {
+    ActionSheetController, AlertController, IonicPage, ModalController, NavController,
+    NavParams
+} from 'ionic-angular';
 import {DocumentDetailPage} from "../document-detail/document-detail";
 import {DataProvider} from "../../providers/data/data";
 import {DocumentReplyPage} from "../document-reply/document-reply";
 import {VariablesProvider} from "../../providers/variables/variables";
+import {DocumentForwardPage} from "../document-forward/document-forward";
 
 @IonicPage()
 @Component({
@@ -34,7 +38,7 @@ export class DocumentsPage {
             title: document.title + '\'s options',
             buttons: [
                 {
-                    text: 'Delete',
+                    text: 'Remove',
                     role: 'destructive',
                     handler: () => {
                         this.remove(document);
@@ -70,7 +74,39 @@ export class DocumentsPage {
     }
 
     remove(document){
-        return this.dataProvider.documents.splice(this.dataProvider.documents.indexOf(document),1);
+        let confirm = this.alertCtrl.create({
+            title: 'Confirm',
+            message: 'Do you want to remove this document?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+
+                    }
+                },
+                {
+                    text: 'Remove',
+                    handler: () => {
+                        const loading = this.variables.loadingTemplate(null);
+                        loading.present().then(()=>{
+                            let toast = this.variables.toastTemplate({
+                                message: `Successfully removed ${document.title}`,
+                                cssClass: 'toast-success',
+                                position: 'bottom'
+                            });
+                            this.dataProvider.documents.splice(this.dataProvider.documents.indexOf(document),1);
+                            loading.dismiss().then(()=>{
+                                toast.present().then(()=>{return;});
+                            });
+                        });
+
+
+                    }
+                }
+            ]
+        });
+        return confirm.present();
     }
 
     reply(document){
@@ -78,7 +114,7 @@ export class DocumentsPage {
         return profileModal.present();
     }
     forward(document){
-        let profileModal = this.modalCtrl.create(DocumentReplyPage, document);
+        let profileModal = this.modalCtrl.create(DocumentForwardPage, document);
         return profileModal.present();
     }
 
@@ -86,7 +122,9 @@ export class DocumentsPage {
         return this.navCtrl.push(DocumentDetailPage, document);
     }
 
-    constructor(private variables: VariablesProvider,
+    constructor(/* tslint:disable */
+                private variables: VariablesProvider, /* tslint:enable */
+                private alertCtrl: AlertController,
                 private actionSheetCtrl: ActionSheetController,
                 private modalCtrl: ModalController,
                 private dataProvider: DataProvider,

@@ -14,6 +14,8 @@ import {LoginPage} from "../pages/login/login";
 import {AuthServiceProvider} from "../providers/auth-service/auth-service";
 import {DataProvider} from "../providers/data/data";
 import {VariablesProvider} from "../providers/variables/variables";
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Badge} from "@ionic-native/badge";
 
 @Component({
     templateUrl: 'app.html',
@@ -67,14 +69,15 @@ export class MyApp {
         let loading = this.variables.loadingTemplate(null);
         loading.present();
         const tempThis = this;
-        this.authService.auth(function (err, profileData) {
+        this.authService.auth(function (err) {
             if (err) {
                 console.error(err);
             } else {
                 let authToast = tempThis.variables.toastTemplate({
                     message: `Logged in as ${tempThis.dataProvider.profile.name} ${tempThis.dataProvider.profile.last_name}`,
                     closeButtonText: 'Ok',
-                    position: 'bottom'
+                    position: 'bottom',
+                    cssClass: 'toast-success'
                 });
                 authToast.present();
                 tempThis.events.publish('root:change', 0);
@@ -94,7 +97,9 @@ export class MyApp {
     }
 
 
-    constructor(private variables: VariablesProvider,
+    constructor(private badge: Badge,
+                private localNotifications: LocalNotifications,
+                private variables: VariablesProvider,
                 private authService: AuthServiceProvider,
                 public events: Events,
                 public actionSheetCtrl: ActionSheetController,
@@ -121,6 +126,44 @@ export class MyApp {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
+            if (this.platform.is('cordova')) {
+                this.localNotifications.hasPermission().then(res => {
+                    alert(res);
+                    if (!res) {
+                        this.localNotifications.registerPermission().then(res => {
+                            alert(res);
+                            setInterval(() => {
+                                this.localNotifications.schedule({
+                                    text: 'Delayed ILocalNotification',
+                                    at: new Date(new Date().getTime() + Math.round(Math.random() * 5000) + 1000),
+                                    led: 'FF0000',
+                                    sound: null
+                                });
+                            }, 1000);
+                        });
+                    }
+                });
+                setInterval(() => {
+                    this.localNotifications.schedule({
+                        text: 'Delayed ILocalNotification',
+                        at: new Date(new Date().getTime() + Math.round(Math.random() * 5000) + 1000),
+                        led: 'FF0000',
+                        sound: null
+                    });
+                }, 1000);
+                this.badge.hasPermission().then(res => {
+                    if (!res) {
+                        alert(res);
+                        this.badge.registerPermission().then(res => {
+                            if (res) {
+                                alert(res);
+                                this.badge.set(10);
+                            }
+                        })
+                    }
+                })
+                this.badge.set(10);
+            }
         });
     }
 

@@ -7,7 +7,18 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
     "cordova-plugin-device": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-ionic": {
+      "APP_ID": "d369712a",
+      "CHANNEL_NAME": "Master",
+      "UPDATE_API": "https://api.ionicjs.com",
+      "UPDATE_METHOD": "background",
+      "MAX_STORE": "2",
       "PACKAGE_NAME": "io.ionic.starter"
     },
     "cordova-plugin-ionic-webview": {
@@ -22,18 +33,13 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
-    "ionic-plugin-keyboard": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-ionic": {
-      "APP_ID": "d369712a",
-      "CHANNEL_NAME": "Master",
-      "UPDATE_API": "https://api.ionicjs.com",
-      "UPDATE_METHOD": "background",
-      "MAX_STORE": "2",
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
     "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "ionic-plugin-keyboard": {
       "PACKAGE_NAME": "io.ionic.starter"
     }
   },

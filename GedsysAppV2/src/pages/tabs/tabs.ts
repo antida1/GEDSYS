@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {NotificationsPage} from "../notifications/notifications";
-import {GedsysApiService} from "../../shared/gedsys-api.service";
 import {DataProvider} from "../../providers/data/data";
 
 
@@ -31,9 +30,9 @@ export class TabsPage {
         return amount;
     }
 
-    constructor(private dataProvider: DataProvider,
+    constructor(/* tslint:disable */
+                private dataProvider: DataProvider,/* tslint:enable */
                 public events: Events,
-                private service: GedsysApiService,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
     }

@@ -16,13 +16,13 @@ export class UserConfigPage {
         return this.service.updateAppConfig(this.data, index);
     }
 
-    constructor(private dataProvider: DataProvider,
+    constructor(/* tslint:disable */
+                private dataProvider: DataProvider,/* tslint:enable */
                 public events: Events,
                 public service: GedsysApiService,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
         this.user = navParams.data;
-        this.data = this.dataProvider.user_config;
         this.events.subscribe('info:update', (index) => {
             index == 0 ? this.updateInfo(index) : null;
         })

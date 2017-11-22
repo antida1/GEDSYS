@@ -24,7 +24,7 @@
                 [refreshingText]="variables.refresherTemplate({title : 'notifications'}).refreshingText">
         </ion-refresher-content>
     </ion-refresher>
-    <ion-list no-lines no-border>
+    <ion-list no-lines no-margin no-border>
         <ion-item-divider color="primary" *ngIf="filterStr.title">Search for: {{filterStr.title}}</ion-item-divider>
         <ion-item *ngIf="(dataProvider.notifications |filterBy: filterBool | filterBy: filterStr | orderBy: 'date.max')?.length == 0">
             {{index ? "No archived notifications" : "No pending notifications"}}

@@ -7,7 +7,6 @@ export class DataProvider {
     public notifications: any = [];
     public documents: any = [];
     public app_config: any;
-    public user_config: any;
   constructor() {
 
   }

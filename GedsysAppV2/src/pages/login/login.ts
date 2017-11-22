@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {RegisterPage} from "../register/register";
+// import {RegisterPage} from "../register/register";
 import {User} from "../../models/user";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 import {VariablesProvider} from "../../providers/variables/variables";
-import {DataProvider} from "../../providers/data/data";
 import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
 
 @IonicPage()
@@ -26,7 +25,7 @@ export class LoginPage {
             if (err) {
                 let toast = this.variables.toastTemplate({
                     message: err,
-                    cssClass: 'error-toast',
+                    cssClass: 'toast-danger',
                     duration: 5000,
                     showCloseButton: true
                 });
@@ -38,18 +37,17 @@ export class LoginPage {
         });
     }
 
-    loadRegister() {
+/*    loadRegister() {
         return this.navCtrl.push(RegisterPage);
-    }
+    }*/
 
     constructor(private formBuilder: FormBuilder,
-                private dataProvider: DataProvider,
                 private variables: VariablesProvider,
                 private authService: AuthServiceProvider,
                 public events: Events,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
-        this.formGroup = formBuilder.group({
+        this.formGroup = this.formBuilder.group({
             email: ['', Validators.required],
             password: ['', Validators.required]
         });

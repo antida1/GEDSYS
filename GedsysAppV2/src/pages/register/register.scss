@@ -1,4 +1,8 @@
 page-register {
+  svg{
+    display: block;
+    fill: map_get($colors,primary);
+  }
   ion-label {
     padding-left: 5px;
   }

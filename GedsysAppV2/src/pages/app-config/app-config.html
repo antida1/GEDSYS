@@ -6,7 +6,8 @@
         <ng-container *ngFor="let option of data.options" [ngSwitch]="option.type">
             <ion-list-header *ngSwitchCase="'range'" color="primary">
                 {{option.title}}
-                <ion-badge item-end color="light">{{option.data}}%</ion-badge></ion-list-header>
+                <ion-badge item-end color="light">{{option.data}}%</ion-badge>
+            </ion-list-header>
             <ion-item *ngIf="option.type != 'radio-group'">
                 <ion-icon *ngIf="option.type != 'range'" [name]="option.icon" item-start color="primary"></ion-icon>
                 <ion-label color="primary" *ngIf="option.type != 'range'">{{option.title}}</ion-label>
@@ -29,4 +30,9 @@
             </ion-list>
         </ng-container>
     </ion-list>
+    <ion-item no-lines>
+        <ion-note>
+            App last updated {{data[0].last_updated | moment}}
+        </ion-note>
+    </ion-item>
 </ion-content>

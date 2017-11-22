@@ -97,142 +97,84 @@ export class GedsysApiService {
                 public events: Events,
                 private http: Http) {
         this.storage.get('app_config').then((data) => {
-            if (data) {
+            let config: any = [
+                {
+                    last_updated : 1510778647529,
+                    title: 'App',
+                    options: [
+                        /*{
+                            title: 'option1',
+                            data: null,
+                            type: 'input',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option2',
+                            data: null,
+                            type: 'textarea',
+                            icon: 'cog'
+                        },
+                        {
+                            title: 'option3',
+                            data: true,
+                            type: 'range',
+                            icon: 'cog'
+                        },*/
+                        {
+                            title: 'App badge',
+                            data: true,
+                            type: 'toggle',
+                            icon: 'alert'
+                        },
+                        {
+                            title: 'Notifications',
+                            data: true,
+                            type: 'toggle',
+                            icon: 'notifications'
+                        }
+                    ]
+                },
+                {
+                    title: 'Notifications',
+                    options: [
+                        {
+                            title: 'Should notify',
+                            data: 'Always',
+                            type: 'radio-group',
+                            group: [
+                                {
+                                    name: 'Always'
+                                },
+                                {
+                                    name: 'During the day'
+                                },
+                                {
+                                    name: 'Weekdays'
+                                },
+                                {
+                                    name: 'Weekdays during the day'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: 'Contact',
+                    options: [
+                        {
+                            title: 'Base 16',
+                            data: null,
+                            type: 'button',
+                            icon: 'code-working',
+                            link: 'http://www.base16.co/',
+                            btnTitle: 'Go'
+                        }
+                    ]
+                }];
+            if (data && (data[0].last_updated == config[0].last_updated)) {
                 return this.dataProvider.app_config = data;
             }
-            this.dataProvider.app_config = [
-                {
-                    title: 'category 1',
-                    options: [
-                        {
-                            title: 'option1',
-                            data: null,
-                            type: 'input',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option2',
-                            data: null,
-                            type: 'textarea',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option3',
-                            data: null,
-                            type: 'range',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option4',
-                            data: null,
-                            type: 'toggle',
-                            icon: 'cog'
-                        }
-                    ]
-                },
-                {
-                    title: 'category 2',
-                    options: [
-                        {
-                            title: 'option6',
-                            data: null,
-                            type: 'radio-group',
-                            group: [
-                                {
-                                    name: '1'
-                                },
-                                {
-                                    name: '2'
-                                },
-                                {
-                                    name: '3'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    title: 'Contact',
-                    options: [
-                        {
-                            title: 'Base 16',
-                            data: null,
-                            type: 'button',
-                            icon: 'code-working',
-                            link: 'http://www.base16.co/',
-                            btnTitle: 'Go'
-                        }
-                    ]
-                }];
-        });
-        this.storage.get('user_config').then((data) => {
-            if (data) {
-                return this.dataProvider.user_config = data;
-            }
-            this.dataProvider.user_config = [
-                {
-                    title: 'category 2',
-                    options: [
-                        {
-                            title: 'option6',
-                            data: null,
-                            type: 'radio-group',
-                            group: [
-                                {
-                                    name: '1'
-                                },
-                                {
-                                    name: '2'
-                                },
-                                {
-                                    name: '3'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    title: 'category 1',
-                    options: [
-                        {
-                            title: 'option1',
-                            data: null,
-                            type: 'input',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option2',
-                            data: null,
-                            type: 'textarea',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option3',
-                            data: null,
-                            type: 'range',
-                            icon: 'cog'
-                        },
-                        {
-                            title: 'option4',
-                            data: null,
-                            type: 'toggle',
-                            icon: 'cog'
-                        }
-                    ]
-                },
-                {
-                    title: 'Contact',
-                    options: [
-                        {
-                            title: 'Base 16',
-                            data: null,
-                            type: 'button',
-                            icon: 'code-working',
-                            link: 'http://www.base16.co/',
-                            btnTitle: 'Go'
-                        }
-                    ]
-                }];
+            this.dataProvider.app_config = config;
         });
     }
 }

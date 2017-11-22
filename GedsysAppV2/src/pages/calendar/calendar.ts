@@ -3,7 +3,6 @@ import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {NotificationDetailPage} from "../notification-detail/notification-detail";
 import {DataProvider} from "../../providers/data/data";
 import {CalendarMonthViewDay} from 'angular-calendar';
-import {setHours, setMinutes} from 'date-fns';
 
 @IonicPage()
 @Component({
@@ -20,7 +19,12 @@ export class CalendarPage {
         event.scrollTop <= 40 ? this.hiddenHeader = false : null;
         return true;
     }
-
+    nextMonth(){
+        return this.date = new Date(this.date.setMonth(this.date.getMonth() + 1));
+    }
+    previousMonth(){
+        return this.date = new Date(this.date.setMonth(this.date.getMonth() - 1));
+    }
     loadNotificationDetail(notification) {
         return this.navCtrl.push(NotificationDetailPage, notification.event.meta);
     }
@@ -40,10 +44,10 @@ export class CalendarPage {
         return;
     }
 
-    /*viewOnDay() {
+    viewOnDay() {
         let offset = document.getElementById('divider').offsetTop;
         return this.content.scrollTo(0, offset, 1000);
-    }*/
+    }
 
     beforeMonthViewRender({body}: { body: CalendarMonthViewDay[] }): void {
         body.forEach(day => {
@@ -61,32 +65,31 @@ export class CalendarPage {
         date: new Date()
     };
     date = new Date();
-    events: any = [
-        {
-            end: setHours(new Date(),1),
-            title: 'Event example 1',
-            color: {
-                primary: 'lightsalmon',
-                secondary: 'black'
-            },
-            meta: {
-                archived: false,
-                date: {max: Date.now()},
-                title: "Notification 3",
-            }
+    events: any = [];
+    checkColor(notification) {
+        let now = new Date().getTime();
+        if ((notification.date.max - now) < 0) {
+            return 'black';
+        } else if ((notification.date.max - now) <= 86400000) {
+            return 'lightcoral';
+        }else if (((notification.date.max - now) < 259200000) && ((notification.date.max - now) > 86400000)){
+            return 'lightsalmon'
+        }else{
+            return 'lightgreen'
         }
-    ];
+
+    }
 
     constructor(private dataProvider: DataProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
         this.dataProvider.notifications.map(notification => {
             this.events.push({
-                start: setHours(new Date(notification.date.max),1),
+                start: new Date(notification.date.max),
                 title: notification.title,
                 color: {
-                    primary: 'lightsalmon',
-                    secondary: 'black'
+                    primary: this.checkColor(notification),
+                    secondary: 'white'
                 },
                 meta: notification
             });

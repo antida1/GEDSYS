@@ -3,7 +3,7 @@ import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserConfigPage} from "../user-config/user-config";
 import {AppConfigPage} from "../app-config/app-config";
 
-@IonicPage()
+@IonicPage({})
 @Component({
     selector: 'page-config',
     templateUrl: 'config.html',
@@ -11,7 +11,6 @@ import {AppConfigPage} from "../app-config/app-config";
 export class ConfigPage {
     page1: any;
     page2: any;
-    data: any;
     index: any = 0;
     updateInfo(){
         return this.events.publish('info:update',this.index);
@@ -22,7 +21,6 @@ export class ConfigPage {
     constructor(public events: Events, public navCtrl: NavController, public navParams: NavParams) {
         this.page1 = UserConfigPage;
         this.page2 = AppConfigPage;
-        this.data = navParams.data;
     }
 
 }

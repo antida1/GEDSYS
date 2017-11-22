@@ -10,10 +10,6 @@ page-calendar {
   }
   .cal-month-view .cal-cell-row .cal-cell{
     transition: all .3s ease;
-    &:hover{
-      background: rgba(map-get($colors,primary),0.75);
-      color: white;
-    }
   }
   .cal-month-view .cal-header .cal-cell {
     padding: 15px 2.5px;
@@ -39,13 +35,13 @@ page-calendar {
         color: map_get($colors, primary);
         transition: all .3s ease;
       }
-      &:hover{
+      /*&:hover{
         background-color: rgba(map_get($colors,primary),0.75);
         .cal-time{
           font-weight: 500;
           color: white;
         }
-      }
+      }*/
     }
   }
   .cal-month-view .cal-open-day-events{
@@ -60,5 +56,8 @@ page-calendar {
     .cal-day-number{
       font-weight: 100;
     }
+  }
+  .cal-day-view .cal-hour-rows{
+    overflow: hidden;
   }
 }

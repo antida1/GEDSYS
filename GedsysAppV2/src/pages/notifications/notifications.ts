@@ -28,7 +28,7 @@ export class NotificationsPage {
 
     remove(notification) {
         let alert = this.alertCtrl.create({
-            title: 'Confirm remove',
+            title: 'Confirm',
             message: 'Do you want to remove this notification?',
             buttons: [
                 {
@@ -44,8 +44,8 @@ export class NotificationsPage {
                         const loading = this.variables.loadingTemplate(null);
                         loading.present().then(()=>{
                             let toast = this.variables.toastTemplate({
-                                message: 'Succesfully removed',
-                                cssClass: 'danger-toast',
+                                message: `Successfully removed ${notification.title}`,
+                                cssClass: 'toast-success',
                                 position: 'bottom'
                             });
                             this.dataProvider.notifications.splice(this.dataProvider.notifications.indexOf(notification), 1);
@@ -64,14 +64,16 @@ export class NotificationsPage {
     }
 
     archive(notification) {
-        const loading = this.variables.loadingTemplate(null);
+        const loading = this.variables.loadingTemplate({
+            content: this.index ?  `Unarchiving...` : `Archiving...`
+        });
         loading.present();
         let toast = this.variables.toastTemplate({
-            message : this.index ? 'Succesfully unarchived!' : 'Succesfully archived',
+            message : this.index ? `Successfully unarchived ${notification.title}` : `Successfully archived ${notification.title}`,
             closeButtonText: 'Ok',
-            cssClass: 'success-toast',
+            cssClass: 'toast-success',
             position: 'bottom'
-        })
+        });
         this.index ? notification.archived = false : notification.archived = true;
         loading.dismiss();
         toast.present();
