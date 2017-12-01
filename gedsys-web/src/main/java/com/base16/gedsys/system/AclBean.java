@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -30,13 +31,15 @@ import javax.persistence.EntityManagerFactory;
  * @author rober
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class AclBean extends BaseBean implements Serializable {
 
+    private static final long SerialVersionUID = 1L;
     private Acl acl = new Acl();
     private List<Acl> acls;
     private String accion;
     private Grupo grupo;
+
     /**
      * Creates a new instance of AclBean
      */
@@ -67,7 +70,6 @@ public class AclBean extends BaseBean implements Serializable {
         this.grupo = grupo;
     }
 
-    
     public String getAccion() {
         return accion;
     }
@@ -116,7 +118,8 @@ public class AclBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.acl.setModificadoPor(usuario);
             cJpa.edit(acl);
-            this.listar();
+             this.grupo =  acl.getGrupo();
+            this.onGroupChange();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
@@ -129,7 +132,8 @@ public class AclBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new AclJpaController(emf);
             cJpa.destroy(acl.getId());
-            this.listar();
+            this.grupo =  acl.getGrupo();
+            this.onGroupChange();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());

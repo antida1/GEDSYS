@@ -1,25 +1,96 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <body>  
-        
-        <h:inputHidden id="id" value="#{null}"/>
-        <p:tree value="#{signaturaTree.root}" var="signatura">
-            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                <h:outputText value="#{signatura}"/>
-            </p:treeNode>
-        </p:tree>
+        <p:growl id="messages"  showDetail="true" />
+        <div class="col-xs-8">
+            <div class="form-group row">
+                <p:outputLabel value="Radicado" for="aRadicado" class="col-xs-4 col-form-label" />
+                <div class="col-xs-8">
+                    <p:outputLabel id="aRadicado" value="#{archivarBean.documento.consecutivo}" style="width: 100%"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Asunto" for="aAsunto" class="col-xs-4 col-form-label" />
+                <div class="col-xs-8">
+                    <p:outputLabel id="aAsunto" value="#{archivarBean.documento.asunto}" style="width: 100%"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <p:outputLabel value="Sección y subsección" for="aSeccion" class="col-xs-4 col-form-label"/>
+                <div class="col-xs-8">
+                    <p:selectOneMenu id="aSeccion" converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{seccionSubSeccionBean.secciones}" var="seccion" itemLabel="#{seccion.nombre}" itemValue="#{seccion}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Serie" for="aSerie" class="col-xs-4 col-form-label"/>
+                <div class="col-xs-8">
+                    <p:selectOneMenu id="aSerie" converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.nombre}" itemValue="#{serie}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Sub Serie" for="aSubSerie" class="col-xs-4 col-form-label"/>
+                <div class="col-xs-8">
+                    <p:selectOneMenu id="aSubSerie" converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{subSerieBean.subSeries}" var="subSerie" itemLabel="#{subSerie.nombre}" itemValue="#{subSerie}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Unidad Documental" for="aUnidadDoc" class="col-xs-4 col-form-label"/>
+                <div class="col-xs-8">
+                    <p:selectOneMenu id="aUnidadDoc"  converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{unidadDocumentalBean.unidadesDocumentales}" var="unidaddoc" itemLabel="#{unidaddoc.nombre}" itemValue="#{unidaddoc}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Tipo Documental" for="aTipoDoc" class="col-xs-4 col-form-label"/>
+                <div class="col-xs-8">
+                    <p:selectOneMenu id="aTipoDoc" value="#{archivarBean.tipoDocumental}"  converter="omnifaces.SelectItemsConverter" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{tipoDocumentalBean.tiposDocumentales}" var="tipoDoc" itemLabel="#{tipoDoc.nombre}" itemValue="#{tipoDoc}" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <f:event type="preRenderView" listener="#{seccionSubSeccionBean.listar()}" />
+            <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
+            <f:event type="preRenderView" listener="#{unidadDocumentalBean.listar()}" />
+            <f:event type="preRenderView" listener="#{serieBean.listar()}" />
+            <f:event type="preRenderView" listener="#{subSerieBean.listar()}" />
+            <f:event type="preRenderView" listener="#{tipoDocumentalBean.listar()}" />
+            <f:event type="preRenderView" listener="#{signaturaTree.init()}" />
+            
+            <div class="form-group row">
+                <p:tree value="#{signaturaTree.root}" var="signatura" selectionMode="single" selection="#{archivarBean.selectedNodeSignatura}">
+                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                        <h:outputText value="#{signatura}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+        </div>
         <p:spacer/>
-        <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" oncomplete="PF('signaturaDialog').hide()" />
+        <div class="form-group row col-xs-12">
+            <p:commandButton icon="ui-icon-disk" actionListener="#{archivarBean.guadarDocumento()}" value="Guardar" oncomplete="PF('signaturaDialog').hide()" />
             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
         </div>
-
-
     </body>
 </html>
 

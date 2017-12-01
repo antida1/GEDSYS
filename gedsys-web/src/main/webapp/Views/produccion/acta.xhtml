@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:body>
+        <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <div class="col-xs-12">
+            <p:outputLabel value="Fecha" for="fechaActa" class="control-label col-md-4"/>
+            <div class="col-md-8">
+                <p:calendar id="fechaActa" value="#{actaBean.acta.fecha}" showOn="button" locale="es" style="width: 100%" />
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Hora Inicio" for="horaInicio" class="control-label col-md-4"/>
+            <div class="col-md-8">
+                <pe:timePicker id="horaInicio" value="#{actaBean.acta.horaInicio}" timeSeparator=":" startHours="6" endHours="20"  
+                               startMinutes="10" endMinutes="55" intervalMinutes="10" showCloseButton="false"  
+                               showDeselectButton="false" showNowButton="false" rows="3" showPeriod="true" style="width:70px;"  
+                               widgetVar="horaInicial" label="Hora Inicial" required="true" requiredMessage="La hora inicial es requerida"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Hora Finalización" for="horaFinal" class="control-label col-md-4"/>
+            <div class="col-md-8">
+                <pe:timePicker id="horaFinal" value="#{actaBean.acta.horaFinalizacion}" timeSeparator=":" startHours="6" endHours="20"  
+                               startMinutes="00" endMinutes="55" intervalMinutes="5" showCloseButton="false"  
+                               showDeselectButton="false" showNowButton="false" rows="4" showPeriod="true" style="width:70px;"  
+                               widgetVar="horaFinal" label="Hora Final" required="true" requiredMessage="La hora de finalización es requerida"/>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <p:outputLabel value="Lugar" for="lugar" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputText id="lugar" value="#{actaBean.acta.lugar}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Asistentes" for="asistentes" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:selectManyMenu value="#{actaBean.asistentes}" id="asistentes" var="asistente" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="asistente" itemLabel="#{asistente.nombres} #{asistente.apelidos}" itemValue="#{asistente}"/>
+                    <p:column>
+                        <h:outputText value="#{asistente.nombres} #{asistente.apelidos} - #{asistente.cargo.nombre}"/>
+                    </p:column>
+                </p:selectManyMenu>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Invitados" for="invitados" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:selectManyMenu value="#{actaBean.invitados}" id="invitados" var="inivitado" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="inivitado" itemLabel="#{inivitado.nombres} #{inivitado.apelidos}" itemValue="#{inivitado}"/>
+                    <p:column>
+                        <h:outputText value="#{inivitado.nombres} #{inivitado.apelidos} - #{inivitado.cargo.nombre}"/>
+                    </p:column>
+                </p:selectManyMenu>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Ausentes" for="ausentes" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:selectManyMenu value="#{actaBean.ausentes}" id="ausentes" var="ausentes" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="ausentes" itemLabel="#{ausentes.nombres} #{ausentes.apelidos}" itemValue="#{ausentes}"/>
+                    <p:column>
+                        <h:outputText value="#{ausentes.nombres} #{ausentes.apelidos} - #{ausentes.cargo.nombre}"/>
+                    </p:column>
+                </p:selectManyMenu>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Orden del Dia" for="orden" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputTextarea id="orden" value="#{actaBean.acta.orden}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Desarrollo" for="desarrollo" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputTextarea id="desarrollo" value="#{actaBean.acta.desarrollo}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Convocatoria" for="convocatoria" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputTextarea id="convocatoria" value="#{actaBean.acta.convocatoria}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Presidente" for="presidente" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:selectOneMenu value="#{actaBean.acta.presidente}" id="presidente" var="presidente" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="presidente" itemLabel="#{presidente.nombres} #{presidente.apelidos}" itemValue="#{presidente}"/>
+                    <p:column>
+                        <h:outputText value="#{presidente.nombres} #{presidente.apelidos} - #{presidente.cargo.nombre}"/>
+                    </p:column>
+                </p:selectOneMenu>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Secretaria" for="secretaria" class="control-label col-md-4"/>
+            <div class="col-md-8">
+                <p:selectOneMenu value="#{actaBean.acta.secretaria}" id="secretaria" var="secretaria" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="secretaria" itemLabel="#{secretaria.nombres} #{secretaria.apelidos}" itemValue="#{secretaria}"/>
+                    <p:column>
+                        <h:outputText value="#{secretaria.nombres} #{secretaria.apelidos} - #{secretaria.cargo.nombre}"/>
+                    </p:column>
+                </p:selectOneMenu>
+            </div>
+        </div>
+        <p:spacer/>
+        <div> 
+            <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{actaBean.procesar()}" />
+            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{actaBean.previsualizar()}" update="dlgVisorActa" oncomplete="PF('dlgVisorActa').show()" />
+            <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{actaBean.firmar()}" />
+            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{actaBean.enviar()}" />
+        </div>
+        <p:dialog id="dlgVisorActa" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                <pe:documentViewer id="actaCtl" height="800" value="#{actaBean.content}" />  
+        </p:dialog>
+    </h:body>
+</html>
+

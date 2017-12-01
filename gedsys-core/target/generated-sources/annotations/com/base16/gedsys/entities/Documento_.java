@@ -19,7 +19,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-10-26T05:22:31")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-01T14:33:19")
 @StaticMetamodel(Documento.class)
 public class Documento_ { 
 
@@ -48,6 +48,7 @@ public class Documento_ {
     public static volatile SingularAttribute<Documento, Municipio> municipio;
     public static volatile SingularAttribute<Documento, Corregimiento> corregimiento;
     public static volatile SingularAttribute<Documento, String> direccion;
+    public static volatile SingularAttribute<Documento, String> remitenteExteno;
     public static volatile SingularAttribute<Documento, Usuario> modificadoPor;
     public static volatile SingularAttribute<Documento, ClaseDocumento> claseDocumento;
     public static volatile SingularAttribute<Documento, Autor> autor;

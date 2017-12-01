@@ -35,16 +35,16 @@
                                         <h:outputText value="#{tipoDocumento.nombre}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
-                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.requiereRespuesta}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.requiereRespuesta}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Días de Trámite" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
-                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    <p:column headerText="Días de Trámite" filterBy="#{tipoDocumento.diasRespuesta}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.diasRespuesta}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Tipo de Calendario" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
-                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                    <p:column headerText="Tipo de Calendario" filterBy="#{tipoDocumento.tipoCalendario}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.tipoCalendario}" />
                                     </p:column>
                                     
                                     <p:column headerText="Fecha creación">
@@ -98,19 +98,19 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Requiere respuesta" for="ReqRespuesta" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:selectBooleanCheckbox id="ReqRespuesta" value="#{tipoDocumentoBean.tipoDocumento.nombre}" />
+                                        <p:selectBooleanCheckbox id="ReqRespuesta" value="#{tipoDocumentoBean.tipoDocumento.requiereRespuesta}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:inputText id="diasRespuesta" required="true" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control" />
+                                        <p:inputText id="diasRespuesta" required="true" value="#{tipoDocumentoBean.tipoDocumento.diasRespuesta}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:selectOneMenu id="tipoCalendario" onchange="PF('tipoDocumentoTabla').filter()" required="true">
+                                        <p:selectOneMenu id="tipoCalendario" value="#{tipoDocumentalBean.tipoDocumental.tipoCalendario}" onchange="PF('tipoDocumentoTabla').filter()" required="true">
                                             <f:selectItem itemLabel="Seleccione el tipo de calendario" itemValue="#{null}" noSelectionOption="true" />
                                             <f:selectItem itemLabel="Corrido" itemValue="corrido" />
                                             <f:selectItem itemLabel="Hábil" itemValue="habil" />

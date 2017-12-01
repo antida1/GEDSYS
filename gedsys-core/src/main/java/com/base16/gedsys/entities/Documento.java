@@ -8,6 +8,7 @@ package com.base16.gedsys.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,6 +44,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByCodigoPostal", query = "SELECT d FROM Documento d WHERE d.codigoPostal = :codigoPostal")
     , @NamedQuery(name = "Documento.findByConsecutivo", query = "SELECT d FROM Documento d WHERE d.consecutivo = :consecutivo")
     , @NamedQuery(name = "Documento.findByDestinatario", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario")
+    , @NamedQuery(name = "Documento.getEntrantes", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaRecepcion is not null")
+    , @NamedQuery(name = "Documento.getEnviados", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaEnvio is not null")
+    , @NamedQuery(name = "Documento.getEnPrestamo", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaEnvio is not null")
     , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
     , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
     , @NamedQuery(name = "Documento.findByExtension", query = "SELECT d FROM Documento d WHERE d.extension = :extension")
@@ -59,10 +63,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByRemitente", query = "SELECT d FROM Documento d WHERE d.remitente = :remitente")
     , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
-public class Documento implements Serializable {
 
-    @Column(name = "Clase")
-    private String clase;
+public class Documento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -122,7 +124,11 @@ public class Documento implements Serializable {
     @Column(name = "FechaRecepcion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRecepcion;
-
+    @Column(name = "RemitenteExteno")
+    private String remitenteExteno;
+    @Column(name = "Clase")
+    private String clase;
+    
     @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
     @ManyToOne
     private Usuario destinatario;
@@ -169,7 +175,7 @@ public class Documento implements Serializable {
     private Collection<DestinatariosDoc> destinatariosDocCollection;
     @OneToMany(mappedBy = "documento")
     private Collection<ProcesoDocumental> procesodocumentalCollection;
-
+             
     public Documento() {
     }
 
@@ -535,5 +541,14 @@ public class Documento implements Serializable {
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Documento[ id=" + id + " ]";
     }
+    
+    public String getRemitenteExteno() {
+        return remitenteExteno;
+    }
+
+    public void setRemitenteExteno(String remitenteExteno) {
+        this.remitenteExteno = remitenteExteno;
+    }
+
 
 }

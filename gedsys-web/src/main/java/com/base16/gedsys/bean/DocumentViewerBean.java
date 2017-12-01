@@ -50,7 +50,7 @@ public class DocumentViewerBean extends BaseBean implements Serializable {
                 }
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ha ocurrido una excepcion al obtener el documento", e.getMessage()));
+            //this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ha ocurrido una excepcion al obtener el documento", e.getMessage()));
         }
     }
 

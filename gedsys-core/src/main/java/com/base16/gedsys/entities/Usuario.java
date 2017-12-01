@@ -8,6 +8,7 @@ package com.base16.gedsys.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,6 +52,73 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Devices> devicesList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ausente")
+    private List<Actaausente> actaausenteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "asistente")
+    private List<Actaasistente> actaasistenteList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invitado")
+    private List<Actainvitado> actainvitadoList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
+    private List<Comunicacioncc> comunicacionccList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestador")
+    private List<Prestamo> prestamoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Prestamo> prestamoList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Prestamo> prestamoList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Constancia> constanciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Constancia> constanciaList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Constancia> constanciaList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Carta> cartaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Carta> cartaList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Carta> cartaList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Acta> actaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Acta> actaList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "presidente")
+    private List<Acta> actaList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secretaria")
+    private List<Acta> actaList3;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Informe> informeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Informe> informeList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Informe> informeList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Circular> circularList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Circular> circularList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Circular> circularList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Certificado> certificadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Certificado> certificadoList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Certificado> certificadoList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
+    private List<Circularcc> circularccList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinatario")
+    private List<Comunicacion> comunicacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
+    private List<Comunicacion> comunicacionList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
+    private List<Comunicacion> comunicacionList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
+    private List<Comunicacion> comunicacionList3;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private Collection<Campos> camposCollection;
@@ -974,6 +1042,326 @@ public class Usuario implements Serializable {
 
     public void setCamposCollection1(Collection<Campos> camposCollection1) {
         this.camposCollection1 = camposCollection1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comunicacioncc> getComunicacionccList() {
+        return comunicacionccList;
+    }
+
+    public void setComunicacionccList(List<Comunicacioncc> comunicacionccList) {
+        this.comunicacionccList = comunicacionccList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Prestamo> getPrestamoList() {
+        return prestamoList;
+    }
+
+    public void setPrestamoList(List<Prestamo> prestamoList) {
+        this.prestamoList = prestamoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Prestamo> getPrestamoList1() {
+        return prestamoList1;
+    }
+
+    public void setPrestamoList1(List<Prestamo> prestamoList1) {
+        this.prestamoList1 = prestamoList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Prestamo> getPrestamoList2() {
+        return prestamoList2;
+    }
+
+    public void setPrestamoList2(List<Prestamo> prestamoList2) {
+        this.prestamoList2 = prestamoList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Constancia> getConstanciaList() {
+        return constanciaList;
+    }
+
+    public void setConstanciaList(List<Constancia> constanciaList) {
+        this.constanciaList = constanciaList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Constancia> getConstanciaList1() {
+        return constanciaList1;
+    }
+
+    public void setConstanciaList1(List<Constancia> constanciaList1) {
+        this.constanciaList1 = constanciaList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Constancia> getConstanciaList2() {
+        return constanciaList2;
+    }
+
+    public void setConstanciaList2(List<Constancia> constanciaList2) {
+        this.constanciaList2 = constanciaList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Carta> getCartaList() {
+        return cartaList;
+    }
+
+    public void setCartaList(List<Carta> cartaList) {
+        this.cartaList = cartaList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Carta> getCartaList1() {
+        return cartaList1;
+    }
+
+    public void setCartaList1(List<Carta> cartaList1) {
+        this.cartaList1 = cartaList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Carta> getCartaList2() {
+        return cartaList2;
+    }
+
+    public void setCartaList2(List<Carta> cartaList2) {
+        this.cartaList2 = cartaList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Acta> getActaList() {
+        return actaList;
+    }
+
+    public void setActaList(List<Acta> actaList) {
+        this.actaList = actaList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Acta> getActaList1() {
+        return actaList1;
+    }
+
+    public void setActaList1(List<Acta> actaList1) {
+        this.actaList1 = actaList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Acta> getActaList2() {
+        return actaList2;
+    }
+
+    public void setActaList2(List<Acta> actaList2) {
+        this.actaList2 = actaList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Acta> getActaList3() {
+        return actaList3;
+    }
+
+    public void setActaList3(List<Acta> actaList3) {
+        this.actaList3 = actaList3;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Informe> getInformeList() {
+        return informeList;
+    }
+
+    public void setInformeList(List<Informe> informeList) {
+        this.informeList = informeList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Informe> getInformeList1() {
+        return informeList1;
+    }
+
+    public void setInformeList1(List<Informe> informeList1) {
+        this.informeList1 = informeList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Informe> getInformeList2() {
+        return informeList2;
+    }
+
+    public void setInformeList2(List<Informe> informeList2) {
+        this.informeList2 = informeList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Circular> getCircularList() {
+        return circularList;
+    }
+
+    public void setCircularList(List<Circular> circularList) {
+        this.circularList = circularList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Circular> getCircularList1() {
+        return circularList1;
+    }
+
+    public void setCircularList1(List<Circular> circularList1) {
+        this.circularList1 = circularList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Circular> getCircularList2() {
+        return circularList2;
+    }
+
+    public void setCircularList2(List<Circular> circularList2) {
+        this.circularList2 = circularList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Certificado> getCertificadoList() {
+        return certificadoList;
+    }
+
+    public void setCertificadoList(List<Certificado> certificadoList) {
+        this.certificadoList = certificadoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Certificado> getCertificadoList1() {
+        return certificadoList1;
+    }
+
+    public void setCertificadoList1(List<Certificado> certificadoList1) {
+        this.certificadoList1 = certificadoList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Certificado> getCertificadoList2() {
+        return certificadoList2;
+    }
+
+    public void setCertificadoList2(List<Certificado> certificadoList2) {
+        this.certificadoList2 = certificadoList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Circularcc> getCircularccList() {
+        return circularccList;
+    }
+
+    public void setCircularccList(List<Circularcc> circularccList) {
+        this.circularccList = circularccList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comunicacion> getComunicacionList() {
+        return comunicacionList;
+    }
+
+    public void setComunicacionList(List<Comunicacion> comunicacionList) {
+        this.comunicacionList = comunicacionList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comunicacion> getComunicacionList1() {
+        return comunicacionList1;
+    }
+
+    public void setComunicacionList1(List<Comunicacion> comunicacionList1) {
+        this.comunicacionList1 = comunicacionList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comunicacion> getComunicacionList2() {
+        return comunicacionList2;
+    }
+
+    public void setComunicacionList2(List<Comunicacion> comunicacionList2) {
+        this.comunicacionList2 = comunicacionList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comunicacion> getComunicacionList3() {
+        return comunicacionList3;
+    }
+
+    public void setComunicacionList3(List<Comunicacion> comunicacionList3) {
+        this.comunicacionList3 = comunicacionList3;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Actaausente> getActaausenteList() {
+        return actaausenteList;
+    }
+
+    public void setActaausenteList(List<Actaausente> actaausenteList) {
+        this.actaausenteList = actaausenteList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Actaasistente> getActaasistenteList() {
+        return actaasistenteList;
+    }
+
+    public void setActaasistenteList(List<Actaasistente> actaasistenteList) {
+        this.actaasistenteList = actaasistenteList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Actainvitado> getActainvitadoList() {
+        return actainvitadoList;
+    }
+
+    public void setActainvitadoList(List<Actainvitado> actainvitadoList) {
+        this.actainvitadoList = actainvitadoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Devices> getDevicesList() {
+        return devicesList;
+    }
+
+    public void setDevicesList(List<Devices> devicesList) {
+        this.devicesList = devicesList;
     }
     
 }

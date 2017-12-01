@@ -7,12 +7,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:pe="http://primefaces.org/ui/extensions">
-
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
+                <p:growl id="messages"  showDetail="true" />
                 <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == true}">
-                    <f:event type="preRenderView" listener="#{documentosBean.listarPorDestinatario}"></f:event>
+                    <f:event type="preRenderView" listener="#{documentosBean.listarPorDestinatario(null)}"></f:event>
                     <h:form> 
                         <div class="col-md-12 col-xs-12">
                             <div class="col-xs-12 x_panel">
@@ -20,137 +20,480 @@
                                     <h2>Gestión de documentos</h2>
                                     <div class="clear"></div>
                                 </div>
-                                <div class='x_content'>
-                                     <div class="col-xs-12 filter">
-                                        <div id="Collapse" class="collapse">
-                                            <form action="" method="GET">
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Titulo" id="txtSearch" />
-                                                            <div class="input-group-btn">
-                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Fecha" id="txtSearch" />
-                                                            <div class="input-group-btn">
-                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Search" id="txtSearch" />
-                                                            <div class="input-group-btn">
-                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-12">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Radicado" id="txtSearch" />
-                                                            <div class="input-group-btn">
-                                                                <button class="btn" type="submit"> <span class="glyphicon glyphicon-search"></span> </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                <div class='x_content'> 
                                     <ul class="nav nav-tabs">
                                         <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
                                         <li><a data-toggle="tab" href="#menuTab1">Enviados</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab2">Archivados</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab3">En Prestamo</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab4">Por Vencer</a></li>
-                                        <button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+                                        <li><a data-toggle="tab" href="#menuTab2">En Prestamo</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab3">Por Vencer</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab4">Por Firmar</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab5">Archivados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab6">Compartidos</a></li>
+                                        <!--<button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>-->
                                     </ul>
                                     <div class="tab-content">
                                         <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
-                                            <div class="col-xs-12 doc-container">
-
-                                                <ui:repeat value="#{documentosBean.documentos}" var="doc" varStatus="status">
-                                                    <c:if test='#{doc.requiereRespuesta}'> 
-                                                        <c:set value="someclass" var="cssClass"></c:set>
-                                                    </c:if> 
-                                                    <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3 doc ${cssClass}'>
-                                                        <div class='col-xs-12 paper'>
-                                                            <div class='col-xs-6 title'><h4><h:outputText value="#{doc.asunto}"/></h4>
-                                                                <h6><h:outputText value="#{doc.fechaCreacion}">
-                                                                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm aaa"/>
-                                                                    </h:outputText></h6></div>
-                                                            <div class='col-xs-6 based text-right'><h5><h:outputText value="#{doc.tipoDocumento.nombre}" /></h5></div>
-                                                            <div class='col-xs-10 col-xs-offset-1 content text-justify'><p><h:outputText value="#{doc.detalle}" /> </p></div>
-
-                                                            <div class='btn-group btn-group-justified col-xs-12'>
-
-                                                                <a href="#" class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
-                                                                <a href="#" class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
-                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                                <a href="#" class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
-                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ui:repeat>
-                                            </div>
+                                            <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docs" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
+                                                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15">
+                                                <f:facet name="header">
+                                                    <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                    <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
+                                                </f:facet>
+                                                <p:column headerText="Redicado">
+                                                    <h:outputText value="#{docs.consecutivo}" />
+                                                </p:column>
+                                                <p:column headerText="Fecha de recepción">
+                                                    <h:outputText value="#{docs.fechaCreacion}" >
+                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Asunto">
+                                                    <h:outputText value="#{docs.asunto}" />
+                                                </p:column>
+                                                <p:column headerText="Remitente">
+                                                    <h:outputText value="#{docs.remitente}" />
+                                                </p:column>
+                                                <p:column headerText="Destinarario">
+                                                    <h:outputText value="#{docs.destinatario.nombres} #{docs.destinatario.apelidos}" />
+                                                </p:column>
+                                                <p:column headerText="Detalle">
+                                                    <h:outputText value="#{docs.detalle}" />
+                                                </p:column>
+                                                <p:column headerText="Acciones">
+                                                    <p:commandLink  class="btn btn-primary" type="button" title="Archivar" action="#{archivarBean.loadDocumento(docs)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink  class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(docs)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>                                               
+                                                    <p:commandLink class="btn btn-primary" type="button" title="Redireccionar" action="#{redireccionarBean.loadDocumento(docs)}" update=":dlgDevolver"  ><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                </p:column>
+                                            </p:dataTable>
                                         </div>
                                         <div id="menuTab1" class="tab-pane fade">
-                                            <div class="col-xs-12 doc-container"> </div>
+                                            <div class="col-xs-12"> 
+                                                <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docs" value="#{documentosBean.enviados}" style="margin-bottom:0" rows="10"
+                                                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             rowsPerPageTemplate="5,10,15">
+                                                    <f:facet name="header">
+                                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                        <p:columnToggler datasource="lstDocsEnviados" trigger="toggler" />
+                                                    </f:facet>
+                                                    <p:column headerText="Redicado">
+                                                        <h:outputText value="#{docs.consecutivo}" />
+                                                    </p:column>
+                                                    <p:column headerText="Fecha de recepción">
+                                                        <h:outputText value="#{docs.fechaCreacion}" >
+                                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Asunto">
+                                                        <h:outputText value="#{docs.asunto}" />
+                                                    </p:column>
+                                                    <p:column headerText="Remitente">
+                                                        <h:outputText value="#{docs.remitente}" />
+                                                    </p:column>
+                                                    <p:column headerText="Destinarario">
+                                                        <h:outputText value="#{docs.destinatario.nombres} #{docs.destinatario.apelidos}" />
+                                                    </p:column>
+                                                    <p:column headerText="Detalle">
+                                                        <h:outputText value="#{docs.detalle}" />
+                                                    </p:column>
+                                                    <p:column headerText="Acciones">
+                                                        <a href="#" class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                        <a href="#" class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <a href="#" class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                        <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
                                         </div>
                                         <div id="menuTab2" class="tab-pane fade">
-                                            <div class="col-xs-12 doc-container">
-                                                <p:tree value="#{treeIconView.root}" var="doc">
-                                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                                        <h:outputText value="#{doc.name}"/>
-                                                    </p:treeNode>
-                                                </p:tree>
+                                            <div class="col-xs-12">
+                                                <p:dataTable widgetVar="En Prestamos" id="lstDocsPrestamo" var="docs" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
+                                                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             rowsPerPageTemplate="5,10,15">
+                                                    <f:facet name="header">
+                                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                        <p:columnToggler datasource="lstDocsPrestamo" trigger="toggler" />
+                                                    </f:facet>
+                                                    <p:column headerText="Redicado">
+                                                        <h:outputText value="#{docs.consecutivo}" />
+                                                    </p:column>
+                                                    <p:column headerText="Fecha de recepción">
+                                                        <h:outputText value="#{docs.fechaCreacion}" >
+                                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Asunto">
+                                                        <h:outputText value="#{docs.asunto}" />
+                                                    </p:column>
+                                                    <p:column headerText="Remitente">
+                                                        <h:outputText value="#{docs.remitente}" />
+                                                    </p:column>
+                                                    <p:column headerText="Destinarario">
+                                                        <h:outputText value="#{docs.destinatario.nombres} #{docs.destinatario.apelidos}" />
+                                                    </p:column>
+                                                    <p:column headerText="Detalle">
+                                                        <h:outputText value="#{docs.detalle}" />
+                                                    </p:column>
+                                                    <p:column headerText="Acciones">
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Responder"  onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Prestamo"  onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                    </p:column>
+                                                </p:dataTable>
                                             </div>
                                         </div>
-                                         <div id="menuTab3" class="tab-pane fade">
-                                            <div class="col-xs-12 doc-container">
-                                                <p:tree value="#{treeIconView.root}" var="doc">
-                                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                                        <h:outputText value="#{doc.name}"/>
-                                                    </p:treeNode>
-                                                </p:tree>
+                                        <div id="menuTab3" class="tab-pane fade">
+                                            <div class="col-xs-12">
+                                                <p:dataTable widgetVar="Por Vencer" id="lstDocsPorVencer" var="docs" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="10"
+                                                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             rowsPerPageTemplate="5,10,15">
+                                                    <f:facet name="header">
+                                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                        <p:columnToggler datasource="lstDocsPorVencer" trigger="toggler" />
+                                                    </f:facet>
+                                                    <p:column headerText="Redicado">
+                                                        <h:outputText value="#{docs.consecutivo}" />
+                                                    </p:column>
+                                                    <p:column headerText="Fecha de recepción">
+                                                        <h:outputText value="#{docs.fechaCreacion}" >
+                                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Asunto">
+                                                        <h:outputText value="#{docs.asunto}" />
+                                                    </p:column>
+                                                    <p:column headerText="Remitente">
+                                                        <h:outputText value="#{docs.remitente}" />
+                                                    </p:column>
+                                                    <p:column headerText="Destinarario">
+                                                        <h:outputText value="#{docs.destinatario.nombres} #{docs.destinatario.apelidos}" />
+                                                    </p:column>
+                                                    <p:column headerText="Detalle">
+                                                        <h:outputText value="#{docs.detalle}" />
+                                                    </p:column>
+                                                    <p:column headerText="Acciones">
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>                                                    </p:column>
+                                                </p:dataTable>
                                             </div>
                                         </div>
-                                         <div id="menuTab4" class="tab-pane fade">
-                                            <div class="col-xs-12 doc-container">
-                                                <p:tree value="#{treeIconView.root}" var="doc">
-                                                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                                        <h:outputText value="#{doc.name}"/>
-                                                    </p:treeNode>
-                                                </p:tree>
+                                        <div id="menuTab4" class="tab-pane fade">
+                                            <div class="col-xs-12">
+                                                <ul class="nav nav-tabs">
+                                                    <li class="active"><a data-toggle="tab" href="#pmenuTab0">Actas</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab1">Cartas</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab2">Certificados</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab3">Circulares</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab4">Comunicaciones</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab5">Contantancias</a></li>
+                                                    <li><a data-toggle="tab" href="#pmenuTab6">Informes</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="pmenuTab0" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="Por Vencer" id="actas" var="acta" value="#{documentosBean.actasPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="actas" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{acta.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{acta.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Asunto">
+                                                                <h:outputText value="#{acta.convocatoria}" />
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{acta.desarrollo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Presidente">
+                                                                <h:outputText value="#{acta.presidente.nombres} #{acta.presidente.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab1" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="PorVencer" id="cartas" var="carta" value="#{documentosBean.cartaPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="cartas" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{carta.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de recepción">
+                                                                <h:outputText value="#{carta.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Destinatario">
+                                                                <h:outputText value="#{carta.destinatario}" />
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{carta.remitente.nombres} #{carta.remitente.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Asunto">
+                                                                <h:outputText value="#{carta.asunto}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab2" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="Por Vencer" id="certificados" var="cert" value="#{documentosBean.certificadoPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="certificados" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{cert.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{cert.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{cert.remitente.nombres} #{cert.remitente.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab3" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="Por Vencer" id="circulares" var="cir" value="#{documentosBean.circularPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="circulares" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{cir.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{cir.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Grupo Detinatario">
+                                                                <h:outputText value="#{cir.grupoDestinatario}" />
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{cir.remitente.nombres} #{cir.remitente.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab4" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="PorVencer" id="comunicaciones" var="com" value="#{documentosBean.comunicadoPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="comunicaciones" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{null}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{com.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Asunto">
+                                                                <h:outputText value="#{com.asunto}" />
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{com.destinatario.nombres} #{com.destinatario.nombres}" />
+                                                            </p:column>
+                                                            <p:column headerText="Destinarario">
+                                                                <h:outputText value="#{com.destinatario.nombres} #{com.destinatario.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab5" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="PorVencer" id="constancias" var="cons" value="#{documentosBean.constanciaPorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="constancias" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{cons.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{cons.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{cons.remitente.nombres} #{cons.remitente.apelidos}" />
+                                                            </p:column>
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                    <div id="pmenuTab6" class="col-xs-12 tab-pane fade">
+                                                        <p:dataTable widgetVar="PorVencer" id="informes" var="inf" value="#{documentosBean.informePorFirmar}" style="margin-bottom:0" rows="10"
+                                                                     paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                     rowsPerPageTemplate="5,10,15">
+                                                            <f:facet name="header">
+                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                                <p:columnToggler datasource="informes" trigger="toggler" />
+                                                            </f:facet>
+                                                            <p:column headerText="Redicado">
+                                                                <h:outputText value="#{inf.consecutivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de creación">
+                                                                <h:outputText value="#{inf.fechaCreacion}" >
+                                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                </h:outputText>
+                                                            </p:column>
+                                                            <p:column headerText="Objetivo">
+                                                                <h:outputText value="#{inf.objetivo}" />
+                                                            </p:column>
+                                                            <p:column headerText="Remitente">
+                                                                <h:outputText value="#{inf.remitente.nombres} #{inf.remitente.apelidos}" />
+                                                            </p:column>
+
+                                                            <p:column headerText="Acciones">
+                                                                <a href="#" class="btn btn-primary" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"></span></a>
+                                                                <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                                <a href="#" class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"></span></a>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div id="menuTab5" class="tab-pane fade">
+                                            <div class="col-xs-12">
+                                                <p:dataTable widgetVar="Archivados" id="lstDocsArchivados" var="docsArchivados" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
+                                                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             rowsPerPageTemplate="5,10,15">
+                                                    <f:facet name="header">
+                                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                        <p:columnToggler datasource="lstDocsArchivados" trigger="toggler" />
+                                                    </f:facet>
+                                                    <p:column headerText="Redicado">
+                                                        <h:outputText value="#{docs.consecutivo}" />
+                                                    </p:column>
+                                                    <p:column headerText="Fecha de recepción">
+                                                        <h:outputText value="#{docs.fechaCreacion}" >
+                                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Asunto">
+                                                        <h:outputText value="#{docs.asunto}" />
+                                                    </p:column>
+                                                    <p:column headerText="Remitente">
+                                                        <h:outputText value="#{docs.remitente}" />
+                                                    </p:column>
+                                                    <p:column headerText="Destinarario">
+                                                        <h:outputText value="#{docs.destinatario.nombres} #{docs.destinatario.apelidos}" />
+                                                    </p:column>
+                                                    <p:column headerText="Detalle">
+                                                        <h:outputText value="#{docs.detalle}" />
+                                                    </p:column>
+                                                    <p:column headerText="Acciones">
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Archivar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink  class="btn btn-primary" type="button" title="Responder" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                        <p:commandLink class="btn btn-primary" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+                                        </div>
+                                        <div id="menuTab6" class="tab-pane fade">
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <p:dialog id="dlgArchivar" header="Archivar - Signatura topográfica" widgetVar="denArchivar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%">
-                            <ui:include src="archivar.xhtml">
-                            </ui:include>
-                        </p:dialog>
-                        <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%">
-                            <ui:include src="prestamo.xhtml">
-                            </ui:include>
-                        </p:dialog>
-                        <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
-                            <ui:include src="responder.xhtml">
-                            </ui:include>
-                        </p:dialog>
-                        <p:dialog id="dlgDevolver" header="Devolver" widgetVar="denDevolver" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="40%" height="400">
-                            <ui:include src="devolver.xhtml">
-                            </ui:include>
-                        </p:dialog>
 
                     </h:form>
+                    <p:dialog id="dlgArchivar" header="Archivar" widgetVar="denArchivar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true">
+                        <h:form>
+                            <ui:include src="archivar.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%">
+                        <h:form>
+                            <ui:include src="prestamo.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                        <h:form>
+                            <ui:include src="../produccion/carta.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgDevolver" header="Devolver" widgetVar="denDevolver" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" height="400">
+                        <h:form>
+                            <ui:include src="redireccionar.xhtml">
+                            </ui:include>
+                        </h:form>   
+                    </p:dialog>
                     <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <h:form>
                             <c:if test='#{documentViewerBean.content.contentType.equals("application/pdf")}'>

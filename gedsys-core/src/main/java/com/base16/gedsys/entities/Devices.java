@@ -13,7 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Devices.findById", query = "SELECT d FROM Devices d WHERE d.id = :id")
     , @NamedQuery(name = "Devices.findByName", query = "SELECT d FROM Devices d WHERE d.name = :name")
     , @NamedQuery(name = "Devices.findByEmail", query = "SELECT d FROM Devices d WHERE d.email = :email")
+    , @NamedQuery(name = "Devices.findByUsuario", query = "SELECT d FROM Devices d WHERE d.usuario = :usuario")
     , @NamedQuery(name = "Devices.findByCreatedAt", query = "SELECT d FROM Devices d WHERE d.createdAt = :createdAt")})
 public class Devices implements Serializable {
 
@@ -55,6 +58,9 @@ public class Devices implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    @JoinColumn(name = "usuario", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario usuario;
 
     public Devices() {
     }
@@ -133,6 +139,14 @@ public class Devices implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Devices[ id=" + id + " ]";
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
 }

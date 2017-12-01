@@ -83,7 +83,19 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4" for="Destinatarios">Destinatarios <span class="required">*</span>
+                                        <label class=" col-xs-4" for="Destinatarios">Destinatario Principal<span class="required">*</span>
+                                        </label>
+                                        <div class="col-xs-8">
+                                            <p:selectOneMenu value="#{recepcionBean.documento.destinatario}" id="Destinatario" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                                                <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                                                <p:column>
+                                                    <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
+                                                </p:column>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <label class=" col-xs-4" for="Destinatarios">Con Copia a <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectManyMenu value="#{recepcionBean.destinatarios}" id="Destinatarios" var="dest" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">

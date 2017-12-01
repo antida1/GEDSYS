@@ -5,6 +5,14 @@
  */
 package com.base16.gedsys.webservices;
 
+import com.base16.gedsys.bean.BaseBean;
+import com.base16.gedsys.bean.DocumentosBean;
+import com.base16.gedsys.entities.Documento;
+import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.UsuarioJpaController;
+import com.base16.gedsys.utils.JpaUtils;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -13,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONObject;
@@ -23,7 +32,7 @@ import org.codehaus.jettison.json.JSONObject;
  * @author rober
  */
 @Path("/documentos")
-public class DocumentosResource {
+public class DocumentosResource extends BaseBean {
 
     @Context
     private UriInfo context;
@@ -35,25 +44,26 @@ public class DocumentosResource {
     }
 
     /**
-     * Retrieves representation of an instance of com.base16.gedsys.servicios.DocumentosResource
+     * Retrieves representation of an instance of
+     * com.base16.gedsys.servicios.DocumentosResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        JSONObject doc =  null;
-        try {
-            doc = new  JSONObject();
-            doc.put("id", "0001235485");
-            
-        } catch (Exception e) {
-        }
-        return doc.toString();
+    public List<Documento> getJson(@QueryParam("useremail") String email) {
+        DocumentosBean dBean = new DocumentosBean();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        UsuarioJpaController uJpa = new UsuarioJpaController(emf);
+        Usuario usuario = uJpa.findByEmail(email);
+        dBean.listarPorDestinatario(usuario);
+        List<Documento> documentos =  dBean.getDocumentos();
+        return documentos;
     }
 
     /**
      * POST method for creating an instance of DocumentoResource
+     *
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */

@@ -72,7 +72,13 @@ public class TipoDocumento implements Serializable {
     private Collection<Consecutivo> consecutivoCollection;
     @OneToMany(mappedBy = "tipoDocumento")
     private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
-
+    @Column(name = "RequiereRespuesta")
+    private Short requiereRespuesta;
+    @Column(name = "DiasRespuesta")
+    private Integer diasRespuesta;
+    @Column(name = "TipoCalendario")
+    private String tipoCalendario;
+    
     public TipoDocumento() {
     }
 
@@ -199,6 +205,30 @@ public class TipoDocumento implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.TipoDocumento[ id=" + id + " ]";
+    }
+
+    public Short getRequiereRespuesta() {
+        return requiereRespuesta;
+    }
+
+    public void setRequiereRespuesta(Short requiereRespuesta) {
+        this.requiereRespuesta = requiereRespuesta;
+    }
+
+    public Integer getDiasRespuesta() {
+        return diasRespuesta;
+    }
+
+    public void setDiasRespuesta(Integer diasRespuesta) {
+        this.diasRespuesta = diasRespuesta;
+    }
+
+    public String getTipoCalendario() {
+        return tipoCalendario;
+    }
+
+    public void setTipoCalendario(String tipoCalendario) {
+        this.tipoCalendario = tipoCalendario;
     }
     
 }

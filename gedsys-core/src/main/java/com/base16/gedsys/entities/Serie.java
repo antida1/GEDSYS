@@ -42,9 +42,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Serie.findBySeccionSubSeccion", query = "SELECT s FROM Serie s WHERE s.seccionSubseccion = :seccionSubseccion")
     , @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")})
 
-public class Serie implements Serializable {
-
-    
+public class Serie implements Serializable {  
 
     private static final long serialVersionUID = 1L;
     @Id

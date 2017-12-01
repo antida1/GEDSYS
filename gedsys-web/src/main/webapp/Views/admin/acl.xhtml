@@ -11,7 +11,6 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('acl') == true}">
-                    <f:event type="preRenderView" listener="#{aclBean.listar()}" />
                     <f:event type="preRenderView" listener="#{grupoBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-10 col-xs-offset-1 x_panel">
@@ -24,7 +23,7 @@
                                 <div>
                                     <p:outputLabel value="Grupo" for="grupo" class="col-xs-2 col-form-label"/>
                                     <div class="col-xs-10">
-                                        <p:selectOneMenu id="grupo" value="#{aclBean.grupo}" converter="omnifaces.SelectItemsConverter" >
+                                        <p:selectOneMenu id="grupo" value="#{aclBean.grupo}" converter="omnifaces.SelectItemsConverter" valueChangeListener="#{aclBean.onGroupChange()}" >
                                             <p:ajax listener="#{aclBean.onGroupChange}" update="lstListas messages"></p:ajax>
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione un grupo" itemValue="#{null}" />
                                             <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
@@ -32,49 +31,46 @@
                                     </div>
                                 </div>
                                 <p:separator/>
-                                <p:dataTable id="lstListas" var="lista" value="#{aclBean.acls}" style="margin-bottom:20px" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="320"
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                <p:dataTable id="lstListas" var="acl" value="#{aclBean.acls}" style="margin-bottom:20px" >
 
                                     <p:column headerText="Módulo">
-                                        <h:outputText value="#{lista.modulo.nombre}" />
+                                        <h:outputText value="#{acl.modulo.nombre}" />
                                     </p:column>
                                     <p:column headerText="Acceso">
-                                       <p:selectBooleanCheckbox value="#{lista.canRead}" disabled="true" />
+                                       <p:selectBooleanCheckbox value="#{acl.canRead}" disabled="true" />
                                     </p:column>
                                     <p:column headerText="Crear">
-                                        <p:selectBooleanCheckbox value="#{lista.canCreate}" />
+                                        <p:selectBooleanCheckbox value="#{acl.canCreate}" disabled="true"/>
                                     </p:column>
                                     <p:column headerText="Actualizar">
-                                        <p:selectBooleanCheckbox value="#{lista.canUpdate}" disabled="true" />
+                                        <p:selectBooleanCheckbox value="#{acl.canUpdate}" disabled="true" />
                                     </p:column>
                                     <p:column headerText="Exportar">
-                                        <p:selectBooleanCheckbox value="#{lista.canExport}" disabled="true" />
+                                        <p:selectBooleanCheckbox value="#{acl.canExport}" disabled="true" />
                                     </p:column>
                                     <p:column headerText="Borrar">
-                                        <p:selectBooleanCheckbox value="#{lista.canDelete}" disabled="true" />
+                                        <p:selectBooleanCheckbox value="#{acl.canDelete}" disabled="true" />
                                     </p:column>
                                     <p:column headerText="Imprimir">
-                                        <p:selectBooleanCheckbox value="#{lista.canGeneratePDF}" disabled="true" />
+                                        <p:selectBooleanCheckbox value="#{acl.canGeneratePDF}" disabled="true" />
                                     </p:column>
                                    <p:column headerText="Editar">
-                                       <p:commandButton actionListener="#{aclBean.getAclById(lista)}" 
-                                                         update=":dlgDetalle" oncomplete="PF('aclDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                       <p:commandButton actionListener="#{aclBean.getAclById(acl)}"
+                                                        update=":dlgDetalle" oncomplete="PF('aclDialog').show()" 
+                                                        icon="ui-icon-pencil" title="Editar" >
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
                                 <p:spacer/>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="ACL" widgetVar="aclDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="200" width="580">
+                        <p:dialog id="dlgDetalle" header="ACL" widgetVar="aclDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="600" width="580">
                             <h:form>
                                 <h:inputHidden id="id" value="#{aclBean.acl.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Subsección" for="Seccion" class="col-xs-3 col-form-label"/>
+                                    <p:outputLabel value="Grupo" for="Grupo" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:selectOneMenu id="Seccion" value="#{aclBean.acl.grupo}" converter="omnifaces.SelectItemsConverter" required="true">
+                                        <p:selectOneMenu id="Grupo" value="#{aclBean.acl.grupo}" converter="omnifaces.SelectItemsConverter" required="true">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                             <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
                                         </p:selectOneMenu>
@@ -89,43 +85,43 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Leer" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canRead}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canRead}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Crear" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canCreate}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canCreate}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Editar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canUpdate}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canUpdate}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Eliminar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canDelete}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canDelete}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Exportar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canExport}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canExport}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Imprimir" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox value="#{lista.canGeneratePDF}" />
+                                        <p:selectBooleanCheckbox value="#{aclBean.acl.canGeneratePDF}" />
                                     </div>
                                 </div>
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstSeries messages" icon="ui-icon-disk" value="#{serieBean.accion}" actionListener="#{serieBean.procesar()}" oncomplete="PF('serieDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('serieDialog').hide()"></p:commandButton>
+                                    <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="#{aclBean.accion}" actionListener="#{aclBean.procesar()}" oncomplete="PF('aclDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

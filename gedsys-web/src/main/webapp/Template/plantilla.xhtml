@@ -75,7 +75,7 @@
                         <!-- menu profile quick info -->
                         <div class="profile">
                             <div class="profile_pic">
-                                <!--<h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" /> -->
+                                <h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" />
                             </div>
                             <div class="profile_info"> <span>Bienvenido,</span>
                                 <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2>
@@ -97,17 +97,15 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <!--<h:graphicImage library="images" name="#{login.usuario.foto}" /> -->
+                                        <h:graphicImage library="images" name="#{login.usuario.foto}" />
                                         <h:outputText value="#{login.usuario.nombres}" />&#160;
                                         <h:outputText value="#{login.usuario.apelidos}" /> <span class=" fa fa-angle-down"></span> </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <!--
                                         <li><a href="javascript:;"> Perfil</a></li>
                                         <li>
                                             <a href="javascript:;"> <span class="badge bg-red pull-right">50%</span> <span>Ajustes</span> </a>
                                         </li>
                                         <li><a href="javascript:;">Ayuda</a></li>
-                                        -->
                                         <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Cerrar Sessión</a></li>
                                     </ul>
                                 </li>

@@ -19,49 +19,13 @@
                         </div>
                         <div class="x_content">
                             <div class="col-xs-12 form-group">
-                                <div class="col-xs-12">
-                                    <p:outputLabel value="Buscador" for="buscar" class="col-xs-2 col-form-label" style='font-size: 1.5em;'/>
-                                    <div class="col-xs-10">
-                                        <p:outputLabel id="buscar">
-                                        </p:outputLabel>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 form-group">
-                                <div class="col-xs-4">
-                                    <p:outputLabel for="fechaInicial" value="Fecha inicial" class="col-xs-4 col-form-label"/>
-                                    <div class="col-xs-8">
-                                        <p:calendar id="fechaInicial" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <p:outputLabel for="fechaFinal" value="Fecha final" class="col-xs-4 col-form-label"/>
-                                    <div class="col-xs-8">
-                                        <p:calendar id="fechaFinal" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <p:outputLabel value="Tipo documental" for="tipoDocumental" class="col-xs-5 col-form-label"/>
-                                    <div class="col-xs-7">
-                                        <p:selectOneMenu id="tipoDocumental" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
-                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
-                                            <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="tipoDocumental" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                                <div class='col-xs-12 text-right' style='margin-top:2vh;'>
-                                    <p:commandButton class="btn-success" icon="fa fa-fw fa-search" type="button" value="Buscar" onclick="PF('denBuscar').show()"></p:commandButton>
-                                </div>
-                            </div>
-                            <p:separator></p:separator>
-                            <div class="col-xs-12 form-group">
                                 <div class='col-xs-2'>
                                     <p:commandButton class="btn btn-info" icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
                                 </div>
                                 <div class="col-xs-10"></div>
                             </div>
                             <div class="col-xs-12">
-                                <p:dataTable id="lstControl" var="control" value="" style="margin-bottom:0" rows="10"
+                                <p:dataTable id="lstControl" var="pres" value="#{prestamoBean.prestamos}" style="margin-bottom:0" rows="10"
                                              paginator="true" scrollable="true" scrollHeight="150"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
@@ -72,33 +36,25 @@
                                         <p:columnToggler datasource="lstControl" trigger="toggler" />
                                     </f:facet>
                                     <p:column headerText="Fecha inicial">
-                                        <h:outputText value="fi" />
+                                        <h:outputText value="#{pres.fechaInicial}" />
                                     </p:column>
                                     <p:column headerText="Prestado a">
-                                        <h:outputText value="pa" />
+                                        <h:outputText value="#{pres.prestador.nombres} #{pres.prestador.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Nombre del documento">
-                                        <h:outputText value="nd" />
+                                    <p:column headerText="Nombre del Documento">
+                                        <h:outputText value="#{pres.nombreDocumento}" />
                                     </p:column>
                                     <p:column headerText="Tipo de documento">   
-                                        <h:outputText value="tp" />
-                                    </p:column>
-                                    <p:column headerText="Nombre de quien prestó">
-                                        <h:outputText value="np" />
+                                        <h:outputText value="#{pres.tipoDocumento}" />
                                     </p:column>
                                     <p:column headerText="Fecha de vencimiento">
-                                        <h:outputText value="fv" />
+                                        <h:outputText value="#{pres.fechaVencimiento}" />
                                     </p:column>
-                                    <p:column headerText="Fecha devolución">
-                                        <h:outputText value="fd" />
+                                    <p:column headerText="Fecha de Devolución">
+                                        <h:outputText value="#{pres.fechaDevolucion}" >
+                                        </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Nombre de quien devuelve">
-                                        <h:outputText value="nd" />
-                                    </p:column>
-                                    <p:column headerText="Nombre de quien recibe">
-                                        <h:outputText value="nr" />
-                                    </p:column>
-                                    <p:column headerText="Reintegrar">
+                                    <p:column headerText="Recibir Documento">
                                         <p:commandButton icon="fa fa-fw fa-rotate-left" type="button" title="Reintegrar" onclick="PF('denReintegrar').show()"></p:commandButton>
                                     </p:column>
                                 </p:dataTable>

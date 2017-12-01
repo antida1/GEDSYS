@@ -40,6 +40,19 @@
     <class>com.base16.gedsys.entities.Fields</class>
     <class>com.base16.gedsys.entities.Campos</class>
     <class>com.base16.gedsys.entities.CamposPlantilla</class>
+    <class>com.base16.gedsys.entities.Constancia</class>
+    <class>com.base16.gedsys.entities.Certificado</class>
+    <class>com.base16.gedsys.entities.Actaasistente</class>
+    <class>com.base16.gedsys.entities.Comunicacioncc</class>
+    <class>com.base16.gedsys.entities.Actaausente</class>
+    <class>com.base16.gedsys.entities.Acta</class>
+    <class>com.base16.gedsys.entities.Informe</class>
+    <class>com.base16.gedsys.entities.Circularcc</class>
+    <class>com.base16.gedsys.entities.Carta</class>
+    <class>com.base16.gedsys.entities.Actainvitado</class>
+    <class>com.base16.gedsys.entities.Circular</class>
+    <class>com.base16.gedsys.entities.Comunicacion</class>
+    <class>com.base16.gedsys.entities.Prestamo</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

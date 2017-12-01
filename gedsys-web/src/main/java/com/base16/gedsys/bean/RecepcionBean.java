@@ -18,6 +18,7 @@ import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
+import com.base16.utils.Mensajeria;
 import com.base16.utils.UploadDocument;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -204,16 +205,28 @@ public class RecepcionBean extends BaseBean implements Serializable {
             UploadDocument uDoc = new UploadDocument();
             uDoc.upload(documentFile, this.documenstSavePath);
             this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
-              List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
+            List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
+            
+            DestinatariosDoc destinatarioPrincipal = new DestinatariosDoc();
+            destinatarioPrincipal.setCreadoPor(usuario);
+            destinatarioPrincipal.setDestinatarioId(this.documento.getDestinatario());
+            dJpa.create(destinatarioPrincipal);
+            destinatariosDocCollection.add(destinatarioPrincipal);
+            
             for (Usuario dest : destinatarios) {
-                 DestinatariosDoc destinatarioDoc = new DestinatariosDoc();
-                 destinatarioDoc.setCreadoPor(usuario);
-                 destinatarioDoc.setDestinatarioId(dest);
-                 dJpa.create(destinatarioDoc);
-                 destinatariosDocCollection.add(destinatarioDoc);       
+                if(dest.getId() != this.documento.getDestinatario().getId()){
+                    DestinatariosDoc destinatarioDoc = new DestinatariosDoc();
+                    destinatarioDoc.setCreadoPor(usuario);
+                    destinatarioDoc.setDestinatarioId(dest);
+                    dJpa.create(destinatarioDoc);
+                    destinatariosDocCollection.add(destinatarioDoc);       
+                }
             }
+            
             this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
             sJpa.create(documento);
+            Mensajeria mensajeria = new Mensajeria();
+            mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
             this.limpiar();
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Recepción de Documentos",  "Documento Almacenado exitoxamente!"));
