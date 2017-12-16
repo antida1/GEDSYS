@@ -56,7 +56,7 @@ public class Prestamo implements Serializable {
     @Column(name = "FechaVencimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
-    @Column(name = " NombreDocumento")
+    @Column(name = "NombreDocumento")
     private String nombreDocumento;
     @Column(name = "TipoDocumento")
     private String tipoDocumento;

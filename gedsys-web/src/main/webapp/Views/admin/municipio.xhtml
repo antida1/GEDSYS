@@ -55,10 +55,14 @@
                                         <h:outputText value="#{municipio.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{municipio.fechaCreacion}" />
+                                        <h:outputText value="#{municipio.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{municipio.fechaModificacion}" />
+                                        <h:outputText value="#{municipio.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{municipio.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

@@ -58,7 +58,9 @@
                                         <h:outputText value="#{entidad.email}" />
                                     </p:column>
                                     <p:column headerText="Fecha de creación">
-                                        <h:outputText value="#{entidad.fechaCreacion}" />
+                                        <h:outputText value="#{entidad.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{entidadBean.getPaisById(entidad)}" 

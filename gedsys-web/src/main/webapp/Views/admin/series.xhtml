@@ -46,10 +46,14 @@
                                               <h:outputText value="#{ser.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{ser.fechaCreacion}" />
+                                        <h:outputText value="#{ser.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{ser.fechaModificacion}" />
+                                        <h:outputText value="#{ser.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{ser.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

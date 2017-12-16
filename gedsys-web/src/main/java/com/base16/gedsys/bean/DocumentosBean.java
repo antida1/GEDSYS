@@ -14,7 +14,14 @@ import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Informe;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.ActaJpaController;
+import com.base16.gedsys.model.CartaJpaController;
+import com.base16.gedsys.model.CertificadoJpaController;
+import com.base16.gedsys.model.CircularJpaController;
+import com.base16.gedsys.model.ComunicacionJpaController;
+import com.base16.gedsys.model.ConstanciaJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
+import com.base16.gedsys.model.InformeJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import java.io.Serializable;
 import java.util.List;
@@ -33,6 +40,7 @@ import javax.persistence.EntityManagerFactory;
 public class DocumentosBean extends BaseBean implements Serializable {
 
     private List<Documento> documentos;
+    private List<Documento> recibidos;
     private List<Documento> enviados;
     private List<Documento> prestamo;
     private List<Documento> porVencer;
@@ -143,7 +151,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            recibidos = dJpa.findEntrantes(this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -154,7 +162,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            enviados = dJpa.findEnviados(this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -165,7 +173,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            prestamo = dJpa.findEnPrestamo(this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -176,84 +184,84 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            porVencer = dJpa.findPorVencer(this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarActasPorFirmar() {
-        DocumentoJpaController dJpa;
+        ActaJpaController aJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            aJpa = new ActaJpaController(emf);
+            actasPorFirmar = aJpa.findActaEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarCartasPorFirmar() {
-        DocumentoJpaController dJpa;
+        CartaJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            cJpa = new CartaJpaController(emf);
+            cartaPorFirmar = cJpa.findCartaEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarCertificadosPorFirmar() {
-        DocumentoJpaController dJpa;
+        CertificadoJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            cJpa = new CertificadoJpaController(emf);
+            certificadoPorFirmar = cJpa.findCertificadoEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarCircularesPorFirmar() {
-        DocumentoJpaController dJpa;
+        CircularJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            cJpa = new CircularJpaController(emf);
+            circularPorFirmar = cJpa.findCircularEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarComunicadosPorFirmar() {
-        DocumentoJpaController dJpa;
+        ComunicacionJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            cJpa = new ComunicacionJpaController(emf);
+            comunicadoPorFirmar = cJpa.findComunicacionEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarConstanciaPorFirmar() {
-        DocumentoJpaController dJpa;
+        ConstanciaJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            cJpa = new ConstanciaJpaController(emf);
+            constanciaPorFirmar = cJpa.findConstanciaEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void listarInformesPorFirmar() {
-        DocumentoJpaController dJpa;
+        InformeJpaController iJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+            iJpa = new InformeJpaController(emf);
+            informePorFirmar = iJpa.findInformeEntities();
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -270,15 +278,15 @@ public class DocumentosBean extends BaseBean implements Serializable {
         }
     }
 
-    public void listarPorDestinatario(Usuario destinatario) {         
+    public void listarCompartidos(Usuario destinatario) {         
         DocumentoJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
             if(destinatario != null){
-                documentos = dJpa.findDocumentoByDestinatario(destinatario);
+                documentos = dJpa.findByCompartidos(destinatario);
             } else{
-                documentos = dJpa.findDocumentoByDestinatario(this.getCurrentUser());
+                documentos = dJpa.findByCompartidos(this.getCurrentUser());
             }
             
         } catch (Exception e) {

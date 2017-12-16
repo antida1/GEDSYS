@@ -57,10 +57,14 @@
 
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{grupo.fechaCreacion}" />
+                                        <h:outputText value="#{grupo.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{grupo.fechaModificacion}" />
+                                        <h:outputText value="#{grupo.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{grupo.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

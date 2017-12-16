@@ -43,10 +43,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByAsunto", query = "SELECT d FROM Documento d WHERE d.asunto = :asunto")
     , @NamedQuery(name = "Documento.findByCodigoPostal", query = "SELECT d FROM Documento d WHERE d.codigoPostal = :codigoPostal")
     , @NamedQuery(name = "Documento.findByConsecutivo", query = "SELECT d FROM Documento d WHERE d.consecutivo = :consecutivo")
-    , @NamedQuery(name = "Documento.findByDestinatario", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario")
-    , @NamedQuery(name = "Documento.getEntrantes", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaRecepcion is not null")
-    , @NamedQuery(name = "Documento.getEnviados", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaEnvio is not null")
-    , @NamedQuery(name = "Documento.getEnPrestamo", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario and d.fechaEnvio is not null")
+    , @NamedQuery(name = "Documento.findByCompartidos", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario")
+    , @NamedQuery(name = "Documento.findEntrantes", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 1 or d.estado = 2 or d.estado = 7 )")
+    , @NamedQuery(name = "Documento.findEnviados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 3")
+    , @NamedQuery(name = "Documento.findEnPrestamo", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 4 or d.estado = 6)")
+    , @NamedQuery(name = "Documento.findArchivados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 5")
+    , @NamedQuery(name = "Documento.findPorVencer", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 1 and d.requiereRespuesta = true ")
     , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
     , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
     , @NamedQuery(name = "Documento.findByExtension", query = "SELECT d FROM Documento d WHERE d.extension = :extension")
@@ -128,11 +130,11 @@ public class Documento implements Serializable {
     private String remitenteExteno;
     @Column(name = "Clase")
     private String clase;
-    
+
     @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
     @ManyToOne
     private Usuario destinatario;
-     
+
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -175,7 +177,7 @@ public class Documento implements Serializable {
     private Collection<DestinatariosDoc> destinatariosDocCollection;
     @OneToMany(mappedBy = "documento")
     private Collection<ProcesoDocumental> procesodocumentalCollection;
-             
+
     public Documento() {
     }
 
@@ -541,7 +543,7 @@ public class Documento implements Serializable {
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Documento[ id=" + id + " ]";
     }
-    
+
     public String getRemitenteExteno() {
         return remitenteExteno;
     }
@@ -549,6 +551,5 @@ public class Documento implements Serializable {
     public void setRemitenteExteno(String remitenteExteno) {
         this.remitenteExteno = remitenteExteno;
     }
-
 
 }

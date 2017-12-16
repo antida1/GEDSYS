@@ -43,10 +43,14 @@
                                         <h:outputText value="#{tp.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{tp.fechaCreacion}" />
+                                        <h:outputText value="#{tp.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{tp.fechaModificacion}" />
+                                        <h:outputText value="#{tp.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{tp.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

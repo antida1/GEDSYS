@@ -165,4 +165,29 @@ public class NotificacionJpaController implements Serializable {
         }
     }
     
+    public List<Notificacion> findNotificacionByResponsable(Usuario responsable) {
+        return findNotificacionByResponsable(responsable, -1, -1);
+}
+
+    public List<Notificacion> findNotificacionByResponsable(Usuario responsable, int maxResults, int firstResult) {
+        return findNotificacionByResponsable(responsable, true, maxResults, firstResult);
+    }
+    
+    private List<Notificacion> findNotificacionByResponsable( Usuario responsable ,boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Notificacion.class));
+            Query q = em.createNamedQuery("Notificacion.findByResponsable", Notificacion.class)
+                    .setParameter("responsable", responsable);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }

@@ -35,14 +35,20 @@
                                         <p:columnToggler datasource="lstDias" trigger="toggler" />
                                     </f:facet>
                                     <p:column headerText="Día festivo">
-                                        <h:outputText value="#{festivo.diaFestivo}" />
+                                        <h:outputText value="#{festivo.diaFestivo}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
 
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{festivo.fechaCreacion}" />
+                                        <h:outputText value="#{festivo.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{festivo.fechaModificacion}" />
+                                        <h:outputText value="#{festivo.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 

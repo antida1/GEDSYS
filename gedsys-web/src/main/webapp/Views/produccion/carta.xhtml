@@ -71,10 +71,10 @@
         </div>
         <p:spacer/>
         <div> 
-            <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{cartaBean.procesar()}" />
-            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{cartaBean.previsualizar()}" update="dlgVisorCarta" oncomplete="PF('dlgVisorCarta').show()" />
-            <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{cartaBean.firmar()}" />
-            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{cartaBean.enviar()}" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save " value="Guradar" actionListener="#{cartaBean.procesar()}" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-eye" value="Previsualizar" actionListener="#{cartaBean.previsualizar()}" update="dlgVisorCarta" oncomplete="PF('dlgVisorCarta').show()" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{cartaBean.firmar()}" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{cartaBean.enviar()}" />
         </div>
         <p:dialog id="dlgVisorCarta" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                 <pe:documentViewer id="cartaCtl" height="800" value="#{cartaBean.content}" />  

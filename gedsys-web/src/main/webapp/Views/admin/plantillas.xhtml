@@ -30,10 +30,14 @@
                             <h:outputText value="#{pais.nombre}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{pais.fechaCreacion}" />
+                            <h:outputText value="#{pais.fechaCreacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{pais.fechaModificacion}" />
+                            <h:outputText value="#{pais.fechaModificacion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Creado Por">
                             <h:outputText value="#{pais.creadoPor}" />

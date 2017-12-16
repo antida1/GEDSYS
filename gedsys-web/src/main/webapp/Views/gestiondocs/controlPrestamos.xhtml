@@ -30,28 +30,35 @@
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     <f:facet name="header">
-                                        
+
 
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstControl" trigger="toggler" />
                                     </f:facet>
                                     <p:column headerText="Fecha inicial">
-                                        <h:outputText value="#{pres.fechaInicial}" />
+                                        <h:outputText value="#{pres.fechaInicial}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Prestado a">
                                         <h:outputText value="#{pres.prestador.nombres} #{pres.prestador.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Nombre del Documento">
-                                        <h:outputText value="#{pres.nombreDocumento}" />
+                                        <h:outputText value="#{pres.nombreDocumento}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Tipo de documento">   
                                         <h:outputText value="#{pres.tipoDocumento}" />
                                     </p:column>
                                     <p:column headerText="Fecha de vencimiento">
-                                        <h:outputText value="#{pres.fechaVencimiento}" />
+                                        <h:outputText value="#{pres.fechaVencimiento}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha de Devolución">
                                         <h:outputText value="#{pres.fechaDevolucion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
                                     <p:column headerText="Recibir Documento">

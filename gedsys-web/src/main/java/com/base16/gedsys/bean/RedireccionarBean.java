@@ -33,13 +33,22 @@ public class RedireccionarBean extends BaseBean implements Serializable{
      */
     private static final long SerialVersionUID = 1L;
     private Documento documento;
+    private String mensaje;
     
     public RedireccionarBean() {
     }  
-      
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+    
     public void loadDocumento(Documento doc) {
         this.documento = doc;
-        RequestContext.getCurrentInstance().execute("PF('denArchivar').show()");
+        RequestContext.getCurrentInstance().execute("PF('denRedireccionar').show()");
     }
 
     public Documento getDocumento() {

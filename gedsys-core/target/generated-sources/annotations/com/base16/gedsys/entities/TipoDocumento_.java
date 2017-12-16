@@ -11,11 +11,11 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-01T14:33:19")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-15T15:03:38")
 @StaticMetamodel(TipoDocumento.class)
 public class TipoDocumento_ { 
 
-    public static volatile SingularAttribute<TipoDocumento, Short> requiereRespuesta;
+    public static volatile SingularAttribute<TipoDocumento, Boolean> requiereRespuesta;
     public static volatile SingularAttribute<TipoDocumento, Date> fechaModificacion;
     public static volatile CollectionAttribute<TipoDocumento, PlantillaDocumental> plantillaDocumentalCollection;
     public static volatile CollectionAttribute<TipoDocumento, Consecutivo> consecutivoCollection;

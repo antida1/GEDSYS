@@ -31,10 +31,14 @@
                             <h:outputText value="#{subsec.nombre}" />
                         </p:column>
                         <p:column headerText="Fecha Creación">
-                            <h:outputText value="#{subsec.fechaCreacion}" />
+                            <h:outputText value="#{subsec.fechaCreacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Fecha Modificación">
-                            <h:outputText value="#{subsec.fechaModificacion}" />
+                            <h:outputText value="#{subsec.fechaModificacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Creado Por">
                             <h:outputText value="#{subsec.creadoPor.nombres}" />

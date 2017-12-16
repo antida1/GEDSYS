@@ -53,10 +53,14 @@
                                         <h:outputText value="#{modulo.oculto ? 'Si': 'No'}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{modulo.fechaCreacion}" />
+                                        <h:outputText value="#{modulo.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{modulo.fechaModificacion}" />
+                                        <h:outputText value="#{modulo.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{modulo.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

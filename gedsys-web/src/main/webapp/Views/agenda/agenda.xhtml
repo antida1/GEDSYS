@@ -20,7 +20,7 @@
                                     <h2 style="margin-top: 0">Programador de alertas y eventos</h2>
                                     <div class="clear"></div>
                                 </div>
-                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-5" >
+                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" >
                                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                     <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
@@ -32,9 +32,9 @@
                                     <p:outputLabel for="title" value="Titulo:" />
                                     <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
                                     <p:outputLabel for="from" value="Desde" />
-                                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+0" pattern="dd/MM/yyyy HH:mm"/>
                                     <p:outputLabel for="to" value="Hasta:" />
-                                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+0" pattern="dd/MM/yyyy HH:mm"/>
                                     <p:outputLabel for="allDay" value="Todo el día:" />
                                     <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
                                     <p:commandButton type="reset" value="Limpiar" />

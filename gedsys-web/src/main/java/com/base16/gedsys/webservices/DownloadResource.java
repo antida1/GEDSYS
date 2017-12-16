@@ -5,9 +5,19 @@
  */
 package com.base16.gedsys.webservices;
 
+import com.base16.gedsys.bean.BaseBean;
+import com.base16.gedsys.entities.Documento;
+import com.base16.gedsys.model.DocumentoJpaController;
+import com.base16.gedsys.utils.JpaUtils;
+import com.base16.gedsys.web.utils.WebConfiguration;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -15,6 +25,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,7 +37,7 @@ import javax.ws.rs.core.StreamingOutput;
  * @author rober
  */
 @Path("Download")
-public class DownloadResource {
+public class DownloadResource extends BaseBean {
 
     @Context
     private UriInfo context;
@@ -39,29 +50,19 @@ public class DownloadResource {
 
     @GET
     @Path("/pdf")
-    public Response downloadPdfFile()
-    {
-        StreamingOutput fileStream =  new StreamingOutput()
-        {
-            @Override
-            public void write(java.io.OutputStream output) throws IOException, WebApplicationException
-            {
-                try
-                {
-                    java.nio.file.Path path = Paths.get("C:/gedsys/data/software.pdf");
-                    byte[] data = Files.readAllBytes(path);
-                    output.write(data);
-                    output.flush();
-                }
-                catch (IOException e)
-                {
-                    throw new WebApplicationException("File Not Found !!");
-                }
-            }
-        };
-        return Response
-                .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
-                .header("content-disposition","inline; filename = documento.pdf")
-                .build();
+    @Produces({"application/pdf"})
+    public byte[] downloadPdfFile(@QueryParam("id") Long id)  {
+        try {    
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            DocumentoJpaController dJpa = new DocumentoJpaController(emf);
+            Documento documento = dJpa.findDocumento(id);
+            java.nio.file.Path path = Paths.get(WebConfiguration.getInstance().getProperty("PathData")+ File.separatorChar + documento.getRutaArchivo());
+            byte[] data = Files.readAllBytes(path);
+            return data;
+
+        } catch (IOException | NamingException ex) {
+            Logger.getLogger(DownloadResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

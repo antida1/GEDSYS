@@ -7,17 +7,28 @@
 
     <h:body>
         <div class="form-group row">
-            <p:outputLabel value="Responsable" for="responsable" class="col-xs-3 col-form-label"/>
+            <p:outputLabel value="Radicado" for="rRadicado" class="col-xs-4 col-form-label" />
+            <div class="col-xs-8">
+                <p:outputLabel id="rRadicado" value="#{redireccionarBean.documento.consecutivo}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <p:outputLabel value="Asunto" for="rAsunto" class="col-xs-4 col-form-label" />
+            <div class="col-xs-8">
+                <p:outputLabel id="rAsunto" value="#{redireccionarBean.documento.asunto}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <p:outputLabel value="Responsable" for="rResponsable" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:selectOneMenu id="responsable" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="rResponsable" value="#{redireccionarBean.documento.destinatario}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
-                    <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="responsable" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="responsable" itemLabel="#{responsable.nombres} #{responsable.apelidos} - #{responsable.cargo.nombre}" itemValue="#{responsable}"/>
                 </p:selectOneMenu>
             </div>
         </div>
-
         <div class="form-group row">
-            <p:outputLabel value="Comentario" class="col-xs-12 col-form-label"></p:outputLabel>
+            <p:outputLabel value="Mensaje de Redirección" class="col-xs-12 col-form-label"></p:outputLabel>
             <div class="col-xs-12">
                 <p:inputTextarea cols="50" rows="10" widgetVar="texto" style="width: 100%"/>                 
             </div>

@@ -56,7 +56,7 @@ public class DocumentosResource extends BaseBean {
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         UsuarioJpaController uJpa = new UsuarioJpaController(emf);
         Usuario usuario = uJpa.findByEmail(email);
-        dBean.listarPorDestinatario(usuario);
+        dBean.listarCompartidos(usuario);
         List<Documento> documentos =  dBean.getDocumentos();
         return documentos;
     }

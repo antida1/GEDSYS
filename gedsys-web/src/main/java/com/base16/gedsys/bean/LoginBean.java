@@ -10,10 +10,14 @@ import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.security.Authentication;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -88,15 +92,21 @@ public class LoginBean extends BaseBean implements Serializable {
                 context.addCallbackParam("view", "index.xhtml");
             }
         } catch (Exception e) {
-             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Inicio de Sesion", e.getMessage());
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Inicio de Sesion", e.getMessage());
         }
     }
 
     public void cerrarSession() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
-                getExternalContext().getSession(false);
-        session.invalidate();
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
+                    getExternalContext().getSession(false);
+            session.invalidate();
+            ExternalContext context = FacesContext.getCurrentInstance().
+                    getExternalContext();
+            context.redirect("login.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         logeado = false;
     }
 }
- 

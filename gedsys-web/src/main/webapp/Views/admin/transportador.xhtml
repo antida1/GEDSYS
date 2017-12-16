@@ -61,7 +61,9 @@
                                         <h:outputText value="#{transportador.email}" />
                                     </p:column>
                                     <p:column headerText="Fecha de creación">
-                                        <h:outputText value="#{transportador.fechaCreacion}" />
+                                        <h:outputText value="#{transportador.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Editar">
                                         <p:commandButton actionListener="#{transportadorBean.getTransportadorById(transportador)}" 

@@ -6,7 +6,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-01T14:33:19")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-15T15:03:37")
 @StaticMetamodel(Notificacion.class)
 public class Notificacion_ { 
 
@@ -22,6 +22,8 @@ public class Notificacion_ {
     public static volatile SingularAttribute<Notificacion, Integer> mesesNotificacion;
     public static volatile SingularAttribute<Notificacion, Boolean> notificacionPush;
     public static volatile SingularAttribute<Notificacion, Integer> diasNotificacion;
+    public static volatile SingularAttribute<Notificacion, Date> fechaFinalizacion;
+    public static volatile SingularAttribute<Notificacion, Date> fechaInicio;
     public static volatile SingularAttribute<Notificacion, String> asunto;
     public static volatile SingularAttribute<Notificacion, Date> fechaCreacion;
     public static volatile SingularAttribute<Notificacion, Long> id;

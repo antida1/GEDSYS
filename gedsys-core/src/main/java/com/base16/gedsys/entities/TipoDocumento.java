@@ -73,7 +73,7 @@ public class TipoDocumento implements Serializable {
     @OneToMany(mappedBy = "tipoDocumento")
     private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
     @Column(name = "RequiereRespuesta")
-    private Short requiereRespuesta;
+    private Boolean requiereRespuesta;
     @Column(name = "DiasRespuesta")
     private Integer diasRespuesta;
     @Column(name = "TipoCalendario")
@@ -207,11 +207,11 @@ public class TipoDocumento implements Serializable {
         return "com.sucomunicacion.gedsys.entities.TipoDocumento[ id=" + id + " ]";
     }
 
-    public Short getRequiereRespuesta() {
+    public Boolean getRequiereRespuesta() {
         return requiereRespuesta;
     }
 
-    public void setRequiereRespuesta(Short requiereRespuesta) {
+    public void setRequiereRespuesta(Boolean requiereRespuesta) {
         this.requiereRespuesta = requiereRespuesta;
     }
 

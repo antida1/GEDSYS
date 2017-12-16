@@ -10,7 +10,6 @@ import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.security.Authentication;
 import com.base16.gedsys.utils.JpaUtils;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -23,8 +22,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -67,24 +64,20 @@ public class AuthenticationsResource extends BaseBean {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject postJson(String data) {
+    public Usuario postJson(String data) {
         Usuario usuario = null;
-        JSONObject ret = null;
-        try {
+        //JSONObject ret = null;
+       try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             JSONObject content = new JSONObject(data);
             UsuarioJpaController uJpa = new UsuarioJpaController(emf);
             String email = content.getString("email");
             String password = Authentication.md5(content.getString("password"));
             usuario = uJpa.autheticate(email, password);
-            
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            String json = ow.writeValueAsString(usuario);
-            ret = new JSONObject(json);
-        } catch (JSONException | IOException ex) {
+        } catch (JSONException ex) {
             Logger.getLogger(AuthenticationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ret;
+        return usuario;
     }
 
     /**

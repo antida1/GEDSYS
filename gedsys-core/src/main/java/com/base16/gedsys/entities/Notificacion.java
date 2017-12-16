@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Notificacion.findByNotificacionPeriodica", query = "SELECT n FROM Notificacion n WHERE n.notificacionPeriodica = :notificacionPeriodica")
     , @NamedQuery(name = "Notificacion.findByNotificacionPopup", query = "SELECT n FROM Notificacion n WHERE n.notificacionPopup = :notificacionPopup")
     , @NamedQuery(name = "Notificacion.findByNotificacionPush", query = "SELECT n FROM Notificacion n WHERE n.notificacionPush = :notificacionPush")
+    , @NamedQuery(name = "Notificacion.findByResponsable", query = "SELECT n FROM Notificacion n WHERE n.responsable = :responsable")
     , @NamedQuery(name = "Notificacion.findByPeridicidadNotificacion", query = "SELECT n FROM Notificacion n WHERE n.peridicidadNotificacion = :peridicidadNotificacion")
     , @NamedQuery(name = "Notificacion.findByTipoPeriodo", query = "SELECT n FROM Notificacion n WHERE n.tipoPeriodo = :tipoPeriodo")})
 public class Notificacion implements Serializable {
@@ -92,6 +93,12 @@ public class Notificacion implements Serializable {
     @JoinColumn(name = "Responsable", referencedColumnName = "Id")
     @ManyToOne
     private Usuario responsable;
+    @Column(name = "FechaInicio")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @Column(name = "FechaFinalizacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFinalizacion;
 
     public Notificacion() {
     }
@@ -260,5 +267,21 @@ public class Notificacion implements Serializable {
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Notificacion[ id=" + id + " ]";
     }
-    
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Date getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(Date fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
+    }
+
 }

@@ -645,21 +645,96 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public List<Documento> findDocumentoByDestinatario(Usuario usuario) {
-        return findDocumentoByDestinatario(usuario, true, -1, -1);
+
+    public List<Documento> findByCompartidos(Usuario usuario) {
+        return findByCompartidos(usuario, true, -1, -1);
     }
 
-    public List<Documento> findDocumentoByDestinatario(Usuario usuario, int maxResults, int firstResult) {
-        return findDocumentoByDestinatario(usuario, false, maxResults, firstResult);
+    public List<Documento> findByCompartidos(Usuario usuario, int maxResults, int firstResult) {
+        return findByCompartidos(usuario, false, maxResults, firstResult);
     }
 
-    private List<Documento> findDocumentoByDestinatario(Usuario usuario, boolean all, int maxResults, int firstResult) {
+    private List<Documento> findByCompartidos(Usuario usuario, boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Usuario.class));
-            Query q = em.createNamedQuery("Documento.findByDestinatario", Usuario.class)
+            Query q = em.createNamedQuery("Documento.findByCompartidos", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Documento> findEntrantes(Usuario usuario) {
+        return findEntrantes(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findEntrantes(Usuario usuario, int maxResults, int firstResult) {
+        return findEntrantes(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findEntrantes(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findEntrantes", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Documento> findEnviados(Usuario usuario) {
+        return findEntrantes(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findEnviados(Usuario usuario, int maxResults, int firstResult) {
+        return findEntrantes(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findEnviados(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findEnviados", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Documento> findEnPrestamo(Usuario usuario) {
+        return findEnPrestamo(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findEnPrestamo(Usuario usuario, int maxResults, int firstResult) {
+        return findEnPrestamo(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findEnPrestamo(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findEnPrestamo", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -671,4 +746,53 @@ public class DocumentoJpaController implements Serializable {
         }
     }
     
+    public List<Documento> findArchivados(Usuario usuario) {
+        return findArchivados(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findArchivados(Usuario usuario, int maxResults, int firstResult) {
+        return findArchivados(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findArchivados(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findArchivados", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Documento> findPorVencer(Usuario usuario) {
+        return findPorVencer(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findPorVencer(Usuario usuario, int maxResults, int firstResult) {
+        return findPorVencer(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findPorVencer(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findPorVencer", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

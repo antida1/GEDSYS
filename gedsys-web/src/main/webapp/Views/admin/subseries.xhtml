@@ -46,10 +46,14 @@
                                         <h:outputText value="#{subser.nombre}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{subser.fechaCreacion}" />
+                                        <h:outputText value="#{subser.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{subser.fechaModificacion}" />
+                                        <h:outputText value="#{subser.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{subser.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
@@ -92,7 +96,7 @@
                                     <div class="col-xs-9">
                                         <p:selectOneMenu id="Serie" value="#{subSerieBean.subSerie.serie}" converter="omnifaces.SelectItemsConverter" required="true" filter="true" filterMatchMode="contains">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
-                                            <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.seccionSubseccionId.nombre} - #{serie.nombre}" itemValue="#{serie}" />
+                                            <f:selectItems value="#{serieBean.series}" var="serie" itemLabel="#{serie.seccionSubseccion.codigo} - #{serie.nombre}" itemValue="#{serie}" />
                                         </p:selectOneMenu>
                                     </div>
                                 </div>

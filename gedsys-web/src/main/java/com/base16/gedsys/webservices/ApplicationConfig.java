@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.base16.gedsys.webservices.DocumentoResource.class);
         resources.add(com.base16.gedsys.webservices.DocumentosResource.class);
         resources.add(com.base16.gedsys.webservices.DownloadResource.class);
+        resources.add(com.base16.gedsys.webservices.ImagesResource.class);
         resources.add(com.base16.gedsys.webservices.NotifiacionResource.class);
         resources.add(com.base16.gedsys.webservices.NotifiacionesResource.class);
         resources.add(com.base16.gedsys.webservices.RegistroMovilResource.class);

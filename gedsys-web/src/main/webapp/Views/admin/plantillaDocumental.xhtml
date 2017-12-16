@@ -45,10 +45,14 @@
 
                                     </p:column>
                                     <p:column headerText="Fecha Creación">
-                                        <h:outputText value="#{plantilla.fechaCreacion}" />
+                                        <h:outputText value="#{plantilla.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha Modificación">
-                                        <h:outputText value="#{plantilla.fechaModificacion}" />
+                                        <h:outputText value="#{plantilla.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado Por">
                                         <h:outputText value="#{plantilla.creadoPor.nombres}" />

@@ -147,8 +147,8 @@
     overflow : hidden;
 }
 .nav-sm .navbar.nav_title {
-    width: 70%;
-    margin-left: 15%;
+    width: 100%;
+    margin-left: 0%;
 }
 .nav-sm .navbar.nav_title a span {
     display: none;
@@ -711,10 +711,10 @@ a:hover, a:focus {
     color: #ECF0F1 !important;
     margin-left: 0 !important;
     line-height: 59px;
-    display: block;
+    /*display: block;*/
     height: 55px;
     margin: 0;
-    padding: 0 5px;
+    /*padding: 0 5px;*/
 }
 .site_title:hover, .site_title:focus {
     text-decoration: none;

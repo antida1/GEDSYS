@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
@@ -314,33 +315,43 @@ public class ConfiguracionBean extends BaseBean implements Serializable {
     }
 
     private void createSchema() {
-        WebConfiguration wc = WebConfiguration.getInstance();
-        String path = wc.getConfigFilePath();
-        JpaUtils.createSchema(path);
+        WebConfiguration wc;
+        try {
+            wc = WebConfiguration.getInstance();
+            String path = wc.getConfigFilePath();
+            JpaUtils.createSchema(path);
+        } catch (NamingException ex) {
+            Logger.getLogger(ConfiguracionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void saveConfig() {
-        WebConfiguration wc = WebConfiguration.getInstance();
-        //Data Base Configuration
-        wc.setProperty("jdbc_driver", this.getDriver());
-        wc.setProperty("jdbc_url", this.getUrlConnection());
-        wc.setProperty("jdbc_user", this.getUsuarioDataBase());
-        wc.setProperty("jdbc_password", this.getPasswordDataBase());
-        //Installation Lock
-        wc.setProperty("installationLock", "true");
-        //Email Settings
-        wc.setProperty("mailAccount", this.getMailAccount());
-        wc.setProperty("mailPassword", this.getMailPassword());
-        wc.setProperty("mailPort", this.getMailPort());
-        wc.setProperty("mailServer", this.getMailServer());
-        wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
-        //License
-        //wc.setProperty("licenseMode", this.getLicenseMode());
-        //wc.setProperty("licenseNumber", this.getLicenseNumber());
-        //Data File
-        wc.setProperty("PathData", this.getPathData());
-        wc.setProperty("protectFile", "false");
-        wc.save();
+        try {
+            WebConfiguration wc = WebConfiguration.getInstance();
+            //Data Base Configuration
+            wc.setProperty("jdbc_driver", this.getDriver());
+            wc.setProperty("jdbc_url", this.getUrlConnection());
+            wc.setProperty("jdbc_user", this.getUsuarioDataBase());
+            wc.setProperty("jdbc_password", this.getPasswordDataBase());
+            //Installation Lock
+            wc.setProperty("installationLock", "true");
+            //Email Settings
+            wc.setProperty("mailAccount", this.getMailAccount());
+            wc.setProperty("mailPassword", this.getMailPassword());
+            wc.setProperty("mailPort", this.getMailPort());
+            wc.setProperty("mailServer", this.getMailServer());
+            wc.setProperty("mailSSLTLS", this.getMailSSLTLS().toString());
+            //License
+            //wc.setProperty("licenseMode", this.getLicenseMode());
+            //wc.setProperty("licenseNumber", this.getLicenseNumber());
+            //Data File
+            wc.setProperty("PathData", this.getPathData());
+            wc.setProperty("protectFile", "false");
+            wc.save();
+        } catch (NamingException ex) {
+            Logger.getLogger(ConfiguracionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void initializeModules() {

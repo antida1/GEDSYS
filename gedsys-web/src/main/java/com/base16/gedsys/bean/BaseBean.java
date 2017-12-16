@@ -8,8 +8,11 @@ package com.base16.gedsys.bean;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.gedsys.web.utils.WebConfiguration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.naming.NamingException;
 
 /**
  *
@@ -23,8 +26,13 @@ public class BaseBean {
    
     
     public BaseBean() {
-        configFilePath = WebConfiguration.getInstance().getConfigFilePath();
-        documenstSavePath = WebConfiguration.getInstance().getProperty("PathData");
+        try {
+            configFilePath = WebConfiguration.getInstance().getConfigFilePath();
+            documenstSavePath = WebConfiguration.getInstance().getProperty("PathData");
+        } catch (NamingException ex) {
+            Logger.getLogger(BaseBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }  
     
     public String getConfigFilePath() {

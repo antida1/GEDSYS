@@ -54,10 +54,14 @@
                                     <h:outputText value="#{sec.responsable.nombres}" />
                                 </p:column>
                                 <p:column headerText="Fecha creación">
-                                    <h:outputText value="#{sec.fechaCreacion}" />
+                                    <h:outputText value="#{sec.fechaCreacion}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
                                 </p:column>
                                 <p:column headerText="Fecha modificación">
-                                    <h:outputText value="#{sec.fechaModificacion}" />
+                                    <h:outputText value="#{sec.fechaModificacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
                                 </p:column>
                                 <p:column headerText="Creado por" filterBy="#{sec.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

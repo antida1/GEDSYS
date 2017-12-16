@@ -50,10 +50,14 @@
                                         <h:outputText value="#{consecutivo.tipoConsecutivo}" />
                                     </p:column>
                                     <p:column headerText="Fecha creación">
-                                        <h:outputText value="#{consecutivo.fechaCreacion}" />
+                                        <h:outputText value="#{consecutivo.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Fecha modificación">
-                                        <h:outputText value="#{consecutivo.fechaModificacion}" />
+                                        <h:outputText value="#{consecutivo.fechaModificacion}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{consecutivo.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">

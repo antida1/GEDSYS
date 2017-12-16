@@ -39,6 +39,10 @@ public class ArchivarBean extends BaseBean implements Serializable {
     private TreeNode selectedNodeSignatura =  new DefaultTreeNode();
     private TipoDocumental tipoDocumental = new TipoDocumental();
     
+    public ArchivarBean() {
+    
+    }
+    
     public Documento getDocumento() {
         return documento;
     }
@@ -61,12 +65,6 @@ public class ArchivarBean extends BaseBean implements Serializable {
 
     public void setTipoDocumental(TipoDocumental tipoDocumental) {
         this.tipoDocumental = tipoDocumental;
-    }
-    
-    
-
-    public ArchivarBean() {
-    
     }
 
     public void loadDocumento(Documento doc) {
