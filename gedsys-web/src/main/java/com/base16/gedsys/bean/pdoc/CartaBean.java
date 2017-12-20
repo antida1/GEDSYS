@@ -12,12 +12,15 @@ import com.base16.gedsys.entities.Actaasistente;
 import com.base16.gedsys.entities.Actaausente;
 import com.base16.gedsys.entities.Actainvitado;
 import com.base16.gedsys.entities.Carta;
+import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.ActaasistenteJpaController;
 import com.base16.gedsys.model.ActaausenteJpaController;
 import com.base16.gedsys.model.ActainvitadoJpaController;
 import com.base16.gedsys.model.CartaJpaController;
+import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
@@ -45,6 +48,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
@@ -63,17 +67,19 @@ public class CartaBean extends BaseBean implements Serializable {
     /**
      * Creates a new instance of CartaBean
      */
-    
     private static final long SerialVersionUID = 1L;
     private Carta carta = new Carta();
     private List<Carta> cartas;
     private String accion;
-    
+
+    private Documento documentoRelacionado;
+
     private StreamedContent content;
     private String filePath = "";
-    
+
     public CartaBean() {
-        this.accion="Crear";
+        this.accion = "Crear";
+
     }
 
     public Carta getCarta() {
@@ -99,19 +105,29 @@ public class CartaBean extends BaseBean implements Serializable {
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
-    
-    
-     public void procesar() {
+
+    public Documento getDocumentoRelacionado() {
+        return documentoRelacionado;
+    }
+
+    public void setDocumentoRelacionado(Documento documentoRelacionado) {
+        this.documentoRelacionado = documentoRelacionado;
+        if (documentoRelacionado != null) {
+            this.carta.setDestinatario(documentoRelacionado.getRemitente());
+        }
+    }
+
+    public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento creado exitosamente"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento actualizado exitosamente"));
                     break;
             }
         } catch (Exception e) {
@@ -124,7 +140,7 @@ public class CartaBean extends BaseBean implements Serializable {
         CartaJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new CartaJpaController(emf);
-        
+
         this.carta.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.carta.setCreadoPor(usuario);
@@ -132,6 +148,7 @@ public class CartaBean extends BaseBean implements Serializable {
         this.carta.setFechaModificacion(new Date());
         this.carta.setEstado("1");
         cJpa.create(this.carta);
+
     }
 
     private void editar() throws Exception {
@@ -146,11 +163,41 @@ public class CartaBean extends BaseBean implements Serializable {
     }
 
     public void firmar() {
-        //TODO: Recuperar consecutivo de documento.
-        Usuario usuario = (Usuario) SessionUtils.getUsuario();
-        this.carta.setModificadoPor(usuario);
-        this.carta.setFechaFirma(new Date());
-        this.carta.setEstado("3");
+        try {
+            //TODO: Recuperar consecutivo de documento.
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManager em = emf.createEntityManager();
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CartaJpaController caJpa;
+            caJpa = new CartaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("carta");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.carta.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.carta.setModificadoPor(usuario);
+            this.carta.setFechaFirma(new Date());
+            this.carta.setEstado("3");
+            caJpa.edit(this.carta);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento Firmado exitosamente"));
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", ex.getMessage()));
+        }
     }
 
     public void previsualizar() {
@@ -184,7 +231,7 @@ public class CartaBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) destinatario.nextSelection();
                 item.replaceWith(this.carta.getDestinatario());
             }
-            
+
             cargo = new TextNavigation("@cargo", odt);
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
@@ -217,29 +264,27 @@ public class CartaBean extends BaseBean implements Serializable {
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt");
             odt.close();
-            
+
             //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
             //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            
             //IContext context =  report.createContext();
             //context.put("name", "world");
             Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
             IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-            
+
             InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt"));
             OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".pdf"));
             converter.convert(in, out, options);
-            
-            
+
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
-    private void loadDocument(){
+
+    private void loadDocument() {
         try {
-            this.filePath =  this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".pdf";
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".pdf";
             if (!filePath.isEmpty()) {
                 File tempFile = new File(filePath);
                 if (tempFile.exists()) {
@@ -264,7 +309,7 @@ public class CartaBean extends BaseBean implements Serializable {
 
     }
 
-    public List<Carta> getActasByResponsable() {
+    public List<Carta> getCartasByResponsable() {
         CartaJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -276,5 +321,5 @@ public class CartaBean extends BaseBean implements Serializable {
         }
         return cartas;
     }
-    
+
 }

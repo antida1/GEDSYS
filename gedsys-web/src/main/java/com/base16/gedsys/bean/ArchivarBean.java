@@ -82,7 +82,6 @@ public class ArchivarBean extends BaseBean implements Serializable {
                 documento.setSignaturaTopografica(signatura);
                 documento.setTipoDocumental(this.tipoDocumental);
                 dJpa.edit(documento);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_INFO ,"Archivo de documentos", "Documento archivado correctamente"));
                 this.addMessage(new FacesMessage("Archivo de documentos", "Documento archivado correctamente"));
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));

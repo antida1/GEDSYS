@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
 
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
@@ -69,6 +70,14 @@
                             </div>
                         </div>
                     </div>
+                   <p:dialog id="dlgVisorCarta" header="Visor de Cartas" widgetVar="denVisorCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCarta').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('producciondoc') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

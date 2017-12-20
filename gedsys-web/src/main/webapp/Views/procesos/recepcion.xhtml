@@ -87,7 +87,7 @@
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectOneMenu value="#{recepcionBean.documento.destinatario}" id="Destinatario" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
-                                                <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                                                <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos} - #{usrDest.cargo.nombre}" itemValue="#{usrDest}"/>
                                                 <p:column>
                                                     <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                                                 </p:column>
@@ -99,7 +99,7 @@
                                         </label>
                                         <div class="col-xs-8">
                                             <p:selectManyMenu value="#{recepcionBean.destinatarios}" id="Destinatarios" var="dest" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
-                                                <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                                                <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos} - #{usrDest.cargo.nombre}" itemValue="#{usrDest}"/>
                                                 <p:column>
                                                     <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                                                 </p:column>
@@ -138,17 +138,15 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class=" col-xs-4" for="libros">Descripción del anexo <span class="required">*</span>
-                                        </label>
+                                        <label class=" col-xs-4" for="libros">Descripción del anexo </label>
                                         <div class="col-xs-8">
                                             <p:inputText id="libros" value="#{recepcionBean.documento.libros}" style="width: 100%"/>
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería <span class="required">*</span>
-                                        </label>
+                                        <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería</label>
                                         <div class="col-xs-8">
-                                            <p:selectOneMenu id="tercero" value="#{recepcionBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter" required="true">
+                                            <p:selectOneMenu id="tercero" value="#{recepcionBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione una empresa/tercero " itemValue="#{null}" />
                                                 <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                                             </p:selectOneMenu>
@@ -185,9 +183,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-12">
-                                        <p:commandButton widgetVar="genRad" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success" oncomplete="PF('printRad').jq.show(); PF('saveDoc').jq.show(); PF('genRad').jq.hide()"/>
-                                        <p:commandButton widgetVar="printRad" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px; display: none"></p:commandButton>
-                                        <p:commandButton widgetVar="saveDoc" update="messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px; display: none"/>
+                                        <p:commandButton widgetVar="genRad" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success" />
+                                        <p:commandButton widgetVar="printRad" update=":form" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px;" ></p:commandButton>
+                                        <p:commandButton widgetVar="saveDoc" update=":form messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px;" />
                                         <p:commandButton class="btn-default" value="Cancelar" immediate="true" style="float:right;"></p:commandButton>
                                         <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
                                             <ui:include src="newRadicadoRecepcion.xhtml">

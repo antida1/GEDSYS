@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
@@ -22,7 +23,7 @@ public class BaseBean {
     
     String configFilePath = "";
     String documenstSavePath = "";
-
+    String appName = "";
    
     
     public BaseBean() {
@@ -40,7 +41,8 @@ public class BaseBean {
     }
     
     public void addMessage(FacesMessage message) {
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
     }
     
     public Usuario getCurrentUser(){
@@ -50,4 +52,16 @@ public class BaseBean {
      public String getDocumenstSavePath() {
         return documenstSavePath;
     }
+
+    public String getAppName() {
+        try {
+            InitialContext ic = new InitialContext();
+            this.appName = (String) ic.lookup("java:app/AppName");
+        } catch (NamingException ex) {
+            Logger.getLogger(BaseBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return appName;
+    }
+     
+    
 }

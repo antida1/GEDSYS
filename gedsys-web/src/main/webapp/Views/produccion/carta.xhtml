@@ -9,6 +9,7 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <p:growl id="messages"  showDetail="true" />
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCarta" class="control-label col-md-4"/>
             <div class="col-md-8">
@@ -24,7 +25,6 @@
                     <f:selectItem itemLabel="Señora" itemValue="Señora"/>
                     <f:selectItem itemLabel="Doctor" itemValue="Doctor"/>
                     <f:selectItem itemLabel="Doctora" itemValue="Doctora"/>
-                    <f:ajax render="@form"></f:ajax>
                 </p:selectOneMenu>
             </div>
         </div>
@@ -62,7 +62,7 @@
             <p:outputLabel value="Remitente" for="remitente" class="control-label col-md-4"/>
             <div class="col-md-8">
                 <p:selectOneMenu value="#{cartaBean.carta.remitente}" id="remitente" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
-                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos}" itemValue="#{usrDest}"/>
                     <p:column>
                         <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                     </p:column>
@@ -71,14 +71,14 @@
         </div>
         <p:spacer/>
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save " value="Guradar" actionListener="#{cartaBean.procesar()}" />
-            <p:commandButton icon="glyphicon fa fa-fw fa-eye" value="Previsualizar" actionListener="#{cartaBean.previsualizar()}" update="dlgVisorCarta" oncomplete="PF('dlgVisorCarta').show()" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guradar" actionListener="#{cartaBean.procesar()}" update="messages clViewCarta" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewCarta" type="button" title="Ver" action="#{cartaViewBean.showDocument(cartaBean.carta)}" update=":dlgVisorCarta">
+                <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
+                <span class="ui-button-text ui-c">Ver</span>
+            </p:commandLink>
             <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{cartaBean.firmar()}" />
             <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{cartaBean.enviar()}" />
         </div>
-        <p:dialog id="dlgVisorCarta" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
-                <pe:documentViewer id="cartaCtl" height="800" value="#{cartaBean.content}" />  
-        </p:dialog>
     </h:body>
 </html>
 

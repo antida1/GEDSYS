@@ -6,11 +6,13 @@
 package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.fcm.PushFCMNotification;
 import com.base16.gedsys.images.RadicadoImage;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.DevicesJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -77,6 +79,7 @@ public class RadicadoBean extends BaseBean implements Serializable {
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("recepcion");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
+            
             /*
             consec.setConsecutivo(intConsec.toString());
             em.merge(consec);
@@ -90,10 +93,12 @@ public class RadicadoBean extends BaseBean implements Serializable {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            String UsuarioName =usuario.getNombres() + usuario.getApelidos();
             String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
             this.radicado = name;
-            fileName = ri.Generar(name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar);
+            
+            fileName = ri.Generar(name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar, UsuarioName );
 
             File file = new File(this.documenstSavePath+ File.separatorChar + this.fileName);
             if (file.canRead()) {

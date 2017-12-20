@@ -33,6 +33,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -44,7 +45,7 @@ import org.primefaces.model.UploadedFile;
 public class RecepcionBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
-    
+
     private Documento documento = new Documento();
     private List<Municipio> municipios;
     private List<Documento> documentos;
@@ -53,30 +54,29 @@ public class RecepcionBean extends BaseBean implements Serializable {
     private List<Entidad> entidades;
     private List<Transportador> transportadores;
     private List<Usuario> destinatarios;
-    
-    
-    private String accion; 
+
+    private String accion;
     private int MunicipioId;
     private UploadedFile documentFile;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
-            
+
             MunicipioBean mb = new MunicipioBean();
             mb.listar();
             this.municipios = mb.getMunicipios();
-            
+
             UsuarioBean ub = new UsuarioBean();
             ub.listar();
             this.usuarios = ub.getUsuarios();
-            
+
         } catch (Exception ex) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public Documento getDocumento() {
         return documento;
     }
@@ -124,7 +124,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setMunicipioId(int MunicipioId) {
         this.MunicipioId = MunicipioId;
     }
-    
+
     public List<TipoDocumento> getTipoDocumentos() {
         return tipoDocumentos;
     }
@@ -132,7 +132,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setTipoDocumentos(List<TipoDocumento> tipoDocumentos) {
         this.tipoDocumentos = tipoDocumentos;
     }
-    
+
     public UploadedFile getDocumentFile() {
         return documentFile;
     }
@@ -140,7 +140,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setDocumentFile(UploadedFile documentFile) {
         this.documentFile = documentFile;
     }
-    
+
     public List<Entidad> getEntidades() {
         return entidades;
     }
@@ -148,14 +148,14 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setEntidades(List<Entidad> entidades) {
         this.entidades = entidades;
     }
-    
+
     public List<Transportador> getTransportadores() {
         return transportadores;
     }
 
     public void setTransportadores(List<Transportador> transportadores) {
         this.transportadores = transportadores;
-    }   
+    }
 
     public List<Usuario> getDestinatarios() {
         return destinatarios;
@@ -164,8 +164,8 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void setDestinatarios(List<Usuario> destinatarios) {
         this.destinatarios = destinatarios;
     }
-    
-    public void generarConsectivo(){
+
+    public void generarConsectivo() {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
             EntityManager em = emf.createEntityManager();
@@ -181,65 +181,81 @@ public class RecepcionBean extends BaseBean implements Serializable {
             em.flush();
             em.getTransaction().commit();
             this.documento.setConsecutivo(consec.getConsecutivo());
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.hide()");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.show()");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.show()");
+
         } catch (NumberFormatException e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Redicacion de Documentos", e.getMessage()  ));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Redicacion de Documentos", e.getMessage()));
         }
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Redicacion de Documentos",  "Consecutivo Generado Exitosamente"));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Redicacion de Documentos", "Consecutivo Generado Exitosamente"));
     }
-    
+
     public void radicar() {
         DocumentoJpaController sJpa;
         DestinatariosDocJpaController dJpa;
-        try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            sJpa = new DocumentoJpaController(emf);
-            dJpa = new DestinatariosDocJpaController(emf);
-            
-            Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.documento.setFechaCreacion(new Date());
-            this.documento.setFechaModificacion(new Date());
-            this.documento.setCreadoPor(usuario);
-            UploadDocument uDoc = new UploadDocument();
-            uDoc.upload(documentFile, this.documenstSavePath);
-            this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
-            List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
-            
-            DestinatariosDoc destinatarioPrincipal = new DestinatariosDoc();
-            destinatarioPrincipal.setCreadoPor(usuario);
-            destinatarioPrincipal.setDestinatarioId(this.documento.getDestinatario());
-            dJpa.create(destinatarioPrincipal);
-            destinatariosDocCollection.add(destinatarioPrincipal);
-            
-            for (Usuario dest : destinatarios) {
-                if(dest.getId() != this.documento.getDestinatario().getId()){
-                    DestinatariosDoc destinatarioDoc = new DestinatariosDoc();
-                    destinatarioDoc.setCreadoPor(usuario);
-                    destinatarioDoc.setDestinatarioId(dest);
-                    dJpa.create(destinatarioDoc);
-                    destinatariosDocCollection.add(destinatarioDoc);       
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (this.documentFile.getContents().length <= 0) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Recepción de Documentos", "Por favor adjunte el documento!"));
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.hide()");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.show()");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.show()");
+        } else {
+            try {
+                EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+                sJpa = new DocumentoJpaController(emf);
+                dJpa = new DestinatariosDocJpaController(emf);
+
+                Usuario usuario = (Usuario) SessionUtils.getUsuario();
+                this.documento.setFechaCreacion(new Date());
+                this.documento.setFechaModificacion(new Date());
+                this.documento.setCreadoPor(usuario);
+                UploadDocument uDoc = new UploadDocument();
+                uDoc.upload(documentFile, this.documenstSavePath);
+                this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
+                List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
+
+                DestinatariosDoc destinatarioPrincipal = new DestinatariosDoc();
+                destinatarioPrincipal.setCreadoPor(usuario);
+                destinatarioPrincipal.setDestinatarioId(this.documento.getDestinatario());
+                dJpa.create(destinatarioPrincipal);
+                destinatariosDocCollection.add(destinatarioPrincipal);
+
+                for (Usuario dest : destinatarios) {
+                    if (dest.getId() != this.documento.getDestinatario().getId()) {
+                        DestinatariosDoc destinatarioDoc = new DestinatariosDoc();
+                        destinatarioDoc.setCreadoPor(usuario);
+                        destinatarioDoc.setDestinatarioId(dest);
+                        dJpa.create(destinatarioDoc);
+                        destinatariosDocCollection.add(destinatarioDoc);
+                    }
                 }
+
+                this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
+                sJpa.create(documento);
+                Mensajeria mensajeria = new Mensajeria();
+                mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
+                this.limpiar();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recepción de Documentos", "Documento Almacenado exitoxamente!"));
+                RequestContext.getCurrentInstance().execute("PF('genRad').jq.show()");
+                RequestContext.getCurrentInstance().execute("PF('printRad').jq.hide()");
+                RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.hide()");
+
+            } catch (Exception e) {
+                Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error al Radicar el documento", e.getMessage()));
             }
-            
-            this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
-            sJpa.create(documento);
-            Mensajeria mensajeria = new Mensajeria();
-            mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
-            this.limpiar();
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Recepción de Documentos",  "Documento Almacenado exitoxamente!"));
-        } catch (Exception e) {
-            Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Error al Radicar el documento",  e.getMessage()));
         }
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         this.documento = null;
         this.documento = new Documento();
-        
+        RequestContext.getCurrentInstance().execute("PF('genRad').jq.show()");
+        RequestContext.getCurrentInstance().execute("PF('printRad').jq.hide()");
+        RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.hide()");
     }
 }

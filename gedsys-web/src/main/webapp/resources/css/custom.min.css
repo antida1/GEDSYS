@@ -3986,3 +3986,11 @@ td{
     border: 1px solid #ddd;
     border-bottom-color: transparent;
 }
+
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+    border: 1px solid #cd0a0a;
+    background: #cd0a0a url(theme.css) 50% 50% repeat-x;
+    color: inherit;
+}
+
+

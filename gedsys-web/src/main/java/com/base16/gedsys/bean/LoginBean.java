@@ -103,7 +103,8 @@ public class LoginBean extends BaseBean implements Serializable {
             session.invalidate();
             ExternalContext context = FacesContext.getCurrentInstance().
                     getExternalContext();
-            context.redirect("login.xhtml");
+            
+            context.redirect("/"+ this.getAppName() + "/faces/login.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }

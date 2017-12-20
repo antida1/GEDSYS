@@ -13,18 +13,19 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
-
 
 @ManagedBean
 @ViewScoped
 public class PaisBean extends BaseBean implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
-    private Pais pais= new Pais();
+
+    private Pais pais = new Pais();
     private List<Pais> Paises;
     private String accion;
 
@@ -36,6 +37,7 @@ public class PaisBean extends BaseBean implements Serializable {
         this.limpiar();
         this.accion = accion;
     }
+
     public List<Pais> getPaises() {
         return Paises;
     }
@@ -43,7 +45,7 @@ public class PaisBean extends BaseBean implements Serializable {
     public void setPaises(List<Pais> Paises) {
         this.Paises = Paises;
     }
-    
+
     public Pais getPais() {
         return pais;
     }
@@ -51,29 +53,32 @@ public class PaisBean extends BaseBean implements Serializable {
     public void setPais(Pais pais) {
         this.pais = pais;
     }
-    
-    public void procesar(){
+
+    public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
-            switch(accion){
+            switch (accion) {
                 case "Crear":
                     crear();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pais", "Pais creado exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pais", "Pais modificado exitoxamente!"));
                     break;
             }
         } catch (Exception e) {
         }
     }
-    
-    private void crear() throws Exception{
+
+    private void crear() throws Exception {
         PaisJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
-            
+
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            
+
             this.pais.setFechaCreacion(new Date());
             this.pais.setFechaModificacion(new Date());
             this.pais.setCreadoPor(usuario);
@@ -83,8 +88,8 @@ public class PaisBean extends BaseBean implements Serializable {
             throw e;
         }
     }
-    
-    private void modificar() throws Exception{
+
+    private void modificar() throws Exception {
         PaisJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -98,8 +103,8 @@ public class PaisBean extends BaseBean implements Serializable {
             throw e;
         }
     }
-    
-    public void eliminar(Pais pais){
+
+    public void eliminar(Pais pais) {
         PaisJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -107,38 +112,38 @@ public class PaisBean extends BaseBean implements Serializable {
             sJpa.destroy(pais.getId());
             this.listar();
         } catch (Exception e) {
-            
+
         }
     }
-    
-    public void listar(){
+
+    public void listar() {
         PaisJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             Paises = sJpa.findPaisEntities();
         } catch (Exception e) {
-            
+
         }
     }
-    
-    public void getPaisById(Pais pais){
+
+    public void getPaisById(Pais pais) {
         PaisJpaController sJpa;
         Pais paisTemp;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PaisJpaController(emf);
             paisTemp = sJpa.findPais(pais.getId());
-            if(paisTemp != null){
+            if (paisTemp != null) {
                 this.pais = paisTemp;
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            
+
         }
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         this.pais.setCodigo("");
         this.pais.setNombre("");
         this.pais.setCreadoPor(null);

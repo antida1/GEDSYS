@@ -11,12 +11,14 @@
     </h:head>
     <h:body>
         <p:messages id="imessages" autoUpdate="true" />
-        <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+        <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
             <p:printer target="radic"/>
         </p:commandButton>
         <div class="page" size="A4"  id="image" >
-                <p:graphicImage id="radic" value="#{radicadoBean.radicadoImg}" />
-                <p:barcode value="0123456789" type="qr"/>
+            <p:outputPanel id="radic" style="width:400px;height:200px;margin-bottom:20px">
+                <p:graphicImage cache="false" id="radicImg" value="#{radicadoBean.radicadoImg}" />
+                <p:barcode cache="false" id="radicQR" value="#{radicadoBean.radicado}" type="qr"/>
+            </p:outputPanel>
         </div>
         <p:draggable for="radic" containment="parent" />
     </h:body>
