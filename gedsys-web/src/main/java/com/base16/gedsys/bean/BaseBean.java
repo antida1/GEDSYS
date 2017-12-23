@@ -20,36 +20,38 @@ import javax.naming.NamingException;
  * @author rober
  */
 public class BaseBean {
-    
+
     String configFilePath = "";
     String documenstSavePath = "";
     String appName = "";
-   
-    
+    Boolean encriptFiles;
+    FacesContext context = FacesContext.getCurrentInstance();
+
     public BaseBean() {
         try {
             configFilePath = WebConfiguration.getInstance().getConfigFilePath();
             documenstSavePath = WebConfiguration.getInstance().getProperty("PathData");
+            encriptFiles = Boolean.parseBoolean(WebConfiguration.getInstance().getProperty("protectFile"));
+
         } catch (NamingException ex) {
             Logger.getLogger(BaseBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }  
-    
+    }
+
     public String getConfigFilePath() {
         return configFilePath;
     }
-    
+
     public void addMessage(FacesMessage message) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, message);
     }
-    
-    public Usuario getCurrentUser(){
+
+    public Usuario getCurrentUser() {
         return (Usuario) SessionUtils.getUsuario();
     }
-    
-     public String getDocumenstSavePath() {
+
+    public String getDocumenstSavePath() {
         return documenstSavePath;
     }
 
@@ -62,6 +64,9 @@ public class BaseBean {
         }
         return appName;
     }
-     
-    
+
+    public Boolean getEncriptFiles() {
+        return encriptFiles;
+    }
+
 }

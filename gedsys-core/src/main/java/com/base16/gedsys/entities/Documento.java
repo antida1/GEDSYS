@@ -64,6 +64,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByPathFile", query = "SELECT d FROM Documento d WHERE d.pathFile = :pathFile")
     , @NamedQuery(name = "Documento.findByRemitente", query = "SELECT d FROM Documento d WHERE d.remitente = :remitente")
     , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
+    , @NamedQuery(name = "Documento.findRadicados", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor")
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 
 public class Documento implements Serializable {
@@ -106,8 +107,6 @@ public class Documento implements Serializable {
     private String folios;
     @Column(name = "Libros")
     private String libros;
-    @Column(name = "MedioEnvio")
-    private String medioEnvio;
     @Column(name = "MimeType")
     private String mimeType;
     @Column(name = "NombreDocumento")
@@ -177,6 +176,9 @@ public class Documento implements Serializable {
     private Collection<DestinatariosDoc> destinatariosDocCollection;
     @OneToMany(mappedBy = "documento")
     private Collection<ProcesoDocumental> procesodocumentalCollection;
+    @JoinColumn(name = "MedioEnvio", referencedColumnName = "Id")
+    @ManyToOne
+    private Mediorecepcion medioEnvio;
 
     public Documento() {
     }
@@ -311,14 +313,6 @@ public class Documento implements Serializable {
 
     public void setLibros(String libros) {
         this.libros = libros;
-    }
-
-    public String getMedioEnvio() {
-        return medioEnvio;
-    }
-
-    public void setMedioEnvio(String medioEnvio) {
-        this.medioEnvio = medioEnvio;
     }
 
     public String getMimeType() {
@@ -550,6 +544,14 @@ public class Documento implements Serializable {
 
     public void setRemitenteExteno(String remitenteExteno) {
         this.remitenteExteno = remitenteExteno;
+    }
+
+    public Mediorecepcion getMedioEnvio() {
+        return medioEnvio;
+    }
+
+    public void setMedioEnvio(Mediorecepcion medioEnvio) {
+        this.medioEnvio = medioEnvio;
     }
 
 }

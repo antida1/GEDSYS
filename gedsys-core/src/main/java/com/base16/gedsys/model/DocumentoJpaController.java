@@ -697,11 +697,11 @@ public class DocumentoJpaController implements Serializable {
     }
 
     public List<Documento> findEnviados(Usuario usuario) {
-        return findEntrantes(usuario, true, -1, -1);
+        return findEnviados(usuario, true, -1, -1);
     }
 
     public List<Documento> findEnviados(Usuario usuario, int maxResults, int firstResult) {
-        return findEntrantes(usuario, false, maxResults, firstResult);
+        return findEnviados(usuario, false, maxResults, firstResult);
     }
 
     private List<Documento> findEnviados(Usuario usuario, boolean all, int maxResults, int firstResult) {
@@ -720,6 +720,33 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Documento> findRadicados(Usuario usuario) {
+        return findRadicados(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findRadicados(Usuario usuario, int maxResults, int firstResult) {
+        return findEnviados(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findRadicados(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findRadicados", Usuario.class)
+                    .setParameter("creadoPor", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    
 
     public List<Documento> findEnPrestamo(Usuario usuario) {
         return findEnPrestamo(usuario, true, -1, -1);

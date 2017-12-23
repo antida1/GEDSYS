@@ -6,6 +6,7 @@ import com.base16.gedsys.entities.Corregimiento;
 import com.base16.gedsys.entities.DestinatariosDoc;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Entidad;
+import com.base16.gedsys.entities.Mediorecepcion;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.ProcesoDocumental;
 import com.base16.gedsys.entities.SignaturaTopografica;
@@ -19,7 +20,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-19T11:51:28")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-21T13:13:40")
 @StaticMetamodel(Documento.class)
 public class Documento_ { 
 
@@ -35,7 +36,7 @@ public class Documento_ {
     public static volatile SingularAttribute<Documento, String> clase;
     public static volatile SingularAttribute<Documento, String> folioNro;
     public static volatile SingularAttribute<Documento, Usuario> creadoPor;
-    public static volatile SingularAttribute<Documento, String> medioEnvio;
+    public static volatile SingularAttribute<Documento, Mediorecepcion> medioEnvio;
     public static volatile SingularAttribute<Documento, String> nombreDocumento;
     public static volatile SingularAttribute<Documento, String> asunto;
     public static volatile SingularAttribute<Documento, Date> fechaDocumento;

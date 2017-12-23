@@ -42,6 +42,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")})
 public class TipoDocumento implements Serializable {
 
+    @Column(name = "RequiereRespuesta")
+    private Short requiereRespuesta;
+    @Column(name = "EsPQRSF")
+    private Short esPQRSF;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,8 +77,6 @@ public class TipoDocumento implements Serializable {
     private Collection<Consecutivo> consecutivoCollection;
     @OneToMany(mappedBy = "tipoDocumento")
     private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
-    @Column(name = "RequiereRespuesta")
-    private Boolean requiereRespuesta;
     @Column(name = "DiasRespuesta")
     private Integer diasRespuesta;
     @Column(name = "TipoCalendario")
@@ -207,13 +210,6 @@ public class TipoDocumento implements Serializable {
         return "com.sucomunicacion.gedsys.entities.TipoDocumento[ id=" + id + " ]";
     }
 
-    public Boolean getRequiereRespuesta() {
-        return requiereRespuesta;
-    }
-
-    public void setRequiereRespuesta(Boolean requiereRespuesta) {
-        this.requiereRespuesta = requiereRespuesta;
-    }
 
     public Integer getDiasRespuesta() {
         return diasRespuesta;
@@ -229,6 +225,22 @@ public class TipoDocumento implements Serializable {
 
     public void setTipoCalendario(String tipoCalendario) {
         this.tipoCalendario = tipoCalendario;
+    }
+
+    public Short getRequiereRespuesta() {
+        return requiereRespuesta;
+    }
+
+    public void setRequiereRespuesta(Short requiereRespuesta) {
+        this.requiereRespuesta = requiereRespuesta;
+    }
+
+    public Short getEsPQRSF() {
+        return esPQRSF;
+    }
+
+    public void setEsPQRSF(Short esPQRSF) {
+        this.esPQRSF = esPQRSF;
     }
     
 }

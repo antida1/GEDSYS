@@ -59,6 +59,16 @@ public class RecepcionBean extends BaseBean implements Serializable {
     private int MunicipioId;
     private UploadedFile documentFile;
 
+    private Boolean canSave;
+    private Boolean canGenRad;
+    private Boolean canPrint;
+
+    public RecepcionBean() {
+        this.canGenRad = false;
+        this.canPrint = true;
+        this.canSave = true;
+    }
+
     @PostConstruct
     public void init() {
         try {
@@ -165,6 +175,30 @@ public class RecepcionBean extends BaseBean implements Serializable {
         this.destinatarios = destinatarios;
     }
 
+    public Boolean getCanSave() {
+        return canSave;
+    }
+
+    public void setCanSave(Boolean canSave) {
+        this.canSave = canSave;
+    }
+
+    public Boolean getCanGenRad() {
+        return canGenRad;
+    }
+
+    public void setCanGenRad(Boolean canGenRad) {
+        this.canGenRad = canGenRad;
+    }
+
+    public Boolean getCanPrint() {
+        return canPrint;
+    }
+
+    public void setCanPrint(Boolean canPrint) {
+        this.canPrint = canPrint;
+    }
+
     public void generarConsectivo() {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
@@ -181,9 +215,12 @@ public class RecepcionBean extends BaseBean implements Serializable {
             em.flush();
             em.getTransaction().commit();
             this.documento.setConsecutivo(consec.getConsecutivo());
-            RequestContext.getCurrentInstance().execute("PF('genRad').jq.hide()");
-            RequestContext.getCurrentInstance().execute("PF('printRad').jq.show()");
-            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.show()");
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            this.canGenRad = true;
+            this.canPrint = false;
+            this.canSave = false;
 
         } catch (NumberFormatException e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
@@ -200,9 +237,12 @@ public class RecepcionBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         if (this.documentFile.getContents().length <= 0) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Recepción de Documentos", "Por favor adjunte el documento!"));
-            RequestContext.getCurrentInstance().execute("PF('genRad').jq.hide()");
-            RequestContext.getCurrentInstance().execute("PF('printRad').jq.show()");
-            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.show()");
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            this.canGenRad = true;
+            this.canPrint = false;
+            this.canSave = false;
         } else {
             try {
                 EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -216,6 +256,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 UploadDocument uDoc = new UploadDocument();
                 uDoc.upload(documentFile, this.documenstSavePath);
                 this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
+                this.documento.setNombreDocumento(uDoc.getUuid().toString());
                 List<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
 
                 DestinatariosDoc destinatarioPrincipal = new DestinatariosDoc();
@@ -238,11 +279,11 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 sJpa.create(documento);
                 Mensajeria mensajeria = new Mensajeria();
                 mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
+                
+                //TODO: Pendiente registrar notificacion en base de datos acorde a la fecha
+                
                 this.limpiar();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recepción de Documentos", "Documento Almacenado exitoxamente!"));
-                RequestContext.getCurrentInstance().execute("PF('genRad').jq.show()");
-                RequestContext.getCurrentInstance().execute("PF('printRad').jq.hide()");
-                RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.hide()");
 
             } catch (Exception e) {
                 Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
@@ -254,8 +295,11 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void limpiar() {
         this.documento = null;
         this.documento = new Documento();
-        RequestContext.getCurrentInstance().execute("PF('genRad').jq.show()");
-        RequestContext.getCurrentInstance().execute("PF('printRad').jq.hide()");
-        RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.hide()");
+        RequestContext.getCurrentInstance().execute("PF('genRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+        RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+        RequestContext.getCurrentInstance().execute("PF('printRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+        this.canGenRad = false;
+        this.canPrint = true;
+        this.canSave = true;
     }
 }

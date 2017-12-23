@@ -83,7 +83,7 @@ public class LoginBean extends BaseBean implements Serializable {
                 msg = new FacesMessage("Inicio de sesion completado", "Usted esta logeado");
             } else {
                 logeado = false;
-                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Acceso denegado", "Credeciales no válidas  - Use admin y admin");
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Acceso denegado", "Credeciales no válidas");
             }
 
             FacesContext.getCurrentInstance().addMessage(null, msg);

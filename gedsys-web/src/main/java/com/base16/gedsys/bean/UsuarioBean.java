@@ -50,6 +50,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
     private List<Usuario> usuarios;
     private String accion;
     private UploadedFile photoFile;
+    private UploadedFile firmaFile;
     private String password;
 
     public UploadedFile getPhotoFile() {
@@ -101,6 +102,14 @@ public class UsuarioBean extends BaseBean implements Serializable {
         this.password = password;
     }
 
+    public UploadedFile getFirmaFile() {
+        return firmaFile;
+    }
+
+    public void setFirmaFile(UploadedFile firmaFile) {
+        this.firmaFile = firmaFile;
+    }
+
     public UsuarioBean() {
     }
 
@@ -138,6 +147,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
                 this.usuario.setFoto(this.getPhotoName());
             }
             uploadPhoto();
+            uploadFirma();
             GrupoUsuario grupoUsuario = new GrupoUsuario();
             grupoUsuario.setGrupo(grupo);
             guJpa.create(grupoUsuario);
@@ -175,6 +185,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             grupoUsuarioCollection.add(grupoUsuario);
             this.usuario.setFoto(this.getPhotoName());
             uploadPhoto();
+            uploadFirma();
             if (!this.usuario.getClave().equals(Authentication.md5(this.password))) {
                 this.usuario.setClave(Authentication.md5(this.password));
             }
@@ -238,13 +249,35 @@ public class UsuarioBean extends BaseBean implements Serializable {
             throw e;
         }
     }
+    
+    private void uploadFirma(){
+        if(firmaFile != null){
+             try {
+                FacesContext context = FacesContext.getCurrentInstance();
+                ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+                //String path = servletContext.getRealPath("/resources/images");
+                String fileName = FilenameUtils.getBaseName(firmaFile.getFileName());
+                String extension = FilenameUtils.getExtension(firmaFile.getFileName());
+                Path folder = Paths.get(this.getDocumenstSavePath() + File.separatorChar + "firmas" + File.separatorChar + fileName + "." + extension);
+                Path file = Files.createFile(folder);
+                try (InputStream input = firmaFile.getInputstream()) {
+                    Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     private void uploadPhoto() {
         if (photoFile != null) {
             try {
                 FacesContext context = FacesContext.getCurrentInstance();
                 ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-                String path = servletContext.getRealPath("/resources/images");
+                //String path = servletContext.getRealPath("/resources/images");
                 String fileName = FilenameUtils.getBaseName(photoFile.getFileName());
                 String extension = FilenameUtils.getExtension(photoFile.getFileName());
 

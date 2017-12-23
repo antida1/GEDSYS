@@ -210,6 +210,12 @@ public class AclBean extends BaseBean implements Serializable {
                 _acl.setFechaModificacion(new Date());
                 Usuario usuario = (Usuario) SessionUtils.getUsuario();
                 _acl.setCreadoPor(usuario);
+                _acl.setCanCreate(Boolean.FALSE);
+                _acl.setCanDelete(Boolean.FALSE);
+                _acl.setCanExport(Boolean.FALSE);
+                _acl.setCanGeneratePDF(Boolean.FALSE);
+                _acl.setCanRead(Boolean.FALSE);
+                _acl.setCanUpdate(Boolean.FALSE);
                 cJpa.create(_acl);
                 acls.add(acl);
             } catch (Exception e) {

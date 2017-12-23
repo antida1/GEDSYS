@@ -44,6 +44,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Documento> enviados;
     private List<Documento> prestamo;
     private List<Documento> porVencer;
+    private List<Documento> radicados;
     private List<Acta> actasPorFirmar;
     private List<Carta> cartaPorFirmar;
     private List<Certificado> certificadoPorFirmar;
@@ -144,6 +145,33 @@ public class DocumentosBean extends BaseBean implements Serializable {
 
     public void setPorVencer(List<Documento> porVencer) {
         this.porVencer = porVencer;
+    }
+
+    public List<Documento> getRecibidos() {
+        return recibidos;
+    }
+
+    public void setRecibidos(List<Documento> recibidos) {
+        this.recibidos = recibidos;
+    }
+
+    public List<Documento> getRadicados() {
+        return radicados;
+    }
+
+    public void setRadicados(List<Documento> radicados) {
+        this.radicados = radicados;
+    }
+    
+    private void listarDocumentosRadicados() {
+        DocumentoJpaController dJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            radicados = dJpa.findRadicados(this.getCurrentUser());
+        } catch (Exception e) {
+            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
     }
 
     public void listarDocumentosRecibidos() {
@@ -278,17 +306,17 @@ public class DocumentosBean extends BaseBean implements Serializable {
         }
     }
 
-    public void listarCompartidos(Usuario destinatario) {         
+    public void listarCompartidos(Usuario destinatario) {
         DocumentoJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            if(destinatario != null){
+            if (destinatario != null) {
                 documentos = dJpa.findByCompartidos(destinatario);
-            } else{
+            } else {
                 documentos = dJpa.findByCompartidos(this.getCurrentUser());
             }
-            
+
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }

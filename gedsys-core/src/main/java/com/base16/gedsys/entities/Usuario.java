@@ -54,6 +54,18 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
+    @Column(name = "Firma")
+    private String firma;
+
+    @OneToMany(mappedBy = "creadoPor")
+    private List<Sede> sedeList;
+    @OneToMany(mappedBy = "modificadoPor")
+    private List<Sede> sedeList1;
+    @OneToMany(mappedBy = "creadoPor")
+    private List<Mediorecepcion> mediorecepcionList;
+    @OneToMany(mappedBy = "modificadoPor")
+    private List<Mediorecepcion> mediorecepcionList1;
+
     @OneToMany( fetch = FetchType.LAZY,  mappedBy = "usuario")
     private List<Devices> devicesList;
 
@@ -1363,6 +1375,54 @@ public class Usuario implements Serializable {
 
     public void setDevicesList(List<Devices> devicesList) {
         this.devicesList = devicesList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Sede> getSedeList() {
+        return sedeList;
+    }
+
+    public void setSedeList(List<Sede> sedeList) {
+        this.sedeList = sedeList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Sede> getSedeList1() {
+        return sedeList1;
+    }
+
+    public void setSedeList1(List<Sede> sedeList1) {
+        this.sedeList1 = sedeList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Mediorecepcion> getMediorecepcionList() {
+        return mediorecepcionList;
+    }
+
+    public void setMediorecepcionList(List<Mediorecepcion> mediorecepcionList) {
+        this.mediorecepcionList = mediorecepcionList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Mediorecepcion> getMediorecepcionList1() {
+        return mediorecepcionList1;
+    }
+
+    public void setMediorecepcionList1(List<Mediorecepcion> mediorecepcionList1) {
+        this.mediorecepcionList1 = mediorecepcionList1;
+    }
+
+    public String getFirma() {
+        return firma;
+    }
+
+    public void setFirma(String firma) {
+        this.firma = firma;
     }
     
 }

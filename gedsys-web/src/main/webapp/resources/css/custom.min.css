@@ -3993,4 +3993,8 @@ td{
     color: inherit;
 }
 
+.ui-state-highlight .ui-icon {
+    background-color: #DE6B22;
+}
+
 

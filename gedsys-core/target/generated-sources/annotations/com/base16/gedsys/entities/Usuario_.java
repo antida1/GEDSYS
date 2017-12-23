@@ -26,6 +26,7 @@ import com.base16.gedsys.entities.Entidad;
 import com.base16.gedsys.entities.Grupo;
 import com.base16.gedsys.entities.GrupoUsuario;
 import com.base16.gedsys.entities.Informe;
+import com.base16.gedsys.entities.Mediorecepcion;
 import com.base16.gedsys.entities.Modulo;
 import com.base16.gedsys.entities.MonitoresProceso;
 import com.base16.gedsys.entities.Municipio;
@@ -38,6 +39,7 @@ import com.base16.gedsys.entities.ProcesoDocumental;
 import com.base16.gedsys.entities.ProcesoNegocio;
 import com.base16.gedsys.entities.ProcesoTipoDocumento;
 import com.base16.gedsys.entities.SeccionSubSeccion;
+import com.base16.gedsys.entities.Sede;
 import com.base16.gedsys.entities.Serie;
 import com.base16.gedsys.entities.SignaturaTopografica;
 import com.base16.gedsys.entities.SubSerie;
@@ -52,7 +54,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-19T11:51:28")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-21T13:13:40")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -119,6 +121,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, ProcesoNegocio> procesoNegocioCollection1;
     public static volatile ListAttribute<Usuario, Acta> actaList;
     public static volatile CollectionAttribute<Usuario, ProcesoTipoDocumento> procesoTipoDocumentoCollection;
+    public static volatile ListAttribute<Usuario, Mediorecepcion> mediorecepcionList1;
     public static volatile ListAttribute<Usuario, Informe> informeList2;
     public static volatile SingularAttribute<Usuario, Integer> creadoPor;
     public static volatile CollectionAttribute<Usuario, Documento> documentoCollection1;
@@ -133,6 +136,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, GrupoUsuario> grupoUsuarioCollection2;
     public static volatile CollectionAttribute<Usuario, Cargo> cargoCollection;
     public static volatile CollectionAttribute<Usuario, Corregimiento> corregimientoCollection;
+    public static volatile ListAttribute<Usuario, Mediorecepcion> mediorecepcionList;
     public static volatile ListAttribute<Usuario, Circularcc> circularccList;
     public static volatile SingularAttribute<Usuario, Date> fechaModificacion;
     public static volatile CollectionAttribute<Usuario, TipoDocumental> tipoDocumentalCollection1;
@@ -148,6 +152,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, ProcesoDocumental> procesodocumentalCollection;
     public static volatile ListAttribute<Usuario, Carta> cartaList;
     public static volatile ListAttribute<Usuario, Circular> circularList2;
+    public static volatile ListAttribute<Usuario, Sede> sedeList;
     public static volatile ListAttribute<Usuario, Circular> circularList1;
     public static volatile CollectionAttribute<Usuario, SubSerie> subSerieCollection;
     public static volatile CollectionAttribute<Usuario, Departamento> departamentoCollection;
@@ -164,5 +169,6 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, UnidadDocumental> unidadDocumentalCollection1;
     public static volatile SingularAttribute<Usuario, Date> fechaCreacion;
     public static volatile CollectionAttribute<Usuario, Acl> aclCollection1;
+    public static volatile ListAttribute<Usuario, Sede> sedeList1;
 
 }

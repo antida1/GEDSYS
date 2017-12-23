@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <body>
+
+        <ui:composition template="./../../Template/plantilla.xhtml">
+
+            <ui:define name="content">
+                <c:if test="#{autorizationBean.hasAccess('pais') == true}">
+
+                    <f:event type="preRenderView" listener="#{paisBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-12 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Países</h2>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="x_content">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('paisDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{paisBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    </p:menuitem>
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable widgetVar="paisTabla" id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0" rows="10"
+                                             paginator="true" scrollable="true" scrollHeight="250"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                    <f:facet name="header">
+                                        
+
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstPaises" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column headerText="Código" filterBy="#{pais.codigo}" filterMatchMode="contains">
+                                        <h:outputText value="#{pais.codigo}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre" filterBy="#{pais.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{pais.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha creación">
+                                        <h:outputText value="#{pais.fechaCreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Fecha modificación">
+                                        <h:outputText value="#{pais.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Creado por" filterBy="#{pais.creadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('paisTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{pais.creadoPor.nombres} #{pais.creadoPor.apelidos}" />
+                                    </p:column>
+                                    <p:column headerText="Modificado por" filterBy="#{pais.modificadoPor}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('paisTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{pais.modificadoPor.nombres} #{pais.modificadoPor.apelidos}" />
+                                    </p:column>
+                                    <p:column headerText="Editar">
+                                        <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
+                                                         update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
+                                                         icon="ui-icon-pencil" title="Editar">
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Borrar">
+                                        <p:commandButton icon="ui-icon-eraser" 
+                                                         title="Borrar"
+                                                         actionListener="#{paisBean.eliminar(pais)}" 
+                                                         update=":form:lstPaises messages"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                        <p:dialog id="dlgDetalle" header="País" widgetVar="paisDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="160" width="450">
+                            <h:form>
+                                <h:inputHidden id="id" value="#{paisBean.pais.id}" />
+                                <div class="form-group row">
+                                    <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Codigo" required="true" value="#{paisBean.pais.codigo}" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Nombre" required="true" value="#{paisBean.pais.nombre}" class="form-control"/>
+                                    </div>
+                                </div>
+                                <p:spacer/>
+                                <div> 
+                                    <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
+                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                    </div>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('pais') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
