@@ -55,6 +55,7 @@
     <class>com.base16.gedsys.entities.Prestamo</class>
     <class>com.base16.gedsys.entities.Sede</class>
     <class>com.base16.gedsys.entities.Mediorecepcion</class>
+    <class>com.base16.gedsys.entities.Comentario</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

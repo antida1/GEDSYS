@@ -21,10 +21,12 @@ import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.entities.SignaturaTopografica;
 import com.base16.gedsys.entities.TipoDocumental;
+import com.base16.gedsys.entities.Mediorecepcion;
 import java.util.ArrayList;
 import java.util.Collection;
 import com.base16.gedsys.entities.DestinatariosDoc;
 import com.base16.gedsys.entities.ProcesoDocumental;
+import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.List;
@@ -56,10 +58,18 @@ public class DocumentoJpaController implements Serializable {
         if (documento.getProcesodocumentalCollection() == null) {
             documento.setProcesodocumentalCollection(new ArrayList<ProcesoDocumental>());
         }
+        if (documento.getComentarioList() == null) {
+            documento.setComentarioList(new ArrayList<Comentario>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Usuario destinatario = documento.getDestinatario();
+            if (destinatario != null) {
+                destinatario = em.getReference(destinatario.getClass(), destinatario.getId());
+                documento.setDestinatario(destinatario);
+            }
             Usuario creadoPor = documento.getCreadoPor();
             if (creadoPor != null) {
                 creadoPor = em.getReference(creadoPor.getClass(), creadoPor.getId());
@@ -120,6 +130,11 @@ public class DocumentoJpaController implements Serializable {
                 tipoDocumental = em.getReference(tipoDocumental.getClass(), tipoDocumental.getId());
                 documento.setTipoDocumental(tipoDocumental);
             }
+            Mediorecepcion medioEnvio = documento.getMedioEnvio();
+            if (medioEnvio != null) {
+                medioEnvio = em.getReference(medioEnvio.getClass(), medioEnvio.getId());
+                documento.setMedioEnvio(medioEnvio);
+            }
             Collection<Documento> attachedDocumentoCollection = new ArrayList<Documento>();
             for (Documento documentoCollectionDocumentoToAttach : documento.getDocumentoCollection()) {
                 documentoCollectionDocumentoToAttach = em.getReference(documentoCollectionDocumentoToAttach.getClass(), documentoCollectionDocumentoToAttach.getId());
@@ -138,7 +153,17 @@ public class DocumentoJpaController implements Serializable {
                 attachedProcesodocumentalCollection.add(procesodocumentalCollectionProcesoDocumentalToAttach);
             }
             documento.setProcesodocumentalCollection(attachedProcesodocumentalCollection);
+            List<Comentario> attachedComentarioList = new ArrayList<Comentario>();
+            for (Comentario comentarioListComentarioToAttach : documento.getComentarioList()) {
+                comentarioListComentarioToAttach = em.getReference(comentarioListComentarioToAttach.getClass(), comentarioListComentarioToAttach.getId());
+                attachedComentarioList.add(comentarioListComentarioToAttach);
+            }
+            documento.setComentarioList(attachedComentarioList);
             em.persist(documento);
+            if (destinatario != null) {
+                destinatario.getDocumentoCollection().add(documento);
+                destinatario = em.merge(destinatario);
+            }
             if (creadoPor != null) {
                 creadoPor.getDocumentoCollection().add(documento);
                 creadoPor = em.merge(creadoPor);
@@ -187,6 +212,10 @@ public class DocumentoJpaController implements Serializable {
                 tipoDocumental.getDocumentoCollection().add(documento);
                 tipoDocumental = em.merge(tipoDocumental);
             }
+            if (medioEnvio != null) {
+                medioEnvio.getDocumentoList().add(documento);
+                medioEnvio = em.merge(medioEnvio);
+            }
             for (Documento documentoCollectionDocumento : documento.getDocumentoCollection()) {
                 Documento oldDocumentoRelacionadoOfDocumentoCollectionDocumento = documentoCollectionDocumento.getDocumentoRelacionado();
                 documentoCollectionDocumento.setDocumentoRelacionado(documento);
@@ -214,6 +243,15 @@ public class DocumentoJpaController implements Serializable {
                     oldDocumentoOfProcesodocumentalCollectionProcesoDocumental = em.merge(oldDocumentoOfProcesodocumentalCollectionProcesoDocumental);
                 }
             }
+            for (Comentario comentarioListComentario : documento.getComentarioList()) {
+                Documento oldDocumentoOfComentarioListComentario = comentarioListComentario.getDocumento();
+                comentarioListComentario.setDocumento(documento);
+                comentarioListComentario = em.merge(comentarioListComentario);
+                if (oldDocumentoOfComentarioListComentario != null) {
+                    oldDocumentoOfComentarioListComentario.getComentarioList().remove(comentarioListComentario);
+                    oldDocumentoOfComentarioListComentario = em.merge(oldDocumentoOfComentarioListComentario);
+                }
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -228,6 +266,8 @@ public class DocumentoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Documento persistentDocumento = em.find(Documento.class, documento.getId());
+            Usuario destinatarioOld = persistentDocumento.getDestinatario();
+            Usuario destinatarioNew = documento.getDestinatario();
             Usuario creadoPorOld = persistentDocumento.getCreadoPor();
             Usuario creadoPorNew = documento.getCreadoPor();
             Autor autorOld = persistentDocumento.getAutor();
@@ -252,12 +292,16 @@ public class DocumentoJpaController implements Serializable {
             SignaturaTopografica signaturaTopograficaNew = documento.getSignaturaTopografica();
             TipoDocumental tipoDocumentalOld = persistentDocumento.getTipoDocumental();
             TipoDocumental tipoDocumentalNew = documento.getTipoDocumental();
+            Mediorecepcion medioEnvioOld = persistentDocumento.getMedioEnvio();
+            Mediorecepcion medioEnvioNew = documento.getMedioEnvio();
             Collection<Documento> documentoCollectionOld = persistentDocumento.getDocumentoCollection();
             Collection<Documento> documentoCollectionNew = documento.getDocumentoCollection();
             Collection<DestinatariosDoc> destinatariosDocCollectionOld = persistentDocumento.getDestinatariosDocCollection();
             Collection<DestinatariosDoc> destinatariosDocCollectionNew = documento.getDestinatariosDocCollection();
             Collection<ProcesoDocumental> procesodocumentalCollectionOld = persistentDocumento.getProcesodocumentalCollection();
             Collection<ProcesoDocumental> procesodocumentalCollectionNew = documento.getProcesodocumentalCollection();
+            List<Comentario> comentarioListOld = persistentDocumento.getComentarioList();
+            List<Comentario> comentarioListNew = documento.getComentarioList();
             List<String> illegalOrphanMessages = null;
             for (DestinatariosDoc destinatariosDocCollectionOldDestinatariosDoc : destinatariosDocCollectionOld) {
                 if (!destinatariosDocCollectionNew.contains(destinatariosDocCollectionOldDestinatariosDoc)) {
@@ -269,6 +313,10 @@ public class DocumentoJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            if (destinatarioNew != null) {
+                destinatarioNew = em.getReference(destinatarioNew.getClass(), destinatarioNew.getId());
+                documento.setDestinatario(destinatarioNew);
             }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
@@ -318,6 +366,10 @@ public class DocumentoJpaController implements Serializable {
                 tipoDocumentalNew = em.getReference(tipoDocumentalNew.getClass(), tipoDocumentalNew.getId());
                 documento.setTipoDocumental(tipoDocumentalNew);
             }
+            if (medioEnvioNew != null) {
+                medioEnvioNew = em.getReference(medioEnvioNew.getClass(), medioEnvioNew.getId());
+                documento.setMedioEnvio(medioEnvioNew);
+            }
             Collection<Documento> attachedDocumentoCollectionNew = new ArrayList<Documento>();
             for (Documento documentoCollectionNewDocumentoToAttach : documentoCollectionNew) {
                 documentoCollectionNewDocumentoToAttach = em.getReference(documentoCollectionNewDocumentoToAttach.getClass(), documentoCollectionNewDocumentoToAttach.getId());
@@ -339,7 +391,22 @@ public class DocumentoJpaController implements Serializable {
             }
             procesodocumentalCollectionNew = attachedProcesodocumentalCollectionNew;
             documento.setProcesodocumentalCollection(procesodocumentalCollectionNew);
+            List<Comentario> attachedComentarioListNew = new ArrayList<Comentario>();
+            for (Comentario comentarioListNewComentarioToAttach : comentarioListNew) {
+                comentarioListNewComentarioToAttach = em.getReference(comentarioListNewComentarioToAttach.getClass(), comentarioListNewComentarioToAttach.getId());
+                attachedComentarioListNew.add(comentarioListNewComentarioToAttach);
+            }
+            comentarioListNew = attachedComentarioListNew;
+            documento.setComentarioList(comentarioListNew);
             documento = em.merge(documento);
+            if (destinatarioOld != null && !destinatarioOld.equals(destinatarioNew)) {
+                destinatarioOld.getDocumentoCollection().remove(documento);
+                destinatarioOld = em.merge(destinatarioOld);
+            }
+            if (destinatarioNew != null && !destinatarioNew.equals(destinatarioOld)) {
+                destinatarioNew.getDocumentoCollection().add(documento);
+                destinatarioNew = em.merge(destinatarioNew);
+            }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getDocumentoCollection().remove(documento);
                 creadoPorOld = em.merge(creadoPorOld);
@@ -436,6 +503,14 @@ public class DocumentoJpaController implements Serializable {
                 tipoDocumentalNew.getDocumentoCollection().add(documento);
                 tipoDocumentalNew = em.merge(tipoDocumentalNew);
             }
+            if (medioEnvioOld != null && !medioEnvioOld.equals(medioEnvioNew)) {
+                medioEnvioOld.getDocumentoList().remove(documento);
+                medioEnvioOld = em.merge(medioEnvioOld);
+            }
+            if (medioEnvioNew != null && !medioEnvioNew.equals(medioEnvioOld)) {
+                medioEnvioNew.getDocumentoList().add(documento);
+                medioEnvioNew = em.merge(medioEnvioNew);
+            }
             for (Documento documentoCollectionOldDocumento : documentoCollectionOld) {
                 if (!documentoCollectionNew.contains(documentoCollectionOldDocumento)) {
                     documentoCollectionOldDocumento.setDocumentoRelacionado(null);
@@ -481,6 +556,23 @@ public class DocumentoJpaController implements Serializable {
                     }
                 }
             }
+            for (Comentario comentarioListOldComentario : comentarioListOld) {
+                if (!comentarioListNew.contains(comentarioListOldComentario)) {
+                    comentarioListOldComentario.setDocumento(null);
+                    comentarioListOldComentario = em.merge(comentarioListOldComentario);
+                }
+            }
+            for (Comentario comentarioListNewComentario : comentarioListNew) {
+                if (!comentarioListOld.contains(comentarioListNewComentario)) {
+                    Documento oldDocumentoOfComentarioListNewComentario = comentarioListNewComentario.getDocumento();
+                    comentarioListNewComentario.setDocumento(documento);
+                    comentarioListNewComentario = em.merge(comentarioListNewComentario);
+                    if (oldDocumentoOfComentarioListNewComentario != null && !oldDocumentoOfComentarioListNewComentario.equals(documento)) {
+                        oldDocumentoOfComentarioListNewComentario.getComentarioList().remove(comentarioListNewComentario);
+                        oldDocumentoOfComentarioListNewComentario = em.merge(oldDocumentoOfComentarioListNewComentario);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -520,6 +612,11 @@ public class DocumentoJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Usuario destinatario = documento.getDestinatario();
+            if (destinatario != null) {
+                destinatario.getDocumentoCollection().remove(documento);
+                destinatario = em.merge(destinatario);
             }
             Usuario creadoPor = documento.getCreadoPor();
             if (creadoPor != null) {
@@ -581,6 +678,11 @@ public class DocumentoJpaController implements Serializable {
                 tipoDocumental.getDocumentoCollection().remove(documento);
                 tipoDocumental = em.merge(tipoDocumental);
             }
+            Mediorecepcion medioEnvio = documento.getMedioEnvio();
+            if (medioEnvio != null) {
+                medioEnvio.getDocumentoList().remove(documento);
+                medioEnvio = em.merge(medioEnvio);
+            }
             Collection<Documento> documentoCollection = documento.getDocumentoCollection();
             for (Documento documentoCollectionDocumento : documentoCollection) {
                 documentoCollectionDocumento.setDocumentoRelacionado(null);
@@ -590,6 +692,11 @@ public class DocumentoJpaController implements Serializable {
             for (ProcesoDocumental procesodocumentalCollectionProcesoDocumental : procesodocumentalCollection) {
                 procesodocumentalCollectionProcesoDocumental.setDocumento(null);
                 procesodocumentalCollectionProcesoDocumental = em.merge(procesodocumentalCollectionProcesoDocumental);
+            }
+            List<Comentario> comentarioList = documento.getComentarioList();
+            for (Comentario comentarioListComentario : comentarioList) {
+                comentarioListComentario.setDocumento(null);
+                comentarioListComentario = em.merge(comentarioListComentario);
             }
             em.remove(documento);
             em.getTransaction().commit();
@@ -720,7 +827,7 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Documento> findRadicados(Usuario usuario) {
         return findRadicados(usuario, true, -1, -1);
     }
@@ -745,8 +852,6 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
-    
-    
 
     public List<Documento> findEnPrestamo(Usuario usuario) {
         return findEnPrestamo(usuario, true, -1, -1);
@@ -772,7 +877,7 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Documento> findArchivados(Usuario usuario) {
         return findArchivados(usuario, true, -1, -1);
     }
@@ -797,7 +902,7 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Documento> findPorVencer(Usuario usuario) {
         return findPorVencer(usuario, true, -1, -1);
     }
@@ -822,4 +927,5 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
+
 }

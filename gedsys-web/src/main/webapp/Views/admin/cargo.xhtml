@@ -25,10 +25,9 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="cargoTabla" id="lstCargos" var="cargo" value="#{cargoBean.cargos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                <p:dataTable widgetVar="cargoTabla" id="lstCargos" var="cargo" value="#{cargoBean.cargos}" style="margin-bottom:0" rows="50"
+                                             paginator="true" scrollable="true"                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15,20,30,50">
                                     <f:facet name="header">
 
 
@@ -66,33 +65,38 @@
                                         </f:facet>
                                         <h:outputText value="#{cargo.modificadoPor.nombres} #{cargo.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{cargoBean.getCargoById(cargo)}" 
                                                          update=":dlgDetalle" oncomplete="PF('cargoDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+
                                         <p:commandButton icon="ui-icon-eraser" 
                                                          title="Borrar"
                                                          actionListener="#{cargoBean.eliminar(cargo)}" 
-                                                         update=":form:lstCargos messages"/>
+                                                         update=":form:lstCargos messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Cargos" widgetVar="cargoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <p:dialog id="dlgDetalle" header="Cargos" widgetVar="cargoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="500">
                             <h:form>
                                 <h:inputHidden id="id" value="#{cargoBean.cargo.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:inputText id="Nombre" required="true" value="#{cargoBean.cargo.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstCargos messages" icon="ui-icon-disk" value="#{cargoBean.accion}" actionListener="#{cargoBean.procesar()}" oncomplete="PF('cargoDialog').hide()" />
+                                    <p:commandButton update=":form:lstCargos messages" icon="ui-icon-disk" value="#{cargoBean.accion}" actionListener="#{cargoBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('cargoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

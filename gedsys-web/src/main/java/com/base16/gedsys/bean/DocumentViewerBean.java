@@ -7,6 +7,7 @@ package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.web.utils.SessionUtils;
+import com.base16.utils.CryptoUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.Serializable;
@@ -35,7 +36,8 @@ public class DocumentViewerBean extends BaseBean implements Serializable {
 
     }
     public void showDocument(Documento doc){
-        this.filePath = this.getDocumenstSavePath() + File.separatorChar + doc.getRutaArchivo();
+        //TODO: pendiente desencriptar el archivo para mostrarlo.
+        this.filePath = this.getDocumenstSavePath() + File.separatorChar + doc.getNombreDocumento();
         SessionUtils.getSession().setAttribute("filePath", this.filePath);
         RequestContext.getCurrentInstance().execute("PF('denVisor').show()");
     }
@@ -46,7 +48,13 @@ public class DocumentViewerBean extends BaseBean implements Serializable {
             if (!filePath.isEmpty()) {
                 File tempFile = new File(filePath);
                 if (tempFile.exists()) {
-                    this.content = new DefaultStreamedContent(new FileInputStream(tempFile), new MimetypesFileTypeMap().getContentType(tempFile));
+                    if (this.getEncriptFiles() == true) {
+                        File outputFile = new File(this.documenstSavePath + File.separatorChar + this.getCurrentUser().getNombres());
+                        CryptoUtils.decrypt("Mary has one cat", tempFile, outputFile);
+                        this.content = new DefaultStreamedContent(new FileInputStream(outputFile), new MimetypesFileTypeMap().getContentType(outputFile));
+                    } else {
+                        this.content = new DefaultStreamedContent(new FileInputStream(tempFile), new MimetypesFileTypeMap().getContentType(tempFile));
+                    }
                 }
             }
         } catch (Exception e) {

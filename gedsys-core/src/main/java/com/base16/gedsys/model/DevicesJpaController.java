@@ -137,11 +137,11 @@ public class DevicesJpaController implements Serializable {
     }
     
      public List<Devices> findDevicesByUsuario(Usuario usuario) {
-        return findDevicesByUsuario(usuario, -1, -1);
+        return findDevicesByUsuario(usuario, true, -1, -1);
 }
 
     public List<Devices> findDevicesByUsuario(Usuario usuario, int maxResults, int firstResult) {
-        return findDevicesByUsuario(usuario, true, maxResults, firstResult);
+        return findDevicesByUsuario(usuario, false, maxResults, firstResult);
     }
     
     private List<Devices> findDevicesByUsuario( Usuario usuario ,boolean all, int maxResults, int firstResult) {

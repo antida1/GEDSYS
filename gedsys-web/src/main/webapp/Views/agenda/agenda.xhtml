@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Programador de Alertas</title>
     </h:head>
@@ -20,28 +21,81 @@
                                     <h2 style="margin-top: 0">Programador de alertas y eventos</h2>
                                     <div class="clear"></div>
                                 </div>
-                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" >
+                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" locale="es" draggable="false" resizable="false" timeZone="GMT-5" >
                                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                                    <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
-                                    <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
                                 </p:schedule>
                             </h:panelGrid>
                             <p:dialog widgetVar="eventDialog" header="Detalle de eventos" showEffect="clip" hideEffect="clip">
                                 <h:panelGrid id="eventDetails" columns="2">
-                                    <p:outputLabel for="title" value="Titulo:" />
-                                    <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
+                                    <p:outputLabel for="asunto" value="Asunto:" />
+                                    <p:inputText id="asunto" value="#{scheduleView.event.title}" required="true" />
+                                    <p:outputLabel for="descripcion" value="Descripcion" />
+                                    <p:inputText id="descripcion" value="#{scheduleView.event.notificacion.descripcion}" required="true" />
                                     <p:outputLabel for="from" value="Desde" />
-                                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+0" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:calendar id="from" value="#{scheduleView.event.startDate}" pattern="dd/MM/yyyy HH:mm" />
                                     <p:outputLabel for="to" value="Hasta:" />
-                                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+0" pattern="dd/MM/yyyy HH:mm"/>
+                                    <p:calendar id="to" value="#{scheduleView.event.endDate}" pattern="dd/MM/yyyy HH:mm"/>
+
+                                    <p:outputLabel for="responsable" value="Responsable:" />
+                                    <p:selectOneMenu value="#{scheduleView.event.notificacion.responsable}" id="responsable" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos} - #{usrDest.cargo.nombre}" itemValue="#{usrDest}"/>
+                                        <p:column>
+                                            <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
+                                        </p:column>
+                                    </p:selectOneMenu>
+
                                     <p:outputLabel for="allDay" value="Todo el día:" />
                                     <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
-                                    <p:commandButton type="reset" value="Limpiar" />
+
+                                    <p:outputLabel for="byEmail" value="Notificar por correo:" />
+                                    <h:selectBooleanCheckbox id="byEmail" value="#{scheduleView.event.notificacion.notificacionCorreo}" />
+
+                                    <p:outputLabel for="Period" value="Notificacion Periodica:" />
+                                    <h:selectBooleanCheckbox id="Period" value="#{scheduleView.event.notificacion.notificacionPeriodica}" />
+
+                                    <p:outputLabel for="popup" value="Notificacion Popup" />
+                                    <h:selectBooleanCheckbox id="popup" value="#{scheduleView.event.notificacion.notificacionPopup}" />
+
+                                    <p:outputLabel for="push" value="Notificacion Push" />
+                                    <h:selectBooleanCheckbox id="push" value="#{scheduleView.event.notificacion.notificacionPush}" />                                  
+
+                                    <p:commandButton id="remove" value="Eliminar" actionListener="#{scheduleView.delete()}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" >
+                                        <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                    
                                     <p:commandButton id="addButton" value="Guardar" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
                                 </h:panelGrid>
                             </p:dialog>    
                         </h:form>
+                        <script type="text/javascript">
+                            PrimeFaces.locales['es'] = {
+                                closeText: 'Cerrar',
+                                prevText: 'Anterior',
+                                nextText: 'Siguiente',
+                                currentText: 'Actual',
+                                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                dayNames: ['Domingo', 'Lunes', 'Marte', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                                dayNamesShort: ['D', 'L', 'M', 'W', 'J', 'V', 'S'],
+                                dayNamesMin: ['D', 'L', 'M', 'W', 'J', 'V', 'S', ],
+                                weekHeader: 'Hf',
+                                firstDay: 1,
+                                isRTL: false,
+                                showMonthAfterYear: true,
+                                yearSuffix: '',
+                                month: 'Mes',
+                                week: 'Semana',
+                                day: 'Día',
+                                allDayText: 'Todo el día'
+                            };
+                        </script>
                     </div>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('agenda') == false}">

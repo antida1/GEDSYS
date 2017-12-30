@@ -29,7 +29,7 @@
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     <f:facet name="header">
-                                        
+
 
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstDias" trigger="toggler" />
@@ -50,17 +50,22 @@
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 
                                                          update=":dlgDetalle" oncomplete="PF('diaDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+
                                         <p:commandButton icon="ui-icon-eraser" 
                                                          title="Borrar"
                                                          actionListener="#{diaFestivoBean.eliminar(festivo)}" 
-                                                         update=":form:lstDias messages"/>
+                                                         update=":form:lstDias messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -79,9 +84,9 @@
                             <p:spacer/>
                             <div>
                                 <div class="col-xs-7"></div>
-                                <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}" oncomplete="PF('diaDialog').hide()" />
+                                <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}"/>
                                 <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
-                                
+
                             </div>
                         </h:form>
                     </p:dialog>

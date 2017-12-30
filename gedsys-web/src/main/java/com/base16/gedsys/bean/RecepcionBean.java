@@ -67,6 +67,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
         this.canGenRad = false;
         this.canPrint = true;
         this.canSave = true;
+        this.documento.setFechaDocumento(new Date());
     }
 
     @PostConstruct
@@ -252,7 +253,10 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 Usuario usuario = (Usuario) SessionUtils.getUsuario();
                 this.documento.setFechaCreacion(new Date());
                 this.documento.setFechaModificacion(new Date());
+                this.documento.setFechaRecepcion(new Date());
                 this.documento.setCreadoPor(usuario);
+                this.documento.setRequiereRespuesta( this.documento.getTipoDocumento().getRequiereRespuesta());
+                this.documento.setEstado(1);
                 UploadDocument uDoc = new UploadDocument();
                 uDoc.upload(documentFile, this.documenstSavePath);
                 this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
@@ -276,7 +280,12 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 }
 
                 this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
-                sJpa.create(documento);
+                if(this.documento.getTipoDocumento().getRequiereRespuesta()){
+                    DiaFestivoBean diaFestivo = new DiaFestivoBean();
+                    
+                }
+                sJpa.create(documento);           
+                
                 Mensajeria mensajeria = new Mensajeria();
                 mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
                 
@@ -295,6 +304,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
     public void limpiar() {
         this.documento = null;
         this.documento = new Documento();
+        this.documento.setFechaDocumento(new Date());
         RequestContext.getCurrentInstance().execute("PF('genRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
         RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
         RequestContext.getCurrentInstance().execute("PF('printRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");

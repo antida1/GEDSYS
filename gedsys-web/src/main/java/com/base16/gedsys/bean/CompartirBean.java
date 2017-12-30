@@ -66,6 +66,7 @@ public class CompartirBean extends BaseBean implements Serializable {
     }
 
     public void guadarDocumento() {
+        FacesContext context = FacesContext.getCurrentInstance();
         DocumentoJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -90,10 +91,9 @@ public class CompartirBean extends BaseBean implements Serializable {
             }
            // this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
             //dJpa.edit(this.documento);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Archivo de documentos", "Documento archivado correctamente"));
-            this.addMessage(new FacesMessage("Archivo de documentos", "Documento archivado correctamente"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compartir documentos", "Documento compartido"));
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Archivo de documentos", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

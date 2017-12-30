@@ -25,10 +25,10 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="50"
+                                             paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                             rowsPerPageTemplate="5,10,15,20,30,50">
                                     <f:facet name="header">
 
 
@@ -84,17 +84,22 @@
                                         </f:facet>
                                         <h:outputText value="#{cargo.modificadoPor.nombres} #{cargo.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{grupoBean.getGrupoById(grupo)}"
                                                          update=":dlgDetalle" oncomplete="PF('grupoDialog').show()"
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+
                                         <p:commandButton icon="fa fa-fw fa-eraser"
                                                          title="Borrar"
                                                          actionListener="#{grupoBean.eliminar(grupo)}"
-                                                         update=":form:lstGrupos messages"/>
+                                                         update=":form:lstGrupos messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -123,7 +128,7 @@
 
                                 <p:spacer/>
                                 <div>
-                                    <p:commandButton update=":form:lstGrupos messages" icon="ui-icon-disk" value="#{grupoBean.accion}" actionListener="#{grupoBean.procesar()}" oncomplete="PF('grupoDialog').hide()" />
+                                    <p:commandButton update=":form:lstGrupos messages" icon="ui-icon-disk" value="#{grupoBean.accion}" actionListener="#{grupoBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('grupoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

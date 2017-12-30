@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -38,7 +40,7 @@ public class ScheduleView extends BaseBean implements Serializable {
 
     private ScheduleModel lazyEventModel;
 
-    private ScheduleEvent event = new DefaultScheduleEvent();
+    private ScheduleBeanEvent event = new ScheduleBeanEvent();
     private List<Notificacion> notificaciones;
 
     @PostConstruct
@@ -51,12 +53,14 @@ public class ScheduleView extends BaseBean implements Serializable {
             nJpa = new NotificacionJpaController(emf);
             notificaciones = nJpa.findNotificacionByResponsable(usuario);
         } catch (Exception e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agenda", e.getMessage());
-            addMessage(message);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agenda", e.getMessage()));
         }
         for (Notificacion notificacion : notificaciones) {
-            eventModel.addEvent(new DefaultScheduleEvent(notificacion.getAsunto(), notificacion.getFechaInicio(), notificacion.getFechaFinalizacion(), notificacion));
+            eventModel.addEvent(new ScheduleBeanEvent(notificacion.getAsunto(), notificacion.getFechaInicio(), notificacion.getFechaFinalizacion(), notificacion));
         }
+    }
+
+    private void listar() {
 
     }
 
@@ -95,7 +99,6 @@ public class ScheduleView extends BaseBean implements Serializable {
         t.set(Calendar.AM_PM, Calendar.PM);
         t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
         t.set(Calendar.HOUR, 8);
-
         return t.getTime();
     }
 
@@ -160,40 +163,86 @@ public class ScheduleView extends BaseBean implements Serializable {
         return t.getTime();
     }
 
-    public ScheduleEvent getEvent() {
+    public ScheduleBeanEvent getEvent() {
         return event;
     }
 
-    public void setEvent(ScheduleEvent event) {
+    public void setEvent(ScheduleBeanEvent event) {
         this.event = event;
     }
 
     public void addEvent(ActionEvent actionEvent) {
         if (event.getId() == null) {
             eventModel.addEvent(event);
+            createEvent();
         } else {
             eventModel.updateEvent(event);
+            updateEvent();
         }
-
-        event = new DefaultScheduleEvent();
+        event = new ScheduleBeanEvent();
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        event = (ScheduleEvent) selectEvent.getObject();
+        event = (ScheduleBeanEvent) selectEvent.getObject();
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        event = new ScheduleBeanEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), (Notificacion) new Notificacion());
     }
 
-    public void onEventMove(ScheduleEntryMoveEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento movido", "Dia delta:" + event.getDayDelta() + ", Minuto delta:" + event.getMinuteDelta());
-        addMessage(message);
+    public Boolean delete() {
+        deleteEvent();
+        return eventModel.deleteEvent(event);
     }
 
-    public void onEventResize(ScheduleEntryResizeEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento modificado", "Dia delta:" + event.getDayDelta() + ", Minuto delta:" + event.getMinuteDelta());
-        addMessage(message);
+    private void createEvent() {
+        NotificacionJpaController nJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            nJpa = new NotificacionJpaController(emf);
+            event.getNotificacion().setFechaCreacion(new Date());
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            event.getNotificacion().setAsunto(event.getTitle());
+            event.getNotificacion().setCreadorPor(usuario.getId());
+            event.getNotificacion().setFechaInicio(event.getStartDate());
+            event.getNotificacion().setFechaFinalizacion(event.getEndDate());
+            nJpa.create(event.getNotificacion());
+
+        } catch (Exception e) {
+            Logger.getLogger(CargoBean.class
+                    .getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    private void updateEvent() {
+        NotificacionJpaController nJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            nJpa = new NotificacionJpaController(emf);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            event.getNotificacion().setAsunto(event.getTitle());
+            event.getNotificacion().setFechaInicio(event.getStartDate());
+            event.getNotificacion().setFechaFinalizacion(event.getEndDate());
+            event.getNotificacion().setModificadoPor(usuario.getId());
+            nJpa.edit(event.getNotificacion());
+
+        } catch (Exception e) {
+            Logger.getLogger(CargoBean.class
+                    .getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    private void deleteEvent() {
+        NotificacionJpaController nJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            nJpa = new NotificacionJpaController(emf);
+            nJpa.destroy(event.getNotificacion().getId());
+
+        } catch (Exception e) {
+            Logger.getLogger(CargoBean.class
+                    .getName()).log(Level.SEVERE, e.getMessage());
+        }
     }
 
 }

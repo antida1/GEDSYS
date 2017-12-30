@@ -81,17 +81,21 @@
                                         </f:facet>
                                         <h:outputText value="#{departamento.modificadoPor.nombres} #{departamento.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{departamentoBean.getDepartamentoById(departamento)}" 
                                                          update=":dlgDetalle" oncomplete="PF('departamentoDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
                                         <p:commandButton icon="ui-icon-eraser" 
                                                          title="Borrar"
                                                          actionListener="#{departamentoBean.eliminar(departamento)}" 
-                                                         update=":form:lstDepartamentos messages"/>
+                                                         update=":form:lstDepartamentos messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -123,7 +127,7 @@
                             </div>
                             <p:spacer/>
                             <div> 
-                                <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}" oncomplete="PF('departamentoDialog').hide()" />
+                                <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}"  />
                                 <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>

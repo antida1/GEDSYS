@@ -12,47 +12,32 @@
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('controlPrestamos') == true}">
                     <p:growl id="messages"  showDetail="true" />
+                    <f:event type="preRenderView" listener="#{prestamoBean.listar()}" />
                     <h:form class="col-xs-12 x_panel" id="form">
                         <div class="x_title">
                             <h2>Control de préstamos</h2>
                             <div class="clear"></div>
                         </div>
                         <div class="x_content">
+                            <!--
                             <div class="col-xs-12 form-group">
                                 <div class='col-xs-2'>
                                     <p:commandButton class="btn btn-info" icon="fa fa-fw fa-file-o" type="button" value="Nuevo" onclick="PF('denNuevo').show()"></p:commandButton>
                                 </div>
                                 <div class="col-xs-10"></div>
                             </div>
+                            -->
                             <div class="col-xs-12">
-                                <p:dataTable id="lstControl" var="pres" value="#{prestamoBean.prestamos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                <p:dataTable id="lstControl" var="pres" value="#{prestamoBean.prestamos}" style="margin-bottom:0" rows="15"
+                                             paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     <f:facet name="header">
-
-
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstControl" trigger="toggler" />
                                     </f:facet>
-                                    <p:column headerText="Fecha inicial">
+                                    <p:column headerText="Fecha Prestamo">
                                         <h:outputText value="#{pres.fechaInicial}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                                        </h:outputText>
-                                    </p:column>
-                                    <p:column headerText="Prestado a">
-                                        <h:outputText value="#{pres.prestador.nombres} #{pres.prestador.apelidos}" />
-                                    </p:column>
-                                    <p:column headerText="Nombre del Documento">
-                                        <h:outputText value="#{pres.nombreDocumento}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                                        </h:outputText>
-                                    </p:column>
-                                    <p:column headerText="Tipo de documento">   
-                                        <h:outputText value="#{pres.tipoDocumento}" />
-                                    </p:column>
-                                    <p:column headerText="Fecha de vencimiento">
-                                        <h:outputText value="#{pres.fechaVencimiento}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
@@ -61,17 +46,27 @@
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Recibir Documento">
-                                        <p:commandButton icon="fa fa-fw fa-rotate-left" type="button" title="Reintegrar" onclick="PF('denReintegrar').show()"></p:commandButton>
+                                    <p:column headerText="Prestado a">
+                                        <h:outputText value="#{pres.prestadoA.nombres} #{pres.prestadoA.apelidos}" />
+                                    </p:column>
+                                    <p:column headerText="Asunto del Documento">
+                                        <h:outputText value="#{pres.documento.asunto}" />
+                                    </p:column>
+                                    <p:column headerText="Tipo de documento">   
+                                        <h:outputText value="#{pres.documento.tipoDocumento.nombre}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Acciones" width="90">
+                                        <p:commandButton icon="fa fa-fw fa-rotate-left" title="Reintegrar" onclick="PF('denReintegrar').show()"></p:commandButton>
                                     </p:column>
                                 </p:dataTable>
                             </div>
-                            <p:dialog id="dlgReintegrar" header="Reintegrar" widgetVar="denReintegrar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="500">
+                            <p:dialog id="dlgReintegrar" header="Reintegrar" widgetVar="denReintegrar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="50%" height="600">
                                 <ui:include src="reintegrar.xhtml">
                                 </ui:include>
                             </p:dialog>
-                            <p:dialog id="dlgNuevo" header="Préstamo de documentos" widgetVar="denNuevo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" height="600">
-                                <ui:include src="nuevoPrestamo.xhtml">
+                            <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" height="600">
+                                <ui:include src="prestamo.xhtml">
                                 </ui:include>
                             </p:dialog>
                         </div>

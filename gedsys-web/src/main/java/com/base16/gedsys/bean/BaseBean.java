@@ -25,8 +25,7 @@ public class BaseBean {
     String documenstSavePath = "";
     String appName = "";
     Boolean encriptFiles;
-    FacesContext context = FacesContext.getCurrentInstance();
-
+    
     public BaseBean() {
         try {
             configFilePath = WebConfiguration.getInstance().getConfigFilePath();

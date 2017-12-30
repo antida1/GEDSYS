@@ -27,12 +27,12 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="50"
+                                             paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                             rowsPerPageTemplate="5,10,15,20,30,50">
                                     <f:facet name="header">
-                                        
+
 
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstConsecutivos" trigger="toggler" />
@@ -77,17 +77,22 @@
                                         </f:facet>
                                         <h:outputText value="#{consecutivo.modificadoPor.nombres} #{consecutivo.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{consecutivoBean.getConsecutivoById(consecutivo)}"
                                                          update=":dlgDetalle" oncomplete="PF('consecutivoDialog').show()"
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+
                                         <p:commandButton icon="ui-icon-eraser"
                                                          title="Borrar"
                                                          actionListener="#{consecutivoBean.eliminar(consecutivo)}"
-                                                         update=":form:lstConsecutivos messages"/>
+                                                         update=":form:lstConsecutivos messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -131,7 +136,7 @@
                             </div>
                             <p:spacer/>
                             <div>
-                                <p:commandButton update=":form:lstConsecutivos messages" icon="ui-icon-disk" value="#{consecutivoBean.accion}" actionListener="#{consecutivoBean.procesar()}" oncomplete="PF('consecutivoDialog').hide()" />
+                                <p:commandButton update=":form:lstConsecutivos messages" icon="ui-icon-disk" value="#{consecutivoBean.accion}" actionListener="#{consecutivoBean.procesar()}" />
                                 <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('consecutivoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>

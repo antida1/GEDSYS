@@ -184,8 +184,11 @@ public class UsuarioBean extends BaseBean implements Serializable {
             Collection<GrupoUsuario> grupoUsuarioCollection = new ArrayList<>();
             grupoUsuarioCollection.add(grupoUsuario);
             this.usuario.setFoto(this.getPhotoName());
+            if (firmaFile.getContents().length > 0) {
+                this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
+                uploadFirma();
+            }
             uploadPhoto();
-            uploadFirma();
             if (!this.usuario.getClave().equals(Authentication.md5(this.password))) {
                 this.usuario.setClave(Authentication.md5(this.password));
             }
@@ -249,10 +252,10 @@ public class UsuarioBean extends BaseBean implements Serializable {
             throw e;
         }
     }
-    
-    private void uploadFirma(){
-        if(firmaFile != null){
-             try {
+
+    private void uploadFirma() {
+        if (firmaFile != null) {
+            try {
                 FacesContext context = FacesContext.getCurrentInstance();
                 ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
                 //String path = servletContext.getRealPath("/resources/images");

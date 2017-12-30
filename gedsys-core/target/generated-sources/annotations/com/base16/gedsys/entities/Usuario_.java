@@ -54,7 +54,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-21T13:13:40")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-28T23:43:34")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -79,6 +79,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, ClaseDocumento> claseDocumentoCollection;
     public static volatile SingularAttribute<Usuario, Boolean> isAdmin;
     public static volatile CollectionAttribute<Usuario, MonitoresProceso> monitoresProcesoCollection1;
+    public static volatile SingularAttribute<Usuario, String> firma;
     public static volatile CollectionAttribute<Usuario, Grupo> grupoCollection;
     public static volatile SingularAttribute<Usuario, String> foto;
     public static volatile CollectionAttribute<Usuario, ClaseDocumento> claseDocumentoCollection1;

@@ -69,6 +69,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Documento implements Serializable {
 
+   
+    @OneToMany(mappedBy = "documento")
+    private List<Comentario> comentarioList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -129,11 +133,12 @@ public class Documento implements Serializable {
     private String remitenteExteno;
     @Column(name = "Clase")
     private String clase;
-
+    @Column(name = "FechaVencimiento")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaVencimiento;
     @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
     @ManyToOne
     private Usuario destinatario;
-
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
@@ -552,6 +557,24 @@ public class Documento implements Serializable {
 
     public void setMedioEnvio(Mediorecepcion medioEnvio) {
         this.medioEnvio = medioEnvio;
+    }
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comentario> getComentarioList() {
+        return comentarioList;
+    }
+
+    public void setComentarioList(List<Comentario> comentarioList) {
+        this.comentarioList = comentarioList;
     }
 
 }

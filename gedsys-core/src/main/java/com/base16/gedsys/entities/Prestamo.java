@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -60,8 +61,6 @@ public class Prestamo implements Serializable {
     private String nombreDocumento;
     @Column(name = "TipoDocumento")
     private String tipoDocumento;
-    @Column(name = "FechaDevolucion")
-    private String fechaDevolucion;
     @Column(name = "QuienDevuelve")
     private String quienDevuelve;
     @Column(name = "QueinRecibe")
@@ -74,15 +73,25 @@ public class Prestamo implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @JoinColumn(name = "Prestador", referencedColumnName = "Id")
+    @JoinColumn(name = "PrestadoA", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-    private Usuario prestador;
+    private Usuario prestadoA;
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
     private Usuario modificadoPor;
+    @JoinColumn(name = "Documento", referencedColumnName = "Id")
+    private Documento documento;
+    @Lob
+    @Column(name = "Observaciones")
+    private String observaciones;
+    @Lob
+    @Column(name = "Firma")
+    private String firma;
+    @Column(name = "FechaDevolucion")
+    @Temporal(TemporalType.DATE)
+    private Date fechaDevolucion;
 
     public Prestamo() {
     }
@@ -131,14 +140,6 @@ public class Prestamo implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public String getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(String fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
-
     public String getQuienDevuelve() {
         return quienDevuelve;
     }
@@ -179,12 +180,12 @@ public class Prestamo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Usuario getPrestador() {
-        return prestador;
+    public Usuario getPrestadoA() {
+        return prestadoA;
     }
 
-    public void setPrestador(Usuario prestador) {
-        this.prestador = prestador;
+    public void setPrestadoA(Usuario prestadoA) {
+        this.prestadoA = prestadoA;
     }
 
     public Usuario getCreadoPor() {
@@ -201,6 +202,22 @@ public class Prestamo implements Serializable {
 
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+
+    public Documento getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
     @Override
@@ -227,5 +244,21 @@ public class Prestamo implements Serializable {
     public String toString() {
         return "com.base16.gedsys.entities.Prestamo[ id=" + id + " ]";
     }
-    
+
+    public String getFirma() {
+        return firma;
+    }
+
+    public void setFirma(String firma) {
+        this.firma = firma;
+    }
+
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
 }

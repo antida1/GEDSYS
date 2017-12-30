@@ -184,12 +184,16 @@ public class AclBean extends BaseBean implements Serializable {
         }
     }
 
-    public void getAclByModuloGrupo(Modulo modulo, Grupo grupo) {
-        AclJpaController aJpa;
+    public Acl getAclByModuloGrupo(Modulo modulo, Grupo grupo) {
+        Acl _acl = null;
         try {
-
+            AclJpaController aJpa;
+            EntityManagerFactory emf =  JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            aJpa = new AclJpaController(emf);
+            Acl acl = aJpa.getAclByGrupoIdAndModuleId(modulo.getId(), grupo.getId());
         } catch (Exception e) {
         }
+        return _acl;
     }
 
     public void populateAcl(Grupo grupo) {

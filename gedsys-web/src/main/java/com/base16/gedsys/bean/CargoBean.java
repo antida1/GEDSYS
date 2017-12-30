@@ -21,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -57,6 +58,7 @@ public class CargoBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
+        this.limpiar();
         this.accion = accion;
     }
 
@@ -68,12 +70,17 @@ public class CargoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo creado!"));
                     break;
                 case "Modificar":
                     modificar();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo Modificado!"));
                     break;
             }
+            RequestContext.getCurrentInstance().execute("PF('cargoDialog').hide()");
         } catch (Exception e) {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -89,12 +96,12 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa.create(cargo);
             this.listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            throw e;
         }
     }
 
-    private void modificar() {
+    private void modificar() throws Exception {
         CargoJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -105,8 +112,8 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa.edit(cargo);
             this.listar();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            throw e;
         }
     }
 
@@ -117,9 +124,11 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa = new CargoJpaController(emf);
             cJpa.destroy(cargo.getId());
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo Eliminado!"));
+
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -130,12 +139,13 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa = new CargoJpaController(emf);
             cargos = cJpa.findCargoEntities();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
     public void getCargoById(Cargo cargo) {
+        FacesContext context = FacesContext.getCurrentInstance();
         CargoJpaController cJpa;
         Cargo cargoTemp;
         try {
@@ -147,9 +157,13 @@ public class CargoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
+    public void limpiar() {
+        this.cargo = null;
+        this.cargo = new Cargo();
+    }
 }

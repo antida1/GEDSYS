@@ -53,6 +53,7 @@ import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -79,7 +80,7 @@ public class CartaBean extends BaseBean implements Serializable {
 
     public CartaBean() {
         this.accion = "Crear";
-
+        this.carta.setFecha(new Date());
     }
 
     public Carta getCarta() {
@@ -115,6 +116,11 @@ public class CartaBean extends BaseBean implements Serializable {
         if (documentoRelacionado != null) {
             this.carta.setDestinatario(documentoRelacionado.getRemitente());
         }
+    }
+
+    public void loadDocumento(Documento doc) {
+        this.setDocumentoRelacionado(doc);
+        RequestContext.getCurrentInstance().execute("PF('denResponder').show()");
     }
 
     public void procesar() {
@@ -163,6 +169,7 @@ public class CartaBean extends BaseBean implements Serializable {
     }
 
     public void firmar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             //TODO: Recuperar consecutivo de documento.
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -193,10 +200,10 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setFechaFirma(new Date());
             this.carta.setEstado("3");
             caJpa.edit(this.carta);
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento Firmado exitosamente"));
+             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento Firmado exitosamente"));
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", ex.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", ex.getMessage()));
         }
     }
 

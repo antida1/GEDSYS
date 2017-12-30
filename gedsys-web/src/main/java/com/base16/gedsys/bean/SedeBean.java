@@ -16,6 +16,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 
 @ManagedBean
@@ -23,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
 public class SedeBean extends BaseBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private FacesContext context = FacesContext.getCurrentInstance();
     private Sede sede = new Sede();
     private List<Sede> Sedes;
     private String accion;
@@ -59,11 +60,11 @@ public class SedeBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sede", "Sede creada exitoxamente!"));
+                    this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sede", "Sede creada exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sede", "Sede modificada exitoxamente!"));
+                    this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sede", "Sede modificada exitoxamente!"));
                     break;
             }
         } catch (Exception e) {

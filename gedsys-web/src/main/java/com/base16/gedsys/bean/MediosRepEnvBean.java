@@ -14,11 +14,14 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @ViewScoped
@@ -56,19 +59,21 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
     }
 
     public void procesar() {
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Medio Recepcion - Envio", "Medio Recepcion creado exitoxamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Recepcion creado!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Medio Recepcion - Envio", "Medio Recepcion modificado exitoxamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Recepcion modificado!"));
                     break;
             }
+            RequestContext.getCurrentInstance().execute("PF('medioRecepcionDialog').hide()");
         } catch (Exception e) {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Medios de Recepcion - Envio", e.getMessage()));
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -86,6 +91,7 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             sJpa.create(medioRecepcion);
             this.listar();
         } catch (Exception e) {
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, e.getMessage());
             throw e;
         }
     }
@@ -101,6 +107,7 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             sJpa.edit(medioRecepcion);
             this.listar();
         } catch (Exception e) {
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, e.getMessage());
             throw e;
         }
     }
@@ -112,8 +119,11 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             sJpa = new MediorecepcionJpaController(emf);
             sJpa.destroy(MedioRecepcion.getId());
             this.listar();
-        } catch (Exception e) {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Eliminado!"));
 
+        } catch (Exception e) {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -124,7 +134,8 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             sJpa = new MediorecepcionJpaController(emf);
             Mediorecepciones = sJpa.findMediorecepcionEntities();
         } catch (Exception e) {
-
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -140,7 +151,8 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 

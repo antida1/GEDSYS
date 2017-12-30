@@ -78,7 +78,7 @@ public class Usuario implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
     private List<Comunicacioncc> comunicacionccList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestador")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestadoA")
     private List<Prestamo> prestamoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Prestamo> prestamoList1;

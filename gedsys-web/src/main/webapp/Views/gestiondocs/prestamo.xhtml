@@ -6,44 +6,52 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>
+        <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <p:growl id="messages"  showDetail="true" />
         <div class="form-group row">
-            <p:outputLabel value="Documento:" for="documento" class="col-xs-3 col-form-label"/>
+            <p:outputLabel value="Documento:" for="documentoPrestamo"  class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:outputLabel id="documento" style="width: 100%">
+                <p:outputLabel id="documentoPrestamo" style="width: 100%" value="#{prestamoBean.documento.asunto}" >
                 </p:outputLabel>
             </div>
         </div>
         <div class="form-group row">
-            <p:outputLabel for="fecha" value="Fecha:" class="col-xs-3 col-form-label"/>
+            <p:outputLabel for="fechaPrestamo" value="Fecha Prestamo:" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:calendar id="fecha" value="#{signaturaTopograficaBean.signaturaTopografica.fechaCracion}" showOn="button" />
+                <p:calendar id="fechaPrestamo" value="#{prestamoBean.prestamo.fechaInicial}" showOn="button" required="true" />
+            </div>
+        </div>
+         <div class="form-group row">
+            <p:outputLabel for="fechaDev" value="Fecha Devolución:" class="col-xs-3 col-form-label"/>
+            <div class="col-xs-9">
+                <p:calendar id="fechaDev" value="#{prestamoBean.prestamo.fechaDevolucion}" showOn="button" rendered="true" />
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Prestado a:" for="prestadoa" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:selectOneMenu id="prestadoa" value="#{signaturaTopograficaBean.signaturaTopografica.nombre}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="prestadoa" value="#{prestamoBean.prestamo.prestadoA}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
-                    <f:selectItems value="#{signaturaTopograficaBean.signaturasTopograficas}" var="prestadoa" itemLabel="#{prestadoa.nombre}" itemValue="#{prestadoa}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="prestadoa" itemLabel="#{prestadoa.nombres} #{prestadoa.apelidos}" itemValue="#{prestadoa}"/>
                 </p:selectOneMenu>
             </div>
         </div>
         <div class="form-group row">
-            <p:outputLabel value="Observaciones" class="col-xs-3 col-form-label"></p:outputLabel>
+            <p:outputLabel value="Observaciones" for="Observacion" class="col-xs-3 col-form-label"></p:outputLabel>
             <div class="col-xs-9">
-                <p:inputTextarea cols="50" rows="10" widgetVar="texto" style="width: 100%"/>                 
+                <p:inputTextarea id="Observacion" cols="80" rows="4" widgetVar="texto" style="width: 100%" value="#{prestamoBean.prestamo.observaciones}" rendered="true" />                 
             </div>
         </div>
         <div class="form-group row">
-            <p:outputLabel value="Firma:" class="col-xs-3 col-form-label"></p:outputLabel>
+            <p:outputLabel value="Firma:" for="firma" class="col-xs-3 col-form-label"></p:outputLabel>
             <div class="col-xs-9">
-                <p:signature style="width:400px;height:200px" widgetVar="Firma" value="#{null}" required="true" guideline="true"/>
+                <p:signature id="firma" style="width:400px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{prestamoBean.prestamo.firma}"/>
             </div>
         </div>
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{signaturaTopograficaBean.accion}" oncomplete="PF('prestamoDialog').hide()" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('prestamoDialog').hide()"></p:commandButton>
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{prestamoBean.procesar()}" update="messages" />
+            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
         </div>
     </h:body>
 </html>

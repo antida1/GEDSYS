@@ -58,10 +58,12 @@ public class CartaViewBean extends BaseBean implements Serializable {
 
     }
 
-    public void showDocument(Carta carta ) {
+    public void showDocument(Carta carta) {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
 
             TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "carta.odt");
+            TextNavigation searchConsecutivo;
             TextNavigation searchFecha;
             TextNavigation tratamiento;
             TextNavigation destinatario;
@@ -70,6 +72,12 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation contenido;
             TextNavigation despedida;
             TextNavigation remitente;
+
+            searchConsecutivo = new TextNavigation("@consecutivo", odt);
+            while (searchConsecutivo.hasNext()) {
+                TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+                item.replaceWith(carta.getConsecutivo());
+            }
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -111,13 +119,17 @@ public class CartaViewBean extends BaseBean implements Serializable {
             despedida = new TextNavigation("@despedida", odt);
             while (despedida.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith(carta.getContenido());
+                item.replaceWith(carta.getDespedida());
             }
 
             remitente = new TextNavigation("@remitente", odt);
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + " " + carta.getRemitente().getCargo().getNombre());
+                if(carta.getRemitente().getCargo() != null){
+                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + " " + carta.getRemitente().getCargo().getNombre());
+                } else {
+                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos());
+                }
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt");
@@ -137,12 +149,13 @@ public class CartaViewBean extends BaseBean implements Serializable {
             SessionUtils.getSession().setAttribute("filePathCarta", this.filePath);
             RequestContext.getCurrentInstance().execute("PF('denVisorCarta').show()");
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Carta", e.getMessage()));
             Logger.getLogger(CartaViewBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     private void loadDocument() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             this.filePath = SessionUtils.getSession().getAttribute("filePathCarta").toString();
             if (!filePath.isEmpty()) {
@@ -152,7 +165,7 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 }
             }
         } catch (FileNotFoundException e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ha ocurrido una excepcion al obtener el documento", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", e.getMessage()));
         }
     }
 

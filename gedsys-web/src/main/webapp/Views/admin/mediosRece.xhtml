@@ -30,12 +30,12 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="medioRecepcionTabla" id="lstPaises" var="medioRecepcion" value="#{mediosRepEnvBean.mediorecepciones}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                <p:dataTable widgetVar="medioRecepcionTabla" id="lstPaises" var="medioRecepcion" value="#{mediosRepEnvBean.mediorecepciones}" style="margin-bottom:0" rows="50"
+                                             paginator="true" scrollable="true" 
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                             rowsPerPageTemplate="5,10,15,20,30,50">
                                     <f:facet name="header">
-                                        
+
 
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstPaises" trigger="toggler" />
@@ -74,17 +74,22 @@
                                         </f:facet>
                                         <h:outputText value="#{medioRecepcion.modificadoPor.nombres} #{medioRecepcion.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{mediosRepEnvBean.getMediorecepcionById(medioRecepcion)}" 
                                                          update=":dlgDetalle" oncomplete="PF('medioRecepcionDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+
                                         <p:commandButton icon="ui-icon-eraser" 
                                                          title="Borrar"
                                                          actionListener="#{mediosRepEnvBean.eliminar(medioRecepcion)}" 
-                                                         update=":form:lstPaises messages"/>
+                                                         update=":form:lstPaises messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -106,7 +111,7 @@
                                 </div>
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{mediosRepEnvBean.accion}" actionListener="#{mediosRepEnvBean.procesar()}" oncomplete="PF('medioRecepcionDialog').hide()" />
+                                    <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{mediosRepEnvBean.accion}" actionListener="#{mediosRepEnvBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('medioRecepcionDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

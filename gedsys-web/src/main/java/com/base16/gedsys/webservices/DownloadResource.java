@@ -52,7 +52,8 @@ public class DownloadResource extends BaseBean {
     @Path("/pdf")
     @Produces({"application/pdf"})
     public byte[] downloadPdfFile(@QueryParam("id") Long id)  {
-        try {    
+        try {   
+            //TODO> pendiente decifrar archivo y tomar la ubicacion del mismo.
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             DocumentoJpaController dJpa = new DocumentoJpaController(emf);
             Documento documento = dJpa.findDocumento(id);

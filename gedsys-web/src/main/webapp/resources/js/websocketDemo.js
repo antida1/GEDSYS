@@ -2,7 +2,11 @@
 //Establecemos la conexion con el WebSocket y configuramos los manejadores
 var webSocket =  new WebSocket("ws://"+ location.hostname + ":" + 4567 + "/chat/");
 webSocket.onmessage = function(msg) {updateChat(msg); };
-webSocket.onclose = function(){ alert("GScanner connection closed") };
+webSocket.onclose = function(){ 
+    PF('messageGrowl').renderMessage({"summary":"Gedsys",
+                             "detail":"No hay conexion con el scaner",
+                             "severity":"error"});
+     };
 
 //Enviamos un mensaje si se presiona "Envia"
 //id("send").addEventListener("click", function() {

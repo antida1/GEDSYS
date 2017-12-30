@@ -43,9 +43,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class TipoDocumento implements Serializable {
 
     @Column(name = "RequiereRespuesta")
-    private Short requiereRespuesta;
+    private Boolean requiereRespuesta;
     @Column(name = "EsPQRSF")
-    private Short esPQRSF;
+    private Boolean esPQRSF;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -227,19 +227,19 @@ public class TipoDocumento implements Serializable {
         this.tipoCalendario = tipoCalendario;
     }
 
-    public Short getRequiereRespuesta() {
+    public Boolean getRequiereRespuesta() {
         return requiereRespuesta;
     }
 
-    public void setRequiereRespuesta(Short requiereRespuesta) {
+    public void setRequiereRespuesta(Boolean requiereRespuesta) {
         this.requiereRespuesta = requiereRespuesta;
     }
 
-    public Short getEsPQRSF() {
+    public Boolean getEsPQRSF() {
         return esPQRSF;
     }
 
-    public void setEsPQRSF(Short esPQRSF) {
+    public void setEsPQRSF(Boolean esPQRSF) {
         this.esPQRSF = esPQRSF;
     }
     

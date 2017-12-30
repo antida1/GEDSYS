@@ -26,8 +26,8 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="entidadTabla" id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                <p:dataTable widgetVar="entidadTabla" id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0" rows="15"
+                                             paginator="true" scrollable="true" 
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     <p:column headerText="Tipo de documento" filterBy="#{entidad.tipoDocumento}" filterMatchMode="exact">
@@ -62,17 +62,22 @@
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Editar">
-                                        <p:commandButton actionListener="#{entidadBean.getPaisById(entidad)}" 
+                                    <p:column headerText="Acciones">
+                                        <p:commandButton actionListener="#{entidadBean.getEntidadById(entidad)}" 
                                                          update=":dlgDetalle" oncomplete="PF('entidadDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
                                         <p:commandButton icon="ui-icon-eraser" 
                                                          title="Borrar"
                                                          actionListener="#{entidadBean.eliminar(entidad)}" 
-                                                         update=":form:lstEntidades messages"/>
+                                                         update=":form:lstEntidades messages">
+                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -81,8 +86,8 @@
                             <h:form>
                                 <h:inputHidden id="id" value="#{entidadBean.entidad.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:selectOneMenu id="tipoDocumento" value="#{entidadBean.entidad.tipoDocumento}">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
@@ -93,39 +98,39 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:inputText id="numeroDocumento" required="true" value="#{entidadBean.entidad.numeroDocumento}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:inputText id="Nombre" required="true" value="#{entidadBean.entidad.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Dirección" for="direccion" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Dirección" for="direccion" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:inputText id="direccion" required="true" value="#{entidadBean.entidad.direccion}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Teléfono" for="telefono" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Teléfono" for="telefono" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:inputText id="telefono" required="true" value="#{entidadBean.entidad.telefono}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Email" for="email" class="col-xs-2 col-form-label"/>
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Email" for="email" class="col-xs-3 col-form-label"/>
+                                    <div class="col-xs-9">
                                         <p:inputText id="email" required="true" value="#{entidadBean.entidad.email}" class="form-control" />
                                     </div>
                                 </div>
 
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstEntidades messages" icon="ui-icon-disk" value="#{entidadBean.accion}" actionListener="#{entidadBean.procesar()}" oncomplete="PF('entidadDialog').hide()" />
+                                    <p:commandButton update=":form:lstEntidades messages" icon="ui-icon-disk" value="#{entidadBean.accion}" actionListener="#{entidadBean.procesar()}"  />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('entidadDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

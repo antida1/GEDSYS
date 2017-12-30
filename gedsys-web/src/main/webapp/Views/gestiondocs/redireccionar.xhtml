@@ -6,6 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>
+        <p:growl id="messages"  showDetail="true" />
         <div class="form-group row">
             <p:outputLabel value="Radicado" for="rRadicado" class="col-xs-4 col-form-label" />
             <div class="col-xs-8">
@@ -30,14 +31,13 @@
         <div class="form-group row">
             <p:outputLabel value="Mensaje de Redirección" class="col-xs-12 col-form-label"></p:outputLabel>
             <div class="col-xs-12">
-                <p:inputTextarea cols="50" rows="10" widgetVar="texto" style="width: 100%"/>                 
+                <p:inputTextarea cols="50" rows="10" widgetVar="texto" style="width: 100%" required="true" value="#{redireccionarBean.mensaje}"/>                 
             </div>
         </div>
 
         <p:separator></p:separator>
-
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{signaturaTopograficaBean.accion}" oncomplete="PF('devolverDialog').hide()" />
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{redireccionarBean.guadarDocumento()}" update="lstDocsEntrantes messages"/>
             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('devolverDialog').hide()"></p:commandButton>
         </div>
     </h:body>

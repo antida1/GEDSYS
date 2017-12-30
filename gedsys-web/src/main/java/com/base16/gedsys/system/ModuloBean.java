@@ -154,6 +154,24 @@ public class ModuloBean extends BaseBean implements Serializable {
         }
     }
     
+    public Modulo getModuloByNombre(String moduloName) {
+        ModuloJpaController cJpa;
+        Modulo moduloTemp = null;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            cJpa = new ModuloJpaController(emf);
+            moduloTemp = cJpa.findModuloByNombre(moduloName);
+            if(moduloTemp !=null){
+                this.modulo = moduloTemp;
+                this.accion = "Modificar";
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( FacesMessage.SEVERITY_ERROR , "Error!", e.getMessage()));
+            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+        return moduloTemp;
+    }
+    
     public void limpiar(){
         this.modulo = null;
         this.modulo = new Modulo();

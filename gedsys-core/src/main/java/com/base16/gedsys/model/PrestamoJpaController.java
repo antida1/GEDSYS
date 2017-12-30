@@ -38,10 +38,10 @@ public class PrestamoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario prestador = prestamo.getPrestador();
-            if (prestador != null) {
-                prestador = em.getReference(prestador.getClass(), prestador.getId());
-                prestamo.setPrestador(prestador);
+            Usuario prestadoA = prestamo.getPrestadoA();
+            if (prestadoA != null) {
+                prestadoA = em.getReference(prestadoA.getClass(), prestadoA.getId());
+                prestamo.setPrestadoA(prestadoA);
             }
             Usuario creadoPor = prestamo.getCreadoPor();
             if (creadoPor != null) {
@@ -59,9 +59,9 @@ public class PrestamoJpaController implements Serializable {
 //                prestamo.setDocumento(documento);
 //            }
             em.persist(prestamo);
-            if (prestador != null) {
-                prestador.getPrestamoList().add(prestamo);
-                prestador = em.merge(prestador);
+            if (prestadoA != null) {
+                prestadoA.getPrestamoList().add(prestamo);
+                prestadoA = em.merge(prestadoA);
             }
             if (creadoPor != null) {
                 creadoPor.getPrestamoList().add(prestamo);
@@ -89,17 +89,17 @@ public class PrestamoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Prestamo persistentPrestamo = em.find(Prestamo.class, prestamo.getId());
-            Usuario prestadorOld = persistentPrestamo.getPrestador();
-            Usuario prestadorNew = prestamo.getPrestador();
+            Usuario prestadoAOld = persistentPrestamo.getPrestadoA();
+            Usuario prestadoANew = prestamo.getPrestadoA();
             Usuario creadoPorOld = persistentPrestamo.getCreadoPor();
             Usuario creadoPorNew = prestamo.getCreadoPor();
             Usuario modificadoPorOld = persistentPrestamo.getModificadoPor();
             Usuario modificadoPorNew = prestamo.getModificadoPor();
 //            Documento documentoOld = persistentPrestamo.getDocumento();
 //            Documento documentoNew = prestamo.getDocumento();
-            if (prestadorNew != null) {
-                prestadorNew = em.getReference(prestadorNew.getClass(), prestadorNew.getId());
-                prestamo.setPrestador(prestadorNew);
+            if (prestadoANew != null) {
+                prestadoANew = em.getReference(prestadoANew.getClass(), prestadoANew.getId());
+                prestamo.setPrestadoA(prestadoANew);
             }
             if (creadoPorNew != null) {
                 creadoPorNew = em.getReference(creadoPorNew.getClass(), creadoPorNew.getId());
@@ -114,13 +114,13 @@ public class PrestamoJpaController implements Serializable {
 //                prestamo.setDocumento(documentoNew);
 //            }
             prestamo = em.merge(prestamo);
-            if (prestadorOld != null && !prestadorOld.equals(prestadorNew)) {
-                prestadorOld.getPrestamoList().remove(prestamo);
-                prestadorOld = em.merge(prestadorOld);
+            if (prestadoAOld != null && !prestadoAOld.equals(prestadoANew)) {
+                prestadoAOld.getPrestamoList().remove(prestamo);
+                prestadoAOld = em.merge(prestadoAOld);
             }
-            if (prestadorNew != null && !prestadorNew.equals(prestadorOld)) {
-                prestadorNew.getPrestamoList().add(prestamo);
-                prestadorNew = em.merge(prestadorNew);
+            if (prestadoANew != null && !prestadoANew.equals(prestadoAOld)) {
+                prestadoANew.getPrestamoList().add(prestamo);
+                prestadoANew = em.merge(prestadoANew);
             }
             if (creadoPorOld != null && !creadoPorOld.equals(creadoPorNew)) {
                 creadoPorOld.getPrestamoList().remove(prestamo);
@@ -175,10 +175,10 @@ public class PrestamoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The prestamo with id " + id + " no longer exists.", enfe);
             }
-            Usuario prestador = prestamo.getPrestador();
-            if (prestador != null) {
-                prestador.getPrestamoList().remove(prestamo);
-                prestador = em.merge(prestador);
+            Usuario prestadoA = prestamo.getPrestadoA();
+            if (prestadoA != null) {
+                prestadoA.getPrestamoList().remove(prestamo);
+                prestadoA = em.merge(prestadoA);
             }
             Usuario creadoPor = prestamo.getCreadoPor();
             if (creadoPor != null) {

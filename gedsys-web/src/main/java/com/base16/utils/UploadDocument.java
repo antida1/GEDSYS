@@ -52,21 +52,20 @@ public class UploadDocument extends BaseBean {
                 this.uuid = UUID.randomUUID();
                 String fileName = FilenameUtils.getBaseName(file.getFileName());
                 String extension = FilenameUtils.getExtension(file.getFileName());
-                Path folder = Paths.get(path + File.separatorChar + fileName + this.getCurrentUser().getNombres() + "." + extension);
+                Path folder = Paths.get(path + File.separatorChar + this.uuid.toString());
                 Path pathFile = Files.createFile(folder);
                 try (InputStream input = file.getInputstream()) {
                     Files.copy(input, pathFile, StandardCopyOption.REPLACE_EXISTING);
          
                     if (this.getEncriptFiles() == true) {
-                        this.uuid = UUID.randomUUID();
                         File inputFile = pathFile.toFile();
                         File outputFile = new File(path + File.separatorChar + this.uuid.toString());
-                        
                         CryptoUtils.encrypt("Mary has one cat", inputFile, outputFile);
                     } else {
 
                     }
                 } catch (Exception e) {
+                    Logger.getLogger(UploadDocument.class.getName()).log(Level.SEVERE, null, e);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(UploadDocument.class.getName()).log(Level.SEVERE, null, ex);
