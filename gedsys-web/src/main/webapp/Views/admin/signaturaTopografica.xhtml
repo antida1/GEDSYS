@@ -57,14 +57,11 @@
                                     <p:spacer/>
                                     <div class="form-group row">
                                         <div class="col-xs-7"></div>
-                                        
-                                            <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
-                                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
-                                        
+                                        <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
+                                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
                                     </div>
                                 </div>
                             </div>
-
                         </h:form>
                     </p:dialog> 
                 </c:if>

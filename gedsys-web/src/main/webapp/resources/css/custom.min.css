@@ -3998,3 +3998,19 @@ td{
 }
 
 
+.status {
+    background-color: green;
+    display: block;
+    height: 8px;
+    width: 8px;
+    border-radius: 4px;
+}
+
+.status-green { background-color: green }
+.status-red { background-color: red; }
+.status-yellow { background-color: yellow }
+
+.form-group {
+    margin-bottom: 10px;
+    padding: 0;
+}

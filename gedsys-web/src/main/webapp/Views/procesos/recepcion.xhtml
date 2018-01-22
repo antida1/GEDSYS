@@ -5,8 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
@@ -33,7 +32,10 @@
                                         <label class=" col-xs-4" for="entidad">Entidad remitente <span class="required">*</span>
                                         </label>
                                         <div class="col-xs-8">
-                                            <p:selectOneMenu id="Entidad" value="#{recepcionBean.documento.entidad}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                                            <p:selectOneMenu id="Entidad" value="#{recepcionBean.documento.entidad}" filter="true" 
+                                                             filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter"
+                                                             required="true">
+                                                <p:ajax listener="#{recepcionBean.onEntidadChange}" update="direccion" />
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione la entidad" itemValue="#{null}" />
                                                 <f:selectItems value="#{entidadBean.entidades}" var="entRem" itemLabel="#{entRem.nombre}" itemValue="#{entRem}" />
                                             </p:selectOneMenu>

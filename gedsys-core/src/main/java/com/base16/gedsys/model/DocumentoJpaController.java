@@ -29,7 +29,10 @@ import com.base16.gedsys.entities.ProcesoDocumental;
 import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -928,4 +931,65 @@ public class DocumentoJpaController implements Serializable {
         }
     }
 
+    public List<Documento> findSinArchivar(Usuario usuario) {
+        return findSinArchivar(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findSinArchivar(Usuario usuario, int maxResults, int firstResult) {
+        return findSinArchivar(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findSinArchivar(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findSinArchivar", Usuario.class)
+                    .setParameter("destinatario", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Documento> findDocumentos(Usuario remitente, String radicado, String asunto, Date starDate, Date endDate, TipoDocumento tipoDocumento) {
+        return findDocumentos(remitente, radicado, asunto, starDate, endDate, tipoDocumento, true, -1, -1);
+    }
+
+    public List<Documento> findDocumentos(Usuario remitente, String radicado, String asunto, Date starDate, Date endDate, TipoDocumento tipoDocumento, int maxResults, int firstResult) {
+        return findDocumentos(remitente, radicado, asunto, starDate, endDate, tipoDocumento, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findDocumentos(Usuario remitente, String radicado, String asunto, Date starDate, Date endDate, TipoDocumento tipoDocumento, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        List<Documento> documentos = null;
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findDocumentos", Documento.class)
+                    .setParameter("destinatario", remitente)
+                    .setParameter("consecutivo", "%" + radicado + "%")
+                    .setParameter("asunto", "%" + asunto + "%");
+                    //.setParameter("startDate", starDate)
+                    //.setParameter("endDate", endDate)
+                    //.setParameter("tipoDocumento", tipoDocumento);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            documentos = q.getResultList();
+
+        } catch (Exception e) {
+            Logger.getLogger(DocumentoJpaController.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            em.close();
+        }
+        return documentos;
+    }
+
+    //WHERE d.remitente = :remitente and redicado like :radicado and asunto like :asunto and fechaDocumento between (:startDate and :endDate) and tipoDocumento like :tipoDocumento
 }

@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Acl.findByCanRead", query = "SELECT a FROM Acl a WHERE a.canRead = :canRead")
     , @NamedQuery(name = "Acl.findByCanUpdate", query = "SELECT a FROM Acl a WHERE a.canUpdate = :canUpdate")
     , @NamedQuery(name = "Acl.findByFechaCreacion", query = "SELECT a FROM Acl a WHERE a.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Acl.findByGrupoAndModule", query = "SELECT a FROM Acl a WHERE a.grupo = :grupo and a.modulo = :modulo")
     , @NamedQuery(name = "Acl.findByFechaModificacion", query = "SELECT a FROM Acl a WHERE a.fechaModificacion = :fechaModificacion")})
 public class Acl implements Serializable {
 

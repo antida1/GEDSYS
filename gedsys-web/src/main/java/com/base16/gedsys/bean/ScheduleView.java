@@ -172,6 +172,9 @@ public class ScheduleView extends BaseBean implements Serializable {
     }
 
     public void addEvent(ActionEvent actionEvent) {
+        if(eventModel == null){
+            eventModel = new DefaultScheduleModel();
+        }
         if (event.getId() == null) {
             eventModel.addEvent(event);
             createEvent();

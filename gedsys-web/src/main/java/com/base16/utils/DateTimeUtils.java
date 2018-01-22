@@ -57,4 +57,28 @@ public class DateTimeUtils {
         return diffDays;
     }
 
+    public static Date fechaDeRespuesta(Calendar startDate, int diasRespuesta, List<Date> diasNoLab) {
+        startDate.add(Calendar.DATE, 1);
+        for (int dias = 1; dias <= diasRespuesta; dias++) {
+            if (startDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || startDate.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                startDate.add(Calendar.DATE, 1);
+            } else {
+                for (Date date : diasNoLab) {
+                    if (startDate.getTime().equals(date)) {
+                        startDate.add(Calendar.DATE, 1);
+                    }
+                }
+            }
+            startDate.add(Calendar.DATE, 1);
+        }
+        return startDate.getTime();
+    }
+   
+
+    public static Calendar toCalendar(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
+
 }

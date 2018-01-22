@@ -6,7 +6,9 @@
       xmlns:p="http://primefaces.org/ui" 
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
     <body>
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
@@ -17,7 +19,7 @@
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPorVencer()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPrestados()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosRecibidos()}"></f:event>
-
+                    <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosSinArchivar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarActasPorFirmar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarCartasPorFirmar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarCertificadosPorFirmar()}"></f:event>
@@ -198,18 +200,37 @@
                                     </div>
                                     <div id="menuTab4" class="tab-pane fade">
                                         <div class="col-xs-12">
-                                            <p:dataTable widgetVar="Por Vencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="10"
+                                            <p:dataTable widgetVar="PorVencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15">
+                                                         rowsPerPageTemplate="5,10,15,20,30,50">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorVencer" trigger="toggler" />
                                                 </f:facet>
+                                                <p:column headerText="Estado" width="60">
+                                                    <ui:fragment rendered="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now) gt 3 }">
+                                                        <span class="status status-green"></span>
+                                                    </ui:fragment>
+                                                    <ui:fragment rendered="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now) eq 3}">
+                                                        <span class="status status-yellow"></span>
+                                                    </ui:fragment>
+                                                    <ui:fragment rendered="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now) lt 2}">
+                                                        <span class="status status-red"></span>
+                                                    </ui:fragment>   
+                                                </p:column>
+                                                <p:column headerText="Dias de Vencimiento">
+                                                    <h:outputText value="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now)}" />
+                                                </p:column>
                                                 <p:column headerText="Redicado">
                                                     <h:outputText value="#{docsPorVencer.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsPorVencer.fechaCreacion}" >
+                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Fecha de vencimiento">
+                                                    <h:outputText value="#{docsPorVencer.fechaVencimiento}" >
                                                         <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
                                                     </h:outputText>
                                                 </p:column>
@@ -248,7 +269,7 @@
                                             </ul>
                                             <div class="tab-content">
                                                 <div id="pmenuTab0" class="col-xs-12 tab-pane fade">
-                                                    <p:dataTable widgetVar="Por Vencer" id="actas" var="acta" value="#{documentosBean.actasPorFirmar}" style="margin-bottom:0" rows="10"
+                                                    <p:dataTable widgetVar="actaPorFirmar" id="actas" var="acta" value="#{documentosBean.actasPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                                  rowsPerPageTemplate="5,10,15">
                                                         <f:facet name="header">
@@ -473,7 +494,7 @@
                                     </div>
                                     <div id="menuTab6" class="tab-pane fade">
                                         <div class="col-xs-12">
-                                            <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="50"
+                                            <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.sinArchivar}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                          rowsPerPageTemplate="5,10,15,20,30,50">
                                                 <f:facet name="header">
@@ -501,7 +522,7 @@
                                                     <h:outputText value="#{docsPorArchivar.detalle}" />
                                                 </p:column>
                                                 <p:column headerText="Acciones">
-                                                    <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar" disabled="#{docsPorArchivar.estado eq 9 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsPorArchivar)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorArchivar)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPorArchivar)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               

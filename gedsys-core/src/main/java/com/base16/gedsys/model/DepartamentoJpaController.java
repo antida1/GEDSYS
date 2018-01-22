@@ -273,16 +273,16 @@ public class DepartamentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Departamento> findDepartamentosByPais(Pais pais) {
         return findDepartamentosByPais(pais, -1, -1);
-}
+    }
 
     public List<Departamento> findDepartamentosByPais(Pais pais, int maxResults, int firstResult) {
         return findDepartamentosByPais(pais, true, maxResults, firstResult);
     }
-    
-    private List<Departamento> findDepartamentosByPais( Pais pais ,boolean all, int maxResults, int firstResult) {
+
+    private List<Departamento> findDepartamentosByPais(Pais pais, boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -298,5 +298,5 @@ public class DepartamentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

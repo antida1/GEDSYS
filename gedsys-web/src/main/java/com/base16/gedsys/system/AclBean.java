@@ -118,7 +118,7 @@ public class AclBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.acl.setModificadoPor(usuario);
             cJpa.edit(acl);
-             this.grupo =  acl.getGrupo();
+            this.grupo = acl.getGrupo();
             this.onGroupChange();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
@@ -132,7 +132,7 @@ public class AclBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new AclJpaController(emf);
             cJpa.destroy(acl.getId());
-            this.grupo =  acl.getGrupo();
+            this.grupo = acl.getGrupo();
             this.onGroupChange();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
@@ -188,10 +188,13 @@ public class AclBean extends BaseBean implements Serializable {
         Acl _acl = null;
         try {
             AclJpaController aJpa;
-            EntityManagerFactory emf =  JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             aJpa = new AclJpaController(emf);
-            Acl acl = aJpa.getAclByGrupoIdAndModuleId(modulo.getId(), grupo.getId());
+            List<Acl> aclList = aJpa.getAclByGrupdAndModule(grupo, modulo);
+            _acl = aclList.get(0);
         } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return _acl;
     }

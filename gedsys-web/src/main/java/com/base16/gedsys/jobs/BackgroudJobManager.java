@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bas16.gedsys.jobs;
+package com.base16.gedsys.jobs;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

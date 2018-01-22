@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-
+import java.lang.reflect.Field;
 /**
  *
  * @author rober
@@ -100,11 +100,27 @@ public class AutorizationBean extends BaseBean {
                     break;
                 }
             }
-            Method method;
-            method = acl.getClass().getMethod(stringMethod, Acl.class);
-            result = (Boolean) method.invoke(acl, new Object[]{});
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            
+             for (Method method : Acl.class.getMethods()){
+                 if(method.getName().equals(stringMethod)){
+                     result = (Boolean) method.invoke(acl);
+                     break;
+                 }
+                 
+             }
+            
+            //Method method;
+            //method = acl.getClass().getMethod(stringMethod, Acl.class);
+            //result = (Boolean) value; //method.invoke(acl, new Object[]{});
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException ex) {
             Logger.getLogger(AutorizationBean.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(AutorizationBean.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        if(result == null){
+            result =false;
         }
         return result;
     }

@@ -13,7 +13,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
 
             <ui:define name="content">
-                <c:if test="#{autorizationBean.hasAccess('Pais') == true}">
+                <c:if test="#{autorizationBean.hasAccess('mediosRecepcion') == true}">
 
                     <f:event type="preRenderView" listener="#{mediosRepEnvBean.listar()}" />
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
@@ -118,7 +118,7 @@
                         </p:dialog>
                     </div>
                 </c:if>
-                <c:if test="#{autorizationBean.hasAccess('Pais') == false}">
+                <c:if test="#{autorizationBean.hasAccess('mediosRecepcion') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
                 </c:if>
             </ui:define>

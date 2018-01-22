@@ -1,6 +1,6 @@
 
 //Establecemos la conexion con el WebSocket y configuramos los manejadores
-var webSocket =  new WebSocket("ws://"+ location.hostname + ":" + 4567 + "/chat/");
+var webSocket =  new WebSocket("ws://localhost:" + 4567);
 webSocket.onmessage = function(msg) {updateChat(msg); };
 webSocket.onclose = function(){ 
     PF('messageGrowl').renderMessage({"summary":"Gedsys",

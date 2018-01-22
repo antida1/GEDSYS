@@ -76,7 +76,7 @@
             <f:event type="preRenderView" listener="#{serieBean.listar()}" />
             <f:event type="preRenderView" listener="#{subSerieBean.listar()}" />
             <f:event type="preRenderView" listener="#{tipoDocumentalBean.listar()}" />
-            <f:event type="preRenderView" listener="#{signaturaTree.init()}" />
+            <f:event type="preRenderView" listener="#{signaturaTree.loadRootByCurrentUserAccess()}" />
             
             <div class="form-group row">
                 <p:tree value="#{signaturaTree.root}" var="signatura" selectionMode="single" selection="#{archivarBean.selectedNodeSignatura}">
@@ -88,7 +88,7 @@
         </div>
         <p:spacer/>
         <div class="form-group row col-xs-12">
-            <p:commandButton icon="ui-icon-disk" actionListener="#{archivarBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denArchivar').hide()" />
+            <p:commandButton icon="ui-icon-disk" actionListener="#{archivarBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denArchivar').hide()" update=":lstDocsPorArchivados messages" />
             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denArchivar').hide()"></p:commandButton>
         </div>
     </body>

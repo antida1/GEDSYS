@@ -1,14 +1,148 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
 
     <body>
-
         <ui:composition template="./../../Template/plantilla.xhtml">
-
             <ui:define name="content">
-                content
+                <c:if test="#{autorizationBean.hasAccess('busquedaDocumentos') == true}">
+                    <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{busquedaDocumentosBean.buscar()}" />
+                    <p:growl id="messages"  showDetail="true" />
+                    <div class="col-xs-12 x_panel">
+                        <h:form id="form">
+                            <div class="x_title">
+                                <h2>Busqueda de Documentos</h2>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="col-xs-12">
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Radicado" for="Radicado" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-9">
+                                            <p:inputText id="Radicado" value="#{busquedaDocumentosBean.radicado}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Asunto" for="Asunto" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-9">
+                                            <p:inputText id="Asunto" value="#{busquedaDocumentosBean.asunto}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Fecha Inicio" for="fechaInicio" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-3">
+                                            <p:inputText id="fechaInicio" value="#{busquedaDocumentosBean.startDate}" class="form-control"/>
+                                        </div>
+                                        <p:outputLabel value="Fecha Final" for="fechaFinal" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-3">
+                                            <p:inputText id="fechaFinal"  value="#{busquedaDocumentosBean.endDate}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Tipo de Documento" for="tipoDocumento" class="col-xs-3 col-form-label" />
+                                        <div class="col-xs-9">
+                                            <p:selectOneMenu id="tipoDocumento" value="#{busquedaDocumentosBean.tipoDocumento}" filter="true" filterMatchMode="startsWith" converter="omnifaces.SelectItemsConverter" >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}" />
+                                                <f:selectItems value="#{tipoDocumentoBean.tipoDocumentos}" var="tipoDoc" itemLabel="#{tipoDoc.nombre}" itemValue="#{tipoDoc}" />
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </div>
+                                   
+                                    <p:spacer/>
+                                    <div> 
+                                        <p:commandButton update=":form:lstDocsEntrantes messages" value="Buscar" actionListener="#{busquedaDocumentosBean.buscar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false" icon="glyphicon fa fa-fw fa-binoculars" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{busquedaDocumentosBean.documentos}" style="margin-bottom:0" rows="50"
+                                                 paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15,30,50">
+                                        <f:facet name="header">
+                                            <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                            <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
+                                        </f:facet>
+                                        <p:column headerText="Redicado">
+                                            <h:outputText value="#{docsEntrantes.consecutivo}" />
+                                        </p:column>
+                                        <p:column headerText="Fecha de recepción">
+                                            <h:outputText value="#{docsEntrantes.fechaCreacion}" >
+                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Tipo Documento">
+                                            <h:outputText value="#{docsEntrantes.tipoDocumento.nombre}" />
+                                        </p:column>
+                                        <p:column headerText="Asunto">
+                                            <h:outputText value="#{docsEntrantes.asunto}" />
+                                        </p:column>
+                                        <p:column headerText="Remitente">
+                                            <h:outputText value="#{docsEntrantes.remitente}" />
+                                        </p:column>
+                                        <p:column headerText="Destinarario">
+                                            <h:outputText value="#{docsEntrantes.destinatario.nombres} #{docsEntrantes.destinatario.apelidos}" />
+                                        </p:column>
+                                        <p:column headerText="Detalle">
+                                            <h:outputText value="#{docsEntrantes.detalle}" />
+
+                                        </p:column>
+                                        <p:column headerText="Acciones" width="150">                                            
+                                            <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                            <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantes)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                            <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
+                                            <p:commandLink type="button" title="Info" action="#{documentoInfoViewBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-exclamation-circle" aria-hidden="true"/></p:commandLink>                                               
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                    <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <c:if test='#{documentViewerBean.content.contentType.equals("application/pdf")}'>
+                                <pe:documentViewer id="documentCtl" height="800" value="#{documentViewerBean.content}" />  
+                            </c:if>
+                            <c:if test='#{documentViewerBean.content.contentType.equals("application/octet-stream")}'>
+                                <pe:documentViewer id="documentCtl" height="800" value="#{documentViewerBean.content}" />  
+                            </c:if>
+                            <c:if test='#{documentViewerBean.content.contentType.equals("image/jpeg")}'>
+                                <p:graphicImage height="800"  value="#{documentViewerBean.content}"/>  
+                            </c:if>
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('dlgVisor').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="700">
+                        <h:form>
+                            <ui:include src="prestamo.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <h:form>
+                            <ui:include src="compartir.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgInfoDoc" header="Compartir documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <h:form>
+                            <ui:include src="infoDocumento.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('busquedaDocumentos') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
             </ui:define>
 
         </ui:composition>

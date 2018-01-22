@@ -15,145 +15,182 @@
                     <f:event type="preRenderView" listener="#{grupoBean.listar()}" />                    
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-12 x_panel">
-                        <h:form id="form">
-                            <div class="x_title">
-                                <h2>Usuarios</h2>
-                                <div class="clear"></div>
-                            </div>
-                            <div class="x_content">
-                                <p:menubar>
-                                    <p:menuitem oncomplete="PF('usuarioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{usuarioBean.setAccion('Crear')}" update=":dlgDetalle" >
-                                    </p:menuitem>
-                                </p:menubar>
-                                <p:separator/>
-                                <p:dataTable widgetVar="usuarioTabla" id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
-                                    <f:facet name="header">
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstUsuarios" trigger="toggler" />
-                                    </f:facet>
-                                    <p:column headerText="Nombres" filterBy="#{usuario.nombres}" filterMatchMode="contains">
-                                        <h:outputText value="#{usuario.nombres}" />
-                                    </p:column>
-                                    <p:column headerText="Apellidos" filterBy="#{usuario.apelidos}" filterMatchMode="contains">
-                                        <h:outputText value="#{usuario.apelidos}" />
-                                    </p:column>
-                                    <p:column headerText="Cargo" filterBy="#{usuario.cargo}" filterMatchMode="exact">
-                                        <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('usuarioTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
-                                                <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}" />
-                                            </p:selectOneMenu>
+                        <div class="x_title">
+                            <h2>Usuarios</h2>
+                            <div class="clear"></div>
+                        </div>
+                        <div class='x_content'> 
+                            <h:form id="form">
+                                <div class="x_content">
+                                    <p:menubar>
+                                        <p:menuitem oncomplete="PF('usuarioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{usuarioBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                        </p:menuitem>
+                                    </p:menubar>
+                                    <p:separator/>
+                                    <p:dataTable widgetVar="usuarioTabla" id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0" rows="50"
+                                                 paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15,20,30,50">
+                                        <f:facet name="header">
+                                            <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                            <p:columnToggler datasource="lstUsuarios" trigger="toggler" />
                                         </f:facet>
-                                        <h:outputText value="#{usuario.cargo.nombre}" />
-                                    </p:column>
-                                    <p:column headerText="Correo electrónico" filterBy="#{usuario.email}" filterMatchMode="contains">
-                                        <h:outputText value="#{usuario.email}" />
-                                    </p:column>
-                                    <p:column headerText="Teléfono" filterBy="#{usuario.telefono}" filterMatchMode="contains">
-                                        <h:outputText value="#{usuario.telefono}" />
-                                    </p:column>
-                                    <p:column headerText="Celular" filterBy="#{usuario.celular}" filterMatchMode="contains">
-                                        <h:outputText value="#{usuario.celular}" />
-                                    </p:column>
-                                    <p:column headerText="Acciones">
-                                        <p:commandButton actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
-                                                         update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
-                                        </p:commandButton>
-                                        <p:commandButton icon="ui-icon-eraser" 
-                                                         title="Borrar"
-                                                         actionListener="#{usuarioBean.eliminar(usuario)}" 
-                                                         update=":form:lstUsuarios messages"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </div>
-                        </h:form>
-                        <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                            <h:form enctype="multipart/form-data">
-                                <h:inputHidden id="id" value="#{usuarioBean.usuario.id}" />
-                                <div class="form-group row">
-                                    <p:outputLabel value="Nombres" for="Nombres" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="Nombres" required="true" value="#{usuarioBean.usuario.nombres}" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Apellidos" for="Apellidos" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="Apellidos" required="true" value="#{usuarioBean.usuario.apelidos}" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Correo electrónico" for="email" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="email" required="true" value="#{usuarioBean.usuario.email}" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Celular" for="celular" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="celular" required="true" value="#{usuarioBean.usuario.celular}" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Cargo" for="cargo" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:selectOneMenu id="cargo" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
-                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione el cargo" itemValue="#{null}" />
-                                            <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}"/>
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class=" col-md-3">Foto</label>
-                                    <div class="col-md-9">
-                                        <p:fileUpload value="#{usuarioBean.photoFile}" mode="simple" skinSimple="true" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class=" col-md-3">Firma</label>
-                                    <div class="col-md-9">
-                                        <p:fileUpload value="#{usuarioBean.firmaFile}" mode="simple" skinSimple="true" />
-                                    </div>
-                                </div>
-                                <p:spacer/>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Usuario" for="Usuario" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:inputText id="Usuario" required="true" value="#{usuarioBean.usuario.usuario}" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Contraseña" for="password" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:password id="password" value="#{usuarioBean.password}" match="password2" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Confirmación de contraseña" for="password" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
-                                        <p:password id="password2" value="#{usuarioBean.password}"/>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <p:outputLabel value="Grupo" for="grupo" class="col-md-3 col-form-label"></p:outputLabel>
-                                    <div class="col-xs-9">
-                                        <p:selectOneMenu id="grupo" value="#{usuarioBean.grupo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
-                                            <f:selectItem noSelectionOption="true" itemLabel="Seleccione el grupo del usuario" itemValue="#{null}" />
-                                            <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
-                                        </p:selectOneMenu> 
-                                    </div>
-                                </div>
-                                <div> 
-                                    <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                                        <p:column headerText="Nombres" filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.nombres}" />
+                                        </p:column>
+                                        <p:column headerText="Apellidos" filterBy="#{usuario.apelidos}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.apelidos}" />
+                                        </p:column>
+                                        <p:column headerText="Cargo" filterBy="#{usuario.cargo}" filterMatchMode="exact">
+                                            <f:facet name="filter">
+                                                <p:selectOneMenu onchange="PF('usuarioTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                                                    <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}" />
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                            <h:outputText value="#{usuario.cargo.nombre}" />
+                                        </p:column>
+                                        <p:column headerText="Correo electrónico" filterBy="#{usuario.email}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.email}" />
+                                        </p:column>
+                                        <p:column headerText="Teléfono" filterBy="#{usuario.telefono}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.telefono}" />
+                                        </p:column>
+                                        <p:column headerText="Celular" filterBy="#{usuario.celular}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.celular}" />
+                                        </p:column>
+                                        <p:column headerText="Acciones">
+                                            <p:commandButton actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
+                                                             update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
+                                                             icon="ui-icon-pencil" title="Editar">
+                                            </p:commandButton>
+                                            <p:commandButton icon="ui-icon-eraser" 
+                                                             title="Borrar"
+                                                             actionListener="#{usuarioBean.eliminar(usuario)}" 
+                                                             update=":form:lstUsuarios messages"/>
+                                        </p:column>
+                                    </p:dataTable>
                                 </div>
                             </h:form>
-                        </p:dialog>
+
+                            <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="60%" >
+                                <h:form enctype="multipart/form-data">
+                                    <f:event type="preRenderView" listener="#{signaturaTree.loadCheckedByCurrentUser(usuarioBean.usuario)}" />
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#menuTab0">Datos Basicos</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab1">Asociación de Signaturas Topograficas</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2">Información Adicional</a></li>
+                                        <!--<button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>-->
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
+
+                                            <h:inputHidden id="id" value="#{usuarioBean.usuario.id}" />
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Nombres" for="Nombres" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:inputText id="Nombres" required="true" value="#{usuarioBean.usuario.nombres}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Apellidos" for="Apellidos" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:inputText id="Apellidos" required="true" value="#{usuarioBean.usuario.apelidos}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Correo electrónico" for="email" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:inputText id="email" required="true" value="#{usuarioBean.usuario.email}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Celular" for="celular" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:inputText id="celular" required="true" value="#{usuarioBean.usuario.celular}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Cargo" for="cargo" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:selectOneMenu id="cargo" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione el cargo" itemValue="#{null}" />
+                                                        <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}"/>
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class=" col-md-3">Foto</label>
+                                                <div class="col-md-9">
+                                                    <p:fileUpload value="#{usuarioBean.photoFile}" mode="simple" skinSimple="true" />
+                                                </div>
+                                            </div>
+                                            <!--
+                                            <div class="form-group row">
+                                                <label class=" col-md-3">Firma</label>
+                                                <div class="col-md-9">
+                                                    <p:fileUpload value="#{usuarioBean.firmaFile}" mode="simple" skinSimple="true" />
+                                                </div>
+                                            </div>
+                                            -->
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Usuario" for="Usuario" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:inputText id="Usuario" required="true" value="#{usuarioBean.usuario.usuario}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Contraseña" for="password" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:password id="password" value="#{usuarioBean.password}" match="password2" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Confirmación de contraseña" for="password" class="col-xs-3 col-form-label" />
+                                                <div class="col-xs-9">
+                                                    <p:password id="password2" value="#{usuarioBean.password}"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Grupo" for="grupo" class="col-md-3 col-form-label"></p:outputLabel>
+                                                <div class="col-xs-9">
+                                                    <p:selectOneMenu id="grupo" value="#{usuarioBean.grupo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione el grupo del usuario" itemValue="#{null}" />
+                                                        <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
+                                                    </p:selectOneMenu> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="menuTab1" class="col-xs-12 tab-pane fade">
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Signaturas Topograficas" for="signaturaTopografica" class="col-md-4 col-form-label"></p:outputLabel>
+                                                <div class="col-xs-8">
+                                                    <p:tree id="signaturaTopografica" value="#{signaturaTree.root}" var="signatura" class="col-xs-12" dynamic="true" selectionMode="checkbox" selection="#{usuarioBean.selectedSignaturas}">
+                                                        <p:ajax event="select" listener="#{signaturaTopograficaBean.selectDependencia}"/>
+                                                        <p:treeNode  expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed" >
+                                                            <h:outputText value="#{signatura}"/>
+                                                        </p:treeNode>
+                                                    </p:tree>
+
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div id="menuTab2" class="col-xs-12 tab-pane fade">
+                                            <div class="form-group row">
+                                                <p:outputLabel value="Firma:" for="firma" class="col-xs-4 col-form-label"></p:outputLabel>
+                                                <div class="col-xs-8">
+                                                    <p:signature id="firma" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <p:spacer/>
+                                        <div> 
+                                            <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
+                                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </p:dialog>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('usuarios') == false}">

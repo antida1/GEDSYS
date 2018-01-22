@@ -65,7 +65,7 @@ public class RadicadoImage {
             g2D.drawImage(logo, 0, 0, logo.getWidth() / Ratio, logo.getHeight() / Ratio, null);
             g2D.drawString(numeroRadicado, logo.getWidth() / Ratio, fm.getAscent());
             g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 2);
-            g2D.drawString("------ RECIBIDO POR --------", logo.getWidth() / Ratio, fm.getAscent() * 3);
+            g2D.drawString("RECIBIDO POR ---------------", logo.getWidth() / Ratio, fm.getAscent() * 3);
             g2D.drawString(Usuario, logo.getWidth() / Ratio, fm.getAscent() * 4);
             g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 5);
 

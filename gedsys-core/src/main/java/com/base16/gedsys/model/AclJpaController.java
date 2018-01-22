@@ -251,19 +251,7 @@ public class AclJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public Acl getAclByGrupoIdAndModuleId( Integer grupoId, Integer moduleId  ) {
-        EntityManager em = getEntityManager();
-        try {
-            TypedQuery<Acl> query = em.createQuery("SELECT a FROM Acl a WHERE a.grupo = :grupo AND a.modulo = :modulo", Acl.class);
-            query.setParameter("grupo", grupoId);
-            query.setParameter("modulo", moduleId);
-            return query.getSingleResult();
-        } finally {
-            em.close();
-        } 
-    }
-    
+        
     public List<Acl> findAclByGrupo( Grupo grupo  ) {
         EntityManager em = getEntityManager();
         try {
@@ -273,6 +261,32 @@ public class AclJpaController implements Serializable {
         } finally {
             em.close();
         } 
+    }
+    
+     public List<Acl> getAclByGrupdAndModule(Grupo grupo, Modulo module ) {
+        return getAclByGrupdAndModule(grupo, module, -1, -1);
+    }
+
+    public List<Acl> getAclByGrupdAndModule(Grupo grupo, Modulo module , int maxResults, int firstResult) {
+        return getAclByGrupdAndModule(grupo, module, true, maxResults, firstResult);
+    }
+
+    private List<Acl> getAclByGrupdAndModule(Grupo grupo, Modulo module , boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Acl.class));
+            Query q = em.createNamedQuery("Acl.findByGrupoAndModule", Acl.class)
+                    .setParameter("grupo", grupo)
+                    .setParameter("modulo", module);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
     }
     
 }

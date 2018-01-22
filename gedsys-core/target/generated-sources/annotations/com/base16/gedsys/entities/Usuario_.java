@@ -47,6 +47,7 @@ import com.base16.gedsys.entities.TipoDocumental;
 import com.base16.gedsys.entities.TipoDocumento;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.entities.UnidadDocumental;
+import com.base16.gedsys.entities.Usuariosignaturas;
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
@@ -54,7 +55,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-28T23:43:34")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-01-20T00:16:41")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -87,7 +88,9 @@ public class Usuario_ {
     public static volatile ListAttribute<Usuario, Comunicacioncc> comunicacionccList;
     public static volatile SingularAttribute<Usuario, String> usuario;
     public static volatile CollectionAttribute<Usuario, Consecutivo> consecutivoCollection1;
+    public static volatile ListAttribute<Usuario, Usuariosignaturas> usuariosignaturasList2;
     public static volatile CollectionAttribute<Usuario, TipoDocumento> tipoDocumentoCollection1;
+    public static volatile ListAttribute<Usuario, Usuariosignaturas> usuariosignaturasList1;
     public static volatile ListAttribute<Usuario, Carta> cartaList1;
     public static volatile ListAttribute<Usuario, Carta> cartaList2;
     public static volatile CollectionAttribute<Usuario, SignaturaTopografica> signaturaTopograficaCollection1;
@@ -127,6 +130,7 @@ public class Usuario_ {
     public static volatile SingularAttribute<Usuario, Integer> creadoPor;
     public static volatile CollectionAttribute<Usuario, Documento> documentoCollection1;
     public static volatile CollectionAttribute<Usuario, Entidad> entidadCollection1;
+    public static volatile ListAttribute<Usuario, Usuariosignaturas> usuariosignaturasList;
     public static volatile CollectionAttribute<Usuario, Entidad> entidadCollection;
     public static volatile CollectionAttribute<Usuario, Pais> paisCollection;
     public static volatile ListAttribute<Usuario, Certificado> certificadoList1;

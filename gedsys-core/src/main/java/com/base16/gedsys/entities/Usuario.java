@@ -54,6 +54,13 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
+    @OneToMany(mappedBy = "creadoPor")
+    private List<Usuariosignaturas> usuariosignaturasList;
+    @OneToMany(mappedBy = "modificadorPor")
+    private List<Usuariosignaturas> usuariosignaturasList1;
+    @OneToMany(mappedBy = "usuario")
+    private List<Usuariosignaturas> usuariosignaturasList2;
+
     @Column(name = "Firma")
     private String firma;
 
@@ -1423,6 +1430,36 @@ public class Usuario implements Serializable {
 
     public void setFirma(String firma) {
         this.firma = firma;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Usuariosignaturas> getUsuariosignaturasList() {
+        return usuariosignaturasList;
+    }
+
+    public void setUsuariosignaturasList(List<Usuariosignaturas> usuariosignaturasList) {
+        this.usuariosignaturasList = usuariosignaturasList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Usuariosignaturas> getUsuariosignaturasList1() {
+        return usuariosignaturasList1;
+    }
+
+    public void setUsuariosignaturasList1(List<Usuariosignaturas> usuariosignaturasList1) {
+        this.usuariosignaturasList1 = usuariosignaturasList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Usuariosignaturas> getUsuariosignaturasList2() {
+        return usuariosignaturasList2;
+    }
+
+    public void setUsuariosignaturasList2(List<Usuariosignaturas> usuariosignaturasList2) {
+        this.usuariosignaturasList2 = usuariosignaturasList2;
     }
     
 }

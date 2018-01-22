@@ -45,6 +45,9 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Documento> prestamo;
     private List<Documento> porVencer;
     private List<Documento> radicados;
+    private List<Documento> sinArchivar;
+    
+    
     private List<Acta> actasPorFirmar;
     private List<Carta> cartaPorFirmar;
     private List<Certificado> certificadoPorFirmar;
@@ -162,6 +165,14 @@ public class DocumentosBean extends BaseBean implements Serializable {
     public void setRadicados(List<Documento> radicados) {
         this.radicados = radicados;
     }
+
+    public List<Documento> getSinArchivar() {
+        return sinArchivar;
+    }
+
+    public void setSinArchivar(List<Documento> sinArchivar) {
+        this.sinArchivar = sinArchivar;
+    }
     
     private void listarDocumentosRadicados() {
         DocumentoJpaController dJpa;
@@ -170,7 +181,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             radicados = dJpa.findRadicados(this.getCurrentUser());
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -181,7 +192,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             recibidos = dJpa.findEntrantes(this.getCurrentUser());
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -192,7 +203,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             enviados = dJpa.findEnviados(this.getCurrentUser());
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -203,7 +214,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             prestamo = dJpa.findEnPrestamo(this.getCurrentUser());
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -214,7 +225,18 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             porVencer = dJpa.findPorVencer(this.getCurrentUser());
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+    
+       public void listarDocumentosSinArchivar() {
+        DocumentoJpaController dJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            sinArchivar = dJpa.findSinArchivar(this.getCurrentUser());
+        } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -225,7 +247,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             aJpa = new ActaJpaController(emf);
             actasPorFirmar = aJpa.findActaEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -236,7 +258,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             cJpa = new CartaJpaController(emf);
             cartaPorFirmar = cJpa.findCartaEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -247,7 +269,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             cJpa = new CertificadoJpaController(emf);
             certificadoPorFirmar = cJpa.findCertificadoEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -258,7 +280,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             cJpa = new CircularJpaController(emf);
             circularPorFirmar = cJpa.findCircularEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -269,7 +291,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             cJpa = new ComunicacionJpaController(emf);
             comunicadoPorFirmar = cJpa.findComunicacionEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -280,7 +302,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             cJpa = new ConstanciaJpaController(emf);
             constanciaPorFirmar = cJpa.findConstanciaEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -291,7 +313,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             iJpa = new InformeJpaController(emf);
             informePorFirmar = iJpa.findInformeEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -302,7 +324,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             dJpa = new DocumentoJpaController(emf);
             documentos = dJpa.findDocumentoEntities();
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -318,7 +340,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
             }
 
         } catch (Exception e) {
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 

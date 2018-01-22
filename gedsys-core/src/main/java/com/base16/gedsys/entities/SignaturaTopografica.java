@@ -8,6 +8,7 @@ package com.base16.gedsys.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +47,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "SignaturaTopografica.findRoots", query = "SELECT s FROM SignaturaTopografica s WHERE s.dependeDe is null")})
 
 public class SignaturaTopografica implements Serializable {
+
+    @OneToMany(mappedBy = "signatura")
+    private List<Usuariosignaturas> usuariosignaturasList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -211,6 +215,16 @@ public class SignaturaTopografica implements Serializable {
     @Override
     public String toString() {
         return this.nombre;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Usuariosignaturas> getUsuariosignaturasList() {
+        return usuariosignaturasList;
+    }
+
+    public void setUsuariosignaturasList(List<Usuariosignaturas> usuariosignaturasList) {
+        this.usuariosignaturasList = usuariosignaturasList;
     }
 
 }

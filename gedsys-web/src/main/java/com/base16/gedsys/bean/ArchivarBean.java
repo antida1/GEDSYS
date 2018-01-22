@@ -36,13 +36,13 @@ public class ArchivarBean extends BaseBean implements Serializable {
      */
     private static final long SerialVersionUID = 1L;
     private Documento documento;
-    private TreeNode selectedNodeSignatura =  new DefaultTreeNode();
+    private TreeNode selectedNodeSignatura = new DefaultTreeNode();
     private TipoDocumental tipoDocumental = new TipoDocumental();
-    
+
     public ArchivarBean() {
-    
+
     }
-    
+
     public Documento getDocumento() {
         return documento;
     }
@@ -74,20 +74,27 @@ public class ArchivarBean extends BaseBean implements Serializable {
 
     public void guadarDocumento() {
         if (this.selectedNodeSignatura != null) {
-            DocumentoJpaController dJpa;
-            try {
-                EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-                dJpa = new DocumentoJpaController(emf);
-                SignaturaTopografica signatura = (SignaturaTopografica)  this.selectedNodeSignatura.getData();
-                documento.setSignaturaTopografica(signatura);
-                documento.setTipoDocumental(this.tipoDocumental);
-                dJpa.edit(documento);
-                this.addMessage(new FacesMessage("Archivo de documentos", "Documento archivado correctamente"));
-            } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-                Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            if (documento.getSignaturaTopografica() == null) {
+                DocumentoJpaController dJpa;
+                try {
+                    EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+                    dJpa = new DocumentoJpaController(emf);
+                    SignaturaTopografica signatura = (SignaturaTopografica) this.selectedNodeSignatura.getData();
+                    documento.setSignaturaTopografica(signatura);
+                    documento.setTipoDocumental(this.tipoDocumental);
+                    documento.setEstado(9);
+                    dJpa.edit(documento);
+                    this.addMessage(new FacesMessage("Archivar documentos", "Documento archivado correctamente"));
+                } catch (Exception e) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+                    Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                }
+            } else {
+                 this.addMessage(new FacesMessage( FacesMessage.SEVERITY_INFO, "Archivar documentos", "El documento ya ha sido archivado"));
             }
+        } else {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Archivar", "No es posible archivar el documento, seleccione la signatura topografica!"));
         }
     }
-    
+
 }

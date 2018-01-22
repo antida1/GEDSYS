@@ -7,10 +7,13 @@ package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Grupo;
 import com.base16.gedsys.entities.GrupoUsuario;
+import com.base16.gedsys.entities.SignaturaTopografica;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.entities.Usuariosignaturas;
 import com.base16.gedsys.model.GrupoUsuarioJpaController;
 import com.base16.gedsys.model.UsuarioJpaController;
+import com.base16.gedsys.model.UsuariosignaturasJpaController;
 import com.base16.gedsys.security.Authentication;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -53,6 +57,9 @@ public class UsuarioBean extends BaseBean implements Serializable {
     private UploadedFile firmaFile;
     private String password;
 
+    private TreeNode[] selectedSignaturas;
+    private TreeNode[] signaturas;
+    
     public UploadedFile getPhotoFile() {
         return photoFile;
     }
@@ -110,7 +117,24 @@ public class UsuarioBean extends BaseBean implements Serializable {
         this.firmaFile = firmaFile;
     }
 
+    public TreeNode[] getSelectedSignaturas() {
+        return selectedSignaturas;
+    }
+
+    public void setSelectedSignaturas(TreeNode[] selectedSignaturas) {
+        this.selectedSignaturas = selectedSignaturas;
+    }
+
+    public TreeNode[] getSignaturas() {
+        return signaturas;
+    }
+
+    public void setSignaturas(TreeNode[] signaturas) {
+        this.signaturas = signaturas;
+    }
+
     public UsuarioBean() {
+        
     }
 
     public void procesar() {
@@ -131,11 +155,13 @@ public class UsuarioBean extends BaseBean implements Serializable {
     private void crear() throws Exception {
         UsuarioJpaController usrJpa;
         GrupoUsuarioJpaController guJpa;
+        UsuariosignaturasJpaController usJpa;
 
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             guJpa = new GrupoUsuarioJpaController(emf);
+            usJpa = new UsuariosignaturasJpaController(emf);
             //this.usuario.setFechaCreacion(new Date());
             //this.usuario.setFechaModificacion(new Date());
             //Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -157,6 +183,17 @@ public class UsuarioBean extends BaseBean implements Serializable {
             this.usuario.setGrupoUsuarioCollection2(grupoUsuarioCollection);
             usrJpa.create(usuario);
             emf.getCache().evictAll();
+
+            //Asociar las Asignaturas del usuario.}
+            //TODO: Convertir en funcion
+            for (TreeNode selectedSignatura : selectedSignaturas) {
+                SignaturaTopografica signatura = (SignaturaTopografica) selectedSignatura.getData();
+                Usuariosignaturas usuarioSignatura = new Usuariosignaturas();
+                usuarioSignatura.setSignatura(signatura);
+                usuarioSignatura.setUsuario(this.usuario);
+                usJpa.create(usuarioSignatura);
+            }
+
             this.listar();
         } catch (Exception e) {
             throw e;
@@ -166,10 +203,13 @@ public class UsuarioBean extends BaseBean implements Serializable {
     private void modificar() throws Exception {
         UsuarioJpaController usrJpa;
         GrupoUsuarioJpaController guJpa;
+        UsuariosignaturasJpaController usJpa;
+        
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
             guJpa = new GrupoUsuarioJpaController(emf);
+            usJpa = new UsuariosignaturasJpaController(emf);
             //this.usuario.setFechaModificacion(new Date());
             //Usuario usuario = (Usuario) SessionUtils.getUsuario();
             //this.usuario.setModificadoPor(usuario.getNombres() + " " + usuario.getApelidos());
@@ -184,10 +224,10 @@ public class UsuarioBean extends BaseBean implements Serializable {
             Collection<GrupoUsuario> grupoUsuarioCollection = new ArrayList<>();
             grupoUsuarioCollection.add(grupoUsuario);
             this.usuario.setFoto(this.getPhotoName());
-            if (firmaFile.getContents().length > 0) {
-                this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
-                uploadFirma();
-            }
+            //if (firmaFile.getContents().length > 0) {
+            //    this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
+            //    uploadFirma();
+            //}
             uploadPhoto();
             if (!this.usuario.getClave().equals(Authentication.md5(this.password))) {
                 this.usuario.setClave(Authentication.md5(this.password));
@@ -200,6 +240,19 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
             this.usuario.setGrupoUsuarioCollection2(grupoUsuarioCollection);
             usrJpa.edit(usuario);
+            
+            
+            
+            //Eliminar las Signaturas por usuario
+            //Recrear las signaturas asignadas al ausuario.
+            for (TreeNode selectedSignatura : selectedSignaturas) {
+                SignaturaTopografica signatura = (SignaturaTopografica) selectedSignatura.getData();
+                Usuariosignaturas usuarioSignatura = new Usuariosignaturas();
+                usuarioSignatura.setSignatura(signatura);
+                usuarioSignatura.setUsuario(this.usuario);
+                usJpa.create(usuarioSignatura);
+            }
+            
             emf.getCache().evictAll();
             this.listar();
         } catch (Exception e) {
@@ -246,6 +299,8 @@ public class UsuarioBean extends BaseBean implements Serializable {
                     this.grupo = grupoUsuario.getGrupo();
                     break;
                 }
+                //TODO: Cargar Signaturas topograficas.
+                
                 this.accion = "Modificar";
             }
         } catch (Exception e) {

@@ -8,7 +8,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-28T23:43:35")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-01-20T00:16:41")
 @StaticMetamodel(Circular.class)
 public class Circular_ { 
 

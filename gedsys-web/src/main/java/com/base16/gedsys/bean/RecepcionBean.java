@@ -7,23 +7,29 @@ package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.DestinatariosDoc;
+import com.base16.gedsys.entities.DiaFestivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.TipoDocumento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.entities.Entidad;
+import com.base16.gedsys.entities.Notificacion;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
+import com.base16.utils.DateTimeUtils;
 import com.base16.utils.Mensajeria;
 import com.base16.utils.UploadDocument;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -31,6 +37,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.primefaces.context.RequestContext;
@@ -245,8 +252,12 @@ public class RecepcionBean extends BaseBean implements Serializable {
             this.canPrint = false;
             this.canSave = false;
         } else {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManager em = emf.createEntityManager();
             try {
-                EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+
+                em.getTransaction().begin();
+
                 sJpa = new DocumentoJpaController(emf);
                 dJpa = new DestinatariosDocJpaController(emf);
 
@@ -255,7 +266,48 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 this.documento.setFechaModificacion(new Date());
                 this.documento.setFechaRecepcion(new Date());
                 this.documento.setCreadoPor(usuario);
-                this.documento.setRequiereRespuesta( this.documento.getTipoDocumento().getRequiereRespuesta());
+                this.documento.setRequiereRespuesta(this.documento.getTipoDocumento().getRequiereRespuesta());
+
+                //TODO: limitar festivos al año presete y futuro
+                if (this.documento.getTipoDocumento().getRequiereRespuesta()) {
+                    if (this.documento.getTipoDocumento().getTipoCalendario() == "habil") {
+                        List<Date> dates = new ArrayList<>();
+                        DiaFestivoBean diaFestivoBean = new DiaFestivoBean();
+                        diaFestivoBean.listar();
+                        for (DiaFestivo diaFestivo : diaFestivoBean.getDiaFestivos()) {
+                            dates.add(diaFestivo.getDiaFestivo());
+                        }
+                        Date fechaRespuesta;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dateWithoutTime = sdf.parse(sdf.format(new Date()));
+                        fechaRespuesta = DateTimeUtils.fechaDeRespuesta(DateTimeUtils.toCalendar(dateWithoutTime), this.documento.getTipoDocumento().getDiasRespuesta(), dates);
+                        this.documento.setFechaVencimiento(fechaRespuesta);
+                    } else {
+                        List<Date> dates = new ArrayList<>();
+                        Date fechaRespuesta;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dateWithoutTime = sdf.parse(sdf.format(new Date()));
+                        fechaRespuesta = DateTimeUtils.fechaDeRespuesta(DateTimeUtils.toCalendar(dateWithoutTime), this.documento.getTipoDocumento().getDiasRespuesta(), dates);
+                        this.documento.setFechaVencimiento(fechaRespuesta);
+                    }
+                    ScheduleView scheduleNotify = new ScheduleView();
+                    
+                    Notificacion notificacion = new Notificacion();
+                    notificacion.setAsunto(this.documento.getAsunto());
+                    notificacion.setFechaCreacion(new Date());
+                    notificacion.setCreadorPor(usuario.getId());
+                    notificacion.setFechaInicio(this.documento.getFechaVencimiento());
+                    notificacion.setFechaFinalizacion(this.documento.getFechaVencimiento());
+
+                    //TODO: Verificar las preferencias del Usuario
+                    notificacion.setNotificacionCorreo(true);
+                    notificacion.setNotificacionPopup(true);
+                    notificacion.setNotificacionPush(true);
+
+                    ScheduleBeanEvent sbEvent = new ScheduleBeanEvent(this.documento.getAsunto(), this.documento.getFechaVencimiento(), this.documento.getFechaVencimiento(), notificacion);
+                    scheduleNotify.setEvent(sbEvent);
+                    scheduleNotify.addEvent(null);
+                }
                 this.documento.setEstado(1);
                 UploadDocument uDoc = new UploadDocument();
                 uDoc.upload(documentFile, this.documenstSavePath);
@@ -280,25 +332,27 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 }
 
                 this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
-                if(this.documento.getTipoDocumento().getRequiereRespuesta()){
-                    DiaFestivoBean diaFestivo = new DiaFestivoBean();
-                    
-                }
-                sJpa.create(documento);           
-                
+                sJpa.create(documento);
+
+                //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
                 Mensajeria mensajeria = new Mensajeria();
                 mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
                 
+                em.getTransaction().commit();
                 //TODO: Pendiente registrar notificacion en base de datos acorde a la fecha
-                
                 this.limpiar();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recepción de Documentos", "Documento Almacenado exitoxamente!"));
 
             } catch (Exception e) {
                 Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error al Radicar el documento", e.getMessage()));
+                em.getTransaction().rollback();
             }
         }
+    }
+    
+    public void onEntidadChange(){
+        this.documento.setDireccion(this.documento.getEntidad().getDireccion());
     }
 
     public void limpiar() {

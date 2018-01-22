@@ -182,6 +182,10 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
         }
     }
     
+    public void getSignaturaTopogrficaByUsuario(Usuario usuario){
+        
+    }
+    
      public void selectDependencia(NodeSelectEvent event) {
         selectNode = (SignaturaTopografica) event.getTreeNode().getData();
     }

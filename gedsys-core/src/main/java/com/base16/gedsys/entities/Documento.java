@@ -47,7 +47,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findEntrantes", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 1 or d.estado = 2 or d.estado = 7 )")
     , @NamedQuery(name = "Documento.findEnviados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 3")
     , @NamedQuery(name = "Documento.findEnPrestamo", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 4 or d.estado = 6)")
-    , @NamedQuery(name = "Documento.findArchivados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 5")
+    , @NamedQuery(name = "Documento.findSinArchivar", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 5")
     , @NamedQuery(name = "Documento.findPorVencer", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 1 and d.requiereRespuesta = true ")
     , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
     , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
@@ -65,11 +65,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByRemitente", query = "SELECT d FROM Documento d WHERE d.remitente = :remitente")
     , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "Documento.findRadicados", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor")
+    //, @NamedQuery(name = "Documento.findDocumentos", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.consecutivo like :consecutivo and d.asunto like :asunto and d.fechaDocumento between :startDate and :endDate and d.tipoDocumento like :tipoDocumento ")    
+    , @NamedQuery(name = "Documento.findDocumentos", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.consecutivo like :consecutivo and d.asunto like :asunto")
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 
 public class Documento implements Serializable {
 
-   
     @OneToMany(mappedBy = "documento")
     private List<Comentario> comentarioList;
 
