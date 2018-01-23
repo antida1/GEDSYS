@@ -30,16 +30,10 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="paisTabla" id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0" rows="10"
+                                <p:dataTable widgetVar="paisTabla" id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0" rows="10" reflow="true"
                                              paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
-                                    <f:facet name="header">
-                                        
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstPaises" trigger="toggler" />
-                                    </f:facet>
+                                             rowsPerPageTemplate="5,10,15">                               
                                     <p:column headerText="Código" filterBy="#{pais.codigo}" filterMatchMode="contains">
                                         <h:outputText value="#{pais.codigo}" />
                                     </p:column>
@@ -74,17 +68,21 @@
                                         </f:facet>
                                         <h:outputText value="#{pais.modificadoPor.nombres} #{pais.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
                                                          update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
-                                        </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+                                        </p:commandButton>                                    
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{paisBean.eliminar(pais)}" 
-                                                         update=":form:lstPaises messages"/>
+                                                         update=":form:lstPaises messages">
+                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -95,13 +93,13 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="Codigo" required="true" value="#{paisBean.pais.codigo}" class="form-control" />
+                                        <p:inputText id="Codigo" required="true" requiredMessage="Error, el código del país no puede estar vacío" value="#{paisBean.pais.codigo}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:inputText id="Nombre" required="true" value="#{paisBean.pais.nombre}" class="form-control"/>
+                                        <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre del país no puede estar vacío" value="#{paisBean.pais.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <p:spacer/>

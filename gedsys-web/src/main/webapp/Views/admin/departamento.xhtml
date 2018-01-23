@@ -28,17 +28,11 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="departamentoTabla" id="lstDepartamentos" var="departamento" value="#{departamentoBean.departamentos}" style="margin-bottom:0" rows="10"
+                                <p:dataTable widgetVar="departamentoTabla" id="lstDepartamentos" var="departamento" value="#{departamentoBean.departamentos}" style="margin-bottom:0" rows="10" reflow="true"
                                              paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
-                                    <f:facet name="header">
-
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstDepartamentos" trigger="toggler" />
-                                    </f:facet>
-                                    <p:column headerText="País" filterBy="#{departamento.pais}" filterMatchMode="exact">
+                                   <p:column headerText="País" filterBy="#{departamento.pais}" filterMatchMode="exact">
                                         <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('departamentoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
@@ -90,7 +84,7 @@
                                                          title="Borrar"
                                                          actionListener="#{departamentoBean.eliminar(departamento)}" 
                                                          update=":form:lstDepartamentos messages">
-                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                             <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -107,7 +101,7 @@
                             <div class="form-group row">
                                 <p:outputLabel value="País" for="pais" class="col-xs-3 col-form-label"/>
                                 <div class="col-xs-9">
-                                    <p:selectOneMenu id="pais" value="#{departamentoBean.departamento.pais}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
+                                    <p:selectOneMenu id="pais" value="#{departamentoBean.departamento.pais}" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="Error, debe seleccionar el país" style="width: 100%">
                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
                                         <f:selectItems value="#{paisBean.paises}" var="pais" itemLabel="#{pais.nombre}" itemValue="#{pais}" />
                                     </p:selectOneMenu>
@@ -116,13 +110,13 @@
                             <div class="form-group row">
                                 <p:outputLabel value="Código" for="codigo" class="col-xs-3 col-form-label" />
                                 <div class="col-xs-9">
-                                    <p:inputText id="codigo" required="true" value="#{departamentoBean.departamento.codigo}" style="width: 100%"/>
+                                    <p:inputText id="codigo" required="true" requiredMessage="Error, el código del departamento no puede estar vacío" value="#{departamentoBean.departamento.codigo}" style="width: 100%"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
                                 <div class="col-xs-9">
-                                    <p:inputText id="Nombre" required="true" value="#{departamentoBean.departamento.name}" style="width: 100%"/>
+                                    <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre del departamento no puede estar vacío" value="#{departamentoBean.departamento.name}" style="width: 100%"/>
                                 </div>
                             </div>
                             <p:spacer/>

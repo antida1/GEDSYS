@@ -68,16 +68,16 @@ public class DiaFestivoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Dia Festivo", "Dia Festivo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo creado!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Dia Festivo", "Dia Festivo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo Modificado!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('diaDialog').hide()");
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dia Festivo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Día Festivo", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -121,10 +121,10 @@ public class DiaFestivoBean extends BaseBean implements Serializable {
             ssJpa = new DiaFestivoJpaController(emf);
             ssJpa.destroy(diaFestivo.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Dia Festivo", "Dia Festivo Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo Eliminado!"));
 
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dia Festivo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Día Festivo", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

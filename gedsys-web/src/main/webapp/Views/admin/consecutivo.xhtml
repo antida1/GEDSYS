@@ -26,16 +26,11 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="50"
+                                <p:dataTable widgetVar="consecutivoTabla" id="lstConsecutivos" var="consecutivo" value="#{consecutivoBean.consecutivos}" style="margin-bottom:0" rows="50" reflow="true"
                                              paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15,20,30,50">
-                                    <f:facet name="header">
-
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstConsecutivos" trigger="toggler" />
-                                    </f:facet>
+                              
                                     <p:column headerText="Prefijo" filterBy="#{consecutivo.prefijo}" filterMatchMode="contains">
                                         <h:outputText value="#{consecutivo.prefijo}" />
                                     </p:column>
@@ -60,7 +55,7 @@
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{consecutivo.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width: 100%" >
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
@@ -69,7 +64,7 @@
                                     </p:column>
                                     <p:column headerText="Modificado por" filterBy="#{consecutivo.modificadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu onchange="PF('consecutivoTabla').filter()" converter="omnifaces.SelectItemsConverter"  style="width: 100%">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
@@ -86,7 +81,7 @@
                                                          title="Borrar"
                                                          actionListener="#{consecutivoBean.eliminar(consecutivo)}"
                                                          update=":form:lstConsecutivos messages">
-                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                             <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -109,7 +104,7 @@
                             <div class="form-group row">
                                 <p:outputLabel value="Consecutivo" for="Consecutivo" class="col-xs-5 col-form-label" />
                                 <div class="col-xs-7">
-                                    <p:inputText id="Consecutivo" required="true" value="#{consecutivoBean.consecutivo.consecutivo}" class="form-control"/>
+                                    <p:inputText id="Consecutivo" required="true" requiredMessage="Error, el consecutivo no puede estar vacío" value="#{consecutivoBean.consecutivo.consecutivo}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">

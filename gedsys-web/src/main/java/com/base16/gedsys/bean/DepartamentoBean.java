@@ -68,11 +68,11 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "Departamento creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento creado!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "Departamento Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento Modificado!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('departamentoDialog').hide()");
@@ -122,7 +122,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             ssJpa = new DepartamentoJpaController(emf);
             ssJpa.destroy(departamento.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "Departamento Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento Eliminado!"));
 
         } catch (Exception e) {
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);

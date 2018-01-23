@@ -26,19 +26,14 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="transportadorTabla" id="lstTransportadores" var="transportador" value="#{transportadorBean.transportadores}" style="margin-bottom:0" rows="10"
+                                
+                                <p:dataTable widgetVar="transportadorTabla" id="lstTransportadores" var="transportador" value="#{transportadorBean.transportadores}" style="margin-bottom:0" rows="10" reflow="true"
                                 paginator="true" scrollable="true" scrollHeight="250"
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                rowsPerPageTemplate="5,10,15">
-                                    <f:facet name="header">
-                                        
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstTransportadores" trigger="toggler" />
-                                    </f:facet>
+                                rowsPerPageTemplate="5,10,15">                                  
                                     <p:column headerText="Tipo de documento" filterBy="#{transportador.tipoDocumento}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('transportadorTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu onchange="PF('transportadorTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:130px;">
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                                 <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                                 <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
@@ -65,17 +60,22 @@
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Editar">
-                                        <p:commandButton actionListener="#{transportadorBean.getTransportadorById(transportador)}" 
+                                     <p:column headerText="Acciones">
+                                       <p:commandButton actionListener="#{transportadorBean.getTransportadorById(transportador)}" 
                                                          update=":dlgDetalle" oncomplete="PF('transportadorDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
+                                       
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{transportadorBean.eliminar(transportador)}" 
-                                                         update=":form:lstTransportadores messages"/>
+                                                         update=":form:lstTransportadores messages">                                        
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -86,7 +86,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-5 col-form-label"/>
                                     <div class="col-xs-7">
-                                        <p:selectOneMenu id="tipoDocumento" value="#{transportadorBean.transportador.tipoDocumento}">
+                                        <p:selectOneMenu id="tipoDocumento" value="#{transportadorBean.transportador.tipoDocumento}" required="true" requiredMessage="Error, debe seleccionar un tipo de documento">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                             <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
@@ -98,19 +98,19 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-5 col-form-label"/>
                                     <div class="col-xs-7">
-                                        <p:inputText id="numeroDocumento" required="true" value="#{transportadorBean.transportador.numeroDocumento}" style="width: 100%"/>
+                                        <p:inputText id="numeroDocumento" required="true" requiredMessage="Error, el número de documento no puede estar vacío" value="#{transportadorBean.transportador.numeroDocumento}" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:inputText id="Nombre" required="true" value="#{transportadorBean.transportador.nombre}" style="width: 100%"/>
+                                        <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre no puede estar vacío" value="#{transportadorBean.transportador.nombre}" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Teléfono" for="telefono" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="telefono" required="true" value="#{transportadorBean.transportador.telefono}"  style="width: 100%"/>
+                                        <p:inputText id="telefono" required="true" requiredMessage="Error, el número de teléfono no puede estar vacío" value="#{transportadorBean.transportador.telefono}"  style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -122,13 +122,15 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Email" for="email" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="email" required="true" value="#{transportadorBean.transportador.email}" style="width: 100%"/>
+                                        <p:inputText id="email" required="true" requiredMessage="Error, el correo electrónico no puede estar vacío" validatorMessage="Error, el formato del correo electrónico no es correcto" value="#{transportadorBean.transportador.email}" style="width: 100%">
+                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText>
                                     </div>
                                 </div>
 
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstTransportadores messages" icon="ui-icon-disk" value="#{transportadorBean.accion}" actionListener="#{transportadorBean.procesar()}" oncomplete="PF('transportadorDialog').hide()" />
+                                    <p:commandButton update=":form:lstTransportadores messages" icon="ui-icon-disk" value="#{transportadorBean.accion}" actionListener="#{transportadorBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('transportadorDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

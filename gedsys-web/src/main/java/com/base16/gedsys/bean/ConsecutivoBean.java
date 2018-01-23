@@ -73,12 +73,12 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "Consecutivo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo creado!"));
 
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "Consecutivo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo Modificado!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('consecutivoDialog').hide()");
@@ -128,7 +128,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             cJpa = new ConsecutivoJpaController(emf);
             cJpa.destroy(consecutivo.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "Consecutivo Eliminado!"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo Eliminado!"));
         } catch (Exception e) {
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
