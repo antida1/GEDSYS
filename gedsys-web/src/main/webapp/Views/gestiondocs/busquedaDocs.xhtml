@@ -98,7 +98,7 @@
                                             <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                             <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantes)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
-                                            <p:commandLink type="button" title="Info" action="#{documentoInfoViewBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-exclamation-circle" aria-hidden="true"/></p:commandLink>                                               
+                                            <p:commandLink type="button" title="Info" action="#{documentoInfoViewBean.loadDocumento(docsEntrantes)}"  update=":dlgInfoDoc"><span class="glyphicon fa fa-fw fa-exclamation-circle" aria-hidden="true"/></p:commandLink>                                               
                                         </p:column>
                                     </p:dataTable>
                                 </div>
@@ -133,7 +133,7 @@
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgInfoDoc" header="Compartir documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                    <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="700">
                         <h:form>
                             <ui:include src="infoDocumento.xhtml">
                             </ui:include>

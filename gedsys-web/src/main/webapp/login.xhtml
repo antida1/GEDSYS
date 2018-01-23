@@ -25,15 +25,16 @@
                                         <h:form id="login-form">
                                             <div class="row">
                                                 <div class="col s12 input-field">
-                                                    <p:inputText id="txtUsuario" required="true" requiredMessage="El nombre de usuario de requerido!" value="#{login.userName}" />
+                                                    <p:inputText id="txtUsuario" tabindex="1" required="true" requiredMessage="El nombre de usuario de requerido!" value="#{login.userName}" />
                                                     <p:outputLabel for="txtUsuario" value="Usuario:"/>
                                                 </div>
                                                 <div class="col s12 input-field"> 
-                                                    <p:password id="txtClave" required="true" requiredMessage="La contraseña es requerida" value="#{login.clave}" />
+                                                    <p:password id="txtClave" required="true" tabindex="2" requiredMessage="La contraseña es requerida" value="#{login.clave}" />
                                                     <p:outputLabel for="txtClave" value="Contraseña:"/>
                                                 </div>
                                                 <div class="col s12 input-field"> 
-                                                    <p:commandLink value="Iniciar Sesión" styleClass="btn btn-large" actionListener="#{login.iniciarSesion()}" oncomplete="manejarInicio(xhr, status, args)" update=":mensajes" />
+                                                    <p:commandLink id="inicio" value="Iniciar Sesión" tabindex="3" styleClass="btn btn-large" actionListener="#{login.iniciarSesion()}" oncomplete="manejarInicio(xhr, status, args)" update=":mensajes" />
+                                                    <p:defaultCommand target="inicio" />
                                                 </div>
                                             </div>
                                         </h:form>
