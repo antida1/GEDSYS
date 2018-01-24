@@ -66,10 +66,7 @@
                                     <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{busquedaDocumentosBean.documentos}" style="margin-bottom:0" rows="50"
                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                  rowsPerPageTemplate="5,10,15,30,50">
-                                        <f:facet name="header">
-                                            <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                            <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
-                                        </f:facet>
+                                       
                                         <p:column headerText="Redicado">
                                             <h:outputText value="#{docsEntrantes.consecutivo}" />
                                         </p:column>
@@ -133,7 +130,7 @@
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="700">
+                    <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="600">
                         <h:form>
                             <ui:include src="infoDocumento.xhtml">
                             </ui:include>
