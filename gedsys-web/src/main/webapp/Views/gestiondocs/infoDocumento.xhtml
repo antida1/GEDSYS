@@ -1,17 +1,147 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
     <body>
 
-        <ui:composition template="./../../Template/plantilla.xhtml">
-
-            <ui:define name="content">
-                
-            </ui:define>
-
-        </ui:composition>
-
+        <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+        <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
+        <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
+        <f:event type="preRenderView" listener="#{mediosRepEnvBean.listar()}" />
+        <p:growl id="messages"  showDetail="true" />
+        <div class="col-xs-6 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="entidad">Entidad remitente 
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.entidad.nombre}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="direccion">Dirección </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.direccion}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="municipio">Municipio 
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.municipio.nombre}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="remitente">Remitente</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.remitente}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="asunto">Asunto 
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.asunto}" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="last-name">Fecha del documento</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.fechaDocumento}" ></p:outputLabel>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <h:inputHidden id="consecutivo" value="#{recepcionBean.documento.consecutivo}" />
+                <label class=" col-xs-4" for="tipoDocumentoExterno">Tipo de documento</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.tipoDocumento.nombre}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="Destinatarios">Destinatario Principal
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.destinatario.nombres} #{documentoInfoViewBean.documento.destinatario.apelidos}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="Destinatarios">Con Copia a 
+                </label>
+                <div class="col-xs-8">
+                    <c:forEach var="dest" items="#{documentoInfoViewBean.documento.destinatariosDocCollection}">
+                        <p:outputLabel value="#{dest.destinatarioId.nombres} #{dest.destinatarioId.apelidos}" />
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-2" for="detalle">Detalle 
+                </label>
+                <div class="col-xs-10" style="padding-left: 0;">
+                    <p:inputTextarea id="detalle" value="#{documentoInfoViewBean.documento.detalle}" rows="6" cols="220" style="width: 100%" counter="counter" maxlength="600" counterTemplate="{0} characters remaining." autoResize="false" disabled="true"/>
+                    <h:outputText id="counter" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="anexos">Anexos 
+                </label>
+                <div class="col-xs-8">
+                    <p:inputSwitch id="anexos" value="#{documentoInfoViewBean.documento.anexos}" onLabel="Sí" offLabel="No"  disabled="true" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="libros">Descripción del anexo </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.libros}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.transportador.nombre}" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="folios">Folios 
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.folios}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="medioEnvio">Medio de recepción 
+                </label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.medioEnvio.nombre}" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 form-group">
+            <div class="col-xs-12">
+                <label class=" col-xs-4">Tipo Documental</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.tipoDocumental.nombre}" />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class=" col-xs-4" for="medioEnvio">Signatura Topografica</label>
+                <div class="col-xs-8">
+                    <p:outputLabel value="#{documentoInfoViewBean.documento.signaturaTopografica.nombre}" />
+                </div>
+            </div>
+        </div>
     </body>
 </html>
