@@ -7,7 +7,7 @@
 
 
     <h:body>
-         <p:growl id="messages"  showDetail="true" />
+        <p:growl id="messages"  showDetail="true" />
         <div class="row">
             <div class="col-xs-5">
 
@@ -44,33 +44,28 @@
                         <p:calendar id="fechaDevolucion" showOn="button" />
                     </div>
                 </div>
-                    <div class="form-group row">
-                        <p:outputLabel value="Observación préstamo" class="col-xs-3 col-form-label" ></p:outputLabel>
-                        <div class="col-xs-9">
-                            <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%"/>                 
-                        </div>
+                <div class="form-group row">
+                    <p:outputLabel value="Observación préstamo" class="col-xs-3 col-form-label" ></p:outputLabel>
+                    <div class="col-xs-9">
+                        <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%"/>                 
                     </div>
+                </div>
 
-                    <div class="form-group row">
-                        <p:outputLabel value="Firma:" class="col-xs-3 col-form-label"></p:outputLabel>
-                        <div class="col-xs-9">
-                            <p:signature style="width:400px;height:150px" widgetVar="NuevoFirma" value="#{null}" required="true" guideline="true"/>
-                        </div>
+                <div class="form-group row">
+                    <p:outputLabel value="Firma:" class="col-xs-3 col-form-label"></p:outputLabel>
+                    <div class="col-xs-9">
+                        <p:signature style="width:400px;height:150px" widgetVar="NuevoFirma" value="#{null}" required="true" guideline="true"/>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-xs-8"></div>
-                        <div>
-                            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{signaturaTopograficaBean.accion}" oncomplete="PF('nuevoDialog').hide()" update="messages" />
-                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('nuevoDialog').hide()"></p:commandButton>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-8"></div>
+                    <div>
+                        <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{signaturaTopograficaBean.accion}" oncomplete="PF('nuevoDialog').hide()" update="messages" />
+                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('nuevoDialog').hide()"></p:commandButton>
                     </div>
                 </div>
             </div>
-
-       
-
-
-
+        </div>
     </h:body>
 </html>
 

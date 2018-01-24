@@ -9,6 +9,7 @@ import com.base16.gedsys.entities.Documento;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -16,10 +17,10 @@ import org.primefaces.context.RequestContext;
  * @author rober
  */
 @Named(value = "documentoInfoViewBean")
-@RequestScoped
+@ViewScoped
 public class DocumentoInfoViewBean extends BaseBean implements Serializable {
 
-    private Documento documento = null;
+    private Documento documento;
 
     public Documento getDocumento() {
         return documento;
@@ -28,16 +29,20 @@ public class DocumentoInfoViewBean extends BaseBean implements Serializable {
     public void setDocumento(Documento documento) {
         this.documento = documento;
     }
-    
+
     /**
      * Creates a new instance of DocumentoInfoViewBean
      */
     public DocumentoInfoViewBean() {
     }
-    
-     public void loadDocumento(Documento doc) {
+
+    public void loadDocumento(Documento doc) {
         this.documento = doc;
         RequestContext.getCurrentInstance().execute("PF('denInfoDoc').show()");
     }
     
+    public String getSingaturaTopografica(){
+        return "";
+    }
+
 }
