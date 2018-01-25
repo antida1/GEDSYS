@@ -86,6 +86,30 @@
                             </div>
                         </h:form>
                     </p:dialog>
+                    <p:dialog id="dlgVisorCertificado" header="Visor de Certificados" widgetVar="denVisorCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCertificado').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorCircular" header="Visor de Circulares" widgetVar="denVisorCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{circularViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorComunicacion" header="Visor de Comunicaciones Internas" widgetVar="denVisorComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorComunicacion').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('producciondoc') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

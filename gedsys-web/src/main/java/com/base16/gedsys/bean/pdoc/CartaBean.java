@@ -138,7 +138,7 @@ public class CartaBean extends BaseBean implements Serializable {
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 

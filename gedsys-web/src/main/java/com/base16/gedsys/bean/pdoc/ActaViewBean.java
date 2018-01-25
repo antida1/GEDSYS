@@ -64,11 +64,6 @@ public class ActaViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            ActaJpaController aJpa;
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            aJpa = new ActaJpaController(emf);
-            Acta _acta = aJpa.findActa(acta.getId());
-            
             TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "acta.odt");
 
             TextNavigation searchConsecutivo;
@@ -88,7 +83,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
                 TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
-                if (acta.getConsecutivo() == null) {
+                if (acta.getConsecutivo() == null || acta.getConsecutivo()== "") {
                     item.replaceWith(" ");
                 } else {
                     item.replaceWith(acta.getConsecutivo());
@@ -171,13 +166,13 @@ public class ActaViewBean extends BaseBean implements Serializable {
             searchPresidente = new TextNavigation("@presidente", odt);
             while (searchPresidente.hasNext()) {
                 TextSelection item = (TextSelection) searchPresidente.nextSelection();
-                item.replaceWith(acta.getPresidente().getNombres() + " " + acta.getPresidente().getApelidos() + " " + acta.getPresidente().getCargo().getNombre());
+                item.replaceWith(acta.getPresidente().getNombres() + " " + acta.getPresidente().getApelidos() + " ");
             }
 
             searchSecretaria = new TextNavigation("@secretaria", odt);
             while (searchSecretaria.hasNext()) {
                 TextSelection item = (TextSelection) searchSecretaria.nextSelection();
-                item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " " + acta.getSecretaria().getCargo().getNombre());
+                item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " ");
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");

@@ -55,7 +55,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
      * Creates a new instance of ComunicacionBean
      */
     private static final long SerialVersionUID = 1L;
-    private Comunicacion comunicacion;
+    private Comunicacion comunicacion = new Comunicacion();
     private List<Comunicacion> comunicaciones;
     private String accion;
 
@@ -64,6 +64,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
     
     public ComunicacionBean() {
         this.accion = "Crear";
+        this.comunicacion.setFecha(new Date());
     }
 
     public Comunicacion getComunicacion() {
@@ -91,20 +92,21 @@ public class ComunicacionBean extends BaseBean implements Serializable {
     }
        
     public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Comunicación interna creada exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Comunicación interna modificada exitosamente!"));
                     break;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
+            Logger.getLogger(ComunicacionBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -141,95 +143,95 @@ public class ComunicacionBean extends BaseBean implements Serializable {
         this.comunicacion.setEstado("3");
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "comunicacion.odt");
-            TextNavigation searchFecha;
-            TextNavigation consecutivo;
-            TextNavigation destinatario;
-            TextNavigation firma_remitente;
-            TextNavigation asunto;
-            TextNavigation contenido;
-            TextNavigation remitente;
-            TextNavigation anexos;
-            TextNavigation copia;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.comunicacion.getFecha(), "dd-mm-yyyy"));
-            }
-
-            consecutivo = new TextNavigation("@consecutivo", odt);
-            while (consecutivo.hasNext()) {
-                TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith("");
-            }
-
-            destinatario = new TextNavigation("@destinatario", odt);
-            while (destinatario.hasNext()) {
-                TextSelection item = (TextSelection) destinatario.nextSelection();
-                item.replaceWith(this.comunicacion.getDestinatario().getNombres() + " " +this.comunicacion.getDestinatario().getApelidos() + " " + this.comunicacion.getDestinatario().getCargo().getNombre() );
-            }
-
-            asunto = new TextNavigation("@asunto", odt);
-            while (asunto.hasNext()) {
-                TextSelection item = (TextSelection) asunto.nextSelection();
-                item.replaceWith(this.comunicacion.getAsunto());
-            }
-
-            contenido = new TextNavigation("@contenido", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(this.comunicacion.getContenido());
-            }
-
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.comunicacion.getRemitente().getNombres() + " " + this.comunicacion.getRemitente().getApelidos());
-            }
-
-            firma_remitente = new TextNavigation("@firma_remitente", odt);
-            while (firma_remitente.hasNext()) {
-                TextSelection item = (TextSelection) firma_remitente.nextSelection();
-                item.replaceWith(this.comunicacion.getRemitente().getNombres() + " " + this.comunicacion.getRemitente().getApelidos() + " " + this.comunicacion.getRemitente().getCargo().getNombre());
-            }
-            
-             anexos = new TextNavigation("@anexos", odt);
-            while (anexos.hasNext()) {
-                TextSelection item = (TextSelection) anexos.nextSelection();
-                item.replaceWith("");
-            }
-            
-             copia = new TextNavigation("@copia", odt);
-            while (copia.hasNext()) {
-                TextSelection item = (TextSelection) copia.nextSelection();
-                item.replaceWith("");
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".odt");
-            odt.close();
-
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Comunicaciones" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Comunicaciones" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "comunicacion.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation consecutivo;
+//            TextNavigation destinatario;
+//            TextNavigation firma_remitente;
+//            TextNavigation asunto;
+//            TextNavigation contenido;
+//            TextNavigation remitente;
+//            TextNavigation anexos;
+//            TextNavigation copia;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.comunicacion.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            consecutivo = new TextNavigation("@consecutivo", odt);
+//            while (consecutivo.hasNext()) {
+//                TextSelection item = (TextSelection) consecutivo.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            destinatario = new TextNavigation("@destinatario", odt);
+//            while (destinatario.hasNext()) {
+//                TextSelection item = (TextSelection) destinatario.nextSelection();
+//                item.replaceWith(this.comunicacion.getDestinatario().getNombres() + " " +this.comunicacion.getDestinatario().getApelidos() + " " + this.comunicacion.getDestinatario().getCargo().getNombre() );
+//            }
+//
+//            asunto = new TextNavigation("@asunto", odt);
+//            while (asunto.hasNext()) {
+//                TextSelection item = (TextSelection) asunto.nextSelection();
+//                item.replaceWith(this.comunicacion.getAsunto());
+//            }
+//
+//            contenido = new TextNavigation("@contenido", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) contenido.nextSelection();
+//                item.replaceWith(this.comunicacion.getContenido());
+//            }
+//
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.comunicacion.getRemitente().getNombres() + " " + this.comunicacion.getRemitente().getApelidos());
+//            }
+//
+//            firma_remitente = new TextNavigation("@firma_remitente", odt);
+//            while (firma_remitente.hasNext()) {
+//                TextSelection item = (TextSelection) firma_remitente.nextSelection();
+//                item.replaceWith(this.comunicacion.getRemitente().getNombres() + " " + this.comunicacion.getRemitente().getApelidos() + " " + this.comunicacion.getRemitente().getCargo().getNombre());
+//            }
+//            
+//             anexos = new TextNavigation("@anexos", odt);
+//            while (anexos.hasNext()) {
+//                TextSelection item = (TextSelection) anexos.nextSelection();
+//                item.replaceWith("");
+//            }
+//            
+//             copia = new TextNavigation("@copia", odt);
+//            while (copia.hasNext()) {
+//                TextSelection item = (TextSelection) copia.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".odt");
+//            odt.close();
+//
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Comunicaciones" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Comunicaciones" + File.separatorChar + "comunicacion" + this.comunicacion.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
 
     private void loadDocument() {
         try {
