@@ -19,7 +19,7 @@
                     <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
                     <f:event type="preRenderView" listener="#{mediosRepEnvBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" widgetVar="messageGrowl" />
-                    <div class="x_panel col-xs-10 col-xs-offset-1">
+                    <div class="x_panel col-xs-12">
                         <div class="x_title col-xs-12">
                             <h2>Ventanilla única<small>Digitalización o carga</small></h2>
                             <div class="clear"></div>
@@ -185,7 +185,7 @@
                                             <p:fileUpload value="#{recepcionBean.documentFile}" fileUploadListener="#{recepcionBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
                                         </div>
                                         <div>
-                                            <p:commandLink   onclick="sendMessage('scan:duplex')" value="Scanear" />
+<!--                                            <p:commandLink   onclick="sendMessage('scan:duplex')" value="Scanear" />-->
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +195,7 @@
                                         <p:commandButton widgetVar="printRad" update=":form" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px;" disabled="#{recepcionBean.canPrint}" ></p:commandButton>
                                         <p:commandButton widgetVar="saveDoc" update=":form messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px; " disabled="#{recepcionBean.canSave}" />
                                         <p:commandButton class="btn-default" value="Cancelar" immediate="true" style="float:right;"></p:commandButton>
-                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" style="overflow:auto;">
                                             <ui:include src="newRadicadoRecepcion.xhtml">
                                                 <ui:param name="tipoRadicado" value="externo" />
                                                 <ui:param name="consectivoExterno" value="#{recepcionBean.documento.consecutivo}" />

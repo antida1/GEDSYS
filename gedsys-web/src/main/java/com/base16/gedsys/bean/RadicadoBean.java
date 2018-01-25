@@ -94,11 +94,12 @@ public class RadicadoBean extends BaseBean implements Serializable {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            String UsuarioName =usuario.getNombres() + usuario.getApelidos();
+            String UsuarioName =usuario.getNombres()+ " " + usuario.getApelidos();
             String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+            String nombreEntidad = this.nombreEntidad;
             this.radicado = name;
             
-            fileName = ri.Generar(name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar, UsuarioName );
+            fileName = ri.Generar(nombreEntidad, name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar, UsuarioName );
 
             File file = new File(this.documenstSavePath+ File.separatorChar + this.fileName);
             if (file.canRead()) {

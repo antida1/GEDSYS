@@ -24,6 +24,7 @@ public class BaseBean {
     String configFilePath = "";
     String documenstSavePath = "";
     String appName = "";
+    String nombreEntidad = "";
     Boolean encriptFiles;
     
     public BaseBean() {
@@ -31,7 +32,7 @@ public class BaseBean {
             configFilePath = WebConfiguration.getInstance().getConfigFilePath();
             documenstSavePath = WebConfiguration.getInstance().getProperty("PathData");
             encriptFiles = Boolean.parseBoolean(WebConfiguration.getInstance().getProperty("protectFile"));
-
+            nombreEntidad = WebConfiguration.getInstance().getProperty("nombreEntidad");
         } catch (NamingException ex) {
             Logger.getLogger(BaseBean.class.getName()).log(Level.SEVERE, null, ex);
         }
