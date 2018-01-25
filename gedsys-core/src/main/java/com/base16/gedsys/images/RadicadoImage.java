@@ -33,18 +33,18 @@ import javax.imageio.ImageIO;
  */
 public class RadicadoImage {
 
-    public String Generar(String numeroRadicado, String logoPath, String destinationPath, String Usuario) {
+    public String Generar(String nombreEntidad, String numeroRadicado, String logoPath, String destinationPath, String Usuario) {
         try {
             File path = new File(logoPath);
             BufferedImage logo = ImageIO.read(new File(path, "logoInstitucion.png"));
             BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             //BufferedImage imageBar = (BufferedImage) this.GenerarCodeBar(numeroRadicado);
-            int Ratio = 4;
+            int Ratio = 3;
             Graphics2D g2D = img.createGraphics();
             Font font = new Font("Monospaced", Font.BOLD, 10);
             g2D.setFont(font);
             FontMetrics fm = g2D.getFontMetrics();
-            int width = fm.stringWidth("------------------------------") + (logo.getWidth() / 6);
+            int width = fm.stringWidth("------------------------------") + (logo.getWidth() / Ratio);
             //int height = Math.max(fm.getHeight() * 5, (logo.getHeight()+imageBar.getHeight() / Ratio));
             int height = Math.max(fm.getHeight() * 6, (logo.getHeight() / Ratio));
             g2D.dispose();
@@ -63,17 +63,25 @@ public class RadicadoImage {
             fm = g2D.getFontMetrics();
             g2D.setColor(Color.black);
             g2D.drawImage(logo, 0, 0, logo.getWidth() / Ratio, logo.getHeight() / Ratio, null);
-            g2D.drawString(numeroRadicado, logo.getWidth() / Ratio, fm.getAscent());
-            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 2);
-            g2D.drawString("RECIBIDO POR ---------------", logo.getWidth() / Ratio, fm.getAscent() * 3);
-            g2D.drawString(Usuario, logo.getWidth() / Ratio, fm.getAscent() * 4);
-            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 5);
+            
+            g2D.drawString(nombreEntidad, logo.getWidth() / Ratio, fm.getAscent());
+            font = new Font("Monospaced", Font.BOLD, 12);
+            g2D.setFont(font);
+            g2D.drawString(numeroRadicado, logo.getWidth() / Ratio, fm.getAscent() *2 );
+            
+            
+            font = new Font("Monospaced", Font.BOLD, 10);
+            g2D.setFont(font);
+            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 3);
+            g2D.drawString("RECIBIDO POR -----------------", logo.getWidth() / Ratio, fm.getAscent() * 4);
+            g2D.drawString(Usuario, logo.getWidth() / Ratio, fm.getAscent() * 5);
+            g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 6);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date today = new Date();
             g2D.setColor(Color.black);
 
-            g2D.drawString(sdf.format(today), logo.getWidth() / Ratio, fm.getAscent() * 6);
+            g2D.drawString(sdf.format(today), logo.getWidth() / Ratio, fm.getAscent() * 7);
             //g2D.drawImage(img, 0, logo.getHeight(), imageBar.getWidth() , imageBar.getHeight()/Ratio, null);
             g2D.dispose();
             

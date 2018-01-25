@@ -73,11 +73,20 @@ public class Entidad implements Serializable {
     private String telefono;
     @Column(name = "TipoDocumento")
     private String tipoDocumento;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "entidad")
     private Collection<Documento> documentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;

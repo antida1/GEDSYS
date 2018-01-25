@@ -25,6 +25,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -71,6 +73,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Documento implements Serializable {
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "documento")
     private List<Comentario> comentarioList;
 
@@ -137,51 +141,102 @@ public class Documento implements Serializable {
     @Column(name = "FechaVencimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
     @ManyToOne
-    private Usuario destinatario;
+    private Usuario destinatario;  
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario creadoPor;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Autor", referencedColumnName = "Id")
     @ManyToOne
     private Autor autor;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "ClaseDocumento", referencedColumnName = "id")
     @ManyToOne
     private ClaseDocumento claseDocumento;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Corregimiento", referencedColumnName = "Id")
     @ManyToOne
     private Corregimiento corregimiento;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "documentoRelacionado")
     private Collection<Documento> documentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "DocumentoRelacionado", referencedColumnName = "Id")
     @ManyToOne
     private Documento documentoRelacionado;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Entidad", referencedColumnName = "id")
     @ManyToOne
     private Entidad entidad;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "TipoDocumento", referencedColumnName = "Id")
     @ManyToOne
     private TipoDocumento tipoDocumento;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Municipio", referencedColumnName = "Id")
     @ManyToOne
     private Municipio municipio;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Transportador", referencedColumnName = "Id")
     @ManyToOne
     private Transportador transportador;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "SignaturaTopografica", referencedColumnName = "Id")
     @ManyToOne
     private SignaturaTopografica signaturaTopografica;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "TipoDocumental", referencedColumnName = "Id")
     @ManyToOne
     private TipoDocumental tipoDocumental;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "documentoId")
     private Collection<DestinatariosDoc> destinatariosDocCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "documento")
     private Collection<ProcesoDocumental> procesodocumentalCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "MedioEnvio", referencedColumnName = "Id")
     @ManyToOne
     private Mediorecepcion medioEnvio;
@@ -233,6 +288,8 @@ public class Documento implements Serializable {
         this.consecutivo = consecutivo;
     }
 
+    @XmlTransient
+    @JsonIgnore
     public Usuario getDestinatario() {
         return destinatario;
     }
@@ -369,6 +426,8 @@ public class Documento implements Serializable {
         this.rutaArchivo = rutaArchivo;
     }
 
+    @XmlTransient    
+    @JsonIgnore
     public Usuario getCreadoPor() {
         return creadoPor;
     }
@@ -442,7 +501,7 @@ public class Documento implements Serializable {
     public void setDocumentoRelacionado(Documento documentoRelacionado) {
         this.documentoRelacionado = documentoRelacionado;
     }
-
+    
     public Entidad getEntidad() {
         return entidad;
     }
@@ -451,6 +510,8 @@ public class Documento implements Serializable {
         this.entidad = entidad;
     }
 
+    @XmlTransient    
+    @JsonIgnore
     public Usuario getModificadoPor() {
         return modificadoPor;
     }
