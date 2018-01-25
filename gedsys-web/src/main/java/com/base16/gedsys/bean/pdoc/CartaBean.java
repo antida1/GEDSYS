@@ -207,87 +207,87 @@ public class CartaBean extends BaseBean implements Serializable {
         }
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "carta.odt");
-            TextNavigation searchFecha;
-            TextNavigation tratamiento;
-            TextNavigation destinatario;
-            TextNavigation cargo;
-            TextNavigation asunto;
-            TextNavigation contenido;
-            TextNavigation despedida;
-            TextNavigation remitente;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.carta.getFecha(), "dd-mm-yyyy"));
-            }
-
-            tratamiento = new TextNavigation("@tratamiento", odt);
-            while (tratamiento.hasNext()) {
-                TextSelection item = (TextSelection) tratamiento.nextSelection();
-                item.replaceWith(this.carta.getTratamiento());
-            }
-
-            destinatario = new TextNavigation("@destinatario", odt);
-            while (destinatario.hasNext()) {
-                TextSelection item = (TextSelection) destinatario.nextSelection();
-                item.replaceWith(this.carta.getDestinatario());
-            }
-
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(this.carta.getCargo());
-            }
-
-            asunto = new TextNavigation("@asunto", odt);
-            while (asunto.hasNext()) {
-                TextSelection item = (TextSelection) asunto.nextSelection();
-                item.replaceWith(this.carta.getAsunto());
-            }
-
-            contenido = new TextNavigation("@contenido", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(this.carta.getContenido());
-            }
-
-            despedida = new TextNavigation("@despedida", odt);
-            while (despedida.hasNext()) {
-                TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith(this.carta.getContenido());
-            }
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.carta.getRemitente().getNombres() + " " + this.carta.getRemitente().getApelidos() + " " + this.carta.getRemitente().getCargo());
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt");
-            odt.close();
-
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "carta.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation tratamiento;
+//            TextNavigation destinatario;
+//            TextNavigation cargo;
+//            TextNavigation asunto;
+//            TextNavigation contenido;
+//            TextNavigation despedida;
+//            TextNavigation remitente;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.carta.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            tratamiento = new TextNavigation("@tratamiento", odt);
+//            while (tratamiento.hasNext()) {
+//                TextSelection item = (TextSelection) tratamiento.nextSelection();
+//                item.replaceWith(this.carta.getTratamiento());
+//            }
+//
+//            destinatario = new TextNavigation("@destinatario", odt);
+//            while (destinatario.hasNext()) {
+//                TextSelection item = (TextSelection) destinatario.nextSelection();
+//                item.replaceWith(this.carta.getDestinatario());
+//            }
+//
+//            cargo = new TextNavigation("@cargo", odt);
+//            while (cargo.hasNext()) {
+//                TextSelection item = (TextSelection) cargo.nextSelection();
+//                item.replaceWith(this.carta.getCargo());
+//            }
+//
+//            asunto = new TextNavigation("@asunto", odt);
+//            while (asunto.hasNext()) {
+//                TextSelection item = (TextSelection) asunto.nextSelection();
+//                item.replaceWith(this.carta.getAsunto());
+//            }
+//
+//            contenido = new TextNavigation("@contenido", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) contenido.nextSelection();
+//                item.replaceWith(this.carta.getContenido());
+//            }
+//
+//            despedida = new TextNavigation("@despedida", odt);
+//            while (despedida.hasNext()) {
+//                TextSelection item = (TextSelection) despedida.nextSelection();
+//                item.replaceWith(this.carta.getContenido());
+//            }
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.carta.getRemitente().getNombres() + " " + this.carta.getRemitente().getApelidos() + " " + this.carta.getRemitente().getCargo());
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt");
+//            odt.close();
+//
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + this.carta.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
 
     private void loadDocument() {
         try {

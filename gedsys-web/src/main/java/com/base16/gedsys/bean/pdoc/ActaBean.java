@@ -124,15 +124,16 @@ public class ActaBean extends BaseBean implements Serializable {
     }
 
     public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento creado exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento modificado exitosamente!"));
                     break;
             }
         } catch (Exception e) {

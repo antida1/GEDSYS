@@ -68,6 +68,9 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation tratamiento;
             TextNavigation destinatario;
             TextNavigation cargo;
+            TextNavigation empresa;
+            TextNavigation direccion;
+            TextNavigation ciudad;
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation despedida;
@@ -83,7 +86,9 @@ public class CartaViewBean extends BaseBean implements Serializable {
             while (searchFecha.hasNext()) {
                 DateFormat df = new SimpleDateFormat();
                 TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(carta.getFecha(), "dd-MM-yyyy"));
+                item.replaceWith(DateTimeUtils.getFormattedTime(carta.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(carta.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(carta.getFecha(), "yyyy"));
             }
 
             tratamiento = new TextNavigation("@tratamiento", odt);
@@ -103,6 +108,24 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) cargo.nextSelection();
                 item.replaceWith(carta.getCargo());
             }
+
+            empresa = new TextNavigation("@empresa", odt);
+            while (empresa.hasNext()) {
+                TextSelection item = (TextSelection) empresa.nextSelection();
+                item.replaceWith(carta.getEmpresa());
+            }
+
+            direccion = new TextNavigation("@direccion", odt);
+            while (direccion.hasNext()) {
+                TextSelection item = (TextSelection) direccion.nextSelection();
+                item.replaceWith(carta.getDireccion());
+            }
+
+            ciudad = new TextNavigation("@ciudad", odt);
+            while (ciudad.hasNext()) {
+                TextSelection item = (TextSelection) ciudad.nextSelection();
+                item.replaceWith(carta.getCiudad().getNombre());
+            }            
 
             asunto = new TextNavigation("@asunto", odt);
             while (asunto.hasNext()) {

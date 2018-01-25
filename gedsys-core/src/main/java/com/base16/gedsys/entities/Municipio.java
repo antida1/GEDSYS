@@ -8,6 +8,7 @@ package com.base16.gedsys.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +45,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Municipios.findByDepartamento", query = "SELECT m FROM Municipio m WHERE m.departamento = :departamento")})
     
 public class Municipio implements Serializable {
+
+    @OneToMany(mappedBy = "ciudad")
+    private List<Carta> cartaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -199,6 +203,16 @@ public class Municipio implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Municipio[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Carta> getCartaList() {
+        return cartaList;
+    }
+
+    public void setCartaList(List<Carta> cartaList) {
+        this.cartaList = cartaList;
     }
     
 }

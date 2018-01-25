@@ -78,6 +78,14 @@
                             </div>
                         </h:form>
                     </p:dialog>
+                    <p:dialog id="dlgVisorActa" header="Visor de Actas" widgetVar="denVisorActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form> 
+                            <pe:documentViewer id="documentCtlActa" height="800" value="#{actaViewBean.content}" />
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorActa').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('producciondoc') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
