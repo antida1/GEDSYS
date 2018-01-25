@@ -13,9 +13,13 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 
 
 @ManagedBean
@@ -57,12 +61,17 @@ public class TransportadorBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "¡Transportador creado exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "¡Transportador modificado exitoxamente!"));
                     break;
             }
+            RequestContext.getCurrentInstance().execute("PF('transportadorDialog').hide()");
         } catch (Exception e) {
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transportador", e.getMessage()));
+            Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -106,8 +115,10 @@ public class TransportadorBean extends BaseBean implements Serializable {
             sJpa = new TransportadorJpaController(emf);
             sJpa.destroy(transportador.getId());
             this.listar();
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "Transportador Eliminado"));
         } catch (Exception e) {
-            
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transportador", e.getMessage()));
+            Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
     

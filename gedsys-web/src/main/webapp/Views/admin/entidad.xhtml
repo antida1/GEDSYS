@@ -26,14 +26,14 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="entidadTabla" id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0" rows="15"
+                                <p:dataTable widgetVar="entidadTabla" id="lstEntidades" var="entidad" value="#{entidadBean.entidades}" style="margin-bottom:0" rows="15" reflow="true"
                                              paginator="true" scrollable="true" 
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     <p:column headerText="Tipo de documento" filterBy="#{entidad.tipoDocumento}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('entidadTabla').filter()" converter="omnifaces.SelectItemsConverter" >
-                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
+                                            <p:selectOneMenu onchange="PF('entidadTabla').filter()" converter="omnifaces.SelectItemsConverter"  style="width:130px;" >
+                                                <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                                 <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                                 <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
                                                 <f:selectItem itemLabel="Pasaporte" itemValue="Pasaporte"/>
@@ -67,11 +67,11 @@
                                                          update=":dlgDetalle" oncomplete="PF('entidadDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
-                                        <p:commandButton icon="ui-icon-eraser" 
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{entidadBean.eliminar(entidad)}" 
                                                          update=":form:lstEntidades messages">
-                                            <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -88,7 +88,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:selectOneMenu id="tipoDocumento" value="#{entidadBean.entidad.tipoDocumento}">
+                                        <p:selectOneMenu id="tipoDocumento" required="true" requiredMessage="Error, debe seleccionar un tipo de documento" value="#{entidadBean.entidad.tipoDocumento}">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                             <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
@@ -100,31 +100,33 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="numeroDocumento" required="true" value="#{entidadBean.entidad.numeroDocumento}" class="form-control" />
+                                        <p:inputText id="numeroDocumento" required="true" requiredMessage="Error, el número de documento no puede estar vacío" value="#{entidadBean.entidad.numeroDocumento}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:inputText id="Nombre" required="true" value="#{entidadBean.entidad.nombre}" class="form-control"/>
+                                        <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre no puede estar vacío" value="#{entidadBean.entidad.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Dirección" for="direccion" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="direccion" required="true" value="#{entidadBean.entidad.direccion}" class="form-control" />
+                                        <p:inputText id="direccion" required="true" requiredMessage="Error, la dirección no puede estar vacía" value="#{entidadBean.entidad.direccion}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Teléfono" for="telefono" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="telefono" required="true" value="#{entidadBean.entidad.telefono}" class="form-control" />
+                                        <p:inputText id="telefono" required="true"  requiredMessage="Error, el número de teléfono no puede estar vacío" value="#{entidadBean.entidad.telefono}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Email" for="email" class="col-xs-3 col-form-label"/>
                                     <div class="col-xs-9">
-                                        <p:inputText id="email" required="true" value="#{entidadBean.entidad.email}" class="form-control" />
+                                        <p:inputText id="email" required="true" requiredMessage="Error, el email no puede estar vacío" validatorMessage="Error, el formato del correo electrónico no es correcto" value="#{entidadBean.entidad.email}" class="form-control" >
+                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText>
                                     </div>
                                 </div>
 

@@ -62,11 +62,11 @@ public class EntidadBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "Entidad creada exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "¡Entidad creada exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "Entidad modificada exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "¡Entidad modificada exitoxamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('entidadDialog').hide()");
