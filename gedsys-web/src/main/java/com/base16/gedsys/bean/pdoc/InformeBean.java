@@ -55,7 +55,7 @@ public class InformeBean extends BaseBean implements Serializable {
      * Creates a new instance of InformeBean
      */
     private static final long SerialVersionUID = 1L;
-    private Informe informe;
+    private Informe informe = new Informe();
     private List<Informe> informes;
     private String accion;
 
@@ -64,6 +64,7 @@ public class InformeBean extends BaseBean implements Serializable {
 
     public InformeBean() {
         this.accion = "Crear";
+        this.informe.setFecha(new Date());
     }
 
     public Informe getInforme() {
@@ -95,16 +96,16 @@ public class InformeBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Informe creado exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Informe modificado exitosamente!"));
                     break;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
+            Logger.getLogger(InformeBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -142,79 +143,79 @@ public class InformeBean extends BaseBean implements Serializable {
         this.informe.setEstado(3);
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "informe.odt");
-            TextNavigation searchFecha;
-            TextNavigation consecutivo;
-            TextNavigation cargo;
-            TextNavigation objetivo;
-            TextNavigation conclusiones;
-            TextNavigation remitente;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.informe.getFecha(), "dd-mm-yyyy"));
-            }
-
-            consecutivo = new TextNavigation("@consecutivo", odt);
-            while (consecutivo.hasNext()) {
-                TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith("");
-            }
-
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(this.informe.getRemitente().getCargo().getNombre());
-            }
-
-            objetivo = new TextNavigation("@objetivo", odt);
-            while (objetivo.hasNext()) {
-                TextSelection item = (TextSelection) objetivo.nextSelection();
-                item.replaceWith(this.informe.getObjetivo());
-            }
-            
-            conclusiones = new TextNavigation("@conclusiones", odt);
-            while (conclusiones.hasNext()) {
-                TextSelection item = (TextSelection) conclusiones.nextSelection();
-                item.replaceWith(this.informe.getConclusiones());
-            }
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.informe.getRemitente().getNombres() + " " + this.informe.getRemitente().getApelidos());
-            }
-            
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(this.informe.getRemitente().getCargo().getNombre());
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".odt");
-            odt.close();
-
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "informe.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation consecutivo;
+//            TextNavigation cargo;
+//            TextNavigation objetivo;
+//            TextNavigation conclusiones;
+//            TextNavigation remitente;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.informe.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            consecutivo = new TextNavigation("@consecutivo", odt);
+//            while (consecutivo.hasNext()) {
+//                TextSelection item = (TextSelection) consecutivo.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            cargo = new TextNavigation("@cargo", odt);
+//            while (cargo.hasNext()) {
+//                TextSelection item = (TextSelection) cargo.nextSelection();
+//                item.replaceWith(this.informe.getRemitente().getCargo().getNombre());
+//            }
+//
+//            objetivo = new TextNavigation("@objetivo", odt);
+//            while (objetivo.hasNext()) {
+//                TextSelection item = (TextSelection) objetivo.nextSelection();
+//                item.replaceWith(this.informe.getObjetivo());
+//            }
+//            
+//            conclusiones = new TextNavigation("@conclusiones", odt);
+//            while (conclusiones.hasNext()) {
+//                TextSelection item = (TextSelection) conclusiones.nextSelection();
+//                item.replaceWith(this.informe.getConclusiones());
+//            }
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.informe.getRemitente().getNombres() + " " + this.informe.getRemitente().getApelidos());
+//            }
+//            
+//            cargo = new TextNavigation("@cargo", odt);
+//            while (cargo.hasNext()) {
+//                TextSelection item = (TextSelection) cargo.nextSelection();
+//                item.replaceWith(this.informe.getRemitente().getCargo().getNombre());
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".odt");
+//            odt.close();
+//
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + this.informe.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
 
     private void loadDocument() {
         try {
@@ -243,7 +244,7 @@ public class InformeBean extends BaseBean implements Serializable {
 
     }
 
-    public List<Informe> getActasByResponsable() {
+    public List<Informe> getInformesByResponsable() {
         InformeJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());

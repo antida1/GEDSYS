@@ -110,6 +110,22 @@
                             </div>
                         </h:form>
                     </p:dialog>
+                   <p:dialog id="dlgVisorConstancia" header="Visor de Constancias" widgetVar="denVisorConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorConstancia').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorInforme" header="Visor de Informes" widgetVar="denVisorInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlInforme" height="800" value="#{informeViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorInforme').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('producciondoc') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

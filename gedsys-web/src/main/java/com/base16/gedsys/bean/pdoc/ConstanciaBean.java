@@ -54,7 +54,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
      * Creates a new instance of ConstanciaBean
      */
     private static final long SerialVersionUID = 1L;
-    private Constancia constancia;
+    private Constancia constancia = new Constancia();
     private List<Constancia> constancias;
     private String accion;
 
@@ -63,6 +63,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
     
     public ConstanciaBean() {
         this.accion = "Crear";
+        this.constancia.setFecha(new Date());
     }
 
     public Constancia getConstancia() {
@@ -96,15 +97,15 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Constancia creado exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Constancia modificado exitosamente!"));
                     break;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
             Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
@@ -142,71 +143,71 @@ public class ConstanciaBean extends BaseBean implements Serializable{
         this.constancia.setEstado(3);
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "constancia.odt");
-            TextNavigation searchFecha;
-            TextNavigation consecutivo;
-            TextNavigation cargo;
-            TextNavigation firma_remitente;
-            TextNavigation asunto;
-            TextNavigation contenido;
-            TextNavigation remitente;
-            TextNavigation anexos;
-            TextNavigation copia;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.constancia.getFecha(), "dd-mm-yyyy"));
-            }
-
-            consecutivo = new TextNavigation("@consecutivo", odt);
-            while (consecutivo.hasNext()) {
-                TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith("");
-            }
-
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(this.constancia.getRemitente().getCargo().getNombre());
-            }
-            
-            contenido = new TextNavigation("@contenido", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(this.constancia.getContenido());
-            }
-
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.constancia.getRemitente().getNombres() + " " + this.constancia.getRemitente().getApelidos());
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".odt");
-            odt.close();
-
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constanciaes" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constanciaes" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "constancia.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation consecutivo;
+//            TextNavigation cargo;
+//            TextNavigation firma_remitente;
+//            TextNavigation asunto;
+//            TextNavigation contenido;
+//            TextNavigation remitente;
+//            TextNavigation anexos;
+//            TextNavigation copia;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.constancia.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            consecutivo = new TextNavigation("@consecutivo", odt);
+//            while (consecutivo.hasNext()) {
+//                TextSelection item = (TextSelection) consecutivo.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            cargo = new TextNavigation("@cargo", odt);
+//            while (cargo.hasNext()) {
+//                TextSelection item = (TextSelection) cargo.nextSelection();
+//                item.replaceWith(this.constancia.getRemitente().getCargo().getNombre());
+//            }
+//            
+//            contenido = new TextNavigation("@contenido", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) contenido.nextSelection();
+//                item.replaceWith(this.constancia.getContenido());
+//            }
+//
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.constancia.getRemitente().getNombres() + " " + this.constancia.getRemitente().getApelidos());
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".odt");
+//            odt.close();
+//
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constanciaes" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constanciaes" + File.separatorChar + "constancia" + this.constancia.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
 
     private void loadDocument() {
         try {
@@ -235,14 +236,14 @@ public class ConstanciaBean extends BaseBean implements Serializable{
 
     }
 
-    public List<Constancia> getActasByResponsable() {
+    public List<Constancia> getConstanciasByResponsable() {
         ConstanciaJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new ConstanciaJpaController(emf);
             constancias = cJpa.findConstanciaEntities();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
             Logger.getLogger(ConstanciaBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return constancias;
