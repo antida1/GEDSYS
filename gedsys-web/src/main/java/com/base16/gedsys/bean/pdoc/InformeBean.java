@@ -9,6 +9,7 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.entities.Informe;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.fcm.PushFCMNotification;
+import com.base16.gedsys.model.ConstanciaJpaController;
 import com.base16.gedsys.model.InformeJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
@@ -121,7 +122,6 @@ public class InformeBean extends BaseBean implements Serializable {
         this.informe.setFechaModificacion(new Date());
         this.informe.setEstado(1);
         cJpa.create(this.informe);
-        //PushFCMNotification.PushFCMNotification("", "Nuevo Informe por firmar", "Se ha generado un nuevo informe para ser firmado");
     }
 
     private void editar() throws Exception {
