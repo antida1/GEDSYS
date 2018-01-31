@@ -54,94 +54,211 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private List<Usuariosignaturas> usuariosignaturasList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadorPor")
     private List<Usuariosignaturas> usuariosignaturasList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Usuariosignaturas> usuariosignaturasList2;
 
     @Column(name = "Firma")
     private String firma;
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private List<Sede> sedeList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private List<Sede> sedeList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private List<Mediorecepcion> mediorecepcionList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private List<Mediorecepcion> mediorecepcionList1;
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany( fetch = FetchType.LAZY,  mappedBy = "usuario")
     private List<Devices> devicesList;
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ausente")
     private List<Actaausente> actaausenteList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "asistente")
     private List<Actaasistente> actaasistenteList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "invitado")
     private List<Actainvitado> actainvitadoList;
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
     private List<Comunicacioncc> comunicacionccList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestadoA")
     private List<Prestamo> prestamoList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Prestamo> prestamoList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Prestamo> prestamoList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Constancia> constanciaList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Constancia> constanciaList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Constancia> constanciaList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Carta> cartaList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Carta> cartaList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Carta> cartaList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Acta> actaList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Acta> actaList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "presidente")
     private List<Acta> actaList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "secretaria")
     private List<Acta> actaList3;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Informe> informeList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Informe> informeList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Informe> informeList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Circular> circularList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Circular> circularList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Circular> circularList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Certificado> certificadoList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Certificado> certificadoList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Certificado> certificadoList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
     private List<Circularcc> circularccList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinatario")
     private List<Comunicacion> comunicacionList;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remitente")
     private List<Comunicacion> comunicacionList1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private List<Comunicacion> comunicacionList2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Comunicacion> comunicacionList3;
 
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private Collection<Campos> camposCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private Collection<Campos> camposCollection1;
 
@@ -179,125 +296,305 @@ public class Usuario implements Serializable {
     private String usuario;
     @Column(name = "isAdmin")
     private Boolean isAdmin;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ClaseDocumento> claseDocumentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ClaseDocumento> claseDocumentoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Grupo> grupoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Documento> documentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Documento> documentoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Acl> aclCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Acl> aclCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<SeccionSubSeccion> seccionSubSeccionCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<SeccionSubSeccion> seccionSubSeccionCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private Collection<Preferencias> preferenciasCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<PlantillaDocumental> plantillaDocumentalCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<PlantillaDocumental> plantillaDocumentalCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Cargo> cargoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Cargo> cargoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<TipoDocumento> tipoDocumentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<TipoDocumento> tipoDocumentoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<SubSerie> subSerieCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<SubSerie> subSerieCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Municipio> municipioCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Municipio> municipioCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ProcesoNegocio> procesoNegocioCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ProcesoNegocio> procesoNegocioCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Corregimiento> corregimientoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Corregimiento> corregimientoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<GrupoUsuario> grupoUsuarioCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<GrupoUsuario> grupoUsuarioCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private Collection<GrupoUsuario> grupoUsuarioCollection2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
     private Collection<DestinatariosDoc> destinatariosDocCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private Collection<DestinatariosDoc> destinatariosDocCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinatarioId")
     private Collection<DestinatariosDoc> destinatariosDocCollection2;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Autor> autorCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Autor> autorCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "responsable")
     private Collection<Notificacion> notificacionCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Pais> paisCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Pais> paisCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Consecutivo> consecutivoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Consecutivo> consecutivoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<SignaturaTopografica> signaturaTopograficaCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<SignaturaTopografica> signaturaTopograficaCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<TipoDocumental> tipoDocumentalCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<TipoDocumental> tipoDocumentalCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Transportador> transportadorCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Transportador> transportadorCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ProcesoDocumental> procesodocumentalCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ProcesoDocumental> procesodocumentalCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<ProcesoTipoDocumento> procesoTipoDocumentoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Entidad> entidadCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Entidad> entidadCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<UnidadDocumental> unidadDocumentalCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<UnidadDocumental> unidadDocumentalCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Serie> serieCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Serie> serieCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Departamento> departamentoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Departamento> departamentoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<MonitoresProceso> monitoresProcesoCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<MonitoresProceso> monitoresProcesoCollection1;
+    
+    @XmlTransient
+    @JsonIgnore
     @JoinColumn(name = "Cargo", referencedColumnName = "Id")
     @ManyToOne
     private Cargo cargo;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
     private Collection<Modulo> moduloCollection;
+    
+    @XmlTransient
+    @JsonIgnore
     @OneToMany(mappedBy = "modificadoPor")
     private Collection<Modulo> moduloCollection1;
 
