@@ -62,6 +62,10 @@ public class Carta implements Serializable {
     private String destinatario;
     @Column(name = "Cargo")
     private String cargo;
+    @Column(name = "Empresa")
+    private String empresa;
+    @Column(name = "Direccion")
+    private String direccion;
     @Column(name = "Asunto")
     private String asunto;
     @Lob
@@ -90,6 +94,9 @@ public class Carta implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Usuario modificadoPor;
+    @JoinColumn(name = "Ciudad", referencedColumnName = "Id")
+    @ManyToOne
+    private Municipio ciudad;
 
     public Carta() {
     }
@@ -249,6 +256,30 @@ public class Carta implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Carta[ id=" + id + " ]";
+    }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Municipio getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Municipio ciudad) {
+        this.ciudad = ciudad;
     }
     
 }

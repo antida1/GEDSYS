@@ -10,10 +10,10 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('tipoDocumento') == true}">
-                    <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />                   
                     <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
-                    <div class="col-xs-10 col-xs-offset-1 x_panel">
+                    <div class="col-xs-12 col-xs-offset x_panel">
                         <h:form id="form">
                             <div class="x_title">
                                 <h2>Tipos de documentos</h2>
@@ -25,12 +25,12 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="tipoDocumentoTabla" id="lstTipoDocumento" var="tipoDocumento" value="#{tipoDocumentoBean.tipoDocumentos}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="150"
+                                 <p:dataTable widgetVar="tipoDocumentoTabla" id="lstTipoDocumento" var="tipoDocumento" value="#{tipoDocumentoBean.tipoDocumentos}" style="margin-bottom:0" rows="10" reflow="true"
+                                             paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
-                                    <p:column headerText="Nombre" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">
-                                        <h:outputText value="#{tipoDocumento.nombre}" />
+                                             rowsPerPageTemplate="5,10,15">                     
+                                    <p:column headerText="Nombre" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">                                        
+                                        <h:outputText value="#{tipoDocumento.nombre}" />                                      
                                     </p:column>
                                     <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.requiereRespuesta}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.requiereRespuesta}" />
@@ -60,7 +60,7 @@
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{tipoDocumento.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:110px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
@@ -69,24 +69,28 @@
                                     </p:column>
                                     <p:column headerText="Modificado por" filterBy="#{tipoDocumento.modificadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:110px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
                                         </f:facet>
                                         <h:outputText value="#{tipoDocumento.modificadoPor.nombres} #{tipoDocumento.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                      <p:column headerText="Acciones">                          
                                         <p:commandButton actionListener="#{tipoDocumentoBean.getTipoDocumentoById(tipoDocumento)}" 
                                                          update=":dlgDetalle" oncomplete="PF('tipoDocumentoDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
-                                        </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
-                                        <p:commandButton icon="ui-icon-eraser" 
+                                        </p:commandButton>                            
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{tipoDocumentoBean.eliminar(tipoDocumento)}" 
-                                                         update=":form:lstTipoDocumento messages"/>
+                                                         update=":form:lstTipoDocumento messages">                                        
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -97,7 +101,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:inputText id="Nombre" required="true" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control"/>
+                                        <p:inputText id="Nombre" required="true"  requiredMessage="Error, el nombre no puede estar vacío" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -109,13 +113,14 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:inputText id="diasRespuesta" required="true" value="#{tipoDocumentoBean.tipoDocumento.diasRespuesta}" class="form-control" />
+                                        <p:inputText id="diasRespuesta" required="true"  requiredMessage="Error, los .días de respuesta no pueden estar vacíos" value="#{tipoDocumentoBean.tipoDocumento.diasRespuesta}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-2 col-form-label" />
                                     <div class="col-xs-10">
-                                        <p:selectOneMenu id="tipoCalendario" value="#{tipoDocumentoBean.tipoDocumento.tipoCalendario}" onchange="PF('tipoDocumentoTabla').filter()" required="true">
+                                        <p:selectOneMenu id="tipoCalendario" value="#{tipoDocumentoBean.tipoDocumento.tipoCalendario}" onchange="PF('tipoDocumentoTabla').filter()" 
+                                                         required="true"  requiredMessage="Error, debe seleccionar el tipo de calendario">
                                             <f:selectItem itemLabel="Seleccione el tipo de calendario" itemValue="#{null}" noSelectionOption="true" />
                                             <f:selectItem itemLabel="Corrido" itemValue="corrido" />
                                             <f:selectItem itemLabel="Hábil" itemValue="habil" />
@@ -125,7 +130,7 @@
 
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstTipoDocumento messages" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" oncomplete="PF('tipoDocumentoDialog').hide()" />
+                                    <p:commandButton update=":form:lstTipoDocumento messages" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

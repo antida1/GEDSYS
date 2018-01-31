@@ -13,6 +13,8 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -60,14 +62,16 @@ public class PaisBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pais", "Pais creado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País creado exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pais", "Pais modificado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País modificado exitoxamente!"));
                     break;
             }
         } catch (Exception e) {
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "País", e.getMessage()));
+            Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -111,7 +115,10 @@ public class PaisBean extends BaseBean implements Serializable {
             sJpa = new PaisJpaController(emf);
             sJpa.destroy(pais.getId());
             this.listar();
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País Eliminado"));
         } catch (Exception e) {
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "País", e.getMessage()));
+            Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());
 
         }
     }

@@ -14,6 +14,9 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -64,12 +67,16 @@ public class MunicipioBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio creado!"));
                     break;
                 case "Modificar":
                     modificar();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio modificado!"));
                     break;
             }
         } catch (Exception e) {
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Municipio", e.getMessage()));
+            Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -111,7 +118,9 @@ public class MunicipioBean extends BaseBean implements Serializable {
             ssJpa = new MunicipioJpaController(emf);
             ssJpa.destroy(municipio.getId());
             this.listar();
+              this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio Eliminado!"));
         } catch (Exception e) {
+            Logger.getLogger(MunicipioBean.class.getName()).log(Level.SEVERE, null, e);
             throw e;
         }
     }

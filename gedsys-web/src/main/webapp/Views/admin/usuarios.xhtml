@@ -63,7 +63,7 @@
                                                              update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
                                                              icon="ui-icon-pencil" title="Editar">
                                             </p:commandButton>
-                                            <p:commandButton icon="ui-icon-eraser" 
+                                            <p:commandButton icon="ui-icon-trash" 
                                                              title="Borrar"
                                                              actionListener="#{usuarioBean.eliminar(usuario)}" 
                                                              update=":form:lstUsuarios messages"/>
@@ -181,11 +181,13 @@
                                                     <p:signature id="firma" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
                                                 </div> 
                                             </div>
+                                            <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>
                                         </div>
                                         <p:spacer/>
                                         <div> 
                                             <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
                                             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                                            
                                         </div>
                                     </div>
                                 </h:form>

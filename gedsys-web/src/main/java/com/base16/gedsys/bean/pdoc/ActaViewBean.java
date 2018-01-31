@@ -10,6 +10,8 @@ import com.base16.gedsys.entities.Acta;
 import com.base16.gedsys.entities.Actaasistente;
 import com.base16.gedsys.entities.Actaausente;
 import com.base16.gedsys.entities.Actainvitado;
+import com.base16.gedsys.model.ActaJpaController;
+import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
@@ -34,6 +36,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
@@ -58,117 +61,127 @@ public class ActaViewBean extends BaseBean implements Serializable {
     }
 
     public void showDocument(Acta acta) {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            try (TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "acta.odt")) {
+            ActaJpaController aJpa;
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            aJpa = new ActaJpaController(emf);
+            Acta _acta = aJpa.findActa(acta.getId());
+            
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "acta.odt");
 
-                TextNavigation searchConsecutivo;
-                TextNavigation searchFecha;
-                TextNavigation searchHoraInicio;
-                TextNavigation searchHoraFinal;
-                TextNavigation searchLugar;
-                TextNavigation searchAsistentes;
-                TextNavigation searchInvitados;
-                TextNavigation searchAusentes;
-                TextNavigation searchOrden;
-                TextNavigation searchDesarrollo;
-                TextNavigation searchConvocatoria;
-                TextNavigation searchPresidente;
-                TextNavigation searchSecretaria;
+            TextNavigation searchConsecutivo;
+            TextNavigation searchFecha;
+            TextNavigation searchHoraInicio;
+            TextNavigation searchHoraFinal;
+            TextNavigation searchLugar;
+            TextNavigation searchAsistentes;
+            TextNavigation searchInvitados;
+            TextNavigation searchAusentes;
+            TextNavigation searchOrden;
+            TextNavigation searchDesarrollo;
+            TextNavigation searchConvocatoria;
+            TextNavigation searchPresidente;
+            TextNavigation searchSecretaria;
 
-                searchConsecutivo = new TextNavigation("@consecutivo", odt);
-                while (searchConsecutivo.hasNext()) {
-                    TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+            searchConsecutivo = new TextNavigation("@consecutivo", odt);
+            while (searchConsecutivo.hasNext()) {
+                TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+                if (acta.getConsecutivo() == null) {
+                    item.replaceWith(" ");
+                } else {
                     item.replaceWith(acta.getConsecutivo());
                 }
-
-                searchFecha = new TextNavigation("@fecha", odt);
-                while (searchFecha.hasNext()) {
-                    DateFormat df = new SimpleDateFormat();
-                    TextSelection item = (TextSelection) searchFecha.nextSelection();
-                    item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "dd-MM-yyyy"));
-                }
-
-                searchHoraInicio = new TextNavigation("@hora_inicio", odt);
-                while (searchHoraInicio.hasNext()) {
-                    TextSelection item = (TextSelection) searchHoraInicio.nextSelection();
-                    item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
-                }
-
-                searchHoraFinal = new TextNavigation("@hora_final", odt);
-                while (searchHoraFinal.hasNext()) {
-                    TextSelection item = (TextSelection) searchHoraFinal.nextSelection();
-                    item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
-                }
-
-                searchLugar = new TextNavigation("@lugar", odt);
-                while (searchLugar.hasNext()) {
-                    TextSelection item = (TextSelection) searchLugar.nextSelection();
-                    item.replaceWith(acta.getLugar());
-                }
-
-                searchAsistentes = new TextNavigation("@asistentes", odt);
-                while (searchAsistentes.hasNext()) {
-                    TextSelection item = (TextSelection) searchAsistentes.nextSelection();
-                    String sAsistentes = "";
-                    for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
-                        sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos() + "\n";
-                    }
-                    item.replaceWith(sAsistentes);
-                }
-                
-                searchInvitados = new TextNavigation("@invitados", odt);
-                while (searchInvitados.hasNext()) {
-                    TextSelection item = (TextSelection) searchInvitados.nextSelection();
-                   String sInvitados = "";
-                    for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
-                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
-                    }
-                    item.replaceWith(sInvitados);
-                }
-
-                searchAusentes = new TextNavigation("@ausentes", odt);
-                while (searchAusentes.hasNext()) {
-                    TextSelection item = (TextSelection) searchAusentes.nextSelection();
-                    String sAusentes = "";
-                    for (Actaausente actaausente : acta.getActaausenteList()) {
-                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
-                    }
-                    item.replaceWith(sAusentes);
-                }
-
-                searchOrden = new TextNavigation("@orden", odt);
-                while (searchOrden.hasNext()) {
-                    TextSelection item = (TextSelection) searchOrden.nextSelection();
-                    item.replaceWith(acta.getOrden());
-                }
-
-                searchDesarrollo = new TextNavigation("@desarrollo", odt);
-                while (searchDesarrollo.hasNext()) {
-                    TextSelection item = (TextSelection) searchDesarrollo.nextSelection();
-                    item.replaceWith(acta.getDesarrollo());
-                }
-
-                searchConvocatoria = new TextNavigation("@convocatoria", odt);
-                while (searchConvocatoria.hasNext()) {
-                    TextSelection item = (TextSelection) searchConvocatoria.nextSelection();
-                    item.replaceWith(acta.getConvocatoria());
-                }
-
-                searchPresidente = new TextNavigation("@presidente", odt);
-                while (searchPresidente.hasNext()) {
-                    TextSelection item = (TextSelection) searchPresidente.nextSelection();
-                    item.replaceWith(acta.getPresidente().getNombres() + " " + acta.getPresidente().getApelidos() + " " + acta.getPresidente().getCargo().getNombre());
-                }
-
-                searchSecretaria = new TextNavigation("@secretaria", odt);
-                while (searchSecretaria.hasNext()) {
-                    TextSelection item = (TextSelection) searchSecretaria.nextSelection();
-                    item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " " + acta.getSecretaria().getCargo().getNombre());
-                }
-
-                odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");
             }
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "dd-MM-yyyy"));
+            }
+
+            searchHoraInicio = new TextNavigation("@hora_inicio", odt);
+            while (searchHoraInicio.hasNext()) {
+                TextSelection item = (TextSelection) searchHoraInicio.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
+            }
+
+            searchHoraFinal = new TextNavigation("@hora_final", odt);
+            while (searchHoraFinal.hasNext()) {
+                TextSelection item = (TextSelection) searchHoraFinal.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
+            }
+
+            searchLugar = new TextNavigation("@lugar", odt);
+            while (searchLugar.hasNext()) {
+                TextSelection item = (TextSelection) searchLugar.nextSelection();
+                item.replaceWith(acta.getLugar());
+            }
+
+            searchAsistentes = new TextNavigation("@asistentes", odt);
+            while (searchAsistentes.hasNext()) {
+                TextSelection item = (TextSelection) searchAsistentes.nextSelection();
+                String sAsistentes = "";
+                for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
+                    sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos() + "\n";
+                }
+                item.replaceWith(sAsistentes);
+            }
+
+            searchInvitados = new TextNavigation("@invitados", odt);
+            while (searchInvitados.hasNext()) {
+                TextSelection item = (TextSelection) searchInvitados.nextSelection();
+                String sInvitados = "";
+                for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
+                    sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                }
+                item.replaceWith(sInvitados);
+            }
+
+            searchAusentes = new TextNavigation("@ausentes", odt);
+            while (searchAusentes.hasNext()) {
+                TextSelection item = (TextSelection) searchAusentes.nextSelection();
+                String sAusentes = "";
+                for (Actaausente actaausente : acta.getActaausenteList()) {
+                    sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                }
+                item.replaceWith(sAusentes);
+            }
+
+            searchOrden = new TextNavigation("@orden", odt);
+            while (searchOrden.hasNext()) {
+                TextSelection item = (TextSelection) searchOrden.nextSelection();
+                item.replaceWith(acta.getOrden());
+            }
+
+            searchDesarrollo = new TextNavigation("@desarrollo", odt);
+            while (searchDesarrollo.hasNext()) {
+                TextSelection item = (TextSelection) searchDesarrollo.nextSelection();
+                item.replaceWith(acta.getDesarrollo());
+            }
+
+            searchConvocatoria = new TextNavigation("@convocatoria", odt);
+            while (searchConvocatoria.hasNext()) {
+                TextSelection item = (TextSelection) searchConvocatoria.nextSelection();
+                item.replaceWith(acta.getConvocatoria());
+            }
+
+            searchPresidente = new TextNavigation("@presidente", odt);
+            while (searchPresidente.hasNext()) {
+                TextSelection item = (TextSelection) searchPresidente.nextSelection();
+                item.replaceWith(acta.getPresidente().getNombres() + " " + acta.getPresidente().getApelidos() + " " + acta.getPresidente().getCargo().getNombre());
+            }
+
+            searchSecretaria = new TextNavigation("@secretaria", odt);
+            while (searchSecretaria.hasNext()) {
+                TextSelection item = (TextSelection) searchSecretaria.nextSelection();
+                item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " " + acta.getSecretaria().getCargo().getNombre());
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");
+            odt.close();
 
             //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
             //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
@@ -184,12 +197,13 @@ public class ActaViewBean extends BaseBean implements Serializable {
             SessionUtils.getSession().setAttribute("filePathActa", this.filePath);
             RequestContext.getCurrentInstance().execute("PF('denVisorActa').show()");
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Acta", e.getMessage()));
+            Logger.getLogger(ActaViewBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     private void loadDocument() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             this.filePath = SessionUtils.getSession().getAttribute("filePathActa").toString();
             if (!filePath.isEmpty()) {

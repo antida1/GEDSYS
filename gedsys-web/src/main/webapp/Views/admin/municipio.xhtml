@@ -29,16 +29,11 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="municipioTabla" id="lstMunicipios" var="municipio" value="#{municipioBean.municipios}" style="margin-bottom:0" rows="10"
+                                <p:dataTable widgetVar="municipioTabla" id="lstMunicipios" var="municipio" value="#{municipioBean.municipios}" style="margin-bottom:0" rows="10" reflow="true"
                                              paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
-                                    <f:facet name="header">
-                                        
-
-                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                        <p:columnToggler datasource="lstMunicipios" trigger="toggler" />
-                                    </f:facet>
+                                   
                                     <p:column headerText="Departamento" filterBy="#{municipio.departamento}" filterMatchMode="exact">
                                         <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('municipioTabla').filter()" converter="omnifaces.SelectItemsConverter" >
@@ -82,17 +77,21 @@
                                         </f:facet>
                                         <h:outputText value="#{municipio.modificadoPor.nombres} #{municipio.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{municipioBean.getMunicipioById(municipio)}" 
                                                          update=":dlgDetalle" oncomplete="PF('municipioDialog').show()" 
                                                          icon="ui-icon-pencil" title="Editar">
-                                        </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
-                                        <p:commandButton icon="ui-icon-eraser" 
+                                        </p:commandButton>                                   
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{municipioBean.eliminar(municipio)}" 
-                                                         update=":form:lstMunicipios messages"/>
+                                                         update=":form:lstMunicipios messages">
+                                              <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -104,7 +103,8 @@
                             <div class="form-group row">
                                 <p:outputLabel value="Depatamento" for="departamento" class="col-xs-4 col-form-label"/>
                                 <div class="col-xs-8">
-                                    <p:selectOneMenu id="departamento" value="#{municipioBean.municipio.departamento}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
+                                    <p:selectOneMenu id="departamento" value="#{municipioBean.municipio.departamento}" converter="omnifaces.SelectItemsConverter" required="true" 
+                                                     requiredMessage="Error, debe seleccionar un departamento" style="width: 100%">
                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
                                         <f:selectItems value="#{departamentoBean.departamentos}" var="departamento" itemLabel="#{departamento.name}" itemValue="#{departamento}"/>
                                     </p:selectOneMenu>
@@ -113,13 +113,13 @@
                             <div class="form-group row">
                                 <p:outputLabel value="Código" for="Codigo" class="col-xs-3 col-form-label" />
                                 <div class="col-xs-9">
-                                    <p:inputText id="Codigo" required="true" value="#{municipioBean.municipio.codigo}" style="width: 100%"/>
+                                    <p:inputText id="Codigo" required="true" requiredMessage="Error, el código del municipio no puede estar vacío" value="#{municipioBean.municipio.codigo}" style="width: 100%"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
                                 <div class="col-xs-9">
-                                    <p:inputText id="Nombre" required="true" value="#{municipioBean.municipio.nombre}" style="width: 100%"/>
+                                    <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre del municipio no puede estar vacío" value="#{municipioBean.municipio.nombre}" style="width: 100%"/>
                                 </div>
                             </div>
                             <p:spacer/>
