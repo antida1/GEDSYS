@@ -38,8 +38,8 @@
         </div>
         <p:spacer/>
         <div class="form-group row col-xs-12">
-            <p:commandButton icon="ui-icon-disk" actionListener="#{compartirBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denCompartir').hide()" update="messages" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denCompartir').hide()"></p:commandButton>
+            <p:commandButton icon="glyphicon fa fa-check-circle" actionListener="#{compartirBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denCompartir').hide()" update="messages" />
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denCompartir').hide()"></p:commandButton>
         </div>
     </body>
 </html>

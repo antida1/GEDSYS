@@ -49,8 +49,8 @@
             </div>
         </div>       
         <div class="aligncenter">
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{prestamoBean.procesar()}" update="messages" />
-            <p:commandButton icon="ui-icon-cancel" value="Cancelar" action="#{prestamoBean.limpiar()}" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
+            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{prestamoBean.procesar()}" update="messages" />
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" action="#{prestamoBean.limpiar()}" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
         </div>
     </h:body>
 </html>
