@@ -49,6 +49,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.simple.TextDocument;
@@ -61,7 +62,7 @@ import org.primefaces.model.StreamedContent;
  *
  * @author rober
  */
-@ManagedBean
+@Named(value = "actaBean")
 @ViewScoped
 public class ActaBean extends BaseBean implements Serializable {
 
@@ -81,6 +82,7 @@ public class ActaBean extends BaseBean implements Serializable {
 
     public ActaBean() {
         this.accion = "Crear";
+        this.acta.setFecha(new Date());
     }
 
     public Acta getActa() {
@@ -123,6 +125,14 @@ public class ActaBean extends BaseBean implements Serializable {
         this.ausentes = ausentes;
     }
 
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
     public void procesar() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -137,7 +147,7 @@ public class ActaBean extends BaseBean implements Serializable {
                     break;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
             Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
@@ -248,7 +258,7 @@ public class ActaBean extends BaseBean implements Serializable {
             aJpa = new ActaJpaController(emf);
             actas = aJpa.findActaEntities();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return actas;

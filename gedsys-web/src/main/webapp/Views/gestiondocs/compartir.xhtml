@@ -27,7 +27,7 @@
                 <label class=" col-xs-4" for="comDestinatarios">Compartir con <span class="required">*</span>
                 </label>
                 <div class="col-xs-8">
-                    <p:selectManyMenu value="#{compartirBean.destinatarios}" id="comDestinatarios" var="dest" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                    <p:selectManyMenu value="#{compartirBean.destinatarios}" id="comDestinatarios" var="dest" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="¡Error! Debe seleccionar el usuario con el que va a compartir el documento ">
                         <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
                         <p:column>
                             <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
@@ -38,8 +38,8 @@
         </div>
         <p:spacer/>
         <div class="form-group row col-xs-12">
-            <p:commandButton icon="ui-icon-disk" actionListener="#{compartirBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denCompartir').hide()" update="messages" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denCompartir').hide()"></p:commandButton>
+            <p:commandButton icon="glyphicon fa fa-check-circle" actionListener="#{compartirBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denCompartir').hide()" update="messages" />
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denCompartir').hide()"></p:commandButton>
         </div>
     </body>
 </html>

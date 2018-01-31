@@ -9,19 +9,19 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <p:growl id="aviso"  showDetail="true" />
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCertificado" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaCertificado" value="#{certificadoBean.certificado.fecha}" showOn="button" locale="es" style="width: 100%" />
+                <p:calendar id="fechaCertificado" value="#{certificadoBean.certificado.fecha}" showOn="button" locale="es" style="width: 100%"  />
             </div>
         </div>
-
         <div class="col-xs-12">
-            <p:outputLabel value="Texto de Contenido" for="contenidoCertificado" class="control-label col-md-4"/>
+            <p:outputLabel value="Texto de Contenido" for="contenidoCert" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputTextarea id="contenidoCertificado" value="#{certificadoBean.certificado.contenido}" rows="8" style="width: 100%"/>
+                <p:inputTextarea id="contenidoCert" required="true" requiredMessage="¡Error! El contenido no puede estar vacío" value="#{certificadoBean.certificado.contenido}" rows="8" style="width: 100%"/>
             </div>
-        </div>
+        </div>        
         <div class="col-xs-12">
             <p:outputLabel value="Remitente" for="remitenteCert" class="control-label col-md-4"/>
             <div class="col-md-8">
@@ -35,14 +35,15 @@
         </div>
          <p:spacer/>
         <div> 
-            <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{certificadoBean.procesar()}" />
-            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{certificadoBean.previsualizar()}" update="dlgVisorCertificado" oncomplete="PF('dlgVisorCertificado').show()" />
-            <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{certificadoBean.firmar()}" />
-            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{certificadoBean.enviar()}" />
-        </div>
-        <p:dialog id="dlgVisorCertificado" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
-                <pe:documentViewer id="certificadoCtl" height="800" value="#{certificadoBean.content}" />  
-        </p:dialog>
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{certificadoBean.procesar()}" update="aviso clViewCertificado" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewCertificado" type="button" process="@all" title="Ver" action="#{certificadoViewBean.showDocument(certificadoBean.certificado)}" update=":dlgVisorCertificado" >
+                <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
+                <span class="ui-button-text ui-c">Ver</span>
+            </p:commandLink>
+<!--            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="" update="dlgVisorCertificado" oncomplete="PF('dlgVisorCertificado').show()" />-->
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o" value="Firmar" actionListener="#{certificadoBean.firmar()}" />
+<!--            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{certificadoBean.enviar()}" />-->
+        </div> 
     </h:body>
 </html>
 

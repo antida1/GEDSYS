@@ -9,28 +9,29 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
-        <div class="col-xs-12">
-            <p:outputLabel value="Fecha" for="fechaInforme" class="control-label col-md-4"/>
+        <p:growl id="recado"  showDetail="true" />
+         <div class="col-xs-12">
+            <p:outputLabel value="Fecha" for="fechaInf" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaInforme" value="#{null}" showOn="button" locale="es" style="width: 100%" />
+                <p:calendar id="fechaInf" required="true" requiredMessage="¡Error! Debe indicar una fecha" value="#{informeBean.informe.fecha}" showOn="button" locale="es" style="width: 100%" />
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="Objetivo" for="objetivo" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputTextarea id="objetivo" value="#{null}" rows="8" style="width: 100%"/>
+                <p:inputTextarea id="objetivo" required="true" requiredMessage="¡Error! Debe indicar el objetivo" value="#{informeBean.informe.objetivo}" rows="8" style="width: 100%"/>
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="conclusiones" for="conclusiones" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputTextarea id="conclusiones" value="#{null}" rows="8" style="width: 100%"/>
+                <p:inputTextarea id="conclusiones" required="true" requiredMessage="¡Error! Debe indicar las conclusiones del informe" value="#{informeBean.informe.conclusiones}" rows="8" style="width: 100%"/>
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="Remitente" for="remitenteInforme" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:selectOneMenu value="#{recepcionBean.destinatarios}" id="remitenteInforme" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                <p:selectOneMenu value="#{informeBean.informe.remitente}" required="true" requiredMessage="!Error! Debe indicar el remitente" id="remitenteInforme" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
                     <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
                     <p:column>
                         <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
@@ -40,14 +41,16 @@
         </div>
         <p:spacer/>
         <div> 
-            <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{comunicacionBean.procesar()}" />
-            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{comunicacionBean.previsualizar()}" update="dlgVisorInforme" oncomplete="PF('dlgVisorInforme').show()" />
-            <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{comunicacionBean.firmar()}" />
-            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{comunicacionBean.enviar()}" />
-        </div>
-        <p:dialog id="dlgVisorInforme" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
-            <pe:documentViewer id="informeCtl" height="800" value="#{comunicacionBean.content}" />  
-        </p:dialog>
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{informeBean.procesar()}" update="recado clViewInforme" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewInforme" type="button" process="@all" title="Ver" action="#{informeViewBean.showDocument(informeBean.informe)}" update=":dlgVisorInforme">
+                <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
+                <span class="ui-button-text ui-c">Ver</span>
+            </p:commandLink>
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{informeBean.firmar()}"/>
+            <!--
+            <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{informeBean.enviar()}" />
+            -->            
+        </div>        
     </h:body>
 </html>
 

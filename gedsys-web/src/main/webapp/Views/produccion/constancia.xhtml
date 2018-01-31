@@ -9,22 +9,23 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <p:growl id="misiva"  showDetail="true" />
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCons" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaCons" value="#{constanciaBean.constancia.fecha}" showOn="button" locale="es" style="width: 100%" />
+                <p:calendar id="fechaCons" required="true" requiredMessage="¡Error! Debe indicar una fecha" value="#{constanciaBean.constancia.fecha}" showOn="button" locale="es" style="width: 100%" />
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="Texto de Contenido" for="contenidoConst" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputTextarea id="contenidoConst" value="#{constanciaBean.constancia.contenido}" rows="8" style="width: 100%"/>
+                <p:inputTextarea id="contenidoConst" required="true" requiredMessage="¡Error! El contenido no debe estar vacío" value="#{constanciaBean.constancia.contenido}" rows="8" style="width: 100%"/>
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="Remitente" for="remitenteConst" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:selectOneMenu value="#{constanciaBean.constancia.remitente}" id="remitenteConst" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                <p:selectOneMenu value="#{constanciaBean.constancia.remitente}" required="true" requiredMessage="!Error! Debe indicar el remitente" id="remitenteConst" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
                     <f:selectItems value="#{recepcionBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
                     <p:column>
                         <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
@@ -32,15 +33,17 @@
                 </p:selectOneMenu>
             </div>
             <p:spacer/>
-            <div> 
-                <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{comunicacionBean.procesar()}" />
-                <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{comunicacionBean.previsualizar()}" update="dlgVisorConstancia" oncomplete="PF('dlgVisorConstancia').show()" />
-                <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{comunicacionBean.firmar()}" />
-                <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{comunicacionBean.enviar()}" />
-            </div>
-            <p:dialog id="dlgVisorConstancia" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
-                <pe:documentViewer id="contanciaCtl" height="800" value="#{comunicacionBean.content}" />  
-            </p:dialog>
+          <div> 
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{constanciaBean.procesar()}" update="misiva clViewConstancia" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewConstancia" type="button" process="@all" title="Ver" action="#{constanciaViewBean.showDocument(constanciaBean.constancia)}" update=":dlgVisorConstancia">
+                <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
+                <span class="ui-button-text ui-c">Ver</span>
+            </p:commandLink>
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{constanciaBean.firmar()}"/>
+            <!--
+            <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{constanciaBean.enviar()}" />
+            -->
+        </div>            
         </div>
     </h:body>
 </html>

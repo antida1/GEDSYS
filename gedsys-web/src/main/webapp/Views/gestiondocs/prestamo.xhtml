@@ -16,21 +16,21 @@
             </div>
         </div>
         <div class="form-group row">
-            <p:outputLabel for="fechaPrestamo" value="Fecha Prestamo:" class="col-xs-3 col-form-label"/>
-            <div class="col-xs-9">
-                <p:calendar id="fechaPrestamo" value="#{prestamoBean.prestamo.fechaInicial}" showOn="button" required="true" />
-            </div>
+            <p:outputLabel class=" col-xs-3" for="fechaPrestamo">Fecha Prestamo:</p:outputLabel>
+              <div class="col-xs-5">
+                  <p:calendar id="fechaPrestamo" value="#{prestamoBean.prestamo.fechaInicial}" showOn="button" locale="es" style="width: 100%" required="true" requiredMessage="¡Error! Debe seleccionar la fecha de prestamo" />
+              </div>            
         </div>
          <div class="form-group row">
             <p:outputLabel for="fechaDev" value="Fecha Devolución:" class="col-xs-3 col-form-label"/>
-            <div class="col-xs-9">
-                <p:calendar id="fechaDev" value="#{prestamoBean.prestamo.fechaDevolucion}" showOn="button" rendered="true" />
+            <div class="col-xs-5">
+                <p:calendar id="fechaDev" value="#{prestamoBean.prestamo.fechaDevolucion}" showOn="button" locale="es" style="width: 100%" rendered="true"  required="true" requiredMessage="¡Error! Debe seleccionar la fecha de devolución"/>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Prestado a:" for="prestadoa" class="col-xs-3 col-form-label"/>
-            <div class="col-xs-9">
-                <p:selectOneMenu id="prestadoa" value="#{prestamoBean.prestamo.prestadoA}" converter="omnifaces.SelectItemsConverter" required="true" style="width: 100%">
+            <div class="col-xs-5">
+                <p:selectOneMenu id="prestadoa" value="#{prestamoBean.prestamo.prestadoA}" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="¡Error! debe seleccionar la persona a la cual va a hacer el prestamo" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}" />
                     <f:selectItems value="#{usuarioBean.usuarios}" var="prestadoa" itemLabel="#{prestadoa.nombres} #{prestadoa.apelidos}" itemValue="#{prestadoa}"/>
                 </p:selectOneMenu>
@@ -45,13 +45,12 @@
         <div class="form-group row">
             <p:outputLabel value="Firma:" for="firma" class="col-xs-3 col-form-label"></p:outputLabel>
             <div class="col-xs-9">
-                <p:signature id="firma" style="width:400px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{prestamoBean.prestamo.firma}"/>
+                <p:signature id="firma" style="width:400px;height:200px" widgetVar="Firma" required="true" requiredMessage="¡Error! Debe firmar el prestamo" guideline="true" value="#{prestamoBean.prestamo.firma}"/>
             </div>
-        </div>
-        <p:separator></p:separator>
-        <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{prestamoBean.procesar()}" update="messages" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
+        </div>       
+        <div class="aligncenter">
+            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{prestamoBean.procesar()}" update="messages" />
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" action="#{prestamoBean.limpiar()}" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
         </div>
     </h:body>
 </html>

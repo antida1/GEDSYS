@@ -7,6 +7,7 @@ package com.base16.gedsys.bean.pdoc;
 
 import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
+import com.base16.gedsys.entities.Carta;
 import com.base16.gedsys.entities.Circular;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.CircularJpaController;
@@ -55,7 +56,7 @@ public class CircularBean extends BaseBean implements Serializable {
      * Creates a new instance of CircularBean
      */
     private static final long SerialVersionUID = 1L;
-    private Circular circular;
+    private Circular circular = new Circular();
     private List<Circular> circulares;
     private String accion;
 
@@ -64,6 +65,8 @@ public class CircularBean extends BaseBean implements Serializable {
 
     public CircularBean() {
         this.accion = "Crear";
+        this.circular.setFecha(new Date());
+        
     }
 
     public Circular getCircular() {
@@ -91,20 +94,21 @@ public class CircularBean extends BaseBean implements Serializable {
     }
 
     public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Circular creado exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Circular modificado exitosamente!"));
                     break;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
+            Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -141,101 +145,101 @@ public class CircularBean extends BaseBean implements Serializable {
         this.circular.setEstado(3);
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "circular.odt");
-            TextNavigation searchFecha;
-            TextNavigation consecutivo;
-            TextNavigation grupo_destinatario;
-            TextNavigation cargo_remitente;
-            TextNavigation asunto;
-            TextNavigation contenido;
-            TextNavigation despedida;
-            TextNavigation remitente;
-            TextNavigation anexos;
-            TextNavigation copia;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.circular.getFecha(), "dd-mm-yyyy"));
-            }
-
-            consecutivo = new TextNavigation("@consecutivo", odt);
-            while (consecutivo.hasNext()) {
-                TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith(this.circular.getConsecutivo());
-            }
-
-            grupo_destinatario = new TextNavigation("@grupo_destinatario", odt);
-            while (grupo_destinatario.hasNext()) {
-                TextSelection item = (TextSelection) grupo_destinatario.nextSelection();
-                item.replaceWith(this.circular.getGrupoDestinatario());
-            }
-
-            asunto = new TextNavigation("@asunto", odt);
-            while (asunto.hasNext()) {
-                TextSelection item = (TextSelection) asunto.nextSelection();
-                item.replaceWith(this.circular.getAsunto());
-            }
-
-            contenido = new TextNavigation("@contenido", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(this.circular.getContenido());
-            }
-
-            despedida = new TextNavigation("@despedida", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith("");
-            }
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.circular.getRemitente().getNombres() + " " + this.circular.getRemitente().getApelidos());
-            }
-
-            cargo_remitente = new TextNavigation("@cargo_remitente", odt);
-            while (cargo_remitente.hasNext()) {
-                TextSelection item = (TextSelection) cargo_remitente.nextSelection();
-                item.replaceWith(this.circular.getRemitente().getCargo().getNombre());
-            }
-            
-             anexos = new TextNavigation("@anexos", odt);
-            while (anexos.hasNext()) {
-                TextSelection item = (TextSelection) anexos.nextSelection();
-                item.replaceWith("Anexos:" + this.circular.getAnexos());
-            }
-            
-             copia = new TextNavigation("@copia", odt);
-            while (copia.hasNext()) {
-                TextSelection item = (TextSelection) copia.nextSelection();
-                item.replaceWith("");
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "circular" + this.circular.getId().toString() + ".odt");
-            odt.close();
-
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + this.circular.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + this.circular.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "circular.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation consecutivo;
+//            TextNavigation grupo_destinatario;
+//            TextNavigation cargo_remitente;
+//            TextNavigation asunto;
+//            TextNavigation contenido;
+//            TextNavigation despedida;
+//            TextNavigation remitente;
+//            TextNavigation anexos;
+//            TextNavigation copia;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.circular.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            consecutivo = new TextNavigation("@consecutivo", odt);
+//            while (consecutivo.hasNext()) {
+//                TextSelection item = (TextSelection) consecutivo.nextSelection();
+//                item.replaceWith(this.circular.getConsecutivo());
+//            }
+//
+//            grupo_destinatario = new TextNavigation("@grupo_destinatario", odt);
+//            while (grupo_destinatario.hasNext()) {
+//                TextSelection item = (TextSelection) grupo_destinatario.nextSelection();
+//                item.replaceWith(this.circular.getGrupoDestinatario());
+//            }
+//
+//            asunto = new TextNavigation("@asunto", odt);
+//            while (asunto.hasNext()) {
+//                TextSelection item = (TextSelection) asunto.nextSelection();
+//                item.replaceWith(this.circular.getAsunto());
+//            }
+//
+//            contenido = new TextNavigation("@contenido", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) contenido.nextSelection();
+//                item.replaceWith(this.circular.getContenido());
+//            }
+//
+//            despedida = new TextNavigation("@despedida", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) despedida.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.circular.getRemitente().getNombres() + " " + this.circular.getRemitente().getApelidos());
+//            }
+//
+//            cargo_remitente = new TextNavigation("@cargo_remitente", odt);
+//            while (cargo_remitente.hasNext()) {
+//                TextSelection item = (TextSelection) cargo_remitente.nextSelection();
+//                item.replaceWith(this.circular.getRemitente().getCargo().getNombre());
+//            }
+//            
+//             anexos = new TextNavigation("@anexos", odt);
+//            while (anexos.hasNext()) {
+//                TextSelection item = (TextSelection) anexos.nextSelection();
+//                item.replaceWith("Anexos:" + this.circular.getAnexos());
+//            }
+//            
+//             copia = new TextNavigation("@copia", odt);
+//            while (copia.hasNext()) {
+//                TextSelection item = (TextSelection) copia.nextSelection();
+//                item.replaceWith("");
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "circular" + this.circular.getId().toString() + ".odt");
+//            odt.close();
+//
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + this.circular.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + this.circular.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
 
     private void loadDocument() {
         try {
@@ -264,7 +268,7 @@ public class CircularBean extends BaseBean implements Serializable {
 
     }
 
-    public List<Circular> getActasByResponsable() {
+    public List<Circular> getCircularesByResponsable() {
         CircularJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());

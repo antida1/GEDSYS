@@ -9,30 +9,31 @@
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <p:growl id="comunicacion"  showDetail="true"/>
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCircular" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaCircular" value="#{circularBean.circular.fecha}" showOn="button" locale="es" style="width: 100%" />
+                <p:calendar id="fechaCircular" value="#{circularBean.circular.fecha}" showOn="button" locale="es" style="width: 100%"  />
             </div>
         </div>
         <div class="col-xs-12">
             <p:outputLabel value="Datos grupo destinatario" for="datosGrupoDest" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputText id="datosGrupoDest" value="#{circularBean.circular.grupoDestinatario}" style="width: 100%"/>
+                <p:inputText id="datosGrupoDest" required="true" requiredMessage="El grupo destinatario no puede estar vacío" value="#{circularBean.circular.grupoDestinatario}" style="width: 100%"/>
             </div>
         </div>
 
         <div class="col-xs-12">
             <p:outputLabel value="Asunto" for="asuntoCircular" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputText id="asuntoCircular" value="#{circularBean.circular.asunto}" style="width: 100%"/>
+                <p:inputText id="asuntoCircular" required="true" requiredMessage="El asunto no puede estar vacío" value="#{circularBean.circular.asunto}" style="width: 100%"/>
             </div>
         </div>
 
         <div class="col-xs-12">
             <p:outputLabel value="Texto de Contenido" for="contenidoCircular" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:inputTextarea id="contenidoCircular" value="#{circularBean.circular.contenido}" rows="8" style="width: 100%"/>
+                <p:inputTextarea id="contenidoCircular" value="#{circularBean.circular.contenido}" required="true" requiredMessage="El contenido no puede estar vacío" rows="8" style="width: 100%"/>
             </div>
         </div>
         <div class="col-xs-12">
@@ -65,14 +66,16 @@
         </div>
         <p:spacer/>
         <div> 
-            <p:commandButton icon="ui-icon-disk" value="Guradar" actionListener="#{circularBean.procesar()}" />
-            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="#{circularBean.previsualizar()}" update="dlgVisorCircular" oncomplete="PF('dlgVisorCircular').show()" />
-            <p:commandButton icon="ui-icon-sign" value="Firmar" actionListener="#{circularBean.firmar()}" />
-            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{circularBean.enviar()}" />
-        </div>
-        <p:dialog id="dlgVisorCircular" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
-            <pe:documentViewer id="circularCtl" height="800" value="#{circularBean.content}" />  
-        </p:dialog>
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{circularBean.procesar()}" update="comunicacion clViewCircular" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewCircular" type="button" process="@all" title="Ver" action="#{circularViewBean.showDocument(circularBean.circular)}" update=":dlgVisorCircular">
+                <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
+                <span class="ui-button-text ui-c">Ver</span>
+            </p:commandLink>
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{circularBean.firmar()}"/>
+            <!--
+            <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{circularBean.enviar()}" />
+            -->
+        </div>        
     </h:body>
 </html>
 

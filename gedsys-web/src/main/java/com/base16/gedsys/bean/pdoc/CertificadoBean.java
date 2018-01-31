@@ -10,6 +10,7 @@ import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.entities.Carta;
 import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.CartaJpaController;
 import com.base16.gedsys.model.CertificadoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
@@ -56,7 +57,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
      * Creates a new instance of CertificadoBean
      */
     private static final long SerialVersionUID = 1L;
-    private Certificado certificado;
+    private Certificado certificado = new Certificado();
     private List<Certificado> certificados;
     private String accion;
     
@@ -65,6 +66,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
     
     public CertificadoBean() {
         this.accion = "Crear";
+        this.certificado.setFecha(new Date());
     }
 
     public Certificado getCertificado() {
@@ -94,28 +96,28 @@ public class CertificadoBean extends BaseBean implements Serializable {
     
     
     public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Certificado creado exitosamente"));
                     break;
                 case "editar":
                     editar();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Documento modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Certificado actualizado exitosamente"));
                     break;
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, e.getMessage());
+            Logger.getLogger(CertificadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
-
-    private void crear() throws Exception {
+     private void crear() throws Exception {
         CertificadoJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new CertificadoJpaController(emf);
-        
+
         this.certificado.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.certificado.setCreadoPor(usuario);
@@ -123,7 +125,8 @@ public class CertificadoBean extends BaseBean implements Serializable {
         this.certificado.setFechaModificacion(new Date());
         this.certificado.setEstado(1);
         cJpa.create(this.certificado);
-    }
+
+    }   
 
     private void editar() throws Exception {
         CertificadoJpaController cJpa;
@@ -144,72 +147,72 @@ public class CertificadoBean extends BaseBean implements Serializable {
         this.certificado.setEstado(3);
     }
 
-    public void previsualizar() {
-        try {
-
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "certificado.odt");
-            TextNavigation searchFecha;
-            TextNavigation consecutivo;
-            TextNavigation destinatario;
-            TextNavigation cargo;
-            TextNavigation asunto;
-            TextNavigation contenido;
-            TextNavigation despedida;
-            TextNavigation remitente;
-
-            searchFecha = new TextNavigation("@fecha", odt);
-            while (searchFecha.hasNext()) {
-                DateFormat df = new SimpleDateFormat();
-                TextSelection item = (TextSelection) searchFecha.nextSelection();
-                item.replaceWith(DateTimeUtils.getFormattedTime(this.certificado.getFecha(), "dd-mm-yyyy"));
-            }
-
-            consecutivo = new TextNavigation("@consecutivo", odt);
-            while (consecutivo.hasNext()) {
-                TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith(this.certificado.getConsecutivo());
-            }
-            
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(this.certificado.getRemitente().getCargo().getNombre());
-            }
-
-
-            contenido = new TextNavigation("@contenido", odt);
-            while (contenido.hasNext()) {
-                TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(this.certificado.getContenido());
-            }
-
-            remitente = new TextNavigation("@remitente", odt);
-            while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                item.replaceWith(this.certificado.getRemitente().getNombres() + " " + this.certificado.getRemitente().getApelidos() + " " + this.certificado.getRemitente().getCargo());
-            }
-
-            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".odt");
-            odt.close();
-            
-            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
-            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
-            
-            //IContext context =  report.createContext();
-            //context.put("name", "world");
-            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-            
-            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".odt"));
-            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".pdf"));
-            converter.convert(in, out, options);
-            
-            
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
-            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+//    public void previsualizar() {
+//        try {
+//
+//            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "certificado.odt");
+//            TextNavigation searchFecha;
+//            TextNavigation consecutivo;
+//            TextNavigation destinatario;
+//            TextNavigation cargo;
+//            TextNavigation asunto;
+//            TextNavigation contenido;
+//            TextNavigation despedida;
+//            TextNavigation remitente;
+//
+//            searchFecha = new TextNavigation("@fecha", odt);
+//            while (searchFecha.hasNext()) {
+//                DateFormat df = new SimpleDateFormat();
+//                TextSelection item = (TextSelection) searchFecha.nextSelection();
+//                item.replaceWith(DateTimeUtils.getFormattedTime(this.certificado.getFecha(), "dd-mm-yyyy"));
+//            }
+//
+//            consecutivo = new TextNavigation("@consecutivo", odt);
+//            while (consecutivo.hasNext()) {
+//                TextSelection item = (TextSelection) consecutivo.nextSelection();
+//                item.replaceWith(this.certificado.getConsecutivo());
+//            }
+//            
+//            cargo = new TextNavigation("@cargo", odt);
+//            while (cargo.hasNext()) {
+//                TextSelection item = (TextSelection) cargo.nextSelection();
+//                item.replaceWith(this.certificado.getRemitente().getCargo().getNombre());
+//            }
+//
+//
+//            contenido = new TextNavigation("@contenido", odt);
+//            while (contenido.hasNext()) {
+//                TextSelection item = (TextSelection) contenido.nextSelection();
+//                item.replaceWith(this.certificado.getContenido());
+//            }
+//
+//            remitente = new TextNavigation("@remitente", odt);
+//            while (remitente.hasNext()) {
+//                TextSelection item = (TextSelection) remitente.nextSelection();
+//                item.replaceWith(this.certificado.getRemitente().getNombres() + " " + this.certificado.getRemitente().getApelidos() + " " + this.certificado.getRemitente().getCargo());
+//            }
+//
+//            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".odt");
+//            odt.close();
+//            
+//            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+//            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+//            
+//            //IContext context =  report.createContext();
+//            //context.put("name", "world");
+//            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+//            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+//            
+//            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".odt"));
+//            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + this.certificado.getId().toString() + ".pdf"));
+//            converter.convert(in, out, options);
+//            
+//            
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+//            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//    }
     
     private void loadDocument(){
         try {
@@ -238,14 +241,14 @@ public class CertificadoBean extends BaseBean implements Serializable {
 
     }
 
-    public List<Certificado> getActasByResponsable() {
+    public List<Certificado> getCertificadosByResponsable() {
         CertificadoJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new CertificadoJpaController(emf);
             certificados = cJpa.findCertificadoEntities();
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return certificados;
