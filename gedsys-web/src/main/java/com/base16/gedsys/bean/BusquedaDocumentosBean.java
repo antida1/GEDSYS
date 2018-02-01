@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -93,6 +95,10 @@ public class BusquedaDocumentosBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
             documentos = dJpa.findDocumentos(this.getCurrentUser(), this.radicado, this.asunto, this.startDate, this.endDate, this.tipoDocumento);
+            if(documentos == null){
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Búsqueda de documentos", "¡El documento solicitado no existe!"));
+            }
         } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }

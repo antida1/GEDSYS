@@ -20,7 +20,7 @@
                     <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
-                                <h2>Busqueda de Documentos</h2>
+                                <h2>Búsqueda de Documentos</h2>
                                 <div class="clear"></div>
                             </div>
                             <div class="x_content">
@@ -37,15 +37,17 @@
                                             <p:inputText id="Asunto" value="#{busquedaDocumentosBean.asunto}" class="form-control"/>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <p:outputLabel value="Fecha Inicio" for="fechaInicio" class="col-xs-3 col-form-label" />
-                                        <div class="col-xs-3">
-                                            <p:inputText id="fechaInicio" value="#{busquedaDocumentosBean.startDate}" class="form-control"/>
+                                    <div class="form-group row">                                        
+                                        <p:outputLabel class=" col-xs-3" for="fechaInicio">Fecha Inicio</p:outputLabel>
+                                        <div class="col-xs-5">
+                                           <p:calendar id="fechaInicio" value="#{busquedaDocumentosBean.startDate}" showOn="button" locale="es" style="width: 100%" />
                                         </div>
-                                        <p:outputLabel value="Fecha Final" for="fechaFinal" class="col-xs-3 col-form-label" />
-                                        <div class="col-xs-3">
-                                            <p:inputText id="fechaFinal"  value="#{busquedaDocumentosBean.endDate}" class="form-control"/>
-                                        </div>
+                                    </div>
+                                    <div class="form-group row">  
+                                        <p:outputLabel class=" col-xs-3" for="fechaFinal">Fecha Final</p:outputLabel>
+                                        <div class="col-xs-5">
+                                            <p:calendar id="fechaFinal" value="#{busquedaDocumentosBean.endDate}" showOn="button" locale="es" style="width: 100%" />
+                                        </div>                                                                              
                                     </div>
                                     <div class="form-group row">
                                         <p:outputLabel value="Tipo de Documento" for="tipoDocumento" class="col-xs-3 col-form-label" />
@@ -65,9 +67,9 @@
                                 <div class="col-xs-12">
                                     <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{busquedaDocumentosBean.documentos}" style="margin-bottom:0" rows="50"
                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                 rowsPerPageTemplate="5,10,15,30,50">
+                                                 rowsPerPageTemplate="5,10,15,30,50" emptyMessage="¡No se encontraron registros para su búsqueda!">
                                        
-                                        <p:column headerText="Redicado">
+                                        <p:column headerText="Radicado">
                                             <h:outputText value="#{docsEntrantes.consecutivo}" />
                                         </p:column>
                                         <p:column headerText="Fecha de recepción">
@@ -102,7 +104,7 @@
                             </div>
                         </h:form>
                     </div>
-                    <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                    <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" maximizable="true" >
                         <h:form>
                             <c:if test='#{documentViewerBean.content.contentType.equals("application/pdf")}'>
                                 <pe:documentViewer id="documentCtl" height="800" value="#{documentViewerBean.content}" />  
@@ -118,19 +120,19 @@
                             </div>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="700">
+                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" rendered="true" width="60%" height="500">
                         <h:form>
                             <ui:include src="prestamo.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                    <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="60%" height="400">
                         <h:form>
                             <ui:include src="compartir.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="600">
+                    <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="60%" height="500">
                         <h:form>
                             <ui:include src="infoDocumento.xhtml">
                             </ui:include>
