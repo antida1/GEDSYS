@@ -27,6 +27,8 @@ import java.util.Collection;
 import com.base16.gedsys.entities.DestinatariosDoc;
 import com.base16.gedsys.entities.ProcesoDocumental;
 import com.base16.gedsys.entities.Comentario;
+import com.base16.gedsys.entities.Documento_;
+import com.base16.gedsys.entities.Usuario_;
 import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.Date;
@@ -35,6 +37,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import org.eclipse.persistence.jpa.JpaQuery;
 
 /**
  *
@@ -964,19 +971,45 @@ public class DocumentoJpaController implements Serializable {
         return findDocumentos(remitente, radicado, asunto, starDate, endDate, tipoDocumento, false, maxResults, firstResult);
     }
 
-    private List<Documento> findDocumentos(Usuario remitente, String radicado, String asunto, Date starDate, Date endDate, TipoDocumento tipoDocumento, boolean all, int maxResults, int firstResult) {
+    private List<Documento> findDocumentos(Usuario destinatario, String radicado, String asunto, Date starDate, Date endDate, TipoDocumento tipoDocumento, boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         List<Documento> documentos = null;
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
-            Query q = em.createNamedQuery("Documento.findDocumentos", Documento.class)
-                    .setParameter("destinatario", remitente)
-                    .setParameter("consecutivo", "%" + radicado + "%")
-                    .setParameter("asunto", "%" + asunto + "%");
-                    //.setParameter("startDate", starDate)
-                    //.setParameter("endDate", endDate)
-                    //.setParameter("tipoDocumento", tipoDocumento);
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery cq = cb.createQuery(Documento.class);
+            
+            Root doc = cq.from(Documento.class);
+            List<Predicate> predicates = new ArrayList<Predicate>();
+
+            if(destinatario != null){
+                Expression<Usuario> eRemitente = doc.get("destinatario");
+                predicates.add(cb.equal(eRemitente, destinatario));
+            }
+            
+            if (starDate != null && endDate != null) {
+                predicates.add(cb.and(cb.between(doc.get(Documento_.fechaDocumento), starDate, endDate)));
+            }
+
+            if (tipoDocumento != null) {
+                Expression<TipoDocumento> eTipoDoc = doc.get("tipoDocumento");
+                predicates.add(cb.and(cb.equal(eTipoDoc, tipoDocumento)));
+            }
+            
+            if (radicado != null && !radicado.isEmpty()) {
+                String pRadicado = "%" + radicado + "%";
+                Expression<String> eRadicado = doc.get("consecutivo");
+                predicates.add(cb.and(cb.like(eRadicado, pRadicado)));
+            }
+
+            if (asunto != null && !asunto.isEmpty() ) {
+                String pAsunto = "%" + asunto + "%";
+                Expression<String> eAsunto = doc.get("asunto");
+                predicates.add(cb.and(cb.like(eAsunto, pAsunto)));
+            }
+            cq.select(doc).where(predicates.toArray(new Predicate[]{}));
+        
+            TypedQuery<Documento> q = em.createQuery(cq);
+            
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);

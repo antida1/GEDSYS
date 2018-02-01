@@ -68,7 +68,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByRequiereRespuesta", query = "SELECT d FROM Documento d WHERE d.requiereRespuesta = :requiereRespuesta")
     , @NamedQuery(name = "Documento.findRadicados", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor")
     //, @NamedQuery(name = "Documento.findDocumentos", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.consecutivo like :consecutivo and d.asunto like :asunto and d.fechaDocumento between :startDate and :endDate and d.tipoDocumento like :tipoDocumento ")    
-    , @NamedQuery(name = "Documento.findDocumentos", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.consecutivo like :consecutivo and d.asunto like :asunto")
+    //, @NamedQuery(name = "Documento.findDocumentos", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.consecutivo like :consecutivo and d.asunto like :asunto")
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 
 public class Documento implements Serializable {
