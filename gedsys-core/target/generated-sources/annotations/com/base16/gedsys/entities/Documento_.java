@@ -1,20 +1,5 @@
 package com.base16.gedsys.entities;
 
-import com.base16.gedsys.entities.Autor;
-import com.base16.gedsys.entities.ClaseDocumento;
-import com.base16.gedsys.entities.Comentario;
-import com.base16.gedsys.entities.Corregimiento;
-import com.base16.gedsys.entities.DestinatariosDoc;
-import com.base16.gedsys.entities.Documento;
-import com.base16.gedsys.entities.Entidad;
-import com.base16.gedsys.entities.Mediorecepcion;
-import com.base16.gedsys.entities.Municipio;
-import com.base16.gedsys.entities.ProcesoDocumental;
-import com.base16.gedsys.entities.SignaturaTopografica;
-import com.base16.gedsys.entities.TipoDocumental;
-import com.base16.gedsys.entities.TipoDocumento;
-import com.base16.gedsys.entities.Transportador;
-import com.base16.gedsys.entities.Usuario;
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
