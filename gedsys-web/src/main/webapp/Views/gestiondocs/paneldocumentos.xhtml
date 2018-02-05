@@ -54,12 +54,12 @@
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
                                             </f:facet>
-                                            <p:column headerText="Redicado">
+                                            <p:column headerText="Radicado">
                                                 <h:outputText value="#{docsEntrantes.consecutivo}" />
                                             </p:column>
                                             <p:column headerText="Fecha de recepción">
                                                 <h:outputText value="#{docsEntrantes.fechaCreacion}" >
-                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                    <f:convertDateTime type="date" locale="es"/>
                                                 </h:outputText>
                                             </p:column>
                                             <p:column headerText="Tipo Documento">
@@ -96,7 +96,7 @@
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
                                                 </f:facet>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPorEnviar.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha del Documento">
@@ -132,12 +132,12 @@
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsEnviados" trigger="toggler" />
                                                 </f:facet>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsEnviados.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsEnviados.fechaCreacion}" >
-                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        <f:convertDateTime type="date" locale="es"/>
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Asunto">
@@ -170,7 +170,7 @@
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPrestamo" trigger="toggler" />
                                                 </f:facet>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPrestamo.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
@@ -221,12 +221,12 @@
                                                 <p:column headerText="Dias de Vencimiento">
                                                     <h:outputText value="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now)}" />
                                                 </p:column>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPorVencer.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsPorVencer.fechaCreacion}" >
-                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        <f:convertDateTime type="date" locale="es"/>
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Fecha de vencimiento">
