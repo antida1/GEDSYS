@@ -71,12 +71,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
                                                          update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('pais')}">
                                         </p:commandButton>                                    
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{paisBean.eliminar(pais)}" 
-                                                         update=":form:lstPaises messages">
+                                                         update=":form:lstPaises messages" disabled="#{!autorizationBean.canDelete('pais')}">
                                              <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

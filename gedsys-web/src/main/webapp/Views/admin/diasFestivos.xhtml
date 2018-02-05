@@ -48,13 +48,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 
                                                          update=":dlgDetalle" oncomplete="PF('diaDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('municipio')}">
                                         </p:commandButton>
 
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{diaFestivoBean.eliminar(festivo)}" 
-                                                         update=":form:lstDias messages">
+                                                         update=":form:lstDias messages" disabled="#{!autorizationBean.canDelete('municipio')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

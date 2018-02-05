@@ -74,13 +74,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{consecutivoBean.getConsecutivoById(consecutivo)}"
                                                          update=":dlgDetalle" oncomplete="PF('consecutivoDialog').show()"
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('consecutivo')}">
                                         </p:commandButton>
 
                                         <p:commandButton icon="ui-icon-trash"
                                                          title="Borrar"
                                                          actionListener="#{consecutivoBean.eliminar(consecutivo)}"
-                                                         update=":form:lstConsecutivos messages">
+                                                         update=":form:lstConsecutivos messages" disabled="#{!autorizationBean.canDelete('consecutivo')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

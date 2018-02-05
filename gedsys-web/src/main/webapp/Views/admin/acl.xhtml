@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <p:separator/>
-                                <p:dataTable id="lstListas" var="acl" value="#{aclBean.acls}" style="margin-bottom:20px" >
+                                <p:dataTable id="lstListas" var="acl" value="#{aclBean.acls}" style="margin-bottom:20px" emptyMessage="¡No se encuentra una lista de control de acceso para el modulo seleccionado!">
 
                                     <p:column headerText="Módulo">
                                         <h:outputText value="#{acl.modulo.nombre}" />

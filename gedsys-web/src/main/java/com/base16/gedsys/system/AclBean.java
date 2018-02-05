@@ -79,13 +79,16 @@ public class AclBean extends BaseBean implements Serializable {
     }
 
     public void procesar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             switch (accion) {
                 case "Crear":
                     crear();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Control de acceso creado exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Control de acceso modificado exitoxamente!"));
                     break;
             }
         } catch (Exception e) {

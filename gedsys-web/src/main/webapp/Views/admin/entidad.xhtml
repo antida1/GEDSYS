@@ -65,12 +65,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{entidadBean.getEntidadById(entidad)}" 
                                                          update=":dlgDetalle" oncomplete="PF('entidadDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('entidad')}">
                                         </p:commandButton>
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{entidadBean.eliminar(entidad)}" 
-                                                         update=":form:lstEntidades messages">
+                                                         update=":form:lstEntidades messages" disabled="#{!autorizationBean.canDelete('entidad')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         

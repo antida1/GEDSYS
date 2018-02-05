@@ -47,7 +47,7 @@
                                                 <f:selectItem itemLabel="No" itemValue="false" />
                                             </p:selectOneButton>
                                         </f:facet>
-                                        <h:outputText value="#{grupo.estado}" />
+                                        <h:outputText value="#{grupo.estado}"/>
                                         <c:if test="#{grupo.estado == true}">
                                             <h:outputText value="Activo" />
                                         </c:if>
@@ -90,7 +90,7 @@
                                                          icon="ui-icon-pencil" title="Editar">
                                         </p:commandButton>
 
-                                        <p:commandButton icon="fa fa-fw fa-eraser"
+                                        <p:commandButton icon="ui-icon-trash"
                                                          title="Borrar"
                                                          actionListener="#{grupoBean.eliminar(grupo)}"
                                                          update=":form:lstGrupos messages">
