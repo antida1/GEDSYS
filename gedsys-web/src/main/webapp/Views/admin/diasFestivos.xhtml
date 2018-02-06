@@ -48,13 +48,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{diaFestivoBean.getDiaFestivoById(festivo)}" 
                                                          update=":dlgDetalle" oncomplete="PF('diaDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('municipio')}">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('diasFestivos')}">
                                         </p:commandButton>
 
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{diaFestivoBean.eliminar(festivo)}" 
-                                                         update=":form:lstDias messages" disabled="#{!autorizationBean.canDelete('municipio')}">
+                                                         update=":form:lstDias messages" disabled="#{!autorizationBean.canDelete('diasFestivos')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -80,7 +80,7 @@
                             <div>
                                 <div class="col-xs-7"></div>
                                 <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}"/>
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
 
                             </div>
                         </h:form>

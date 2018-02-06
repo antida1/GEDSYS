@@ -122,7 +122,7 @@
                             <p:spacer/>
                             <div> 
                                 <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}"  />
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog> 

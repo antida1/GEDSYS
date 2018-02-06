@@ -73,18 +73,23 @@
                                         </f:facet>
                                         <h:outputText value="#{subser.modificadoPor.nombres} #{subser.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{subSerieBean.getSubSerieById(subser)}" 
                                                          update=":dlgDetalle" oncomplete="PF('subSerieDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('subseries')}">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
-                                        <p:commandButton icon="ui-icon-eraser" 
+
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{subSerieBean.eliminar(subser)}" 
-                                                         update=":form:lstSubSerie messages"/>
-                                    </p:column>
+                                                         update=":form:lstSubSerie messages" disabled="#{!autorizationBean.canDelete('subseries')}">
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:column>                                    
                                 </p:dataTable>
                             </div>
                         </h:form>
@@ -115,7 +120,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstSubSerie messages" icon="ui-icon-disk" value="#{subSerieBean.accion}" actionListener="#{subSerieBean.procesar()}" oncomplete="PF('subSerieDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('subSerieDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('subSerieDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

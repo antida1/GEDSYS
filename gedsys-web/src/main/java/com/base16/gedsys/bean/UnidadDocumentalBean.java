@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -68,9 +69,13 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Unidad documental creada exitosamente!"));
+                    limpiar();
                     break;
                 case "Modificar":
                     modificar();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Unidad documental modificada exitosamente!"));
+                    limpiar();
                     break;
             }
         } catch (Exception e) {
@@ -156,6 +161,11 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
         } catch (Exception e) {
              Logger.getLogger(SeccionSubSeccionBean.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+     
+     public void limpiar() {
+        this.unidadDocumental = null;
+        this.unidadDocumental = new UnidadDocumental();
     }
     
 }

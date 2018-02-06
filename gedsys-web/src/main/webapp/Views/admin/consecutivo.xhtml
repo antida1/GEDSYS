@@ -131,7 +131,7 @@
                             <p:spacer/>
                             <div>
                                 <p:commandButton update=":form:lstConsecutivos messages" icon="ui-icon-disk" value="#{consecutivoBean.accion}" actionListener="#{consecutivoBean.procesar()}" />
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('consecutivoDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('consecutivoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>

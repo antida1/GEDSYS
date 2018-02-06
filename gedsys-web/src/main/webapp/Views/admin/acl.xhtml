@@ -121,7 +121,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="#{aclBean.accion}" actionListener="#{aclBean.procesar()}" oncomplete="PF('aclDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

@@ -77,13 +77,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{mediosRepEnvBean.getMediorecepcionById(medioRecepcion)}" 
                                                          update=":dlgDetalle" oncomplete="PF('medioRecepcionDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('mediosRecepcion')}">
                                         </p:commandButton>
 
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{mediosRepEnvBean.eliminar(medioRecepcion)}" 
-                                                         update=":form:lstPaises messages">
+                                                         update=":form:lstPaises messages" disabled="#{!autorizationBean.canDelete('mediosRecepcion')}">
                                             <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -112,7 +112,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{mediosRepEnvBean.accion}" actionListener="#{mediosRepEnvBean.procesar()}" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('medioRecepcionDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('medioRecepcionDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

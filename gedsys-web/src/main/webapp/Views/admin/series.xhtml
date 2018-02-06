@@ -73,18 +73,23 @@
                                         </f:facet>
                                         <h:outputText value="#{ser.modificadoPor.nombres} #{ser.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{serieBean.getSerieById(ser)}" 
                                                          update=":dlgDetalle" oncomplete="PF('serieDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('series')}">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
-                                        <p:commandButton icon="ui-icon-eraser" 
+
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{serieBean.eliminar(ser)}" 
-                                                         update=":form:lstSeries messages"/>
-                                    </p:column>
+                                                         update=":form:lstSeries messages" disabled="#{!autorizationBean.canDelete('series')}">
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:column>                                    
                                 </p:dataTable>
                             </div>
                         </h:form>
@@ -115,7 +120,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstSeries messages" icon="ui-icon-disk" value="#{serieBean.accion}" actionListener="#{serieBean.procesar()}" oncomplete="PF('serieDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('serieDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('serieDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

@@ -125,7 +125,7 @@
                             <p:spacer/>
                             <div> 
                                 <p:commandButton update=":form:lstMunicipios messages" icon="ui-icon-disk" value="#{municipioBean.accion}" actionListener="#{municipioBean.procesar()}" oncomplete="PF('municipioDialog').hide()" />
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('municipioDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('municipioDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>  

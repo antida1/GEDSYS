@@ -105,7 +105,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>
