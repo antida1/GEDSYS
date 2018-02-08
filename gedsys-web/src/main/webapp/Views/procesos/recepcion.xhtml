@@ -195,7 +195,7 @@
                                         <p:commandButton widgetVar="printRad" update=":form" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px;" disabled="#{recepcionBean.canPrint}" ></p:commandButton>
                                         <p:commandButton widgetVar="saveDoc" update=":form messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px; " disabled="#{recepcionBean.canSave}" />
                                         <p:commandButton class="btn-default" value="Cancelar" immediate="true" style="float:right;"></p:commandButton>
-                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" style="overflow:auto;">
+                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
                                             <ui:include src="newRadicadoRecepcion.xhtml">
                                                 <ui:param name="tipoRadicado" value="externo" />
                                                 <ui:param name="consectivoExterno" value="#{recepcionBean.documento.consecutivo}" />

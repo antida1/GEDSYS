@@ -21,16 +21,19 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('tipoDocumentoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{tipoDocumentoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('tipoDocumentoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{tipoDocumentoBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('tipoDocumento')}">
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
                                  <p:dataTable widgetVar="tipoDocumentoTabla" id="lstTipoDocumento" var="tipoDocumento" value="#{tipoDocumentoBean.tipoDocumentos}" style="margin-bottom:0" rows="10" reflow="true"
                                              paginator="true" scrollable="true" scrollHeight="250"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">                     
+                                             rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron tipos de documentos!">                     
                                     <p:column headerText="Nombre" filterBy="#{tipoDocumento.nombre}" filterMatchMode="contains">                                        
                                         <h:outputText value="#{tipoDocumento.nombre}" />                                      
+                                    </p:column> 
+                                     <p:column headerText="Tipo de Comunicación" filterBy="#{tipoDocumento.tipoComunicacion}" filterMatchMode="contains">
+                                        <h:outputText value="#{tipoDocumento.tipoComunicacion}" />
                                     </p:column>
                                     <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.requiereRespuesta}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.requiereRespuesta}" />
@@ -46,8 +49,7 @@
                                     </p:column>
                                     <p:column headerText="Tipo de Calendario" filterBy="#{tipoDocumento.tipoCalendario}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.tipoCalendario}" />
-                                    </p:column>
-                                    
+                                    </p:column>                                    
                                     <p:column headerText="Fecha creación">
                                         <h:outputText value="#{tipoDocumento.fechaCreacion}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -60,7 +62,7 @@
                                     </p:column>
                                     <p:column headerText="Creado por" filterBy="#{tipoDocumento.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:110px;">
+                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:105px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
@@ -69,7 +71,7 @@
                                     </p:column>
                                     <p:column headerText="Modificado por" filterBy="#{tipoDocumento.modificadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:110px;">
+                                            <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:105px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                 <f:selectItems value="#{usuarioBean.usuarios}" var="usuario" itemLabel="#{usuario.nombres} #{usuario.apelidos}" itemValue="#{usuario}" />
                                             </p:selectOneMenu>
@@ -99,26 +101,37 @@
                             <h:form>
                                 <h:inputHidden id="id" value="#{tipoDocumentoBean.tipoDocumento.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:inputText id="Nombre" required="true"  requiredMessage="Error, el nombre no puede estar vacío" value="#{tipoDocumentoBean.tipoDocumento.nombre}" class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Requiere respuesta" for="ReqRespuesta" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Tipo de Comunicación" for="tipoComunicacion" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:selectOneMenu id="tipoComunicacion" value="#{tipoDocumentoBean.tipoDocumento.tipoComunicacion}" onchange="PF('tipoDocumentoTabla').filter()" 
+                                                         required="true"  requiredMessage="¡Error! Debe seleccionar el tipo de comunicación">
+                                            <f:selectItem itemLabel="Seleccione el tipo de comunicación" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItem itemLabel="Interna" itemValue="interna" />
+                                            <f:selectItem itemLabel="Externa" itemValue="externa" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p:outputLabel value="Requiere respuesta" for="ReqRespuesta" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:selectBooleanCheckbox id="ReqRespuesta" value="#{tipoDocumentoBean.tipoDocumento.requiereRespuesta}" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:inputText id="diasRespuesta" required="true"  requiredMessage="Error, los .días de respuesta no pueden estar vacíos" value="#{tipoDocumentoBean.tipoDocumento.diasRespuesta}" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-2 col-form-label" />
-                                    <div class="col-xs-10">
+                                    <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
                                         <p:selectOneMenu id="tipoCalendario" value="#{tipoDocumentoBean.tipoDocumento.tipoCalendario}" onchange="PF('tipoDocumentoTabla').filter()" 
                                                          required="true"  requiredMessage="Error, debe seleccionar el tipo de calendario">
                                             <f:selectItem itemLabel="Seleccione el tipo de calendario" itemValue="#{null}" noSelectionOption="true" />

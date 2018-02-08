@@ -36,8 +36,14 @@
                             <div class='x_content'> 
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
+                                    <c:if test="#{autorizationBean.canCreate('recepcion')== false}">
+                                    <li><a data-toggle="tab" href="#menuTab1" style="display: none;">Por Enviar</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Enviados</a></li>
+                                    </c:if>
+                                    <c:if test="#{autorizationBean.canCreate('recepcion')== true}">
                                     <li><a data-toggle="tab" href="#menuTab1">Por Enviar</a></li>
                                     <li><a data-toggle="tab" href="#menuTab2">Enviados</a></li>
+                                    </c:if>
                                     <li><a data-toggle="tab" href="#menuTab3">En Prestamo</a></li>
                                     <li><a data-toggle="tab" href="#menuTab4">Por Vencer</a></li>
                                     <li><a data-toggle="tab" href="#menuTab5">Por Firmar</a></li>
