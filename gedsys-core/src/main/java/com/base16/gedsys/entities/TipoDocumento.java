@@ -45,7 +45,7 @@ public class TipoDocumento implements Serializable {
     @Column(name = "RequiereRespuesta")
     private Boolean requiereRespuesta;
     @Column(name = "EsPQRSF")
-    private Boolean esPQRSF;
+    private Short esPQRSF;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -246,11 +246,11 @@ public class TipoDocumento implements Serializable {
         this.requiereRespuesta = requiereRespuesta;
     }
 
-    public Boolean getEsPQRSF() {
+    public Short getEsPQRSF() {
         return esPQRSF;
     }
 
-    public void setEsPQRSF(Boolean esPQRSF) {
+    public void setEsPQRSF(Short esPQRSF) {
         this.esPQRSF = esPQRSF;
     }
     

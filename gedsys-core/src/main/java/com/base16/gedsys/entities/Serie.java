@@ -44,6 +44,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Serie implements Serializable {  
 
+    @JoinColumn(name = "SeccionSubseccion", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private SeccionSubSeccion seccionSubseccion;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,9 +72,8 @@ public class Serie implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    @JoinColumn(name = "SeccionSubseccion", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
-    private SeccionSubSeccion seccionSubseccion;
+    
+    
     @Column(name = "Codigo")
     private String codigo;
     
@@ -187,5 +190,5 @@ public class Serie implements Serializable {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-
+    
 }

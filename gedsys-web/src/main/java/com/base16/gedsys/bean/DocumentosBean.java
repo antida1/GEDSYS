@@ -20,16 +20,24 @@ import com.base16.gedsys.model.CertificadoJpaController;
 import com.base16.gedsys.model.CircularJpaController;
 import com.base16.gedsys.model.ComunicacionJpaController;
 import com.base16.gedsys.model.ConstanciaJpaController;
+import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.model.InformeJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.base16.gedsys.web.utils.SessionUtils;
+import com.base16.utils.Mensajeria;
+import com.base16.utils.UploadDocument;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -55,6 +63,9 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Comunicacion> comunicadoPorFirmar;
     private List<Constancia> constanciaPorFirmar;
     private List<Informe> informePorFirmar;
+    
+    private UploadedFile documentFile;
+    private UploadedFile documentFileComprobante;
 
     /**
      * Creates a new instance of DocumentosBean
@@ -173,6 +184,69 @@ public class DocumentosBean extends BaseBean implements Serializable {
     public void setSinArchivar(List<Documento> sinArchivar) {
         this.sinArchivar = sinArchivar;
     }
+
+    public UploadedFile getDocumentFile() {
+        return documentFile;
+    }
+
+    public void setDocumentFile(UploadedFile documentFile) {
+        this.documentFile = documentFile;
+    }
+
+    public UploadedFile getDocumentFileComprobante() {
+        return documentFileComprobante;
+    }
+
+    public void setDocumentFileComprobante(UploadedFile documentFileComprobante) {
+        this.documentFileComprobante = documentFileComprobante;       
+    }
+    
+    public void cargarGuia(String consecutivo){
+        FacesContext context = FacesContext.getCurrentInstance();
+        DocumentoJpaController dJpa;
+        Documento documento;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            documento = dJpa.findByConsecutivo(consecutivo);
+            if(documento != null){
+               if (this.documentFile.getContents().length <= 0) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Adjuntar guía", "¡Por favor adjunte la guía!"));
+                }else {
+                   EntityManager em = emf.createEntityManager();
+                    try {
+                        em.getTransaction().begin(); 
+                        dJpa = new DocumentoJpaController(emf);              
+
+                        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+                        documento.setModificadoPor(usuario);
+                        UploadDocument uDoc = new UploadDocument();
+                        uDoc.upload(documentFile, this.documenstSavePath);
+                        documento.setRutaGuia(uDoc.getFileName(documentFile));
+                        documento.setGuia(uDoc.getUuid().toString());
+                 
+                        dJpa.edit(documento);
+                        Mensajeria mensajeria = new Mensajeria();
+                        mensajeria.send(usuario, "Nuevo documento recibido", documento.getGuia());
+                
+                        em.getTransaction().commit();              
+                
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Guía Almacenada exitoxamente!"));
+                    }catch (Exception e) {
+                        Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error al cargar la guía!", e.getMessage()));
+                        em.getTransaction().rollback();
+                    }
+               }
+            }
+            
+        } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+           
+        
+ 
     
     private void listarDocumentosRadicados() {
         DocumentoJpaController dJpa;

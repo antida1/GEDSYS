@@ -53,9 +53,9 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
-                                        <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="50"
+                                        <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="15"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                     rowsPerPageTemplate="5,10,15,30,50" emptyMessage="¡No se encontraron documentos entrantes!">
+                                                     rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos entrantes!">
                                             <f:facet name="header">
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
@@ -158,12 +158,22 @@
                                                 <p:column headerText="Detalle">
                                                     <h:outputText value="#{docsEnviados.detalle}" />
                                                 </p:column>
+                                                <p:column headerText="Medio de Envio">
+                                                    <h:outputText value="#{docsEnviados.medioEnvio.nombre}" />
+                                                </p:column>
+                                                <p:column headerText="Adjuntar Guía">                                                 
+                                                    <p:fileUpload value="#{documentosBean.documentFile}" fileUploadListener="#{documentosBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
+                                                    <p:commandLink type="button" value="Subir" action="#{documentosBean.cargarGuia(docsEnviados.consecutivo)}" class="btn-primary" style="margin-left: 10px; " update=":messages"/>
+                                                </p:column>
+                                                <p:column headerText="Adjuntar Comprobante de Entrega">
+                                                    <p:fileUpload value="#" disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#"  mode="simple" skinSimple="true" label="adjuntar" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
+                                                </p:column>
                                                 <p:column headerText="Acciones">
-                                                    <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" disabled="#{documentosBean.documentFileComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
-                                                    <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
-                                                </p:column>
+                                                    <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                                        
+                                                </p:column>                                               
                                             </p:dataTable>
                                         </div>
                                     </div>

@@ -73,6 +73,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Documento implements Serializable {
 
+    @Column(name = "Comprobante")
+    private String comprobante;
+
     @XmlTransient
     @JsonIgnore
     @OneToMany(mappedBy = "documento")
@@ -141,6 +144,10 @@ public class Documento implements Serializable {
     @Column(name = "FechaVencimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
+    @Column(name = "RutaGuia")
+    private String rutaGuia;
+    @Column(name = "Guia")
+    private String guia;
     
     @XmlTransient
     @JsonIgnore
@@ -483,6 +490,21 @@ public class Documento implements Serializable {
     public void setFechaRecepcion(Date fechaRecepcion) {
         this.fechaRecepcion = fechaRecepcion;
     }
+    public String getRutaGuia() {
+        return rutaGuia;
+    }
+
+    public void setRutaGuia(String rutaGuia) {
+        this.rutaGuia = rutaGuia;
+    }
+    public String getGuia() {
+        return guia;
+    }
+
+    public void setGuia(String guia) {
+        this.guia = guia;
+    }
+    
 
     @XmlTransient
     @JsonIgnore
@@ -579,6 +601,8 @@ public class Documento implements Serializable {
     public void setProcesodocumentalCollection(Collection<ProcesoDocumental> procesodocumentalCollection) {
         this.procesodocumentalCollection = procesodocumentalCollection;
     }
+    
+    
 
     @Override
     public int hashCode() {
@@ -637,6 +661,14 @@ public class Documento implements Serializable {
 
     public void setComentarioList(List<Comentario> comentarioList) {
         this.comentarioList = comentarioList;
+    }
+
+    public String getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(String comprobante) {
+        this.comprobante = comprobante;
     }
 
 }
