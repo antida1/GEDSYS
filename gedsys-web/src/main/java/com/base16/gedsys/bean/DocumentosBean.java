@@ -46,6 +46,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Documento> porVencer;
     private List<Documento> radicados;
     private List<Documento> sinArchivar;
+    private List<Documento> porEnviar;
     
     
     private List<Acta> actasPorFirmar;
@@ -173,6 +174,15 @@ public class DocumentosBean extends BaseBean implements Serializable {
     public void setSinArchivar(List<Documento> sinArchivar) {
         this.sinArchivar = sinArchivar;
     }
+
+    public List<Documento> getPorEnviar() {
+        return porEnviar;
+    }
+
+    public void setPorEnviar(List<Documento> porEnviar) {
+        this.porEnviar = porEnviar;
+    }
+    
     
     private void listarDocumentosRadicados() {
         DocumentoJpaController dJpa;
@@ -246,6 +256,17 @@ public class DocumentosBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             aJpa = new ActaJpaController(emf);
             actasPorFirmar = aJpa.findActaEntities();
+        } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+    
+      public void listarDocumentosPorEnviar() {
+        DocumentoJpaController dJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            porEnviar = dJpa.findPorEnviar();
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }

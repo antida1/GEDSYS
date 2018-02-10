@@ -10,6 +10,7 @@ import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.security.Authentication;
 import com.base16.gedsys.utils.JpaUtils;
+import com.google.gson.JsonObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -64,8 +65,8 @@ public class AuthenticationsResource extends BaseBean {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario postJson(String data) {
-        Usuario usuario = null;
+    public String postJson(String data) throws JSONException {
+        String result = "";
         //JSONObject ret = null;
        try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -73,11 +74,22 @@ public class AuthenticationsResource extends BaseBean {
             UsuarioJpaController uJpa = new UsuarioJpaController(emf);
             String email = content.getString("email");
             String password = Authentication.md5(content.getString("password"));
-            usuario = uJpa.autheticate(email, password);
-        } catch (JSONException ex) {
+            Usuario usuario = uJpa.autheticate(email, password);
+            
+            JsonObject object = new JsonObject();
+            object.addProperty("nombre", usuario.getNombres() );
+            object.addProperty("apellido", usuario.getApelidos() );
+            object.addProperty("email",usuario.getEmail());
+            object.addProperty("foto", usuario.getFoto());
+            result = object.toString();
+            
+        } catch (Exception ex) {
             Logger.getLogger(AuthenticationResource.class.getName()).log(Level.SEVERE, null, ex);
+            JSONObject object = new JSONObject("error");
+            object.accumulate("error", ex.getMessage());
+            result = object.toString();
         }
-        return usuario;
+        return result;
     }
 
     /**

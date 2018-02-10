@@ -6,13 +6,14 @@
 package com.base16.gedsys.webservices;
 
 import com.base16.gedsys.bean.BaseBean;
-import com.base16.gedsys.bean.DocumentosBean;
-import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Notificacion;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.NotificacionJpaController;
 import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.base16.utils.DateTimeUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
@@ -52,7 +53,7 @@ public class NotifiacionesResource extends BaseBean {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Notificacion> getJson(@QueryParam("useremail") String email) {
+    public String getJson(@QueryParam("useremail") String email) {
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
 
         UsuarioJpaController uJpa = new UsuarioJpaController(emf);
@@ -60,11 +61,20 @@ public class NotifiacionesResource extends BaseBean {
 
         NotificacionJpaController nJpa = new NotificacionJpaController(emf);
         List<Notificacion> notificaciones = nJpa.findNotificacionEntities();
-
+        
+        JsonArray notifys = new JsonArray();
+        for (Notificacion notificacion : notificaciones) {
+            JsonObject object = new JsonObject();
+            object.addProperty("asunto", notificacion.getAsunto());
+            object.addProperty("fechaInicio", DateTimeUtils.getFormattedTime(notificacion.getFechaInicio(), "yyyy-MM-dd HH:mm:ss.SSS"));
+            object.addProperty("fechaFinalizacion", DateTimeUtils.getFormattedTime(notificacion.getFechaFinalizacion(), "yyyy-MM-dd HH:mm:ss.SSS"));
+            notifys.add(object);
+        }
+        
         //NotificacionBean notificacionBean = new NotificacionBean();
         //notificacionBean.listarPorResponsable(usuario);
         //List<Notificacion> notificaciones =  notificacionBean.getNotificaciones();
-        return notificaciones;
+        return notifys.toString();
     }
 
     /**

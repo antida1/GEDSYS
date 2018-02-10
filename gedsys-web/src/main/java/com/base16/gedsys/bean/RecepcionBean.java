@@ -336,7 +336,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
 
                 //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
                 Mensajeria mensajeria = new Mensajeria();
-                mensajeria.send(usuario, "Nuevo documento recibido", this.documento.getAsunto());
+                mensajeria.send(this.documento.getDestinatario(), "Nuevo documento recibido", this.documento.getAsunto());
                 
                 em.getTransaction().commit();
                 //TODO: Pendiente registrar notificacion en base de datos acorde a la fecha

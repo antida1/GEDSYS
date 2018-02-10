@@ -775,7 +775,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findByCompartidos", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -800,7 +800,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findEntrantes", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -825,7 +825,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findEnviados", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -850,7 +850,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findRadicados", Usuario.class)
                     .setParameter("creadoPor", usuario);
             if (!all) {
@@ -875,7 +875,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findEnPrestamo", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -900,7 +900,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findArchivados", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -925,7 +925,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findPorVencer", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {
@@ -937,7 +937,31 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
+            
+    public List<Documento> findPorEnviar( ) {
+        return findPorEnviar( true, -1, -1);
+    }
 
+    public List<Documento> findPorEnviar( int maxResults, int firstResult) {
+        return findPorEnviar( false, maxResults, firstResult);
+    }
+
+    private List<Documento> findPorEnviar( boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Documento.class));
+            Query q = em.createNamedQuery("Documento.findPorEnviar", Documento.class);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+            
     public List<Documento> findSinArchivar(Usuario usuario) {
         return findSinArchivar(usuario, true, -1, -1);
     }
@@ -950,7 +974,7 @@ public class DocumentoJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Documento.class));
             Query q = em.createNamedQuery("Documento.findSinArchivar", Usuario.class)
                     .setParameter("destinatario", usuario);
             if (!all) {

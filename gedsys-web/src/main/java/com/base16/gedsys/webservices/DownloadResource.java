@@ -66,22 +66,30 @@ public class DownloadResource extends BaseBean {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             DocumentoJpaController dJpa = new DocumentoJpaController(emf);
             Documento documento = dJpa.findDocumento(id);
-            String filePath = this.getDocumenstSavePath() + File.separatorChar + documento.getNombreDocumento();
-            if (!filePath.isEmpty()) {
-                File tempFile = new File(filePath);
-                if (tempFile.exists()) {
-                    if (this.getEncriptFiles() == true) {
-                        UUID guid = UUID.randomUUID();
-                        File outputFile = new File(this.getDocumenstSavePath() + File.separatorChar + guid.toString());
-                        CryptoUtils.decrypt("Mary has one cat", tempFile, outputFile);
-                        FileInputStream fis = new FileInputStream(outputFile);
-                        data = IOUtils.toByteArray(fis);
-                    } else {
-                        FileInputStream fis = new FileInputStream(tempFile);
-                        data = IOUtils.toByteArray(fis);
+            if (documento.getNombreDocumento() != null) {
+                String filePath = this.getDocumenstSavePath() + File.separatorChar + documento.getNombreDocumento();
+
+                if (!filePath.isEmpty()) {
+                    File tempFile = new File(filePath);
+                    if (tempFile.exists()) {
+                        if (this.getEncriptFiles() == true) {
+                            UUID guid = UUID.randomUUID();
+                            File outputFile = new File(this.getDocumenstSavePath() + File.separatorChar + guid.toString());
+                            CryptoUtils.decrypt("Mary has one cat", tempFile, outputFile);
+                            FileInputStream fis = new FileInputStream(outputFile);
+                            data = IOUtils.toByteArray(fis);
+                        } else {
+                            FileInputStream fis = new FileInputStream(tempFile);
+                            data = IOUtils.toByteArray(fis);
+                        }
                     }
                 }
-            }          
+            } else {
+                File tempFile = new File(this.getDocumenstSavePath() + File.separatorChar + "noexiste.pdf");
+                FileInputStream fis = new FileInputStream(tempFile);
+                data = IOUtils.toByteArray(fis);
+            }
+
         } catch (IOException | CryptoException ex) {
             Logger.getLogger(DownloadResource.class.getName()).log(Level.SEVERE, null, ex);
         }

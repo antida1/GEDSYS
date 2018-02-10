@@ -87,7 +87,7 @@ public class RegistroMovilsResource extends BaseBean {
             device.setGcmRegid(sToken);
             DevicesJpaController dJpa = new DevicesJpaController(emf);
             dJpa.create(device);
-            //PushFCMNotification.PushFCMNotification(sToken, "Mensaje de Prueba", "Hola Desde Gedsys");
+            PushFCMNotification.PushFCMNotification(sToken, "GEDSYS", "Registro Movil satisfactorio");
             return Response.status(201).entity(content).build();
         } catch (Exception ex) {
             Logger.getLogger(RegistroMovilsResource.class.getName()).log(Level.SEVERE, null, ex);

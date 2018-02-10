@@ -11,6 +11,8 @@ import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
@@ -24,7 +26,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
@@ -51,14 +52,26 @@ public class DocumentosResource extends BaseBean {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Documento> getJson(@QueryParam("useremail") String email) {
+    public String getJson(@QueryParam("useremail") String email) {
         DocumentosBean dBean = new DocumentosBean();
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         UsuarioJpaController uJpa = new UsuarioJpaController(emf);
         Usuario usuario = uJpa.findByEmail(email);
         dBean.listarCompartidos(usuario);
         List<Documento> documentos =  dBean.getDocumentos();
-        return documentos;
+        JsonArray docs = new JsonArray();
+        for (Documento documento : documentos) {
+            JsonObject object = new JsonObject();
+            object.addProperty("id", documento.getId());
+            object.addProperty("consecutivo", documento.getConsecutivo());
+            object.addProperty("asunto", documento.getAsunto());
+            object.addProperty("detalle", documento.getDetalle());
+            object.addProperty("nombre", documento.getNombreDocumento());
+            object.addProperty("requiereRespuesta", documento.getRequiereRespuesta());
+            object.addProperty("rutaArchivo", documento.getRutaArchivo());
+            docs.add(object);
+        }
+        return docs.toString();
     }
 
     /**

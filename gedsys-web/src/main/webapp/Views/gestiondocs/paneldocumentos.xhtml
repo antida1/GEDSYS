@@ -20,6 +20,7 @@
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPrestados()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosRecibidos()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosSinArchivar()}"></f:event>
+                    <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPorEnviar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarActasPorFirmar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarCartasPorFirmar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarCertificadosPorFirmar()}"></f:event>
@@ -49,7 +50,7 @@
                                     <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
                                         <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="50"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                     rowsPerPageTemplate="5,10,15,30,50">
+                                                     rowsPerPageTemplate="5,10,15,30,50" >
                                             <f:facet name="header">
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
@@ -89,13 +90,17 @@
                                     </div>
                                     <div id="menuTab1" class="tab-pane fade">
                                         <div class="col-xs-12"> 
-                                            <p:dataTable widgetVar="PorEnviar" id="lstDocsPorEnviar" var="docsPorEnviar" value="#{documentosBean.enviados}" style="margin-bottom:0" rows="15"
+                                            <p:dataTable widgetVar="PorEnviar" id="lstDocsPorEnviar" var="docsPorEnviar" value="#{documentosBean.porEnviar}" style="margin-bottom:0" rows="15"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15">
+                                                         rowsPerPageTemplate="5,10,15" selectionMode="multiple" selection="#{documentosBean.porEnviar}" rowKey="#{docsPorEnviar.id}">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
+                                                    <p:commandButton process="lstDocsEntrantes" style="float:right" update=":planillaEnvio" icon="ui-icon-disk" value="Generar Planilla de Envio" oncomplete="PF('planillaEnvioDialog').show()" />
                                                 </f:facet>
+                                                
+                                                <p:column selectionMode="multiple" style="width:30px;text-align:center"/>
+                                                
                                                 <p:column headerText="Redicado">
                                                     <h:outputText value="#{docsPorEnviar.consecutivo}" />
                                                 </p:column>
@@ -120,7 +125,17 @@
                                                     <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                 </p:column>
+                                                <f:facet name="footer">
+                                                    
+                                                </f:facet>
                                             </p:dataTable>
+                                            <p:dialog header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="220">
+                                                <p:outputPanel id="planillaEnvio" style="text-align:center;">
+                                                    <!--<ui:repeat value="#{dtSelectionView.selectedCars}" var="car">
+                                                        <h:outputText value="#{car.id} - #{car.brand}" style="display:block"/>
+                                                    </ui:repeat>-->
+                                                </p:outputPanel>
+                                            </p:dialog>
                                         </div>
                                     </div>
                                     <div id="menuTab2" class="tab-pane fade">
@@ -598,6 +613,12 @@
                             </ui:include>
                         </h:form>
                     </p:dialog>
+                    <p:dialog id="dlgComentar" header="Comentar" widgetVar="denComentar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <h:form>
+                            <ui:include src="comentar.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
                     <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <h:form>
                             <c:if test='#{documentViewerBean.content.contentType.equals("application/pdf")}'>
@@ -630,6 +651,7 @@
                             </div>
                         </h:form>
                     </p:dialog>
+                    
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
