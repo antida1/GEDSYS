@@ -837,6 +837,18 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
+    public Documento findByConsecutivo(String consecutivo) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Usuario.class));
+            Query q = em.createNamedQuery("Documento.findByConsecutivo", Usuario.class)
+                    .setParameter("consecutivo", consecutivo);
+            return (Documento)q.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 
     public List<Documento> findRadicados(Usuario usuario) {
         return findRadicados(usuario, true, -1, -1);

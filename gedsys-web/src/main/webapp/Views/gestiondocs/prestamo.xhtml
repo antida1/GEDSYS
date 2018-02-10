@@ -7,6 +7,7 @@
 
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
+        <f:event type="preRenderView" listener="#{prestamoBean.listar()}" />
         <p:growl id="messages"  showDetail="true" />
         <div class="form-group row">
             <p:outputLabel value="Documento:" for="documentoPrestamo"  class="col-xs-3 col-form-label"/>

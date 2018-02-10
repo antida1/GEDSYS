@@ -23,11 +23,13 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.setAccion('Crear')}" update=":dlgDetalle" ></p:menuitem>
-                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Editar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.getSignaturaTopograficaById(signaturaTopograficaBean.signaturaSelected)}" update=":dlgDetalle" ></p:menuitem>
-                                    <p:menuitem oncomplete="PF('signaturaDialog').show()" value="Eliminar"  icon="ui-icon-document" actionListener="#{signaturaTopograficaBean.eliminar(signaturaTopograficaBean.signaturaSelected)}" update="signaturaTree" ></p:menuitem>
-
-                                </p:menubar>
+                                    <p:menuitem actionListener="#{signaturaTopograficaBean.setAccion('Crear')}" 
+                                                update=":dlgDetalle" oncomplete="PF('signaturaDialog').show()" 
+                                                icon="ui-icon-circle-plus" value="Nuevo" disabled="#{!autorizationBean.canCreate('signaturaTopografica')}"  ></p:menuitem>
+                                    <p:menuitem actionListener="#{signaturaTopograficaBean.getSignaturaTopograficaById(signaturaTopograficaBean.signaturaSelected)}" 
+                                                update=":dlgDetalle" oncomplete="PF('signaturaDialog').show()"
+                                                icon="ui-icon-pencil" value="Editar" disabled="#{!autorizationBean.canUpdate('signaturaTopografica')}"></p:menuitem>                                    
+                                </p:menubar>                                
                                 <p:separator/>
                                 <p:tree id="signaturaTree" value="#{signaturaTree.root}" var="signatura" class="col-xs-12" dynamic="true" selectionMode="single" orientation="horizontal"  >
                                     <p:ajax event="select" listener="#{signaturaTopograficaBean.selectDependencia}"/>
@@ -37,6 +39,15 @@
                                 </p:tree>
                             </div>
                         </h:form>
+                        <p:commandButton icon="ui-icon-trash"  actionListener="#{signaturaTopograficaBean.eliminar(signaturaTopograficaBean.signaturaSelected)}" 
+                                        update=":form:signaturaTree messages"
+                                        value="Eliminar" disabled="#{!autorizationBean.canDelete('signaturaTopografica')}">
+                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/> 
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog> 
                     </div>
                     <p:dialog id="dlgDetalle" header="Signatura topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="190" width="500">
                         <h:form>
@@ -55,10 +66,9 @@
                                         </div>
                                     </div>
                                     <p:spacer/>
-                                    <div class="form-group row">
-                                        <div class="col-xs-7"></div>
+                                    <div>
                                         <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
-                                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
+                                        <p:commandButton icon="ui-icon-circle-close"  value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
                                     </div>
                                 </div>
                             </div>

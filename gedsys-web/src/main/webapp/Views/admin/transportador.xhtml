@@ -22,7 +22,7 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('transportadorDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{transportadorBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('transportadorDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{transportadorBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('transportador')}">
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
@@ -63,13 +63,13 @@
                                      <p:column headerText="Acciones">
                                        <p:commandButton actionListener="#{transportadorBean.getTransportadorById(transportador)}" 
                                                          update=":dlgDetalle" oncomplete="PF('transportadorDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('transportador')}">
                                         </p:commandButton>
                                        
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{transportadorBean.eliminar(transportador)}" 
-                                                         update=":form:lstTransportadores messages">                                        
+                                                         update=":form:lstTransportadores messages" disabled="#{!autorizationBean.canDelete('transportador')}">                                        
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>                                        
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -131,7 +131,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstTransportadores messages" icon="ui-icon-disk" value="#{transportadorBean.accion}" actionListener="#{transportadorBean.procesar()}" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('transportadorDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('transportadorDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

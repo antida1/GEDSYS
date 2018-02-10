@@ -29,6 +29,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -52,6 +53,17 @@ public class EnvioBean extends BaseBean implements Serializable {
     private String accion; 
     private int MunicipioId;
     private UploadedFile documentFile;
+    
+    private Boolean canSave;
+    private Boolean canGenRad;
+    private Boolean canPrint;
+    
+    public EnvioBean(){
+        this.canSave =true;
+        this.canGenRad = false;
+        this.canPrint = true;
+        this.documento.setFechaDocumento(new Date());
+    }
     
     @PostConstruct
     public void init(){
@@ -118,6 +130,32 @@ public class EnvioBean extends BaseBean implements Serializable {
     public void setMunicipioId(int MunicipioId) {
         this.MunicipioId = MunicipioId;
     }
+
+    public Boolean getCanGenRad() {
+        return canGenRad;
+    }
+
+    public void setCanGenRad(Boolean canGenRad) {
+        this.canGenRad = canGenRad;
+    }
+
+    public Boolean getCanPrint() {
+        return canPrint;
+    }
+
+    public void setCanPrint(Boolean canPrint) {
+        this.canPrint = canPrint;
+    }
+
+    public Boolean getCanSave() {
+        return canSave;
+    }
+
+    public void setCanSave(Boolean canSave) {
+        this.canSave = canSave;
+    }
+    
+    
     
     public List<TipoDocumento> getTipoDocumentos() {
         return tipoDocumentos;
@@ -153,10 +191,10 @@ public class EnvioBean extends BaseBean implements Serializable {
     
     public void generarConsectivo(){
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        try {     
-            ConsecutivoJpaController cJpa;
+        EntityManager em = emf.createEntityManager();            
+        ConsecutivoJpaController cJpa;
+        try {             
+            em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("envio");
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE,"No hay consecutivos para envio");
@@ -167,22 +205,39 @@ public class EnvioBean extends BaseBean implements Serializable {
             em.flush();
             em.getTransaction().commit();
             this.documento.setConsecutivo(consec.getConsecutivo());
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos",  "Consecutivo Generado Exitosamente"));
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            this.canGenRad = true;
+            this.canPrint = false;
+            this.canSave = false;            
         } catch ( Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos", e.getMessage()  ));
-            em.getTransaction().rollback();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos", e.getMessage()));           
         }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos",  "Consecutivo Generado Exitosamente"));
         
     }
     
     public void radicar() {
         DocumentoJpaController sJpa;
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        sJpa = new DocumentoJpaController(emf);
+        FacesContext context = FacesContext.getCurrentInstance();
+         if (this.documentFile.getContents().length <= 0) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Recepción de Documentos", "Por favor adjunte el documento!"));
+            RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+            this.canGenRad = true;
+            this.canPrint = false;
+            this.canSave = false;
+        } else {            
+            EntityManager em = emf.createEntityManager();
         try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            sJpa = new DocumentoJpaController(emf);
+            em.getTransaction().begin();
             
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.documento.setFechaCreacion(new Date());
@@ -193,15 +248,17 @@ public class EnvioBean extends BaseBean implements Serializable {
            
             this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
             sJpa.create(documento);
-            this.limpiar();
-            FacesContext context = FacesContext.getCurrentInstance();
+            
+            em.getTransaction().commit();
+            this.limpiar();           
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Recepción de Documentos",  "Documento Almacenado exitoxamente!"));
         } catch (Exception e) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
-            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Error al Radicar el documento",  e.getMessage()));
+            em.getTransaction().rollback();
         }
     }
+   }
     
     public void limpiar(){
         this.documento = null;

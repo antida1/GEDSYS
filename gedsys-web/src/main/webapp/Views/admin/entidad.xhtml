@@ -22,7 +22,7 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('entidadDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{entidadBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('entidadDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{entidadBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('entidad')}" >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
@@ -65,12 +65,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{entidadBean.getEntidadById(entidad)}" 
                                                          update=":dlgDetalle" oncomplete="PF('entidadDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('entidad')}">
                                         </p:commandButton>
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{entidadBean.eliminar(entidad)}" 
-                                                         update=":form:lstEntidades messages">
+                                                         update=":form:lstEntidades messages" disabled="#{!autorizationBean.canDelete('entidad')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         
@@ -133,7 +133,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstEntidades messages" icon="ui-icon-disk" value="#{entidadBean.accion}" actionListener="#{entidadBean.procesar()}"  />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('entidadDialog').hide()"></p:commandButton>
+                                    <p:commandButton  icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('entidadDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

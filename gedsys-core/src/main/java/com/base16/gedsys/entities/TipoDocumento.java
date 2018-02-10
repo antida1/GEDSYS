@@ -45,7 +45,7 @@ public class TipoDocumento implements Serializable {
     @Column(name = "RequiereRespuesta")
     private Boolean requiereRespuesta;
     @Column(name = "EsPQRSF")
-    private Boolean esPQRSF;
+    private Short esPQRSF;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,6 +81,8 @@ public class TipoDocumento implements Serializable {
     private Integer diasRespuesta;
     @Column(name = "TipoCalendario")
     private String tipoCalendario;
+    @Column(name = "TipoComunicacion")
+    private String tipoComunicacion;
     
     public TipoDocumento() {
     }
@@ -127,7 +129,8 @@ public class TipoDocumento implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
+    }    
+    
 
     @XmlTransient
     @JsonIgnore
@@ -226,6 +229,14 @@ public class TipoDocumento implements Serializable {
     public void setTipoCalendario(String tipoCalendario) {
         this.tipoCalendario = tipoCalendario;
     }
+    
+    public String getTipoComunicacion() {
+        return tipoComunicacion;
+    }
+
+    public void setTipoComunicacion(String tipoComunicacion) {
+        this.tipoComunicacion = tipoComunicacion;
+    }
 
     public Boolean getRequiereRespuesta() {
         return requiereRespuesta;
@@ -235,11 +246,11 @@ public class TipoDocumento implements Serializable {
         this.requiereRespuesta = requiereRespuesta;
     }
 
-    public Boolean getEsPQRSF() {
+    public Short getEsPQRSF() {
         return esPQRSF;
     }
 
-    public void setEsPQRSF(Boolean esPQRSF) {
+    public void setEsPQRSF(Short esPQRSF) {
         this.esPQRSF = esPQRSF;
     }
     

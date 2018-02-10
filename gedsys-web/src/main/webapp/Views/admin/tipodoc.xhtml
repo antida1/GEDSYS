@@ -70,18 +70,23 @@
                                         </f:facet>
                                         <h:outputText value="#{tp.modificadoPor.nombres} #{tp.modificadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Editar">
+                                    <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{tipoDocumentalBean.getTipoDocumentalById(tp)}" 
                                                          update=":dlgDetalle" oncomplete="PF('tipoDocumentalDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('tipodoc')}">
                                         </p:commandButton>
-                                    </p:column>
-                                    <p:column headerText="Borrar">
-                                        <p:commandButton icon="ui-icon-eraser" 
+
+                                        <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{tipoDocumentalBean.eliminar(tp)}" 
-                                                         update=":form:lstTiposDocumentales messages"/>
-                                    </p:column>
+                                                         update=":form:lstTiposDocumentales messages" disabled="#{!autorizationBean.canDelete('tipodoc')}">
+                                            <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:column>                                   
                                 </p:dataTable>
                             </div>
                         </h:form>
@@ -106,7 +111,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstTiposDocumentales messages" icon="ui-icon-disk" value="#{tipoDocumentalBean.accion}" actionListener="#{tipoDocumentalBean.procesar()}" oncomplete="PF('tipoDocumentalDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentalDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentalDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

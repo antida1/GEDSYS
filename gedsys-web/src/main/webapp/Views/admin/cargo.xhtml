@@ -68,13 +68,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{cargoBean.getCargoById(cargo)}" 
                                                          update=":dlgDetalle" oncomplete="PF('cargoDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('cargo')}">
                                         </p:commandButton>
 
-                                        <p:commandButton icon="ui-icon-eraser" 
+                                        <p:commandButton icon="ui-icon-trash"  
                                                          title="Borrar"
                                                          actionListener="#{cargoBean.eliminar(cargo)}" 
-                                                         update=":form:lstCargos messages">
+                                                         update=":form:lstCargos messages" disabled="#{!autorizationBean.canDelete('cargo')}">
                                             <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -97,7 +97,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstCargos messages" icon="ui-icon-disk" value="#{cargoBean.accion}" actionListener="#{cargoBean.procesar()}" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('cargoDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('cargoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

@@ -47,7 +47,7 @@
                                                 <f:selectItem itemLabel="No" itemValue="false" />
                                             </p:selectOneButton>
                                         </f:facet>
-                                        <h:outputText value="#{grupo.estado}" />
+                                        <h:outputText value="#{grupo.estado}"/>
                                         <c:if test="#{grupo.estado == true}">
                                             <h:outputText value="Activo" />
                                         </c:if>
@@ -87,13 +87,13 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{grupoBean.getGrupoById(grupo)}"
                                                          update=":dlgDetalle" oncomplete="PF('grupoDialog').show()"
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('grupos')}">
                                         </p:commandButton>
 
-                                        <p:commandButton icon="fa fa-fw fa-eraser"
+                                        <p:commandButton icon="ui-icon-trash"
                                                          title="Borrar"
                                                          actionListener="#{grupoBean.eliminar(grupo)}"
-                                                         update=":form:lstGrupos messages">
+                                                         update=":form:lstGrupos messages" disabled="#{!autorizationBean.canDelete('grupos')}">
                                             <p:confirm header="Confirmación" message="Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -129,7 +129,7 @@
                                 <p:spacer/>
                                 <div>
                                     <p:commandButton update=":form:lstGrupos messages" icon="ui-icon-disk" value="#{grupoBean.accion}" actionListener="#{grupoBean.procesar()}" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('grupoDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('grupoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

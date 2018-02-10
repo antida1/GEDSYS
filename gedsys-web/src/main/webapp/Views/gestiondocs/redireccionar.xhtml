@@ -37,8 +37,8 @@
 
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{redireccionarBean.guadarDocumento()}" update="lstDocsEntrantes messages"/>
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('devolverDialog').hide()"></p:commandButton>
+            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{redireccionarBean.guadarDocumento()}" update="lstDocsEntrantes messages"/>
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denRedireccionar').hide()"></p:commandButton>
         </div>
     </h:body>
 </html>

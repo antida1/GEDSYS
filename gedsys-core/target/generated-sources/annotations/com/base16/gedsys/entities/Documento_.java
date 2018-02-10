@@ -22,13 +22,14 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-02T14:00:50")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-10T07:39:30")
 @StaticMetamodel(Documento.class)
 public class Documento_ { 
 
     public static volatile SingularAttribute<Documento, Boolean> requiereRespuesta;
     public static volatile SingularAttribute<Documento, Integer> estado;
     public static volatile SingularAttribute<Documento, String> extension;
+    public static volatile SingularAttribute<Documento, String> comprobante;
     public static volatile SingularAttribute<Documento, Boolean> anexos;
     public static volatile SingularAttribute<Documento, TipoDocumental> tipoDocumental;
     public static volatile SingularAttribute<Documento, String> remitente;
@@ -64,9 +65,11 @@ public class Documento_ {
     public static volatile SingularAttribute<Documento, TipoDocumento> tipoDocumento;
     public static volatile SingularAttribute<Documento, Transportador> transportador;
     public static volatile SingularAttribute<Documento, Date> fechaEnvio;
+    public static volatile SingularAttribute<Documento, String> guia;
     public static volatile SingularAttribute<Documento, String> folios;
     public static volatile SingularAttribute<Documento, Entidad> entidad;
     public static volatile SingularAttribute<Documento, Date> fechaCreacion;
+    public static volatile SingularAttribute<Documento, String> rutaGuia;
     public static volatile SingularAttribute<Documento, Date> fechaRecepcion;
     public static volatile SingularAttribute<Documento, Documento> documentoRelacionado;
     public static volatile CollectionAttribute<Documento, ProcesoDocumental> procesodocumentalCollection;

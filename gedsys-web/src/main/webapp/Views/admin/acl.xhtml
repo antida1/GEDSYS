@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <p:separator/>
-                                <p:dataTable id="lstListas" var="acl" value="#{aclBean.acls}" style="margin-bottom:20px" >
+                                <p:dataTable id="lstListas" var="acl" value="#{aclBean.acls}" style="margin-bottom:20px" emptyMessage="¡No se encuentra una lista de control de acceso para el modulo seleccionado!">
 
                                     <p:column headerText="Módulo">
                                         <h:outputText value="#{acl.modulo.nombre}" />
@@ -121,7 +121,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="#{aclBean.accion}" actionListener="#{aclBean.procesar()}" oncomplete="PF('aclDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

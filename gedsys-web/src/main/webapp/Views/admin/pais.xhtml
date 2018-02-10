@@ -71,12 +71,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{paisBean.getPaisById(pais)}" 
                                                          update=":dlgDetalle" oncomplete="PF('paisDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('pais')}">
                                         </p:commandButton>                                    
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{paisBean.eliminar(pais)}" 
-                                                         update=":form:lstPaises messages">
+                                                         update=":form:lstPaises messages" disabled="#{!autorizationBean.canDelete('pais')}">
                                              <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -105,7 +105,7 @@
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
-                                    <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>
                         </p:dialog>

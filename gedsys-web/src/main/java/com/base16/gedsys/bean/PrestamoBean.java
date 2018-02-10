@@ -132,6 +132,7 @@ public class PrestamoBean extends BaseBean implements Serializable {
     }
 
     public void eliminar(Prestamo prestamo) {
+        FacesContext context = FacesContext.getCurrentInstance();
         PrestamoJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -139,22 +140,24 @@ public class PrestamoBean extends BaseBean implements Serializable {
             sJpa.destroy(prestamo.getId());
             this.listar();
         } catch (Exception e) {
-
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prestamo de documentos", e.getMessage()));
         }
     }
 
     public void listar() {
+        FacesContext context = FacesContext.getCurrentInstance();
         PrestamoJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PrestamoJpaController(emf);
             Prestamos = sJpa.findPrestamoEntities();
         } catch (Exception e) {
-
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prestamo de documentos", e.getMessage()));
         }
     }
 
     public void getPrestamoById(Prestamo prestamo) {
+        FacesContext context = FacesContext.getCurrentInstance();
         PrestamoJpaController sJpa;
         Prestamo prestamoTemp;
         try {
@@ -166,7 +169,7 @@ public class PrestamoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prestamo de documentos", e.getMessage()));
         }
     }
 

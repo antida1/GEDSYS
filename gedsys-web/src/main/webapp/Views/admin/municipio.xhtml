@@ -80,12 +80,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{municipioBean.getMunicipioById(municipio)}" 
                                                          update=":dlgDetalle" oncomplete="PF('municipioDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('municipio')}">
                                         </p:commandButton>                                   
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{municipioBean.eliminar(municipio)}" 
-                                                         update=":form:lstMunicipios messages">
+                                                         update=":form:lstMunicipios messages" disabled="#{!autorizationBean.canDelete('municipio')}">
                                               <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -125,7 +125,7 @@
                             <p:spacer/>
                             <div> 
                                 <p:commandButton update=":form:lstMunicipios messages" icon="ui-icon-disk" value="#{municipioBean.accion}" actionListener="#{municipioBean.procesar()}" oncomplete="PF('municipioDialog').hide()" />
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('municipioDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('municipioDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>  

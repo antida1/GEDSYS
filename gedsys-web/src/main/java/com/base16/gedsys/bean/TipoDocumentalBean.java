@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -68,9 +69,11 @@ public class TipoDocumentalBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Gedsys", "¡Tipo documental creado exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Gedsys", "¡Tipo documental modificado exitosamente!"));
                     break;
             }
         } catch (Exception e) {

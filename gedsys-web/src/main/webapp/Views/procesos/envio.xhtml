@@ -14,6 +14,7 @@
                     <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" />
                     <f:event type="preRenderView" listener="#{entidadBean.listar()}" />
                     <f:event type="preRenderView" listener="#{transportadorBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{mediosRepEnvBean.listar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-12 x_panel">
                         <div class="x_title">
@@ -126,15 +127,12 @@
                                     <div class="col-xs-12">
                                         <label class=" col-xs-4" for="medioEnvio">Medio de envío <span class="required">*</span>
                                         </label>
-                                        <div class="col-xs-8">
-                                            <p:selectOneMenu id="medioEnvio" value="#{envioBean.documento.medioEnvio}" filter="true" filterMatchMode="startsWith" style="width: 100%" required="true">
+                                         <div class="col-xs-8">
+                                            <p:selectOneMenu id="medioEnvio" value="#{envioBean.documento.medioEnvio}" filter="true" filterMatchMode="startsWith" style="width: 100%" required="true" requiredMessage="¡Error! Debe seleccionar un medio de envío" converter="omnifaces.SelectItemsConverter">
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione un medio de envío" itemValue="#{null}" />
-                                                <f:selectItem itemLabel="Correo Electrónico" itemValue="Correo Electrónico" />
-                                                <f:selectItem itemLabel="Correo Certificado" itemValue="Correo Certificado" />
-                                                <f:selectItem itemLabel="Entrega Directa" itemValue="Entrega Directa" />
-                                                <f:selectItem itemLabel="Fax" itemValue="Fax" />
+                                                <f:selectItems value="#{mediosRepEnvBean.mediorecepciones}" var="medioEnvRep" itemLabel="#{medioEnvRep.nombre}" itemValue="#{medioEnvRep}" />
                                             </p:selectOneMenu>
-                                        </div>
+                                        </div>                                       
                                     </div>
                                     <div class="col-xs-12">
                                         <label class=" col-xs-4">Adjuntar documento</label>
@@ -146,11 +144,11 @@
 
                                 <div class="col-xs-12 form-group">
                                     <div class="col-xs-12">
-                                        <p:commandButton class="btn-success" style="margin-left: 10px;" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true"/>
-                                        <p:commandButton class="btn-info" style="margin-left: 10px;" icon="ui-icon-pencil" type="button" title="Imprimr radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false"></p:commandButton>
-                                        <p:commandButton class="btn-primary" style="margin-left: 10px;" update="messages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false"/>
+                                        <p:commandButton  widgetVar="genRad" class="btn-success" style="margin-left: 10px;" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{envioBean.generarConsectivo()}" ajax="true" partialSubmit="true" disabled="#{envioBean.canGenRad}"/>
+                                        <p:commandButton  widgetVar="printRad" class="btn-info" style="margin-left: 10px;" icon="ui-icon-pencil" type="button" title="Imprimr radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false"  disabled="#{envioBean.canPrint}" ></p:commandButton>
+                                        <p:commandButton  widgetVar="saveDoc" class="btn-primary" style="margin-left: 10px;" update="messages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false" disabled="#{envioBean.canSave}"/>
                                         <p:commandButton class="btn-default" style="float: right;" value="Cancelar" immediate="true"></p:commandButton>
-                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="550" maximizable="true">
                                             <ui:include src="newRadicadoSalida.xhtml">
                                                 <ui:param name="tipoRadicado" value="externo" />
                                                 <ui:param name="consectivoExterno" value="#{envioBean.documento.consecutivo}" />

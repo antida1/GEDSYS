@@ -37,8 +37,14 @@
                             <div class='x_content'> 
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
+                                    <c:if test="#{autorizationBean.canCreate('recepcion')== false}">
+                                    <li><a data-toggle="tab" href="#menuTab1" style="display: none;">Por Enviar</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Enviados</a></li>
+                                    </c:if>
+                                    <c:if test="#{autorizationBean.canCreate('recepcion')== true}">
                                     <li><a data-toggle="tab" href="#menuTab1">Por Enviar</a></li>
                                     <li><a data-toggle="tab" href="#menuTab2">Enviados</a></li>
+                                    </c:if>
                                     <li><a data-toggle="tab" href="#menuTab3">En Prestamo</a></li>
                                     <li><a data-toggle="tab" href="#menuTab4">Por Vencer</a></li>
                                     <li><a data-toggle="tab" href="#menuTab5">Por Firmar</a></li>
@@ -48,19 +54,23 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
-                                        <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="50"
+                                        <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="15"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+<<<<<<< HEAD
                                                      rowsPerPageTemplate="5,10,15,30,50" >
+=======
+                                                     rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos entrantes!">
+>>>>>>> origin/Gedsys-Lina
                                             <f:facet name="header">
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
                                             </f:facet>
-                                            <p:column headerText="Redicado">
+                                            <p:column headerText="Radicado">
                                                 <h:outputText value="#{docsEntrantes.consecutivo}" />
                                             </p:column>
                                             <p:column headerText="Fecha de recepción">
                                                 <h:outputText value="#{docsEntrantes.fechaCreacion}" >
-                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                    <f:convertDateTime type="date" locale="es"/>
                                                 </h:outputText>
                                             </p:column>
                                             <p:column headerText="Tipo Documento">
@@ -92,16 +102,24 @@
                                         <div class="col-xs-12"> 
                                             <p:dataTable widgetVar="PorEnviar" id="lstDocsPorEnviar" var="docsPorEnviar" value="#{documentosBean.porEnviar}" style="margin-bottom:0" rows="15"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+<<<<<<< HEAD
                                                          rowsPerPageTemplate="5,10,15" selectionMode="multiple" selection="#{documentosBean.porEnviar}" rowKey="#{docsPorEnviar.id}">
+=======
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos por enviar!">
+>>>>>>> origin/Gedsys-Lina
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
                                                     <p:commandButton process="lstDocsEntrantes" style="float:right" update=":planillaEnvio" icon="ui-icon-disk" value="Generar Planilla de Envio" oncomplete="PF('planillaEnvioDialog').show()" />
                                                 </f:facet>
+<<<<<<< HEAD
                                                 
                                                 <p:column selectionMode="multiple" style="width:30px;text-align:center"/>
                                                 
                                                 <p:column headerText="Redicado">
+=======
+                                                <p:column headerText="Radicado">
+>>>>>>> origin/Gedsys-Lina
                                                     <h:outputText value="#{docsPorEnviar.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha del Documento">
@@ -142,17 +160,17 @@
                                         <div class="col-xs-12"> 
                                             <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docsEnviados" value="#{documentosBean.enviados}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15">
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos enviados!">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsEnviados" trigger="toggler" />
                                                 </f:facet>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsEnviados.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsEnviados.fechaCreacion}" >
-                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        <f:convertDateTime type="date" locale="es"/>
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Asunto">
@@ -167,12 +185,22 @@
                                                 <p:column headerText="Detalle">
                                                     <h:outputText value="#{docsEnviados.detalle}" />
                                                 </p:column>
+                                                <p:column headerText="Medio de Envio">
+                                                    <h:outputText value="#{docsEnviados.medioEnvio.nombre}" />
+                                                </p:column>
+                                                <p:column headerText="Adjuntar Guía">                                                 
+                                                    <p:fileUpload value="#{documentosBean.documentFile}" fileUploadListener="#{documentosBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
+                                                    <p:commandLink type="button" value="Subir" action="#{documentosBean.cargarGuia(docsEnviados.consecutivo)}" class="btn-primary" style="margin-left: 10px; " update=":messages"/>
+                                                </p:column>
+                                                <p:column headerText="Adjuntar Comprobante de Entrega">
+                                                    <p:fileUpload value="#" disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#"  mode="simple" skinSimple="true" label="adjuntar" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
+                                                </p:column>
                                                 <p:column headerText="Acciones">
-                                                    <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" disabled="#{documentosBean.documentFileComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
-                                                    <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
-                                                </p:column>
+                                                    <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                                        
+                                                </p:column>                                               
                                             </p:dataTable>
                                         </div>
                                     </div>
@@ -180,12 +208,12 @@
                                         <div class="col-xs-12">
                                             <p:dataTable widgetVar="En Prestamos" id="lstDocsPrestamo" var="docsPrestamo" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15">
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos en prestamo!">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPrestamo" trigger="toggler" />
                                                 </f:facet>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPrestamo.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
@@ -217,7 +245,7 @@
                                         <div class="col-xs-12">
                                             <p:dataTable widgetVar="PorVencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15,20,30,50">
+                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos por vencer!">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorVencer" trigger="toggler" />
@@ -236,12 +264,12 @@
                                                 <p:column headerText="Dias de Vencimiento">
                                                     <h:outputText value="#{dateTimeBean.DaysBettwen(docsPorVencer.fechaVencimiento, now)}" />
                                                 </p:column>
-                                                <p:column headerText="Redicado">
+                                                <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPorVencer.consecutivo}" />
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsPorVencer.fechaCreacion}" >
-                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        <f:convertDateTime type="date" locale="es"/>
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Fecha de vencimiento">
@@ -274,7 +302,7 @@
                                     <div id="menuTab5" class="tab-pane fade">
                                         <div class="col-xs-12">
                                             <ul class="nav nav-tabs">
-                                                <li class="active"><a data-toggle="tab" href="#pmenuTab0">Actas</a></li>
+                                                <li><a data-toggle="tab" href="#pmenuTab0">Actas</a></li>
                                                 <li><a data-toggle="tab" href="#pmenuTab1">Cartas</a></li>
                                                 <li><a data-toggle="tab" href="#pmenuTab2">Certificados</a></li>
                                                 <li><a data-toggle="tab" href="#pmenuTab3">Circulares</a></li>
@@ -286,7 +314,7 @@
                                                 <div id="pmenuTab0" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="actaPorFirmar" id="actas" var="acta" value="#{documentosBean.actasPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron actas por firmar!" >
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="actas" trigger="toggler" />
@@ -296,7 +324,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{acta.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Asunto">
@@ -320,7 +348,7 @@
                                                 <div id="pmenuTab1" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="PorVencer" id="cartas" var="carta" value="#{documentosBean.cartaPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron cartas por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="cartas" trigger="toggler" />
@@ -330,7 +358,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de recepción">
                                                             <h:outputText value="#{carta.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Destinatario">
@@ -354,7 +382,7 @@
                                                 <div id="pmenuTab2" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="Por Vencer" id="certificados" var="cert" value="#{documentosBean.certificadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron certificados por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="certificados" trigger="toggler" />
@@ -364,7 +392,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{cert.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Remitente">
@@ -382,17 +410,17 @@
                                                 <div id="pmenuTab3" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="Por Vencer" id="circulares" var="cir" value="#{documentosBean.circularPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="circulares" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{cir.consecutivo}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{cir.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Grupo Detinatario">
@@ -413,7 +441,7 @@
                                                 <div id="pmenuTab4" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="PorVencer" id="comunicaciones" var="com" value="#{documentosBean.comunicadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="comunicaciones" trigger="toggler" />
@@ -423,7 +451,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{com.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Asunto">
@@ -447,7 +475,7 @@
                                                 <div id="pmenuTab5" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="PorVencer" id="constancias" var="cons" value="#{documentosBean.constanciaPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron constancias por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="constancias" trigger="toggler" />
@@ -457,7 +485,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{cons.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Remitente">
@@ -475,7 +503,7 @@
                                                 <div id="pmenuTab6" class="col-xs-12 tab-pane fade">
                                                     <p:dataTable widgetVar="PorVencer" id="informes" var="inf" value="#{documentosBean.informePorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron informes por firmar!">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="informes" trigger="toggler" />
@@ -485,7 +513,7 @@
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
                                                             <h:outputText value="#{inf.fechaCreacion}" >
-                                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                                <f:convertDateTime type="date" locale="es"/>
                                                             </h:outputText>
                                                         </p:column>
                                                         <p:column headerText="Objetivo">
@@ -511,7 +539,7 @@
                                         <div class="col-xs-12">
                                             <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.sinArchivar}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15,20,30,50">
+                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos sin archivar!">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorArchivados" trigger="toggler" />
@@ -521,7 +549,7 @@
                                                 </p:column>
                                                 <p:column headerText="Fecha de recepción">
                                                     <h:outputText value="#{docsPorArchivar.fechaCreacion}" >
-                                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                        <f:convertDateTime type="date" locale="es"/>
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Asunto">
@@ -548,7 +576,7 @@
                                     <div id="menuTab7" class="tab-pane fade">
                                         <p:dataTable widgetVar="Compartido" id="lstDocsCompartidos" var="docsCompartidos" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                     rowsPerPageTemplate="5,10,15">
+                                                     rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos compartidos!">
                                             <f:facet name="header">
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsCompartidos" trigger="toggler" />
@@ -558,7 +586,7 @@
                                             </p:column>
                                             <p:column headerText="Fecha de recepción">
                                                 <h:outputText value="#{docsCompartidos.fechaCreacion}" >
-                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy" locale="es"/>
                                                 </h:outputText>
                                             </p:column>
                                             <p:column headerText="Asunto">
@@ -589,19 +617,19 @@
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="700">
+                    <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
                         <h:form>
                             <ui:include src="prestamo.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" height="600" maximizable="true">
+                    <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" height="400" maximizable="true">
                         <h:form>
                             <ui:include src="../produccion/carta.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgDevolver" header="Redireccionar" widgetVar="denRedireccionar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="600">
+                    <p:dialog id="dlgDevolver" header="Redireccionar" widgetVar="denRedireccionar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
                         <h:form>
                             <ui:include src="redireccionar.xhtml">
                             </ui:include>
@@ -631,7 +659,7 @@
                                 <p:graphicImage height="800"  value="#{documentViewerBean.content}"/>  
                             </c:if>
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('dlgVisor').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisor').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>

@@ -78,12 +78,12 @@
                                     <p:column headerText="Acciones">
                                         <p:commandButton actionListener="#{departamentoBean.getDepartamentoById(departamento)}" 
                                                          update=":dlgDetalle" oncomplete="PF('departamentoDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('departamento')}">
                                         </p:commandButton>
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{departamentoBean.eliminar(departamento)}" 
-                                                         update=":form:lstDepartamentos messages">
+                                                         update=":form:lstDepartamentos messages" disabled="#{!autorizationBean.canDelete('departamento')}">
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -122,7 +122,7 @@
                             <p:spacer/>
                             <div> 
                                 <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}"  />
-                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
+                                <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog> 
