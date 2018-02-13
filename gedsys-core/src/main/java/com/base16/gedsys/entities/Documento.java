@@ -149,6 +149,8 @@ public class Documento implements Serializable {
     private String rutaGuia;
     @Column(name = "Guia")
     private String guia;
+     @Column(name = "RutaComprobante")
+    private String rutaComprobante;
     
     @XmlTransient
     @JsonIgnore
@@ -432,6 +434,13 @@ public class Documento implements Serializable {
 
     public void setRutaArchivo(String rutaArchivo) {
         this.rutaArchivo = rutaArchivo;
+    }
+      public String getRutaComprobante() {
+        return rutaComprobante;
+    }
+
+    public void setRutaComprobante(String rutaComprobante) {
+        this.rutaComprobante = rutaComprobante;
     }
 
     @XmlTransient    

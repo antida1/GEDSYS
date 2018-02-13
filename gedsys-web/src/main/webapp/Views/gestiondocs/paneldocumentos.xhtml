@@ -176,15 +176,28 @@
                                                 <p:column headerText="Medio de Envio">
                                                     <h:outputText value="#{docsEnviados.medioEnvio.nombre}" />
                                                 </p:column>
-                                                <p:column headerText="Adjuntar Guía">                                                 
-                                                    <p:fileUpload value="#{documentosBean.documentFile}" fileUploadListener="#{documentosBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
-                                                    <p:commandLink type="button" value="Subir" action="#{documentosBean.cargarGuia(docsEnviados.consecutivo)}" class="btn-primary" style="margin-left: 10px; " update=":messages"/>
+                                                <p:column headerText="Adjuntar Guía">  
+                                                    <h:form enctype="multipart/form-data">                                                        
+                                                        <p:fileUpload fileUploadListener="#{documentosBean.cargarGuia}" mode="advanced"
+                                                        update=":messages, rutaGuia" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                        oncomplete="display: none" label="">
+                                                            <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
+                                                        </p:fileUpload> 
+                                                        <h:outputText id="rutaGuia" value="#{docsEnviados.rutaGuia}"/>
+                                                    </h:form>                                                    
                                                 </p:column>
-                                                <p:column headerText="Adjuntar Comprobante de Entrega">
-                                                    <p:fileUpload value="#" disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#"  mode="simple" skinSimple="true" label="adjuntar" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
+                                                <p:column headerText="Adjuntar Comprobante de Entrega"> 
+                                                    <h:form enctype="multipart/form-data">
+                                                    <p:fileUpload disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#{documentosBean.cargarComprobante}" mode="advanced"
+                                                        update=":messages, rutaComprobante" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                        oncomplete="disabled:true;" label="">
+                                                        <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
+                                                    </p:fileUpload> 
+                                                        <h:outputText id="rutaComprobante" value="#{docsEnviados.rutaComprobante}"/>
+                                                    </h:form>
                                                 </p:column>
                                                 <p:column headerText="Acciones">
-                                                    <p:commandLink type="button" disabled="#{documentosBean.documentFileComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" disabled="#{docsEnviados.rutaComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                                        
@@ -341,7 +354,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="cartas" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{carta.consecutivo}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de recepción">
@@ -375,7 +388,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="certificados" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{cert.consecutivo}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
@@ -434,7 +447,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="comunicaciones" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{null}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
