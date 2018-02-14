@@ -33,17 +33,46 @@
                 </p:selectOneMenu>
             </div>
         </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Tipo de Comunicación" for="tipoComunicacionCert" class="col-xs-4 col-form-label" />
+            <div class="col-xs-8">
+                <p:selectOneMenu id="tipoComunicacionCert" value="#{tipoDocumentoBean.tipoDocumento.tipoComunicacion}"                                                          required="true"  requiredMessage="¡Error! Debe seleccionar el tipo de comunicación" >
+                <f:selectItem itemLabel="Seleccione el tipo de comunicación" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItem itemLabel="Interna" itemValue="interna" />
+                <f:selectItem itemLabel="Externa" itemValue="externa" />
+                </p:selectOneMenu>
+            </div>       
+        </div>
          <p:spacer/>
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{certificadoBean.procesar()}" update="aviso clViewCertificado" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{certificadoBean.procesar()}" update="aviso clViewCertificado firCert dlgFirmarCert" />
             <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewCertificado" type="button" process="@all" title="Ver" action="#{certificadoViewBean.showDocument(certificadoBean.certificado)}" update=":dlgVisorCertificado" >
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
             </p:commandLink>
 <!--            <p:commandButton icon="ui-icon-view" value="Previsualizar" actionListener="" update="dlgVisorCertificado" oncomplete="PF('dlgVisorCertificado').show()" />-->
-            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o" value="Firmar" actionListener="#{certificadoBean.firmar()}" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o" id="firCert" value="Firmar" onclick="PF('denFirmarCert').show()"
+                              disabled="#{not(certificadoBean.certificado.remitente.id eq certificadoBean.currentUser.id)}"/>
 <!--            <p:commandButton icon="ui-icon-sign" value="Enviar" actionListener="#{certificadoBean.enviar()}" />-->
-        </div> 
+        </div>
+         <p:dialog id="dlgFirmarCert" header="Firmar" widgetVar="denFirmarCert" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
+                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="Firma:" for="firmaCert" class="col-xs-4 col-form-label"></p:outputLabel>
+                        <div class="col-xs-8">
+                            <p:signature id="firmaCert" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                        </div> 
+                    </div>
+                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+                </c:if>
+                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
+                        <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
+                    </div>
+                </c:if>                
+                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{cartaBean.firmar()}" update="messages" oncomplete="PF('Firma').clear()"></p:commandButton>
+        </p:dialog>
     </h:body>
 </html>
 
