@@ -38,12 +38,12 @@
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
                                     <c:if test="#{autorizationBean.canCreate('recepcion')== false}">
-                                    <li><a data-toggle="tab" href="#menuTab1" style="display: none;">Por Enviar</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Enviados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab1" style="display: none;">Por Enviar</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Enviados</a></li>
                                     </c:if>
                                     <c:if test="#{autorizationBean.canCreate('recepcion')== true}">
-                                    <li><a data-toggle="tab" href="#menuTab1">Por Enviar</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab2">Enviados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab1">Por Enviar</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2">Enviados</a></li>
                                     </c:if>
                                     <li><a data-toggle="tab" href="#menuTab3">En Prestamo</a></li>
                                     <li><a data-toggle="tab" href="#menuTab4">Por Vencer</a></li>
@@ -105,7 +105,7 @@
                                                     <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
                                                     <p:commandButton process="lstDocsEntrantes" style="float:right" update=":planillaEnvio" icon="ui-icon-disk" value="Generar Planilla de Envio" oncomplete="PF('planillaEnvioDialog').show()" />
                                                 </f:facet>
-                                                
+
                                                 <p:column selectionMode="multiple" style="width:30px;text-align:center"/>
                                                 <p:column headerText="Radicado">
                                                     <h:outputText value="#{docsPorEnviar.consecutivo}" />
@@ -118,10 +118,10 @@
                                                 <p:column headerText="Asunto">
                                                     <h:outputText value="#{docsPorEnviar.asunto}" />
                                                 </p:column>
-                                                <p:column headerText="Remitente">
+                                                <p:column headerText="Destinarario">
                                                     <h:outputText value="#{docsPorEnviar.remitente}" />
                                                 </p:column>
-                                                <p:column headerText="Destinarario">
+                                                <p:column headerText="Remitente">
                                                     <h:outputText value="#{docsPorEnviar.destinatario.nombres} #{docsPorEnviar.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
@@ -130,18 +130,14 @@
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Generar Radicado" action="#{envioBean.generarConsectivo()}" update=":messages" ajax="true" partialSubmit="true"><span class="glyphicon fa fa-fw fa-barcode" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Imprimir"  onclick="PF('denRadicado').show()"><span class="glyphicon fa fa-fw fa-print" aria-hidden="true"></span></p:commandLink>
                                                 </p:column>
                                                 <f:facet name="footer">
-                                                    
+
                                                 </f:facet>
                                             </p:dataTable>
-                                            <p:dialog header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="220">
-                                                <p:outputPanel id="planillaEnvio" style="text-align:center;">
-                                                    <!--<ui:repeat value="#{dtSelectionView.selectedCars}" var="car">
-                                                        <h:outputText value="#{car.id} - #{car.brand}" style="display:block"/>
-                                                    </ui:repeat>-->
-                                                </p:outputPanel>
-                                            </p:dialog>
+
                                         </div>
                                     </div>
                                     <div id="menuTab2" class="tab-pane fade">
@@ -176,15 +172,28 @@
                                                 <p:column headerText="Medio de Envio">
                                                     <h:outputText value="#{docsEnviados.medioEnvio.nombre}" />
                                                 </p:column>
-                                                <p:column headerText="Adjuntar Guía">                                                 
-                                                    <p:fileUpload value="#{documentosBean.documentFile}" fileUploadListener="#{documentosBean.documentFile}"  mode="simple" skinSimple="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%" label="Adjuntar documento"  required="true"/>
-                                                    <p:commandLink type="button" value="Subir" action="#{documentosBean.cargarGuia(docsEnviados.consecutivo)}" class="btn-primary" style="margin-left: 10px; " update=":messages"/>
+                                                <p:column headerText="Adjuntar Guía">  
+                                                    <h:form enctype="multipart/form-data">                                                        
+                                                        <p:fileUpload fileUploadListener="#{documentosBean.cargarGuia}" mode="advanced"
+                                                                      update=":messages, rutaGuia" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                      oncomplete="display: none" label="">
+                                                            <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
+                                                        </p:fileUpload> 
+                                                        <h:outputText id="rutaGuia" value="#{docsEnviados.rutaGuia}"/>
+                                                    </h:form>                                                    
                                                 </p:column>
-                                                <p:column headerText="Adjuntar Comprobante de Entrega">
-                                                    <p:fileUpload value="#" disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#"  mode="simple" skinSimple="true" label="adjuntar" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
+                                                <p:column headerText="Adjuntar Comprobante de Entrega"> 
+                                                    <h:form enctype="multipart/form-data">
+                                                        <p:fileUpload disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#{documentosBean.cargarComprobante}" mode="advanced"
+                                                                      update=":messages, rutaComprobante" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                                      oncomplete="disabled:true;" label="">
+                                                            <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
+                                                        </p:fileUpload> 
+                                                        <h:outputText id="rutaComprobante" value="#{docsEnviados.rutaComprobante}"/>
+                                                    </h:form>
                                                 </p:column>
                                                 <p:column headerText="Acciones">
-                                                    <p:commandLink type="button" disabled="#{documentosBean.documentFileComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" disabled="#{docsEnviados.rutaComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                                        
@@ -341,7 +350,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="cartas" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{carta.consecutivo}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de recepción">
@@ -375,7 +384,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="certificados" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{cert.consecutivo}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
@@ -434,7 +443,7 @@
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="comunicaciones" trigger="toggler" />
                                                         </f:facet>
-                                                        <p:column headerText="Redicado">
+                                                        <p:column headerText="Radicado">
                                                             <h:outputText value="#{null}" />
                                                         </p:column>
                                                         <p:column headerText="Fecha de creación">
@@ -667,7 +676,18 @@
                             </div>
                         </h:form>
                     </p:dialog>
-                    
+                    <p:dialog id="dlgRadicado" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
+                        <ui:include src="../procesos/newRadicadoSalida.xhtml">
+
+                        </ui:include>
+                    </p:dialog>
+                    <p:dialog header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="220">
+                        <p:outputPanel id="planillaEnvio" style="text-align:center;">
+                            <!--<ui:repeat value="#{dtSelectionView.selectedCars}" var="car">
+                                <h:outputText value="#{car.id} - #{car.brand}" style="display:block"/>
+                            </ui:repeat>-->
+                        </p:outputPanel>
+                    </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == false}">
                     <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>

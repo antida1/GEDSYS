@@ -37,6 +37,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -210,16 +211,17 @@ public class DocumentosBean extends BaseBean implements Serializable {
         this.documentFileComprobante = documentFileComprobante;       
     }
     
-    public void cargarGuia(String consecutivo){
+    public void cargarGuia(FileUploadEvent event){             
         FacesContext context = FacesContext.getCurrentInstance();
         DocumentoJpaController dJpa;
         Documento documento;
+        String consecutivo = (String) event.getComponent().getAttributes().get("consecutivo");
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
             documento = dJpa.findByConsecutivo(consecutivo);
             if(documento != null){
-               if (this.documentFile.getContents().length <= 0) {
+               if (event.getFile().getContents().length <= 0) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Adjuntar guía", "¡Por favor adjunte la guía!"));
                 }else {
                    EntityManager em = emf.createEntityManager();
@@ -230,8 +232,8 @@ public class DocumentosBean extends BaseBean implements Serializable {
                         Usuario usuario = (Usuario) SessionUtils.getUsuario();
                         documento.setModificadoPor(usuario);
                         UploadDocument uDoc = new UploadDocument();
-                        uDoc.upload(documentFile, this.documenstSavePath);
-                        documento.setRutaGuia(uDoc.getFileName(documentFile));
+                        uDoc.upload(event.getFile(), this.documenstSavePath);
+                        documento.setRutaGuia(event.getFile().getFileName());
                         documento.setGuia(uDoc.getUuid().toString());
                  
                         dJpa.edit(documento);
@@ -243,15 +245,60 @@ public class DocumentosBean extends BaseBean implements Serializable {
                         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Guía Almacenada exitoxamente!"));
                     }catch (Exception e) {
                         Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error al cargar la guía!", e.getMessage()));
-                        em.getTransaction().rollback();
-                    }
+                       context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error al cargar la guía!", e.getMessage()));
+                       em.getTransaction().rollback();
+                   }
                }
-            }
-            
-        } catch (Exception e) {
+          }           
+           
+       } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
-        }
+       }
+    }
+    
+     public void cargarComprobante(FileUploadEvent event){             
+        FacesContext context = FacesContext.getCurrentInstance();
+        DocumentoJpaController dJpa;
+        Documento documento;
+        String consecutivo = (String) event.getComponent().getAttributes().get("consecutivo");
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            documento = dJpa.findByConsecutivo(consecutivo);
+            if(documento != null){
+               if (event.getFile().getContents().length <= 0) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Adjuntar comprobante", "¡Por favor adjunte la guía!"));
+                }else {
+                   EntityManager em = emf.createEntityManager();
+                    try {
+                        em.getTransaction().begin(); 
+                        dJpa = new DocumentoJpaController(emf);              
+
+                        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+                        documento.setModificadoPor(usuario);
+                        UploadDocument uDoc = new UploadDocument();
+                        uDoc.upload(event.getFile(), this.documenstSavePath);
+                        documento.setRutaComprobante(event.getFile().getFileName());
+                        documento.setComprobante(uDoc.getUuid().toString());
+                 
+                        dJpa.edit(documento);
+                        Mensajeria mensajeria = new Mensajeria();
+                        mensajeria.send(usuario, "Nuevo documento recibido", documento.getComprobante());
+                
+                        em.getTransaction().commit();              
+                
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "Comprobante Almacenado exitoxamente!"));
+                    }catch (Exception e) {
+                        Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                       context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error al cargar la comprobante!", e.getMessage()));
+                       em.getTransaction().rollback();
+                   }
+               }
+          }           
+           
+       } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+       }
     }
               
     private void listarDocumentosRadicados() {
@@ -259,21 +306,21 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
-            radicados = dJpa.findRadicados(this.getCurrentUser());
+           radicados = dJpa.findRadicados(this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
-    public void listarDocumentosRecibidos() {
-        DocumentoJpaController dJpa;
-        try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            recibidos = dJpa.findEntrantes(this.getCurrentUser());
-        } catch (Exception e) {
-            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
-        }
+   public void listarDocumentosRecibidos() {
+       DocumentoJpaController dJpa;
+      try {
+           EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+           dJpa = new DocumentoJpaController(emf);
+           recibidos = dJpa.findEntrantes(this.getCurrentUser());
+       } catch (Exception e) {
+           Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+      }
     }
 
     public void listarDocumentosEnviados() {

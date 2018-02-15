@@ -10,6 +10,7 @@
     <h:body>
         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
         <f:event type="preRenderView" listener="#{municipioBean.listar()}" />
+        <f:event type="preRenderView" listener="#{tipoDocumentoBean.listar()}" /> 
         <p:growl id="messages"  showDetail="true" />
         <div class="col-xs-12">
             <p:outputLabel value="Documento" class="control-label col-md-4"/>
@@ -98,18 +99,47 @@
                 </p:selectOneMenu>
             </div>
         </div>
-        <p:spacer/>
+        <div class="col-xs-12">
+            <p:outputLabel value="Tipo de Comunicación" for="tipoComunicacion" class="col-xs-4 col-form-label" />
+            <div class="col-xs-8">
+                <p:selectOneMenu id="tipoComunicacion" value="#{tipoDocumentoBean.tipoDocumento.tipoComunicacion}"                                                          required="true"  requiredMessage="¡Error! Debe seleccionar el tipo de comunicación" >
+                <f:selectItem itemLabel="Seleccione el tipo de comunicación" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItem itemLabel="Interna" itemValue="interna" />
+                <f:selectItem itemLabel="Externa" itemValue="externa" />
+                </p:selectOneMenu>
+            </div>       
+        </div>
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{cartaBean.procesar()}" update="messages clViewCarta" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{cartaBean.procesar()}" update="messages clViewCarta firActa dlgFirmar" />
             <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewCarta" type="button" process="@all" title="Ver" action="#{cartaViewBean.showDocument(cartaBean.carta)}" update=":dlgVisorCarta">
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
             </p:commandLink>
-            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{cartaBean.firmar()}" disabled="#{not (cartaBean.documentoRelacionado.destinatario.id eq cartaBean.currentUser.id)}"/>
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " id="firActa" value="Firmar" onclick="PF('denFirmar').show()"
+                             disabled="#{not(cartaBean.carta.remitente.id eq cartaBean.currentUser.id)}"/>
             <!--
             <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{cartaBean.enviar()}" />
             -->
         </div>
+        <p:dialog id="dlgFirmar" header="Firmar" widgetVar="denFirmar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="Firma:" for="firma" class="col-xs-4 col-form-label"></p:outputLabel>
+                        <div class="col-xs-8">
+                            <p:signature id="firma" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                        </div> 
+                    </div>
+                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+                </c:if>
+                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
+                        <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
+                    </div>
+                </c:if>                
+            <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{cartaBean.firmar()}" update=":messages" oncomplete="PF('Firma').clear()"></p:commandButton>
+        
+        </p:dialog>
     </h:body>
 </html>
 

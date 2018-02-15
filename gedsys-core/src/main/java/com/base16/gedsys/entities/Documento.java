@@ -48,9 +48,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByCompartidos", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario")
     , @NamedQuery(name = "Documento.findEntrantes", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 1 or d.estado = 7 )")
     , @NamedQuery(name = "Documento.findPorEnviar", query = "SELECT d FROM Documento d WHERE (d.estado = 2 or d.estado = 8 )")
-    , @NamedQuery(name = "Documento.findEnviados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 3")
+    , @NamedQuery(name = "Documento.findEnviados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 9")
     , @NamedQuery(name = "Documento.findEnPrestamo", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 4 or d.estado = 6)")
-    , @NamedQuery(name = "Documento.findSinArchivar", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 5")
+    , @NamedQuery(name = "Documento.findSinArchivar", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 3 or d.estado = 9")
     , @NamedQuery(name = "Documento.findPorVencer", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 1 and d.requiereRespuesta = true ")
     , @NamedQuery(name = "Documento.findByDireccion", query = "SELECT d FROM Documento d WHERE d.direccion = :direccion")
     , @NamedQuery(name = "Documento.findByEstado", query = "SELECT d FROM Documento d WHERE d.estado = :estado")
@@ -141,6 +141,8 @@ public class Documento implements Serializable {
     private String rutaGuia;
     @Column(name = "Guia")
     private String guia;
+     @Column(name = "RutaComprobante")
+    private String rutaComprobante;
     
     @XmlTransient
     @JsonIgnore
@@ -435,6 +437,13 @@ public class Documento implements Serializable {
 
     public void setRutaArchivo(String rutaArchivo) {
         this.rutaArchivo = rutaArchivo;
+    }
+      public String getRutaComprobante() {
+        return rutaComprobante;
+    }
+
+    public void setRutaComprobante(String rutaComprobante) {
+        this.rutaComprobante = rutaComprobante;
     }
 
     @XmlTransient    
