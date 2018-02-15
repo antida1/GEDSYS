@@ -73,15 +73,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 
 public class Documento implements Serializable {
-
-    @Column(name = "Comprobante")
-    private String comprobante;
-
-    @XmlTransient
-    @JsonIgnore
-    @OneToMany(mappedBy = "documento")
-    private List<Comentario> comentarioList;
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -248,6 +240,17 @@ public class Documento implements Serializable {
     @JoinColumn(name = "MedioEnvio", referencedColumnName = "Id")
     @ManyToOne
     private Mediorecepcion medioEnvio;
+    
+    @OneToMany(mappedBy = "documentoPadre")
+    private List<Carta> cartaList;
+
+    @Column(name = "Comprobante")
+    private String comprobante;
+
+    @XmlTransient
+    @JsonIgnore
+    @OneToMany(mappedBy = "documento")
+    private List<Comentario> comentarioList;
 
     public Documento() {
     }
@@ -670,6 +673,16 @@ public class Documento implements Serializable {
 
     public void setComprobante(String comprobante) {
         this.comprobante = comprobante;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Carta> getCartaList() {
+        return cartaList;
+    }
+
+    public void setCartaList(List<Carta> cartaList) {
+        this.cartaList = cartaList;
     }
 
 }

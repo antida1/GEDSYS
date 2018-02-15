@@ -1,5 +1,6 @@
 package com.base16.gedsys.entities;
 
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.Usuario;
 import java.util.Date;
@@ -7,7 +8,7 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-10T07:39:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-13T08:21:23")
 @StaticMetamodel(Carta.class)
 public class Carta_ { 
 
@@ -22,6 +23,7 @@ public class Carta_ {
     public static volatile SingularAttribute<Carta, String> consecutivo;
     public static volatile SingularAttribute<Carta, Usuario> creadoPor;
     public static volatile SingularAttribute<Carta, Date> fecha;
+    public static volatile SingularAttribute<Carta, Documento> documentoPadre;
     public static volatile SingularAttribute<Carta, String> despedida;
     public static volatile SingularAttribute<Carta, Municipio> ciudad;
     public static volatile SingularAttribute<Carta, String> asunto;

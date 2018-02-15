@@ -6,6 +6,7 @@
 package com.base16.gedsys.entities;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,18 +32,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "carta", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Carta.findAll", query = "SELECT c FROM Carta c")
-    , @NamedQuery(name = "Carta.findById", query = "SELECT c FROM Carta c WHERE c.id = :id")
-    , @NamedQuery(name = "Carta.findByFecha", query = "SELECT c FROM Carta c WHERE c.fecha = :fecha")
-    , @NamedQuery(name = "Carta.findByConsecutivo", query = "SELECT c FROM Carta c WHERE c.consecutivo = :consecutivo")
-    , @NamedQuery(name = "Carta.findByTratamiento", query = "SELECT c FROM Carta c WHERE c.tratamiento = :tratamiento")
-    , @NamedQuery(name = "Carta.findByDestinatario", query = "SELECT c FROM Carta c WHERE c.destinatario = :destinatario")
-    , @NamedQuery(name = "Carta.findByCargo", query = "SELECT c FROM Carta c WHERE c.cargo = :cargo")
-    , @NamedQuery(name = "Carta.findByAsunto", query = "SELECT c FROM Carta c WHERE c.asunto = :asunto")
-    , @NamedQuery(name = "Carta.findByFechaCreacion", query = "SELECT c FROM Carta c WHERE c.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Carta.findByFechaModificacion", query = "SELECT c FROM Carta c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Carta.findByFechaFirma", query = "SELECT c FROM Carta c WHERE c.fechaFirma = :fechaFirma")
-    , @NamedQuery(name = "Carta.findByEstado", query = "SELECT c FROM Carta c WHERE c.estado = :estado")})
+    @NamedQuery(name = "Carta.findAll", query = "SELECT c FROM Carta c"),
+    @NamedQuery(name = "Carta.findById", query = "SELECT c FROM Carta c WHERE c.id = :id"),
+    @NamedQuery(name = "Carta.findByFecha", query = "SELECT c FROM Carta c WHERE c.fecha = :fecha"),
+    @NamedQuery(name = "Carta.findByConsecutivo", query = "SELECT c FROM Carta c WHERE c.consecutivo = :consecutivo"),
+    @NamedQuery(name = "Carta.findByTratamiento", query = "SELECT c FROM Carta c WHERE c.tratamiento = :tratamiento"),
+    @NamedQuery(name = "Carta.findByDestinatario", query = "SELECT c FROM Carta c WHERE c.destinatario = :destinatario"),
+    @NamedQuery(name = "Carta.findByCargo", query = "SELECT c FROM Carta c WHERE c.cargo = :cargo"),
+    @NamedQuery(name = "Carta.findByAsunto", query = "SELECT c FROM Carta c WHERE c.asunto = :asunto"),
+    @NamedQuery(name = "Carta.findByFechaCreacion", query = "SELECT c FROM Carta c WHERE c.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Carta.findByFechaModificacion", query = "SELECT c FROM Carta c WHERE c.fechaModificacion = :fechaModificacion"),
+    @NamedQuery(name = "Carta.findByFechaFirma", query = "SELECT c FROM Carta c WHERE c.fechaFirma = :fechaFirma"),
+    @NamedQuery(name = "Carta.findByEstado", query = "SELECT c FROM Carta c WHERE c.estado = :estado"),
+    @NamedQuery(name = "Carta.findByDocumentoPadre", query = "SELECT c FROM Carta c WHERE c.documentoPadre = :documentoPadre")})
 public class Carta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -97,6 +99,9 @@ public class Carta implements Serializable {
     @JoinColumn(name = "Ciudad", referencedColumnName = "Id")
     @ManyToOne
     private Municipio ciudad;
+    @JoinColumn(name = "DocumentoPadre", referencedColumnName = "Id")
+    @ManyToOne
+    private Documento documentoPadre;
 
     public Carta() {
     }
@@ -281,5 +286,13 @@ public class Carta implements Serializable {
     public void setCiudad(Municipio ciudad) {
         this.ciudad = ciudad;
     }
-    
+
+    public Documento getDocumentoPadre() {
+        return documentoPadre;
+    }
+
+    public void setDocumentoPadre(Documento documentoPadre) {
+        this.documentoPadre = documentoPadre;
+    }
+
 }

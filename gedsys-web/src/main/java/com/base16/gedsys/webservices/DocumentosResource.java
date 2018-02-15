@@ -84,7 +84,7 @@ public class DocumentosResource extends BaseBean {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postJson(String content) {
-        //TODO
+        
         return Response.created(context.getAbsolutePath()).build();
     }
 

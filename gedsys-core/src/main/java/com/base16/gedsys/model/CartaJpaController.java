@@ -6,6 +6,7 @@
 package com.base16.gedsys.model;
 
 import com.base16.gedsys.entities.Carta;
+import com.base16.gedsys.entities.Documento;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -221,4 +222,19 @@ public class CartaJpaController implements Serializable {
         }
     }
     
+    public Carta findCartaByDocumentoPadre(Documento documentoPadre) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Carta.class));
+            Query q = em.createNamedQuery("Carta.findByDocumentoPadre", Documento.class)
+                    .setParameter("documentoPadre", documentoPadre);
+            return (Carta) q.getSingleResult();
+         
+        } catch (Exception e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

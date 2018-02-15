@@ -268,7 +268,6 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 this.documento.setCreadoPor(usuario);
                 this.documento.setRequiereRespuesta(this.documento.getTipoDocumento().getRequiereRespuesta());
 
-                //TODO: limitar festivos al año presete y futuro
                 if (this.documento.getTipoDocumento().getRequiereRespuesta()) {
                     if (this.documento.getTipoDocumento().getTipoCalendario() == "habil") {
                         List<Date> dates = new ArrayList<>();

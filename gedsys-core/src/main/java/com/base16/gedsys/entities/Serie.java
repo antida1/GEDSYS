@@ -34,19 +34,15 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name = "serie", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Serie.findAll", query = "SELECT s FROM Serie s")
-    , @NamedQuery(name = "Serie.findById", query = "SELECT s FROM Serie s WHERE s.id = :id")
-    , @NamedQuery(name = "Serie.findByBorrado", query = "SELECT s FROM Serie s WHERE s.borrado = :borrado")
-    , @NamedQuery(name = "Serie.findByFechaCreacion", query = "SELECT s FROM Serie s WHERE s.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Serie.findByFechaModificacion", query = "SELECT s FROM Serie s WHERE s.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Serie.findBySeccionSubSeccion", query = "SELECT s FROM Serie s WHERE s.seccionSubseccion = :seccionSubseccion")
-    , @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")})
+    @NamedQuery(name = "Serie.findAll", query = "SELECT s FROM Serie s"),
+    @NamedQuery(name = "Serie.findById", query = "SELECT s FROM Serie s WHERE s.id = :id"),
+    @NamedQuery(name = "Serie.findByBorrado", query = "SELECT s FROM Serie s WHERE s.borrado = :borrado"),
+    @NamedQuery(name = "Serie.findByFechaCreacion", query = "SELECT s FROM Serie s WHERE s.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Serie.findByFechaModificacion", query = "SELECT s FROM Serie s WHERE s.fechaModificacion = :fechaModificacion"),
+    @NamedQuery(name = "Serie.findBySeccionSubSeccion", query = "SELECT s FROM Serie s WHERE s.seccionSubseccion = :seccionSubseccion"),
+    @NamedQuery(name = "Serie.findByNombre", query = "SELECT s FROM Serie s WHERE s.nombre = :nombre")})
 
-public class Serie implements Serializable {  
-
-    @JoinColumn(name = "SeccionSubseccion", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
-    private SeccionSubSeccion seccionSubseccion;
+public class Serie implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,11 +68,12 @@ public class Serie implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
-    
-    
     @Column(name = "Codigo")
     private String codigo;
-    
+    @JoinColumn(name = "SeccionSubseccion", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private SeccionSubSeccion seccionSubseccion;
+
     public Serie() {
     }
 
@@ -190,5 +187,4 @@ public class Serie implements Serializable {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-    
 }

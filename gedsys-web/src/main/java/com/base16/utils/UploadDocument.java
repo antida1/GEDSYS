@@ -7,6 +7,7 @@ package com.base16.utils;
 
 import com.base16.gedsys.bean.BaseBean;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -72,11 +73,48 @@ public class UploadDocument extends BaseBean {
             }
         }
     }
+    
+    public void upload(File file, String path){
+        if (file != null) {
+            try {
+                this.uuid = UUID.randomUUID();
+                String fileName = FilenameUtils.getBaseName(file.getName());
+                String extension = FilenameUtils.getExtension(file.getName());
+                Path folder = Paths.get(path + File.separatorChar + this.uuid.toString());
+                Path pathFile = Files.createFile(folder);
+                
+                try (InputStream input = new FileInputStream(file)) {
+                    Files.copy(input, pathFile, StandardCopyOption.REPLACE_EXISTING);
+         
+                    if (this.getEncriptFiles() == true) {
+                        File inputFile = pathFile.toFile();
+                        File outputFile = new File(path + File.separatorChar + this.uuid.toString());
+                        CryptoUtils.encrypt("Mary has one cat", inputFile, outputFile);
+                    } else {
+
+                    }
+                } catch (Exception e) {
+                    Logger.getLogger(UploadDocument.class.getName()).log(Level.SEVERE, null, e);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(UploadDocument.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public String getFileName(UploadedFile file) {
         if (file != null) {
             String fileName = FilenameUtils.getBaseName(file.getFileName());
             String extension = FilenameUtils.getExtension(file.getFileName());
+            return fileName + "." + extension;
+        }
+        return "";
+    }
+    
+    public String getFileName(File file) {
+        if (file != null) {
+            String fileName = FilenameUtils.getBaseName(file.getName());
+            String extension = FilenameUtils.getExtension(file.getName());
             return fileName + "." + extension;
         }
         return "";

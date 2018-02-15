@@ -42,11 +42,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")})
 public class TipoDocumento implements Serializable {
 
-    @Column(name = "RequiereRespuesta")
-    private Boolean requiereRespuesta;
-    @Column(name = "EsPQRSF")
-    private Short esPQRSF;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,6 +78,10 @@ public class TipoDocumento implements Serializable {
     private String tipoCalendario;
     @Column(name = "TipoComunicacion")
     private String tipoComunicacion;
+    @Column(name = "RequiereRespuesta")
+    private Boolean requiereRespuesta;
+    @Column(name = "EsPQRSF")
+    private Boolean esPQRSF;
     
     public TipoDocumento() {
     }
@@ -238,6 +237,7 @@ public class TipoDocumento implements Serializable {
         this.tipoComunicacion = tipoComunicacion;
     }
 
+
     public Boolean getRequiereRespuesta() {
         return requiereRespuesta;
     }
@@ -246,11 +246,11 @@ public class TipoDocumento implements Serializable {
         this.requiereRespuesta = requiereRespuesta;
     }
 
-    public Short getEsPQRSF() {
+    public Boolean getEsPQRSF() {
         return esPQRSF;
     }
 
-    public void setEsPQRSF(Short esPQRSF) {
+    public void setEsPQRSF(Boolean esPQRSF) {
         this.esPQRSF = esPQRSF;
     }
     

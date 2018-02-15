@@ -36,7 +36,6 @@ public class DocumentViewerBean extends BaseBean implements Serializable {
 
     }
     public void showDocument(Documento doc){
-        //TODO: pendiente desencriptar el archivo para mostrarlo.
         this.filePath = this.getDocumenstSavePath() + File.separatorChar + doc.getNombreDocumento();
         SessionUtils.getSession().setAttribute("filePath", this.filePath);
         RequestContext.getCurrentInstance().execute("PF('denVisor').show()");
