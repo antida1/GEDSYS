@@ -9,12 +9,17 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.entities.Carta;
 import com.base16.gedsys.entities.Certificado;
+import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.CartaJpaController;
 import com.base16.gedsys.model.CertificadoJpaController;
+import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
+import com.base16.utils.UploadDocument;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -38,6 +43,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
@@ -60,6 +66,8 @@ public class CertificadoBean extends BaseBean implements Serializable {
     private Certificado certificado = new Certificado();
     private List<Certificado> certificados;
     private String accion;
+    
+    private Documento documentoRelacionado;
     
     private StreamedContent content;
     private String filePath = "";
@@ -140,12 +148,80 @@ public class CertificadoBean extends BaseBean implements Serializable {
     }
 
     public void firmar() {
-        //TODO: Recuperar consecutivo de documento.
-        Usuario usuario = (Usuario) SessionUtils.getUsuario();
-        this.certificado.setModificadoPor(usuario);
-        this.certificado.setFechaFirma(new Date());
-        this.certificado.setEstado(3);
-    }
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManager em = emf.createEntityManager();
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CertificadoJpaController caJpa;
+            caJpa = new CertificadoJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("certificado");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.certificado.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.certificado.setModificadoPor(usuario);
+            this.certificado.setFechaFirma(new Date());
+            this.certificado.setEstado(3);
+            caJpa.edit(this.certificado);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento Firmado exitosamente!"));
+            CertificadoViewBean cvb = new CertificadoViewBean();
+            cvb.showDocument(this.certificado);
+
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.certificado.getRemitente());
+            documento.setAsunto(this.certificado.getContenido());
+            documento.setFechaDocumento(this.certificado.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.certificado.getContenido());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+
+            // TODO: Modificar el documento padre, mover a por archivar.
+            if (this.documentoRelacionado != null) {
+                this.documentoRelacionado.setDocumentoRelacionado(documento);
+                this.documentoRelacionado.setEstado(3);
+                djc.edit(this.documentoRelacionado);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", ex.getMessage()));
+        }
+                //TODO: Recuperar consecutivo de documento.
+//        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+//        this.certificado.setModificadoPor(usuario);
+//        this.certificado.setFechaFirma(new Date());
+//        this.certificado.setEstado(3);
+    }     
+        
+
+   
 
 //    public void previsualizar() {
 //        try {

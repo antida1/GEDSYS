@@ -88,21 +88,21 @@
         </div>
         <p:dialog id="dlgFirmarCir" header="Firmar" widgetVar="denFirmarCir" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
             <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
-                    <div class="form-group row">
-                        <p:outputLabel value="Firma:" for="firmaCir" class="col-xs-4 col-form-label"></p:outputLabel>
-                        <div class="col-xs-8">
-                            <p:signature id="firmaCir" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
-                        </div> 
-                    </div>
-                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
-                </c:if>
-                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
-                    <div class="form-group row">
-                        <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
-                        <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
-                    </div>
-                </c:if>                
-                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{cartaBean.firmar()}" update="messages" oncomplete="PF('Firma').clear()"></p:commandButton>           
+                <div class="form-group row">
+                    <p:outputLabel value="Firma:" for="firmaCir" class="col-xs-4 col-form-label"></p:outputLabel>
+                    <div class="col-xs-8">
+                        <p:signature id="firmaCir" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                    </div> 
+                </div>
+                <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+            </c:if>
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                <div class="form-group row">
+                    <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
+                    <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
+                </div>
+            </c:if>                
+            <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{circularBean.firmar()}" update="messages" oncomplete="PF('Firma').close()"></p:commandButton>           
         </p:dialog>        
     </h:body>
 </html>

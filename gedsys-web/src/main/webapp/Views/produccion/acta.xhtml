@@ -126,7 +126,7 @@
         </div>
         <p:spacer/>        
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{actaBean.procesar()}" update="mensaje clViewActa firmActa dlgFirmarActa" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{actaBean.procesar()}" update="mensaje clViewActa fimrActa dlgFirmarActa" />
             <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewActa" type="button" process="@all" title="Ver" action="#{actaViewBean.showDocument(actaBean.acta)}" update=":dlgVisorActa">
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
@@ -135,24 +135,22 @@
                              disabled="#{not(actaBean.acta.presidente.id eq actaBean.currentUser.id)}"/>            
         </div>    
         <p:dialog id="dlgFirmarActa" header="Firmar" widgetVar="denFirmarActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
-            <h:form>
-                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
-                    <div class="form-group row">
-                        <p:outputLabel value="Firma:" for="firmaActa" class="col-xs-4 col-form-label"></p:outputLabel>
-                        <div class="col-xs-8">
-                            <p:signature id="firmaActa" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
-                        </div> 
-                    </div>
-                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
-                </c:if>
-                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
-                    <div class="form-group row">
-                        <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
-                        <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
-                    </div>
-                </c:if>                
-                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{cartaBean.firmar()}" update="messages" oncomplete="PF('Firma').clear()"></p:commandButton>
-            </h:form>
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
+                <div class="form-group row">
+                    <p:outputLabel value="Firma:" for="firmaActa" class="col-xs-4 col-form-label"></p:outputLabel>
+                    <div class="col-xs-8">
+                        <p:signature id="firmaActa" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                    </div> 
+                </div>
+                <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+            </c:if>
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                <div class="form-group row">
+                    <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
+                    <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
+                </div>
+            </c:if>                
+                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="messages" oncomplete="PF('Firma').close()"></p:commandButton>            
         </p:dialog>
     </h:body>
 </html>

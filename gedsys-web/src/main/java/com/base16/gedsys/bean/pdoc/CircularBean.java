@@ -9,11 +9,17 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.entities.Carta;
 import com.base16.gedsys.entities.Circular;
+import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.CartaJpaController;
 import com.base16.gedsys.model.CircularJpaController;
+import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
+import com.base16.utils.UploadDocument;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -37,6 +43,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
@@ -59,6 +66,8 @@ public class CircularBean extends BaseBean implements Serializable {
     private Circular circular = new Circular();
     private List<Circular> circulares;
     private String accion;
+    
+    private Documento documentoRelacionado;
 
     private StreamedContent content;
     private String filePath = "";
@@ -138,11 +147,78 @@ public class CircularBean extends BaseBean implements Serializable {
     }
 
     public void firmar() {
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManager em = emf.createEntityManager();
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CircularJpaController caJpa;
+            caJpa = new CircularJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("circular");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.circular.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.circular.setModificadoPor(usuario);
+            this.circular.setFechaFirma(new Date());
+            this.circular.setEstado(3);
+            caJpa.edit(this.circular);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento Firmado exitosamente!"));
+            CircularViewBean cvb = new CircularViewBean();
+            cvb.showDocument(this.circular);
+
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno(this.circular.getGrupoDestinatario());
+            documento.setDestinatario(this.circular.getRemitente());
+            documento.setAsunto(this.circular.getAsunto());
+            documento.setFechaDocumento(this.circular.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.circular.getAsunto());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+
+            // TODO: Modificar el documento padre, mover a por archivar.
+            if (this.documentoRelacionado != null) {
+                this.documentoRelacionado.setDocumentoRelacionado(documento);
+                this.documentoRelacionado.setEstado(3);
+                djc.edit(this.documentoRelacionado);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, null, ex);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", ex.getMessage()));
+        }
+        
         //TODO: Recuperar consecutivo de documento.
-        Usuario usuario = (Usuario) SessionUtils.getUsuario();
-        this.circular.setModificadoPor(usuario);
-        this.circular.setFechaFirma(new Date());
-        this.circular.setEstado(3);
+//        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+//        this.circular.setModificadoPor(usuario);
+//        this.circular.setFechaFirma(new Date());
+//        this.circular.setEstado(3);
     }
 
 //    public void previsualizar() {

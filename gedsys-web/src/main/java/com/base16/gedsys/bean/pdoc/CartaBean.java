@@ -198,7 +198,7 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setFechaFirma(new Date());
             this.carta.setEstado("3");
             caJpa.edit(this.carta);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento Firmado exitosamente"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento Firmado exitosamente!"));
             CartaViewBean cvb = new CartaViewBean();
             cvb.showDocument(this.carta);
 

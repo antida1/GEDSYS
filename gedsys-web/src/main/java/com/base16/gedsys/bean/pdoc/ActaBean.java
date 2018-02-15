@@ -12,15 +12,23 @@ import com.base16.gedsys.entities.Actaasistente;
 import com.base16.gedsys.entities.Actaausente;
 import com.base16.gedsys.entities.Actainvitado;
 import com.base16.gedsys.entities.Cargo;
+import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.DestinatariosDoc;
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.ActaasistenteJpaController;
 import com.base16.gedsys.model.ActaausenteJpaController;
 import com.base16.gedsys.model.ActainvitadoJpaController;
 import com.base16.gedsys.model.CargoJpaController;
+import com.base16.gedsys.model.CartaJpaController;
+import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.DestinatariosDocJpaController;
+import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
+import com.base16.utils.UploadDocument;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -40,6 +48,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,6 +59,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.simple.TextDocument;
@@ -76,7 +86,9 @@ public class ActaBean extends BaseBean implements Serializable {
     private List<Usuario> invitados;
     private List<Usuario> ausentes;
     private String accion;
-    
+
+    private Documento documentoRelacionado;
+
     private StreamedContent content;
     private String filePath = "";
 
@@ -157,13 +169,13 @@ public class ActaBean extends BaseBean implements Serializable {
         ActaasistenteJpaController asisJpa;
         ActainvitadoJpaController invitJpa;
         ActaausenteJpaController ausJpa;
-        
+
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         aJpa = new ActaJpaController(emf);
         asisJpa = new ActaasistenteJpaController(emf);
         invitJpa = new ActainvitadoJpaController(emf);
         ausJpa = new ActaausenteJpaController(emf);
-        
+
         this.acta.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.acta.setCreadoPor(usuario);
@@ -171,38 +183,38 @@ public class ActaBean extends BaseBean implements Serializable {
         this.acta.setFechaModificacion(new Date());
         this.acta.setEstado(1);
         aJpa.create(this.acta);
-        
+
         List<Actaasistente> actaasistenteList = new ArrayList<>();
         for (Usuario asistente : asistentes) {
-            Actaasistente asis =new Actaasistente();
+            Actaasistente asis = new Actaasistente();
             asis.setAsistente(asistente);
             asis.setActa(acta);
             asisJpa.create(asis);
             actaasistenteList.add(asis);
         }
-        
+
         this.acta.setActaasistenteList(actaasistenteList);
-        
+
         List<Actainvitado> actainvitadosList = new ArrayList<>();
         for (Usuario invitado : invitados) {
-            Actainvitado invit =new Actainvitado();
+            Actainvitado invit = new Actainvitado();
             invit.setInvitado(invitado);
             invit.setActa(acta);
             invitJpa.create(invit);
             actainvitadosList.add(invit);
         }
         this.acta.setActainvitadoList(actainvitadosList);
-        
+
         List<Actaausente> actaausenteList = new ArrayList<>();
         for (Usuario ausente : ausentes) {
-            Actaausente ausen =new Actaausente();
+            Actaausente ausen = new Actaausente();
             ausen.setAusente(ausente);
             ausen.setActa(acta);
             ausJpa.create(ausen);
             actaausenteList.add(ausen);
         }
         this.acta.setActaausenteList(actaausenteList);
-        
+
     }
 
     private void editar() throws Exception {
@@ -217,16 +229,103 @@ public class ActaBean extends BaseBean implements Serializable {
     }
 
     public void firmar() {
-        //TODO: Recuperar consecutivo de documento.
-        Usuario usuario = (Usuario) SessionUtils.getUsuario();
-        this.acta.setModificadoPor(usuario);
-        this.acta.setFechaFirma(new Date());
-        this.acta.setEstado(3);
-    }
-    
-    private void loadDocument(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
         try {
-            this.filePath =  this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".pdf";
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            ActaJpaController caJpa;
+            caJpa = new ActaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("acta");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            //Transacción
+            em.getTransaction().begin();
+
+            DestinatariosDocJpaController djpa = new DestinatariosDocJpaController(emf);
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.acta.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.acta.setModificadoPor(usuario);
+            this.acta.setFechaFirma(new Date());
+            this.acta.setEstado(3);
+            caJpa.edit(this.acta);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento Firmado exitosamente!"));
+            ActaViewBean cvb = new ActaViewBean();
+            cvb.showDocument(this.acta);
+
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno(this.acta.getPresidente().getNombres() + " " + this.acta.getPresidente().getApelidos());
+            documento.setDestinatario(this.acta.getPresidente());
+            documento.setAsunto(this.acta.getConvocatoria());
+            documento.setFechaDocumento(this.acta.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.acta.getDesarrollo());
+            documento.setDireccion(this.acta.getLugar());
+            documento.setEstado(8);
+
+            // Crea la colección de asistentes para llenar la colección de destinatarios del documento
+            Collection<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
+            for (Actaasistente actaAsistente : this.acta.getActaasistenteList()) {
+                DestinatariosDoc destinatariosDoc = new DestinatariosDoc();
+                destinatariosDoc.setCreadoPor(usuario);
+                destinatariosDoc.setDestinatarioId(actaAsistente.getAsistente());
+                destinatariosDoc.setFechaCreacion(new Date());
+                djpa.create(destinatariosDoc);
+                destinatariosDocCollection.add(destinatariosDoc);
+            }
+            documento.setDestinatariosDocCollection(destinatariosDocCollection);
+
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+
+            // TODO: Modificar el documento padre, mover a por archivar.
+            if (this.documentoRelacionado != null) {
+                this.documentoRelacionado.setDocumentoRelacionado(documento);
+                this.documentoRelacionado.setEstado(3);
+                djc.edit(this.documentoRelacionado);
+            }
+
+            em.getTransaction().commit();
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", ex.getMessage()));
+            em.getTransaction().rollback();
+        }
+
+        //TODO: Recuperar consecutivo de documento.
+//        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+//        this.acta.setModificadoPor(usuario);
+//        this.acta.setFechaFirma(new Date());
+//        this.acta.setEstado(3);
+    }
+
+    private void loadDocument() {
+        try {
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".pdf";
             if (!filePath.isEmpty()) {
                 File tempFile = new File(filePath);
                 if (tempFile.exists()) {
@@ -263,5 +362,5 @@ public class ActaBean extends BaseBean implements Serializable {
         }
         return actas;
     }
-    
+
 }
