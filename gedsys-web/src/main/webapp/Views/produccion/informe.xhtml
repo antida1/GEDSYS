@@ -39,18 +39,47 @@
                 </p:selectOneMenu>
             </div>
         </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Tipo de Comunicación" for="tipoComunicacionInf" class="col-xs-4 col-form-label" />
+            <div class="col-xs-8">
+                <p:selectOneMenu id="tipoComunicacionInf" value="#{tipoDocumentoBean.tipoDocumento.tipoComunicacion}" required="true"  requiredMessage="¡Error! Debe seleccionar el tipo de comunicación" >
+                <f:selectItem itemLabel="Seleccione el tipo de comunicación" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItem itemLabel="Interna" itemValue="interna" />
+                <f:selectItem itemLabel="Externa" itemValue="externa" />
+                </p:selectOneMenu>
+            </div>       
+        </div>
         <p:spacer/>
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{informeBean.procesar()}" update="recado clViewInforme" />
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{informeBean.procesar()}" update="recado firInf clViewInforme dlgFirmarInf" />
             <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewInforme" type="button" process="@all" title="Ver" action="#{informeViewBean.showDocument(informeBean.informe)}" update=":dlgVisorInforme">
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
             </p:commandLink>
-            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " value="Firmar" actionListener="#{informeBean.firmar()}"/>
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " id="firInf" value="Firmar" onclick="PF('denFirmarInf').show()"
+                             disabled="#{not(informeBean.informe.remitente.id eq informeBean.currentUser.id)}"/>
             <!--
             <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{informeBean.enviar()}" />
             -->            
-        </div>        
+        </div>
+        <p:dialog id="dlgFirmarInf" header="Firmar" widgetVar="denFirmarInf" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
+                <div class="form-group row">
+                    <p:outputLabel value="Firma:" for="firmaInf" class="col-xs-4 col-form-label"></p:outputLabel>
+                    <div class="col-xs-8">
+                        <p:signature id="firmaInf" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                    </div> 
+                </div>
+                <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+            </c:if>
+            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                <div class="form-group row">
+                    <p:outputLabel value="NOTA:" class="col-xs-4 col-form-label"></p:outputLabel> 
+                    <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
+                </div>
+            </c:if>                
+            <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{informeBean.firmar()}" update="messages" oncomplete="PF('denFirmarInf').close()"></p:commandButton>           
+        </p:dialog>        
     </h:body>
 </html>
 

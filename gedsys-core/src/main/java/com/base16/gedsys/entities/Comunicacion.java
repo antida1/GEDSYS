@@ -58,6 +58,8 @@ public class Comunicacion implements Serializable {
     private Date fecha;
     @Column(name = "Asunto")
     private String asunto;
+    @Column(name = "Consecutivo")
+    private String consecutivo;
     @Lob
     @Column(name = "Contenido")
     private String contenido;
@@ -70,7 +72,7 @@ public class Comunicacion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     @Column(name = "FechaFirma")
-    private String fechaFirma;
+    private Date fechaFirma;
     @Column(name = "Estado")
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comunicacion")
@@ -151,11 +153,11 @@ public class Comunicacion implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getFechaFirma() {
+    public Date getFechaFirma() {
         return fechaFirma;
     }
 
-    public void setFechaFirma(String fechaFirma) {
+    public void setFechaFirma(Date fechaFirma) {
         this.fechaFirma = fechaFirma;
     }
 
@@ -166,6 +168,16 @@ public class Comunicacion implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public String getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(String consecutivo) {
+        this.consecutivo = consecutivo;
+    }
+    
+    
 
     @XmlTransient
     @JsonIgnore

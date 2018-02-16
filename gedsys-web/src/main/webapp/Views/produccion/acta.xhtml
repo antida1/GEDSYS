@@ -150,7 +150,7 @@
                     <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
                 </div>
             </c:if>                
-                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="messages" oncomplete="PF('Firma').close()"></p:commandButton>            
+                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="messages" oncomplete="PF('denFirmarActa').close()"></p:commandButton>            
         </p:dialog>
     </h:body>
 </html>

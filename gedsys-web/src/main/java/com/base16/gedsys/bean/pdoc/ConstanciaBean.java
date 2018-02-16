@@ -6,12 +6,18 @@
 package com.base16.gedsys.bean.pdoc;
 
 import com.base16.gedsys.bean.BaseBean;
+import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Constancia;
+import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.ComunicacionJpaController;
+import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.ConstanciaJpaController;
+import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
+import com.base16.utils.UploadDocument;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -35,6 +41,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
@@ -57,6 +64,8 @@ public class ConstanciaBean extends BaseBean implements Serializable{
     private Constancia constancia = new Constancia();
     private List<Constancia> constancias;
     private String accion;
+    
+    private Documento documentoRelacionado;
 
     private StreamedContent content;
     private String filePath = "";
@@ -136,11 +145,77 @@ public class ConstanciaBean extends BaseBean implements Serializable{
     }
 
     public void firmar() {
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            EntityManager em = emf.createEntityManager();
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            ConstanciaJpaController caJpa;
+            caJpa = new ConstanciaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("constancia");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.constancia.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.constancia.setModificadoPor(usuario);
+            this.constancia.setFechaFirma(new Date());
+            this.constancia.setEstado(3);
+            caJpa.edit(this.constancia);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento Firmado exitosamente!"));
+            ConstanciaViewBean cvb = new ConstanciaViewBean();
+            cvb.showDocument(this.constancia);
+
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.constancia.getRemitente());
+            documento.setAsunto(this.constancia.getContenido());
+            documento.setFechaDocumento(this.constancia.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.constancia.getContenido());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+
+            // TODO: Modificar el documento padre, mover a por archivar.
+            if (this.documentoRelacionado != null) {
+                this.documentoRelacionado.setDocumentoRelacionado(documento);
+                this.documentoRelacionado.setEstado(3);
+                djc.edit(this.documentoRelacionado);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, null, ex);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", ex.getMessage()));
+        }
         //TODO: Recuperar consecutivo de documento.
-        Usuario usuario = (Usuario) SessionUtils.getUsuario();
-        this.constancia.setModificadoPor(usuario);
-        this.constancia.setFechaFirma(new Date());
-        this.constancia.setEstado(3);
+//        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+//        this.constancia.setModificadoPor(usuario);
+//        this.constancia.setFechaFirma(new Date());
+//        this.constancia.setEstado(3);
     }
 
 //    public void previsualizar() {
