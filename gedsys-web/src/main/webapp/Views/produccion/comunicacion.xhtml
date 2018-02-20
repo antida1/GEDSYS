@@ -84,8 +84,8 @@
         </div>
         <p:spacer/>
          <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{comunicacionBean.procesar()}" update="anuncio firComu clViewComunicacion dlgFirmarComu" />
-            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewComunicacion" type="button" process="@all" title="Ver" action="#{comunicacionViewBean.showDocument(comunicacionBean.comunicacion)}" update=":dlgVisorComunicacion">
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{comunicacionBean.procesar()}" update="anuncio clViewComunicacion firComu dlgFirmarComu" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewComunicacion" onstart="PF('statusDialog').show();" type="button" process="@all" title="Ver" action="#{comunicacionViewBean.showDocument(comunicacionBean.comunicacion)}" update=":dlgVisorComunicacion anuncio" onsuccess="PF('statusDialog').hide()">
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
             </p:commandLink>
@@ -111,8 +111,11 @@
                     <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
                 </div>
             </c:if>                
-            <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="messages" oncomplete="PF('denFirmarComu').close()"></p:commandButton>           
-        </p:dialog>         
+            <p:commandButton value="Guardar Firma" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>           
+        </p:dialog> 
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage value="../../images/ajaxloading.gif"/>
+        </p:dialog>
     </h:body>
 </html>
 

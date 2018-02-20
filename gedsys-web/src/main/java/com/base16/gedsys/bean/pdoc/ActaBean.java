@@ -312,7 +312,7 @@ public class ActaBean extends BaseBean implements Serializable {
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", ex.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Acta", "No existe el consecutivo para actas en la Entidad Consecutivo"));
             em.getTransaction().rollback();
         }
 

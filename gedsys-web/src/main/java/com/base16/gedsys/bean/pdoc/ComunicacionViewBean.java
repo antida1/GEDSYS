@@ -83,7 +83,11 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
             consecutivo = new TextNavigation("@consecutivo", odt);
             while (consecutivo.hasNext()) {
                 TextSelection item = (TextSelection) consecutivo.nextSelection();
-                item.replaceWith("");
+                if(comunicacion.getConsecutivo() == null || comunicacion.getConsecutivo()==""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(comunicacion.getConsecutivo());
+                }
             }
 
             destinatario = new TextNavigation("@destinatario", odt);

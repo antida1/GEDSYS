@@ -177,8 +177,7 @@ public class CircularBean extends BaseBean implements Serializable {
             this.circular.setModificadoPor(usuario);
             this.circular.setFechaFirma(new Date());
             this.circular.setEstado(3);
-            caJpa.edit(this.circular);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento Firmado exitosamente!"));
+            caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
             cvb.showDocument(this.circular);
 
@@ -201,6 +200,8 @@ public class CircularBean extends BaseBean implements Serializable {
             documento.setEstado(8);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento Firmado exitosamente!"));
 
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {
@@ -211,7 +212,7 @@ public class CircularBean extends BaseBean implements Serializable {
 
         } catch (Exception ex) {
             Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, null, ex);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", ex.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Circular", "¡No existe el consecutivo para circulares en la Entidad Consecutivo!"));
         }
         
         //TODO: Recuperar consecutivo de documento.
