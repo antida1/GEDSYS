@@ -23,7 +23,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-15T15:01:19")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-19T13:02:03")
 @StaticMetamodel(Documento.class)
 public class Documento_ { 
 
@@ -58,6 +58,7 @@ public class Documento_ {
     public static volatile ListAttribute<Documento, Carta> cartaList;
     public static volatile SingularAttribute<Documento, Boolean> anexos;
     public static volatile SingularAttribute<Documento, String> comprobante;
+    public static volatile SingularAttribute<Documento, String> radicadoEnvio;
     public static volatile SingularAttribute<Documento, SignaturaTopografica> signaturaTopografica;
     public static volatile SingularAttribute<Documento, String> pathFile;
     public static volatile SingularAttribute<Documento, String> clase;

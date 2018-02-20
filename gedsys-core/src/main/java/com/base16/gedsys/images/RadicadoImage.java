@@ -5,11 +5,7 @@
  */
 package com.base16.gedsys.images;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BarcodeEAN;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -18,13 +14,9 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**

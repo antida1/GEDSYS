@@ -143,6 +143,8 @@ public class Documento implements Serializable {
     private String guia;
      @Column(name = "RutaComprobante")
     private String rutaComprobante;
+    @Column(name = "RadicadoEnvio")
+    private String radicadoEnvio;
     
     @XmlTransient
     @JsonIgnore
@@ -692,6 +694,14 @@ public class Documento implements Serializable {
 
     public void setCartaList(List<Carta> cartaList) {
         this.cartaList = cartaList;
+    }
+
+    public String getRadicadoEnvio() {
+        return radicadoEnvio;
+    }
+
+    public void setRadicadoEnvio(String radicadoEnvio) {
+        this.radicadoEnvio = radicadoEnvio;
     }
 
 }

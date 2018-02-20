@@ -41,7 +41,7 @@ import org.primefaces.model.UploadedFile;
 public class EnvioBean extends BaseBean implements Serializable {
 
     private static final long SerialVersionUID = 1L;
-    
+
     private Documento documento = new Documento();
     private List<Municipio> municipios;
     private List<Documento> documentos;
@@ -50,39 +50,39 @@ public class EnvioBean extends BaseBean implements Serializable {
     private List<Entidad> entidades;
     private List<Transportador> transportadores;
 
-    private String accion; 
+    private String accion;
     private int MunicipioId;
     private UploadedFile documentFile;
-    
+
     private Boolean canSave;
     private Boolean canGenRad;
     private Boolean canPrint;
-    
-    public EnvioBean(){
-        this.canSave =true;
+
+    public EnvioBean() {
+        this.canSave = true;
         this.canGenRad = false;
         this.canPrint = true;
         this.documento.setFechaDocumento(new Date());
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
-            
+
             MunicipioBean mb = new MunicipioBean();
             mb.listar();
             this.municipios = mb.getMunicipios();
-            
+
             UsuarioBean ub = new UsuarioBean();
             ub.listar();
             this.usuarios = ub.getUsuarios();
-            
+
         } catch (Exception ex) {
             Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public Documento getDocumento() {
         return documento;
     }
@@ -154,9 +154,7 @@ public class EnvioBean extends BaseBean implements Serializable {
     public void setCanSave(Boolean canSave) {
         this.canSave = canSave;
     }
-    
-    
-    
+
     public List<TipoDocumento> getTipoDocumentos() {
         return tipoDocumentos;
     }
@@ -164,7 +162,7 @@ public class EnvioBean extends BaseBean implements Serializable {
     public void setTipoDocumentos(List<TipoDocumento> tipoDocumentos) {
         this.tipoDocumentos = tipoDocumentos;
     }
-    
+
     public UploadedFile getDocumentFile() {
         return documentFile;
     }
@@ -172,7 +170,7 @@ public class EnvioBean extends BaseBean implements Serializable {
     public void setDocumentFile(UploadedFile documentFile) {
         this.documentFile = documentFile;
     }
-    
+
     public List<Entidad> getEntidades() {
         return entidades;
     }
@@ -180,53 +178,57 @@ public class EnvioBean extends BaseBean implements Serializable {
     public void setEntidades(List<Entidad> entidades) {
         this.entidades = entidades;
     }
-    
+
     public List<Transportador> getTransportadores() {
         return transportadores;
     }
 
     public void setTransportadores(List<Transportador> transportadores) {
         this.transportadores = transportadores;
-    }   
-    
-    public void generarConsectivo(){
+    }
+
+    public void loadDocumento(Documento documento) {
+        this.documento = documento;
+        RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
+    }
+
+    public void generarConsectivo() {
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
-        EntityManager em = emf.createEntityManager();            
+        EntityManager em = emf.createEntityManager();
         ConsecutivoJpaController cJpa;
-        try {             
+        try {
             em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("envio");
-            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE,"No hay consecutivos para envio");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             consec.setConsecutivo(intConsec.toString());
             em.merge(consec);
             em.flush();
             em.getTransaction().commit();
-            this.documento.setConsecutivo(consec.getConsecutivo());
+            this.documento.setRadicadoEnvio(consec.getConsecutivo());
             RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
             RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
             RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
             this.canGenRad = true;
             this.canPrint = false;
-            this.canSave = false;            
-        } catch ( Exception e) {
+            this.canSave = false;
+        } catch (Exception e) {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos", e.getMessage()));           
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Envio de Documentos", e.getMessage()));
         }
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Envio de Documentos",  "Consecutivo Generado Exitosamente"));
-        
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Envio de Documentos", "Consecutivo Generado Exitosamente"));
+
     }
-    
+
     public void radicar() {
         DocumentoJpaController sJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         sJpa = new DocumentoJpaController(emf);
         FacesContext context = FacesContext.getCurrentInstance();
-         if (this.documentFile.getContents().length <= 0) {
+        if (this.documentFile.getContents().length <= 0) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Recepción de Documentos", "Por favor adjunte el documento!"));
             RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
             RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
@@ -234,35 +236,44 @@ public class EnvioBean extends BaseBean implements Serializable {
             this.canGenRad = true;
             this.canPrint = false;
             this.canSave = false;
-        } else {            
+        } else {
             EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            
-            Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.documento.setFechaCreacion(new Date());
-            this.documento.setFechaModificacion(new Date());
-            this.documento.setCreadoPor(usuario);
-            UploadDocument uDoc = new UploadDocument();
-            uDoc.upload(documentFile, this.documenstSavePath);
-           
-            this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
-            sJpa.create(documento);
-            
-            em.getTransaction().commit();
-            this.limpiar();           
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Recepción de Documentos",  "Documento Almacenado exitoxamente!"));
-        } catch (Exception e) {
-            Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Error al Radicar el documento",  e.getMessage()));
-            em.getTransaction().rollback();
+            try {
+                em.getTransaction().begin();
+
+                Usuario usuario = (Usuario) SessionUtils.getUsuario();
+                this.documento.setFechaCreacion(new Date());
+                this.documento.setFechaModificacion(new Date());
+                this.documento.setCreadoPor(usuario);
+                UploadDocument uDoc = new UploadDocument();
+                uDoc.upload(documentFile, this.documenstSavePath);
+                this.documento.setRutaArchivo(uDoc.getFileName(documentFile));
+                this.documento.setNombreDocumento(uDoc.getUuid().toString());
+                sJpa.edit(documento);
+
+            //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
+                //Mensajeria mensajeria = new Mensajeria();
+                //mensajeria.send(this.documento.getDestinatario(), "Nuevo documento recibido", this.documento.getAsunto());
+                em.getTransaction().commit();
+                this.limpiar();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recepción de Documentos", "Documento Almacenado exitoxamente!"));
+            } catch (Exception e) {
+                Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error al Radicar el documento", e.getMessage()));
+                em.getTransaction().rollback();
+            }
         }
     }
-   }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         this.documento = null;
         this.documento = new Documento();
-        
+        this.documento.setFechaDocumento(new Date());
+        RequestContext.getCurrentInstance().execute("PF('genRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
+        RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+        RequestContext.getCurrentInstance().execute("PF('printRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
+        this.canGenRad = false;
+        this.canPrint = true;
+        this.canSave = true;
     }
 }
