@@ -208,7 +208,7 @@ public class InformeBean extends BaseBean implements Serializable {
 
         } catch (Exception ex) {
             Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, null, ex);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", ex.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informe", "¡No existe el consecutivo para informes internas en la Entidad Consecutivo!"));
         }
         
         //TODO: Recuperar consecutivo de documento.

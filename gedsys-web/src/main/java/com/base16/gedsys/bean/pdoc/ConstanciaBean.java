@@ -209,7 +209,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
 
         } catch (Exception ex) {
             Logger.getLogger(CircularBean.class.getName()).log(Level.SEVERE, null, ex);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", ex.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Constancia", "¡No existe el consecutivo para constancias internas en la Entidad Consecutivo!"));
         }
         //TODO: Recuperar consecutivo de documento.
 //        Usuario usuario = (Usuario) SessionUtils.getUsuario();

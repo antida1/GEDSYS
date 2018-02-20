@@ -15,13 +15,13 @@
             <div class="col-md-8">
                 <p:calendar id="fechaActa" value="#{actaBean.acta.fecha}" showOn="button" locale="es" style="width: 100%" />
             </div>
-        </div>
+        </div>         
         <div class="col-xs-12">
             <p:outputLabel value="Hora Inicio" for="horaInicio" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <pe:timePicker id="horaInicio" value="#{actaBean.acta.horaInicio}" timeSeparator=":" startHours="6" endHours="20"  
+                <pe:timePicker value="#{actaBean.acta.horaInicio}" id="horaInicio" timeSeparator=":" startHours="6" endHours="20"  
                                startMinutes="10" endMinutes="55" intervalMinutes="10" showCloseButton="false"  
-                               showDeselectButton="false" showNowButton="false" rows="3" showPeriod="true" style="width:100px;"  
+                               showDeselectButton="false" showNowButton="false" rows="4" showPeriod="true" style="width:200px; align-content: stretch; box-sizing: content-box;"  
                                widgetVar="horaInicial" label="Hora Inicial" required="true" requiredMessage="La hora inicial es requerida"/>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="col-md-8">
                 <pe:timePicker id="horaFinal" value="#{actaBean.acta.horaFinalizacion}" timeSeparator=":" startHours="6" endHours="20"  
                                startMinutes="00" endMinutes="55" intervalMinutes="5" showCloseButton="false"  
-                               showDeselectButton="false" showNowButton="false" rows="4" showPeriod="true" style="width:100px;"  
+                               showDeselectButton="false" showNowButton="false" rows="4" showPeriod="true" style="width:200px; align-content: stretch;"  
                                widgetVar="horaFinal" label="Hora Final" required="true" requiredMessage="La hora de finalización es requerida"/>
             </div>
         </div>
@@ -126,12 +126,12 @@
         </div>
         <p:spacer/>        
         <div> 
-            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{actaBean.procesar()}" update="mensaje clViewActa fimrActa dlgFirmarActa" />
-            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewActa" type="button" process="@all" title="Ver" action="#{actaViewBean.showDocument(actaBean.acta)}" update=":dlgVisorActa">
+            <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{actaBean.procesar()}" update="mensaje clViewActa firActa dlgFirmarActa" />
+            <p:commandLink  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" id="clViewActa" onstart="PF('statusDialog').show();" type="button" process="@all" title="Ver" action="#{actaViewBean.showDocument(actaBean.acta)}" update=":dlgVisorActa mensaje" onsuccess="PF('statusDialog').hide()">
                 <span class="ui-button-icon-left ui-icon ui-c glyphicon fa fa-fw fa-eye"></span>
                 <span class="ui-button-text ui-c">Ver</span>
             </p:commandLink>            
-            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " id="fimrActa" value="Firmar" onclick="PF('denFirmarActa').show()" 
+            <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " id="firActa" value="Firmar" onclick="PF('denFirmarActa').show()" 
                              disabled="#{not(actaBean.acta.presidente.id eq actaBean.currentUser.id)}"/>            
         </div>    
         <p:dialog id="dlgFirmarActa" header="Firmar" widgetVar="denFirmarActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
@@ -150,7 +150,10 @@
                     <p:outputLabel value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="ont-weight:bold; align-content: center; color: orange;"/>
                 </div>
             </c:if>                
-                <p:commandButton value="Guardar Firma" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="messages" oncomplete="PF('denFirmarActa').close()"></p:commandButton>            
+                <p:commandButton value="Guardar Firma" onstart="PF('denFirmar').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="mensaje :dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>            
+        </p:dialog>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage value="../../images/ajaxloading.gif"/>
         </p:dialog>
     </h:body>
 </html>

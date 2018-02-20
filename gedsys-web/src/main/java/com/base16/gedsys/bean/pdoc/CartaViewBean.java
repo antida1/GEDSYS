@@ -79,7 +79,12 @@ public class CartaViewBean extends BaseBean implements Serializable {
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
                 TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
-                item.replaceWith(carta.getConsecutivo());
+                 if(carta.getConsecutivo() == null || carta.getConsecutivo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getConsecutivo());
+                }
+                
             }
 
             searchFecha = new TextNavigation("@fecha", odt);
@@ -171,8 +176,8 @@ public class CartaViewBean extends BaseBean implements Serializable {
             this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId() + ".pdf";
             SessionUtils.getSession().setAttribute("filePathCarta", this.filePath);
             RequestContext.getCurrentInstance().execute("PF('denVisorCarta').show()");
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Carta", e.getMessage()));
+        } catch (Exception e) {            
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Carta", "Debé guardar la carta para poder visualizarla"));
             Logger.getLogger(CartaViewBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }

@@ -177,8 +177,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             this.certificado.setModificadoPor(usuario);
             this.certificado.setFechaFirma(new Date());
             this.certificado.setEstado(3);
-            caJpa.edit(this.certificado);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento Firmado exitosamente!"));
+            caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
             cvb.showDocument(this.certificado);
 
@@ -201,6 +200,8 @@ public class CertificadoBean extends BaseBean implements Serializable {
             documento.setEstado(8);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento Firmado exitosamente!"));
 
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {

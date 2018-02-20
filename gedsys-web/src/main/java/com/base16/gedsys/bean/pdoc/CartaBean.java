@@ -197,10 +197,9 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setModificadoPor(usuario);
             this.carta.setFechaFirma(new Date());
             this.carta.setEstado("3");
-            caJpa.edit(this.carta);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento Firmado exitosamente!"));
-            CartaViewBean cvb = new CartaViewBean();
-            cvb.showDocument(this.carta);
+            caJpa.edit(this.carta);                       
+            CartaViewBean cvb = new CartaViewBean();            
+            cvb.showDocument(this.carta); 
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
@@ -220,7 +219,11 @@ public class CartaBean extends BaseBean implements Serializable {
             documento.setDireccion(this.carta.getDireccion());
             documento.setEstado(8);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
-            djc.create(documento);
+            djc.create(documento);   
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento Firmado exitosamente!"));
+            
+            
 
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {

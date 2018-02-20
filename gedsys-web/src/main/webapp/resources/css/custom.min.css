@@ -852,7 +852,7 @@ footer {
 article.media {
     width: 100%}
 *, *:before, *:after {
-    box-sizing: border-box;
+    box-sizing: content-box !important;
 }
 #integration-list {
     width: 100%;
