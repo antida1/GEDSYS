@@ -189,7 +189,7 @@ public class EnvioBean extends BaseBean implements Serializable {
 
     public void loadDocumento(Documento documento) {
         this.documento = documento;
-        RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
+        //RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
     }
 
     public void generarConsectivo() {
