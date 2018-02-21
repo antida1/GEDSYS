@@ -37,6 +37,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -56,6 +57,8 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Documento> radicados;
     private List<Documento> sinArchivar;
     private List<Documento> porEnviar;
+    
+    private List<Documento> seleccionadosPorEnviar;
     
     
     private List<Acta> actasPorFirmar;
@@ -209,6 +212,15 @@ public class DocumentosBean extends BaseBean implements Serializable {
 
     public void setDocumentFileComprobante(UploadedFile documentFileComprobante) {
         this.documentFileComprobante = documentFileComprobante;       
+    }
+
+    public List<Documento> getSeleccionadosPorEnviar() {
+        return seleccionadosPorEnviar;
+    }
+
+    public void setSeleccionadosPorEnviar(List<Documento> seleccionadosPorEnviar) {
+        this.seleccionadosPorEnviar = seleccionadosPorEnviar;
+        RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
     }
     
     public void cargarGuia(FileUploadEvent event){             

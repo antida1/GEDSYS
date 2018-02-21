@@ -9,12 +9,7 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:o="http://omnifaces.org/ui"
       xmlns:of="http://omnifaces.org/functions">
-
-    <h:head>
-        <title>Impresión de Radicados de Salida</title>
-    </h:head>
     <h:body>
-        <p:messages id="imessages" autoUpdate="true" />
         <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" style="display:block;margin-bottom:20px">
             <p:printer target="radic"/>
         </p:commandButton>
@@ -27,18 +22,21 @@
         <p:draggable for="radic" containment="parent" />
 
         <pe:imageRotateAndResize id="rotateAndResize" for="radicImg" widgetVar="rotateAndResizeWidget">  
-            
+
         </pe:imageRotateAndResize>  
         <br/>  
         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" value="Rotar a la Izquierda"  
-                         onclick="PF('rotateAndResizeWidget').rotateLeft(90);return false;"/>  
+                         onclick="PF('rotateAndResizeWidget').rotateLeft(90);
+                                 return false;"/>  
         <p:commandButton icon="ui-icon-arrowreturnthick-1-e" value="Rotar a la Derecha"  
-                         onclick="PF('rotateAndResizeWidget').rotateRight(90);return false;"/>  
+                         onclick="PF('rotateAndResizeWidget').rotateRight(90);
+                                 return false;"/>  
         <p:commandButton icon="ui-icon-zoomin" value="Scale +"  
-                         onclick="PF('rotateAndResizeWidget').scale(1.05);return false;"/>  
+                         onclick="PF('rotateAndResizeWidget').scale(1.05);
+                                 return false;"/>  
         <p:commandButton icon="ui-icon-zoomout" value="Scale -"  
-                         onclick="PF('rotateAndResizeWidget').scale(0.95);return false;"/> 
-
+                         onclick="PF('rotateAndResizeWidget').scale(0.95);
+                                 return false;"/> 
     </h:body>
 </html>
 

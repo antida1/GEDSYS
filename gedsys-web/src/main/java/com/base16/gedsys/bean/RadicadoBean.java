@@ -79,7 +79,7 @@ public class RadicadoBean extends BaseBean implements Serializable {
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("recepcion");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
-            
+
             /*
             consec.setConsecutivo(intConsec.toString());
             em.merge(consec);
@@ -96,6 +96,36 @@ public class RadicadoBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             String UsuarioName =usuario.getNombres()+ " " + usuario.getApelidos();
             String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+            String nombreEntidad = this.nombreEntidad;
+            this.radicado = name;
+            
+            fileName = ri.Generar(nombreEntidad, name, this.documenstSavePath,  this.documenstSavePath + File.separatorChar, UsuarioName );
+
+            File file = new File(this.documenstSavePath+ File.separatorChar + this.fileName);
+            if (file.canRead()) {
+                FileInputStream fi = new FileInputStream(file);
+                this.radicadoImg = new DefaultStreamedContent(fi, null, file.getName());
+            }
+            
+        } catch (FileNotFoundException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error!", e.getMessage()));
+            Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+    
+    private void generarWithConsec(String consec ) {
+        try {
+    
+            RadicadoImage ri = new RadicadoImage();
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            String UsuarioName =usuario.getNombres()+ " " + usuario.getApelidos();
+            String name = consec;
             String nombreEntidad = this.nombreEntidad;
             this.radicado = name;
             

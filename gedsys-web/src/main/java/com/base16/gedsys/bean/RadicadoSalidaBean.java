@@ -102,7 +102,7 @@ public class RadicadoSalidaBean extends BaseBean implements Serializable {
             String nombreEntidad = this.nombreEntidad;
             this.radicado = name;
 
-            fileName = ri.Generar(nombreEntidad, name, this.documenstSavePath, this.documenstSavePath + File.separatorChar, UsuarioName);
+            this.fileName = ri.Generar(nombreEntidad, name, this.documenstSavePath, this.documenstSavePath + File.separatorChar, UsuarioName);
 
             File file = new File(this.documenstSavePath + File.separatorChar + this.fileName);
             if (file.canRead()) {

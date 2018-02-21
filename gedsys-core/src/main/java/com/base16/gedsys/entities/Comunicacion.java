@@ -36,15 +36,15 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name = "comunicacion", catalog = "gedsys", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Comunicacion.findAll", query = "SELECT c FROM Comunicacion c")
-    , @NamedQuery(name = "Comunicacion.findById", query = "SELECT c FROM Comunicacion c WHERE c.id = :id")
-    , @NamedQuery(name = "Comunicacion.findByFecha", query = "SELECT c FROM Comunicacion c WHERE c.fecha = :fecha")
-    , @NamedQuery(name = "Comunicacion.findByAsunto", query = "SELECT c FROM Comunicacion c WHERE c.asunto = :asunto")
-    , @NamedQuery(name = "Comunicacion.findByDescripcionAnexos", query = "SELECT c FROM Comunicacion c WHERE c.descripcionAnexos = :descripcionAnexos")
-    , @NamedQuery(name = "Comunicacion.findByFechaCreacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaCreacion = :fechaCreacion")
-    , @NamedQuery(name = "Comunicacion.findByFechaModificacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Comunicacion.findByFechaFirma", query = "SELECT c FROM Comunicacion c WHERE c.fechaFirma = :fechaFirma")
-    , @NamedQuery(name = "Comunicacion.findByEstado", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado")})
+    @NamedQuery(name = "Comunicacion.findAll", query = "SELECT c FROM Comunicacion c"),
+    @NamedQuery(name = "Comunicacion.findById", query = "SELECT c FROM Comunicacion c WHERE c.id = :id"),
+    @NamedQuery(name = "Comunicacion.findByFecha", query = "SELECT c FROM Comunicacion c WHERE c.fecha = :fecha"),
+    @NamedQuery(name = "Comunicacion.findByAsunto", query = "SELECT c FROM Comunicacion c WHERE c.asunto = :asunto"),
+    @NamedQuery(name = "Comunicacion.findByDescripcionAnexos", query = "SELECT c FROM Comunicacion c WHERE c.descripcionAnexos = :descripcionAnexos"),
+    @NamedQuery(name = "Comunicacion.findByFechaCreacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Comunicacion.findByFechaModificacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaModificacion = :fechaModificacion"),
+    @NamedQuery(name = "Comunicacion.findByFechaFirma", query = "SELECT c FROM Comunicacion c WHERE c.fechaFirma = :fechaFirma"),
+    @NamedQuery(name = "Comunicacion.findByEstado", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado")})
 public class Comunicacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,6 +72,7 @@ public class Comunicacion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     @Column(name = "FechaFirma")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFirma;
     @Column(name = "Estado")
     private String estado;
@@ -176,8 +177,6 @@ public class Comunicacion implements Serializable {
     public void setConsecutivo(String consecutivo) {
         this.consecutivo = consecutivo;
     }
-    
-    
 
     @XmlTransient
     @JsonIgnore
@@ -245,5 +244,5 @@ public class Comunicacion implements Serializable {
     public String toString() {
         return "com.base16.gedsys.entities.Comunicacion[ id=" + id + " ]";
     }
-    
+
 }
