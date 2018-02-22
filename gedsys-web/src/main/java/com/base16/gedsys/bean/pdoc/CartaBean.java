@@ -237,6 +237,48 @@ public class CartaBean extends BaseBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", ex.getMessage()));
         }
     }
+     public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CartaJpaController caJpa;
+            caJpa = new CartaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("carta");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.carta.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.carta.setModificadoPor(usuario);
+            this.carta.setFechaFirma(new Date());
+            this.carta.setEstado("3");
+            caJpa.edit(this.carta);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento generado correctamente!"));
+            CartaViewBean cvb = new CartaViewBean();
+            cvb.showDocument(this.carta);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Carta", "No existe el consecutivo para cartas en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
+    }
 
     private void loadDocument() {
         try {

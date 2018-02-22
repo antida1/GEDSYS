@@ -8,11 +8,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-<<<<<<< HEAD
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-19T16:44:06")
-=======
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-20T17:33:32")
->>>>>>> origin/master
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-22T16:07:47")
 @StaticMetamodel(Mediorecepcion.class)
 public class Mediorecepcion_ { 
 
