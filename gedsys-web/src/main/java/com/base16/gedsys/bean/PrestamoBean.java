@@ -14,6 +14,8 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -153,6 +155,16 @@ public class PrestamoBean extends BaseBean implements Serializable {
             Prestamos = sJpa.findPrestamoEntities();
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prestamo de documentos", e.getMessage()));
+        }
+    }
+    public void listarByUsuario() {        
+        PrestamoJpaController dJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new PrestamoJpaController(emf);
+            Prestamos = dJpa.findByCreadoPor(this.getCurrentUser());
+        } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
 
