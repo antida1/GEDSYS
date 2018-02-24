@@ -6,6 +6,7 @@
 package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Documento;
+import com.base16.gedsys.entities.SignaturaTopografica;
 import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -42,7 +43,19 @@ public class DocumentoInfoViewBean extends BaseBean implements Serializable {
     }
     
     public String getSingaturaTopografica(){
-        return "";
+        if(this.documento.getSignaturaTopografica() !=  null){
+        return processSignaturaTopgrafica(this.documento.getSignaturaTopografica());
+        } else {
+            return "";
+        }
+    }
+    
+    private String processSignaturaTopgrafica(SignaturaTopografica signatura){
+        String result = "";
+        if ( signatura.getDependeDe() != null){
+            result = " >> " + processSignaturaTopgrafica(signatura.getDependeDe());
+        }
+        return signatura.getNombre() + result;
     }
 
 }

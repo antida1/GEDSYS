@@ -57,6 +57,8 @@
     <class>com.base16.gedsys.entities.Mediorecepcion</class>
     <class>com.base16.gedsys.entities.Comentario</class>
     <class>com.base16.gedsys.entities.Usuariosignaturas</class>
+    <class>com.base16.gedsys.entities.PlanillaEnvioDocumento</class>
+    <class>com.base16.gedsys.entities.PlanillaEnvio</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>

@@ -560,7 +560,7 @@
                                                 <h:outputText value="#{docsPorArchivar.detalle}" />
                                             </p:column>
                                             <p:column headerText="Acciones">
-                                                <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar" disabled="#{docsPorArchivar.estado eq 9 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar" disabled="#{docsPorArchivar.estado eq 10 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
                                                 <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsPorArchivar)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                 <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorArchivar)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                 <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPorArchivar)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               

@@ -32,6 +32,8 @@ import com.base16.gedsys.entities.MonitoresProceso;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.Notificacion;
 import com.base16.gedsys.entities.Pais;
+import com.base16.gedsys.entities.PlanillaEnvio;
+import com.base16.gedsys.entities.PlanillaEnvioDocumento;
 import com.base16.gedsys.entities.PlantillaDocumental;
 import com.base16.gedsys.entities.Preferencias;
 import com.base16.gedsys.entities.Prestamo;
@@ -55,7 +57,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-20T17:33:31")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-22T20:05:23")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -137,6 +139,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, ProcesoNegocio> procesoNegocioCollection;
     public static volatile CollectionAttribute<Usuario, GrupoUsuario> grupoUsuarioCollection1;
     public static volatile CollectionAttribute<Usuario, ProcesoDocumental> procesodocumentalCollection1;
+    public static volatile ListAttribute<Usuario, PlanillaEnvio> planillaEnvioList;
     public static volatile ListAttribute<Usuario, Certificado> certificadoList2;
     public static volatile CollectionAttribute<Usuario, GrupoUsuario> grupoUsuarioCollection2;
     public static volatile CollectionAttribute<Usuario, Cargo> cargoCollection;
@@ -149,6 +152,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, TipoDocumento> tipoDocumentoCollection;
     public static volatile CollectionAttribute<Usuario, Serie> serieCollection1;
     public static volatile CollectionAttribute<Usuario, Serie> serieCollection;
+    public static volatile ListAttribute<Usuario, PlanillaEnvio> planillaEnvioList1;
     public static volatile CollectionAttribute<Usuario, Campos> camposCollection;
     public static volatile ListAttribute<Usuario, Acta> actaList3;
     public static volatile CollectionAttribute<Usuario, PlantillaDocumental> plantillaDocumentalCollection1;
@@ -164,6 +168,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, SeccionSubSeccion> seccionSubSeccionCollection;
     public static volatile SingularAttribute<Usuario, String> celular;
     public static volatile SingularAttribute<Usuario, String> apelidos;
+    public static volatile ListAttribute<Usuario, PlanillaEnvioDocumento> planillaEnvioDocumentoList1;
     public static volatile CollectionAttribute<Usuario, SeccionSubSeccion> seccionSubSeccionCollection1;
     public static volatile CollectionAttribute<Usuario, Transportador> transportadorCollection1;
     public static volatile ListAttribute<Usuario, Actaasistente> actaasistenteList;
@@ -172,6 +177,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, TipoDocumental> tipoDocumentalCollection;
     public static volatile ListAttribute<Usuario, Prestamo> prestamoList;
     public static volatile CollectionAttribute<Usuario, UnidadDocumental> unidadDocumentalCollection1;
+    public static volatile ListAttribute<Usuario, PlanillaEnvioDocumento> planillaEnvioDocumentoList;
     public static volatile SingularAttribute<Usuario, Date> fechaCreacion;
     public static volatile CollectionAttribute<Usuario, Acl> aclCollection1;
     public static volatile ListAttribute<Usuario, Sede> sedeList1;

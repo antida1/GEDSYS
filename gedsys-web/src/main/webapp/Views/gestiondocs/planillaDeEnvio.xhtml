@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+
+    <body>
+        <ui:composition template="./../../Template/plantilla.xhtml">
+            <ui:define name="content">
+                <p:growl id="messages"  showDetail="true" />
+                <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == true}">
+                    <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPorEnviar()}" />
+                    <f:event type="preRenderView" listener="#{planillaEnvioBean.listar()}" />
+                    <div class="col-md-12 col-xs-12">
+                        <div class="col-xs-12 x_panel">
+                            <div class="x_title">
+                                <h2>Planillas de Envio</h2>
+                                <div class="clear"></div>
+                            </div>
+                            <h:form id="form">
+                                <p:menubar>
+                                    <p:menuitem oncomplete="PF('planillaEnvioDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{planillaEnvioBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    </p:menuitem>
+
+                                </p:menubar>
+                                <p:separator/>
+                                <p:dataTable widgetVar="entrantes" id="lstPlanillaEnvio" var="planillaEnvio" value="#{planillaEnvioBean.planillasEnvios}" style="margin-bottom:0" rows="15"
+                                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15,30,50"  emptyMessage="¡No se encontraron plantillas!"
+                                             sortBy="#{planillaEnvio.id}" sortOrder="descending">
+                                    <f:facet name="header">
+                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="lstPlanillaEnvio" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column headerText="Radicado">
+                                        <h:outputText value="#{planillaEnvio.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha de Envio">
+                                        <h:outputText value="#{planillaEnvio.fechaEnvio}" >
+                                            <f:convertDateTime type="date" locale="es"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Fecha de creacion">
+                                        <h:outputText value="#{planillaEnvio.fechaCreacion}" >
+                                            <f:convertDateTime type="date" locale="es"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Creado Por">
+                                        <h:outputText value="#{planillaEnvio.creadoPor.nombres}" />
+                                    </p:column>
+
+                                    <p:column headerText="Modificado Por">
+                                        <h:outputText value="#{planillaEnvio.modificadoPor.nombres}" />
+
+                                    </p:column>
+                                    <p:column headerText="Acciones" width="150">
+                                        <p:commandLink type="button" title="Generar" ajax="false" action="#{planillaEnvioBean.generarPlanilla(planillaEnvio)}"><span class="glyphicon fa fa-fw fa-download" aria-hidden="true"></span></p:commandLink>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                    <p:dialog id="dlgDetalle" header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
+                        <p:outputPanel id="planillaEnvio" style="text-align:center;" >
+                            <h:form>
+                                <h:inputHidden id="id" value="#{entidadBean.entidad.id}" />
+                                <div class="form-group row">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
+                                    <div class="col-xs-9">
+                                        <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre no puede estar vacío" value="#{planillaEnvioBean.planillaEnvio.nombre}" class="form-control"/>
+                                    </div>
+                                </div>
+                                <p:dataTable widgetVar="SeleccionadosPorEnviar" id="lstDocsSelPorEnviar" var="docsSelPorEnviar" 
+                                             value="#{documentosBean.porEnviar}" 
+                                             selection="#{planillaEnvioBean.documentosSeleccionados}"
+                                             rowKey="#{docsSelPorEnviar.id}"
+                                             style="margin-bottom:0">
+
+                                    <p:column selectionMode="multiple" ></p:column>
+                                    <p:column headerText="Radicado">
+                                        <h:outputText value="#{docsSelPorEnviar.radicadoEnvio}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha del Documento">
+                                        <h:outputText value="#{docsSelPorEnviar.fechaCreacion}" >
+                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Asunto">
+                                        <h:outputText value="#{docsSelPorEnviar.asunto}" />
+                                    </p:column>
+                                    <p:column headerText="Destinarario">
+                                        <h:outputText value="#{docsSelPorEnviar.remitenteExteno}" />
+                                    </p:column>
+                                    <p:column headerText="Remitente">
+                                        <h:outputText value="#{docsSelPorEnviar.destinatario.nombres} #{docsSelPorEnviar.destinatario.apelidos}" />
+                                    </p:column>
+                                    <p:column headerText="Detalle">
+                                        <h:outputText value="#{docsSelPorEnviar.detalle}" />
+                                    </p:column>
+                                    <p:column headerText="Transportador">
+                                        <h:outputText value="#{docsSelPorEnviar.transportador.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Medio de Envio">
+                                        <h:outputText value="#{docsSelPorEnviar.medioEnvio.nombre}" />
+                                    </p:column>
+                                    <p:column headerText="Firma">
+                                        <h:outputText value="" />
+                                    </p:column>
+                                </p:dataTable>
+                                <p:spacer/>
+                                <div> 
+                                    <p:commandButton update=":form:lstPlanillaEnvio messages" icon="ui-icon-disk" value="#{planillaEnvioBean.accion}" actionListener="#{planillaEnvioBean.procesar()}"  />
+                                </div>
+                            </h:form>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </c:if>
+                <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == false}">
+                    <h3>¡Lo sentimos, no tiene acceso a este módulo!</h3>
+                </c:if>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
