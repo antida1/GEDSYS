@@ -219,7 +219,50 @@ public class CertificadoBean extends BaseBean implements Serializable {
 //        this.certificado.setModificadoPor(usuario);
 //        this.certificado.setFechaFirma(new Date());
 //        this.certificado.setEstado(3);
-    }     
+    } 
+
+public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CertificadoJpaController caJpa;
+            caJpa = new CertificadoJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("certificado");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.certificado.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.certificado.setModificadoPor(usuario);
+            this.certificado.setFechaFirma(new Date());
+            this.certificado.setEstado(3);
+            caJpa.edit(this.certificado);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento generado correctamente!"));
+            CertificadoViewBean cvb = new CertificadoViewBean();
+            cvb.showDocument(this.certificado);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Certificado", "No existe el consecutivo para certificados en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
+    }    
         
 
    

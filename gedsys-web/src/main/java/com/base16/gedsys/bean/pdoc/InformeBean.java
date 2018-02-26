@@ -217,6 +217,50 @@ public class InformeBean extends BaseBean implements Serializable {
 //        this.informe.setFechaFirma(new Date());
 //        this.informe.setEstado(3);
     }
+    
+    public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            InformeJpaController caJpa;
+            caJpa = new InformeJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("informe");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.informe.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.informe.setModificadoPor(usuario);
+            this.informe.setFechaFirma(new Date());
+            this.informe.setEstado(3);
+            caJpa.edit(this.informe);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", "¡Documento generado correctamente!"));
+            InformeViewBean cvb = new InformeViewBean();
+            cvb.showDocument(this.informe);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informe", "No existe el consecutivo para informes en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
+    }
+
 
 //    public void previsualizar() {
 //        try {

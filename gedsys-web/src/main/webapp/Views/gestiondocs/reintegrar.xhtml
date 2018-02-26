@@ -3,50 +3,53 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <h:body>
+    <h:body>       
+        <p:growl id="messages"  showDetail="true" /> 
+         <f:event type="preRenderView" listener="#{usuarioBean.listar()}" />
         <div class="form-group row">
             <p:outputLabel value="Documento:" for="documento" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:outputLabel id="documento" style="width: 100%">
+                <p:outputLabel id="documento" style="width: 100%" value="#{reintegrarBean.documento.asunto}">
                 </p:outputLabel>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel for="fecha" value="Fecha:" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:calendar id="fecha" value="" showOn="button" style="width: 100%"/>
+                <p:calendar id="fecha" value="#{reintegrarBean.documento.fechaModificacion}" showOn="button" style="width: 100%"/>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Nombre del responsable" for="responsable" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:selectOneMenu id="responsable" value="" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="responsable" value="#{reintegrarBean.documento.destinatario}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione responsable" itemValue="#{null}" />
-                    <f:selectItems value="#" var="responsable" itemLabel="#{responsable.nombre}" itemValue="#{responsable}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="responsable" itemLabel="#{responsable.nombres} #{responsable.apelidos}" itemValue="#{responsable}"/>
                 </p:selectOneMenu>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Nombre de quien devuelve" for="devuelve" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:selectOneMenu id="devuelve" value="" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="devuelve" value="#{reintegrarBean.documento.remitente}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione quien devuelve" itemValue="#{null}" />
-                    <f:selectItems value="#" var="devuelve" itemLabel="#{devuelve.nombre}" itemValue="#{devuelve}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="devuelve" itemLabel="#{devuelve.nombres} #{devuelve.apelidos}" itemValue="#{devuelve}"/>
                 </p:selectOneMenu>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Observación" class="col-xs-12 col-form-label"></p:outputLabel>
             <div class="col-xs-12">
-                <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%"/>                 
+                <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%" value="#{reintegrarBean.mensaje}"/>                 
             </div>
         </div>
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{signaturaTopograficaBean.accion}" oncomplete="PF('reintegrarDialog').hide()" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('reintegrarDialog').hide()"></p:commandButton>
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update="messages" />
+            <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denReintegrar').hide()"></p:commandButton>
         </div>
     </h:body>
 </html>

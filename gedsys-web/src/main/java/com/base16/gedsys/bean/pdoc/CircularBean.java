@@ -12,6 +12,7 @@ import com.base16.gedsys.entities.Circular;
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.CartaJpaController;
 import com.base16.gedsys.model.CircularJpaController;
 import com.base16.gedsys.model.ConsecutivoJpaController;
@@ -220,6 +221,49 @@ public class CircularBean extends BaseBean implements Serializable {
 //        this.circular.setModificadoPor(usuario);
 //        this.circular.setFechaFirma(new Date());
 //        this.circular.setEstado(3);
+    }
+    
+    public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            CircularJpaController caJpa;
+            caJpa = new CircularJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("circular");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.circular.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.circular.setModificadoPor(usuario);
+            this.circular.setFechaFirma(new Date());
+            this.circular.setEstado(3);
+            caJpa.edit(this.circular);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento generado correctamente!"));
+            CircularViewBean cvb = new CircularViewBean();
+            cvb.showDocument(this.circular);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Circular", "No existe el consecutivo para circulares en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
     }
 
 //    public void previsualizar() {

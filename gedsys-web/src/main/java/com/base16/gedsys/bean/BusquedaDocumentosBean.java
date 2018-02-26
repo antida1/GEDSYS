@@ -104,4 +104,12 @@ public class BusquedaDocumentosBean extends BaseBean implements Serializable {
         }
     }
     
+    public void limpiar(){
+        this.radicado = "";
+        this.asunto = "";
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.tipoDocumento = new TipoDocumento();
+    }
+    
 }

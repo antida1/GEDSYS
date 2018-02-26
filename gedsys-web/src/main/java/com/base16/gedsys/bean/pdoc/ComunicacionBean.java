@@ -11,6 +11,7 @@ import com.base16.gedsys.entities.Comunicacion;
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.CircularJpaController;
 import com.base16.gedsys.model.ComunicacionJpaController;
 import com.base16.gedsys.model.ConsecutivoJpaController;
@@ -219,6 +220,50 @@ public class ComunicacionBean extends BaseBean implements Serializable {
 //        this.comunicacion.setFechaFirma(new Date().toString());
 //        this.comunicacion.setEstado("3");
     }
+    
+    public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            ComunicacionJpaController caJpa;
+            caJpa = new ComunicacionJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("comunicacion");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.comunicacion.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.comunicacion.setModificadoPor(usuario);
+            this.comunicacion.setFechaFirma(new Date());
+            this.comunicacion.setEstado("3");
+            caJpa.edit(this.comunicacion);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Comunicacion", "¡Documento generado correctamente!"));
+            ComunicacionViewBean cvb = new ComunicacionViewBean();
+            cvb.showDocument(this.comunicacion);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Comunicacion", "No existe el consecutivo para comunicaciones en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
+    }
+
 
 //    public void previsualizar() {
 //        try {

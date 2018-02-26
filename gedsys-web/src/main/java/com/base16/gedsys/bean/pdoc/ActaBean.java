@@ -268,7 +268,7 @@ public class ActaBean extends BaseBean implements Serializable {
             ActaViewBean cvb = new ActaViewBean();
             cvb.showDocument(this.acta);
 
-            // TODO: Crear el nuevo documento carta
+            // TODO: Crear el nuevo documento acta
             Documento documento = new Documento();
             UploadDocument uDoc = new UploadDocument();
             File file = new File(cvb.getFilePath());
@@ -321,6 +321,49 @@ public class ActaBean extends BaseBean implements Serializable {
 //        this.acta.setModificadoPor(usuario);
 //        this.acta.setFechaFirma(new Date());
 //        this.acta.setEstado(3);
+    }
+    
+    public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            ActaJpaController caJpa;
+            caJpa = new ActaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("acta");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.acta.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.acta.setModificadoPor(usuario);
+            this.acta.setFechaFirma(new Date());
+            this.acta.setEstado(3);
+            caJpa.edit(this.acta);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento generado correctamente!"));
+            ActaViewBean cvb = new ActaViewBean();
+            cvb.showDocument(this.acta);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Acta", "No existe el consecutivo para actas en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
     }
 
     private void loadDocument() {

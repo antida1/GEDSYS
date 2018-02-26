@@ -10,6 +10,7 @@ import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.ComunicacionJpaController;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.ConstanciaJpaController;
@@ -217,6 +218,50 @@ public class ConstanciaBean extends BaseBean implements Serializable{
 //        this.constancia.setFechaFirma(new Date());
 //        this.constancia.setEstado(3);
     }
+    
+    public void imprimir() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+        EntityManager em = emf.createEntityManager();
+        try {
+            ConsecutivoJpaController cJpa;
+            cJpa = new ConsecutivoJpaController(emf);
+
+            ConstanciaJpaController caJpa;
+            caJpa = new ConstanciaJpaController(emf);
+
+            em.getTransaction().begin();
+            Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("constancia");
+            Integer intConsec = Integer.parseInt(consec.getConsecutivo());
+            intConsec++;
+            consec.setConsecutivo(intConsec.toString());
+            em.merge(consec);
+            em.flush();
+            em.getTransaction().commit();
+
+            SimpleDateFormat sdfDateRadicado = new SimpleDateFormat("yyyyMMdd");
+            Date hoy = new Date();
+            String strHoy = sdfDateRadicado.format(hoy);
+            String radicado = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+
+            this.constancia.setConsecutivo(radicado);
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+            this.constancia.setModificadoPor(usuario);
+            this.constancia.setFechaFirma(new Date());
+            this.constancia.setEstado(3);
+            caJpa.edit(this.constancia);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento generado correctamente!"));
+            ConstanciaViewBean cvb = new ConstanciaViewBean();
+            cvb.showDocument(this.constancia);
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Constancia", "No existe el consecutivo para constancias en la Entidad Consecutivo"));
+            em.getTransaction().rollback();
+        }
+    }
+
 
 //    public void previsualizar() {
 //        try {
