@@ -73,6 +73,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByRutaArchivo", query = "SELECT d FROM Documento d WHERE d.rutaArchivo = :rutaArchivo")})
 
 public class Documento implements Serializable {
+
+    @OneToMany(mappedBy = "documento")
+    private List<PlanillaEnvioDocumento> planillaEnvioDocumentoList;
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -702,6 +705,16 @@ public class Documento implements Serializable {
 
     public void setRadicadoEnvio(String radicadoEnvio) {
         this.radicadoEnvio = radicadoEnvio;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<PlanillaEnvioDocumento> getPlanillaEnvioDocumentoList() {
+        return planillaEnvioDocumentoList;
+    }
+
+    public void setPlanillaEnvioDocumentoList(List<PlanillaEnvioDocumento> planillaEnvioDocumentoList) {
+        this.planillaEnvioDocumentoList = planillaEnvioDocumentoList;
     }
 
 }

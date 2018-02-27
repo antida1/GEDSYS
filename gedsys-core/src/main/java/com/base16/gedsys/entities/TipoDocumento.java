@@ -40,7 +40,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "TipoDocumento.findByFechaCreacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "TipoDocumento.findByFechaModificacion", query = "SELECT t FROM TipoDocumento t WHERE t.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre")})
-public class TipoDocumento implements Serializable {
+public class TipoDocumento implements Serializable {  
 
     private static final long serialVersionUID = 1L;
     @Id

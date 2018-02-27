@@ -189,7 +189,7 @@ public class EnvioBean extends BaseBean implements Serializable {
 
     public void loadDocumento(Documento documento) {
         this.documento = documento;
-        //RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
+        RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
     }
 
     public void generarConsectivo() {
@@ -229,7 +229,7 @@ public class EnvioBean extends BaseBean implements Serializable {
         sJpa = new DocumentoJpaController(emf);
         FacesContext context = FacesContext.getCurrentInstance();
         if (this.documentFile.getContents().length <= 0) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Recepción de Documentos", "Por favor adjunte el documento!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Envio de Documentos", "Por favor adjunte el documento!"));
             RequestContext.getCurrentInstance().execute("PF('genRad').jq.attr('disabled', 'true').addClass('ui-state-disabled');");
             RequestContext.getCurrentInstance().execute("PF('saveDoc').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
             RequestContext.getCurrentInstance().execute("PF('printRad').jq.removeAttr('disabled').removeClass('ui-state-disabled');");
@@ -256,7 +256,7 @@ public class EnvioBean extends BaseBean implements Serializable {
                 //mensajeria.send(this.documento.getDestinatario(), "Nuevo documento recibido", this.documento.getAsunto());
                 em.getTransaction().commit();
                 this.limpiar();
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Recepción de Documentos", "Documento Almacenado exitoxamente!"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Envio de Documentos", "Documento Almacenado exitoxamente!"));
             } catch (Exception e) {
                 Logger.getLogger(RecepcionBean.class.getName()).log(Level.SEVERE, e.getMessage());
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error al Radicar el documento", e.getMessage()));

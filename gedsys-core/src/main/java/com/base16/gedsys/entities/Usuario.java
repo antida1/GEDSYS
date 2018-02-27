@@ -54,6 +54,15 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
+    @OneToMany(mappedBy = "creadoPor")
+    private List<PlanillaEnvio> planillaEnvioList;
+    @OneToMany(mappedBy = "modificadoPor")
+    private List<PlanillaEnvio> planillaEnvioList1;
+    @OneToMany(mappedBy = "modificadoPor")
+    private List<PlanillaEnvioDocumento> planillaEnvioDocumentoList;
+    @OneToMany(mappedBy = "creadoPor")
+    private List<PlanillaEnvioDocumento> planillaEnvioDocumentoList1;
+
     @XmlTransient
     @JsonIgnore
     @OneToMany(mappedBy = "creadoPor")
@@ -1757,6 +1766,46 @@ public class Usuario implements Serializable {
 
     public void setUsuariosignaturasList2(List<Usuariosignaturas> usuariosignaturasList2) {
         this.usuariosignaturasList2 = usuariosignaturasList2;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<PlanillaEnvio> getPlanillaEnvioList() {
+        return planillaEnvioList;
+    }
+
+    public void setPlanillaEnvioList(List<PlanillaEnvio> planillaEnvioList) {
+        this.planillaEnvioList = planillaEnvioList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<PlanillaEnvio> getPlanillaEnvioList1() {
+        return planillaEnvioList1;
+    }
+
+    public void setPlanillaEnvioList1(List<PlanillaEnvio> planillaEnvioList1) {
+        this.planillaEnvioList1 = planillaEnvioList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<PlanillaEnvioDocumento> getPlanillaEnvioDocumentoList() {
+        return planillaEnvioDocumentoList;
+    }
+
+    public void setPlanillaEnvioDocumentoList(List<PlanillaEnvioDocumento> planillaEnvioDocumentoList) {
+        this.planillaEnvioDocumentoList = planillaEnvioDocumentoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<PlanillaEnvioDocumento> getPlanillaEnvioDocumentoList1() {
+        return planillaEnvioDocumentoList1;
+    }
+
+    public void setPlanillaEnvioDocumentoList1(List<PlanillaEnvioDocumento> planillaEnvioDocumentoList1) {
+        this.planillaEnvioDocumentoList1 = planillaEnvioDocumentoList1;
     }
     
 }
