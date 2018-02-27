@@ -62,6 +62,7 @@
                                     <p:spacer/>
                                     <div> 
                                         <p:commandButton update=":form:lstDocsEntrantes messages" value="Buscar" actionListener="#{busquedaDocumentosBean.buscar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false" icon="glyphicon fa fa-fw fa-binoculars" />
+                                        <p:commandButton update=":form:lstDocsEntrantes messages Radicado Asunto fechaInicio fechaFinal tipoDocumento" value="Limpiar" actionListener="#{busquedaDocumentosBean.limpiar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false" icon="glyphicon fa fa-fw fa-eraser" />
                                     </div>
                                 </div>
                                 <div class="col-xs-12">

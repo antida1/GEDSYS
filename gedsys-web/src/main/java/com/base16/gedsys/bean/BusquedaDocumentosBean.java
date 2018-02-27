@@ -103,5 +103,12 @@ public class BusquedaDocumentosBean extends BaseBean implements Serializable {
             Logger.getLogger(RadicadoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
+     public void limpiar(){
+        this.radicado = "";
+        this.asunto = "";
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.tipoDocumento = new TipoDocumento();
+    }
     
 }

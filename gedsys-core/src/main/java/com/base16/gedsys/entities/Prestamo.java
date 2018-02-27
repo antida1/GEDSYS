@@ -37,11 +37,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Prestamo.findByFechaVencimiento", query = "SELECT p FROM Prestamo p WHERE p.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Prestamo.findByNombreDocumento", query = "SELECT p FROM Prestamo p WHERE p.nombreDocumento = :nombreDocumento")
     , @NamedQuery(name = "Prestamo.findByTipoDocumento", query = "SELECT p FROM Prestamo p WHERE p.tipoDocumento = :tipoDocumento")
+    , @NamedQuery(name = "Prestamo.findByPrestadoA", query = "SELECT p FROM Prestamo p WHERE p.prestadoA = :prestadoA")
     , @NamedQuery(name = "Prestamo.findByFechaDevolucion", query = "SELECT p FROM Prestamo p WHERE p.fechaDevolucion = :fechaDevolucion")
     , @NamedQuery(name = "Prestamo.findByQuienDevuelve", query = "SELECT p FROM Prestamo p WHERE p.quienDevuelve = :quienDevuelve")
     , @NamedQuery(name = "Prestamo.findByQueinRecibe", query = "SELECT p FROM Prestamo p WHERE p.queinRecibe = :queinRecibe")
     , @NamedQuery(name = "Prestamo.findByEstado", query = "SELECT p FROM Prestamo p WHERE p.estado = :estado")
     , @NamedQuery(name = "Prestamo.findByFechaCreacion", query = "SELECT p FROM Prestamo p WHERE p.fechaCreacion = :fechaCreacion")
+    , @NamedQuery(name = "Prestamo.findByCreadoPor", query = "SELECT p FROM Prestamo p WHERE p.creadoPor = :creadoPor")
     , @NamedQuery(name = "Prestamo.findByFechaModificacion", query = "SELECT p FROM Prestamo p WHERE p.fechaModificacion = :fechaModificacion")})
 public class Prestamo implements Serializable {
 
