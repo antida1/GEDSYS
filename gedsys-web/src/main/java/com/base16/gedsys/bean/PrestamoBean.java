@@ -8,6 +8,7 @@ package com.base16.gedsys.bean;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Prestamo;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.model.PrestamoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
@@ -89,11 +90,11 @@ public class PrestamoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "Prestamo Creado!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡Prestamo Creado Correctamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "Prestamo actualizado!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡Prestamo actualizado correctamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('denPrestamo').hide()");
@@ -103,16 +104,81 @@ public class PrestamoBean extends BaseBean implements Serializable {
     }
 
     private void crear() throws Exception {
+        FacesContext context = FacesContext.getCurrentInstance();
         PrestamoJpaController sJpa;
+        DocumentoJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PrestamoJpaController(emf);
+            dJpa = new DocumentoJpaController(emf);
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.prestamo.setFechaCreacion(new Date());
             this.prestamo.setCreadoPor(usuario);
             this.prestamo.setDocumento(this.documento);
-            sJpa.create(prestamo);
-            this.listar();
+            
+            if(null != this.documento.getEstado())switch (this.documento.getEstado()) {
+                case 1:
+                    this.documento.setEstado(4);
+                    this.prestamo.setEstado("4");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 2:
+                    this.documento.setEstado(4);
+                    this.prestamo.setEstado("4");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 3:
+                    this.documento.setEstado(4);
+                    this.prestamo.setEstado("4");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 4:
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento, El docuemnto ya se encuentra previamente prestado!"));
+                    break;
+                case 5:
+                    this.documento.setEstado(6);
+                    this.prestamo.setEstado("6");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 6:
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento, El docuemnto ya se encuentra previamente prestado!"));
+                    break;
+                case 7:
+                    this.documento.setEstado(6);
+                    this.prestamo.setEstado("6");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 8:
+                    this.documento.setEstado(6);
+                    this.prestamo.setEstado("6");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;
+                case 9:
+                    this.documento.setEstado(4);
+                    this.prestamo.setEstado("4");
+                    dJpa.edit(this.documento);
+                    sJpa.create(prestamo);
+                    this.listar();
+                    break;                                
+                default:
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento!"));
+                    break;
+            }else{
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento!"));
+            }  
+            
         } catch (Exception e) {
             throw e;
         }

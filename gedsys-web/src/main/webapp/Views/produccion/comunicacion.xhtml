@@ -13,7 +13,7 @@
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCom" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaCom" value="#{comunicacionBean.comunicacion.fecha}" showOn="button" locale="es" style="width: 100%" />
+                <p:calendar id="fechaCom" mask="true" pattern="dd-MM-yyyy" value="#{comunicacionBean.comunicacion.fecha}" showOn="button" locale="es" style="width: 100%" />
             </div>
         </div>
         

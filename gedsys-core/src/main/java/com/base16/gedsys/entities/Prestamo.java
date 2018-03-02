@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Prestamo.findByEstado", query = "SELECT p FROM Prestamo p WHERE p.estado = :estado")
     , @NamedQuery(name = "Prestamo.findByFechaCreacion", query = "SELECT p FROM Prestamo p WHERE p.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Prestamo.findByCreadoPor", query = "SELECT p FROM Prestamo p WHERE p.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Prestamo.findByDocumento", query = "SELECT p FROM Prestamo p WHERE p.documento = :documento")
     , @NamedQuery(name = "Prestamo.findByFechaModificacion", query = "SELECT p FROM Prestamo p WHERE p.fechaModificacion = :fechaModificacion")})
 public class Prestamo implements Serializable {
 
@@ -111,7 +112,7 @@ public class Prestamo implements Serializable {
     }
 
     public Date getFechaInicial() {
-        return fechaInicial;
+        return new Date();
     }
 
     public void setFechaInicial(Date fechaInicial) {

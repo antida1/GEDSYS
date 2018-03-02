@@ -19,7 +19,7 @@
         <div class="form-group row">
             <p:outputLabel for="fecha" value="Fecha:" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:calendar id="fecha" value="#{reintegrarBean.documento.fechaModificacion}" showOn="button" style="width: 100%"/>
+                <p:calendar id="fecha" value="#{reintegrarBean.documento.fechaModificacion}" pattern="dd-MM-yyyy" showOn="button" locale="es" style="width: 100%"/>
             </div>
         </div>
         <div class="form-group row">
@@ -48,7 +48,7 @@
         </div>
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update="messages" />
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update=":enPrestamo:lstControl :entrantes :enviados :porVencer :porArchivar messages" />
             <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denReintegrar').hide()"></p:commandButton>
         </div>
     </h:body>

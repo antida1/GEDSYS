@@ -365,7 +365,7 @@ public class Documento implements Serializable {
     }
 
     public Date getFechaModificacion() {
-        return fechaModificacion;
+        return new Date();
     }
 
     public void setFechaModificacion(Date fechaModificacion) {

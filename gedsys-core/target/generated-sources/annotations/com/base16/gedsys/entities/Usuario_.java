@@ -13,6 +13,7 @@ import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.entities.Circular;
 import com.base16.gedsys.entities.Circularcc;
 import com.base16.gedsys.entities.ClaseDocumento;
+import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.entities.Comunicacion;
 import com.base16.gedsys.entities.Comunicacioncc;
 import com.base16.gedsys.entities.Consecutivo;
@@ -57,7 +58,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-02-27T09:08:20")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-02T16:46:34")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -83,6 +84,7 @@ public class Usuario_ {
     public static volatile SingularAttribute<Usuario, Boolean> isAdmin;
     public static volatile CollectionAttribute<Usuario, MonitoresProceso> monitoresProcesoCollection1;
     public static volatile SingularAttribute<Usuario, String> firma;
+    public static volatile ListAttribute<Usuario, Comentario> comentarioList1;
     public static volatile CollectionAttribute<Usuario, Grupo> grupoCollection;
     public static volatile SingularAttribute<Usuario, String> foto;
     public static volatile CollectionAttribute<Usuario, ClaseDocumento> claseDocumentoCollection1;
@@ -104,6 +106,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, Departamento> departamentoCollection1;
     public static volatile CollectionAttribute<Usuario, Autor> autorCollection1;
     public static volatile CollectionAttribute<Usuario, Modulo> moduloCollection;
+    public static volatile ListAttribute<Usuario, Comentario> comentarioList;
     public static volatile ListAttribute<Usuario, Prestamo> prestamoList1;
     public static volatile ListAttribute<Usuario, Prestamo> prestamoList2;
     public static volatile SingularAttribute<Usuario, String> email;

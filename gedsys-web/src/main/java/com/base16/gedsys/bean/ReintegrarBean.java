@@ -7,10 +7,14 @@ package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.entities.Documento;
+import com.base16.gedsys.entities.Prestamo;
 import com.base16.gedsys.entities.SignaturaTopografica;
+import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ComentarioJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
+import com.base16.gedsys.model.PrestamoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.logging.Level;
@@ -66,17 +70,43 @@ public class ReintegrarBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         DocumentoJpaController dJpa;
         ComentarioJpaController cJpa;
+        PrestamoJpaController sJpa;
+        Usuario usuario = (Usuario) SessionUtils.getUsuario();
+        Prestamo prestamo;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
             cJpa = new ComentarioJpaController(emf);
+            sJpa = new PrestamoJpaController(emf);
             
             Comentario comentario = new Comentario();
-            comentario.setComentario(mensaje);
+            comentario.setComentario(mensaje);           
             comentario.setFechaCreacion(new Date());
             comentario.setDocumento(documento);
+            comentario.setCreadoPor(usuario);
+            comentario.setModificadoPor(usuario);
+            comentario.setFechaModificacion(new Date());
             cJpa.create(comentario);
-            dJpa.edit(documento);
+            
+            //buscar prestamo
+            prestamo = sJpa.findByDocumento(documento);
+            
+            if(this.documento.getEstado().equals(4) && prestamo != null){
+                this.documento.setEstado(2);
+                prestamo.setEstado("2");
+                prestamo.setFechaDevolucion(documento.getFechaModificacion());
+                sJpa.edit(prestamo);
+                dJpa.edit(documento);
+            }else{
+                if(this.documento.getEstado().equals(6) && prestamo != null){
+                this.documento.setEstado(5);
+                prestamo.setEstado("5");
+                prestamo.setFechaDevolucion(documento.getFechaModificacion());
+                sJpa.edit(prestamo);
+                dJpa.edit(documento);
+                }                
+            }     
+            
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reintegro de documentos", "Documento reintegrado exitosamente"));
             RequestContext.getCurrentInstance().execute("PF('denReintegrar').hide()");
