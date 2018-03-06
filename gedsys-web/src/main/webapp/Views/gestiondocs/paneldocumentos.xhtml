@@ -240,7 +240,7 @@
                                             </p:column>
                                             <p:column headerText="Acciones">
                                                  <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsPrestamo)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Devolver" action="#{reintegrarBean.loadDocumento(docsPrestamo)}" update=":dlgReintegrar"  ><span class="fa fa-fw fa-rotate-left" aria-hidden="true"/></p:commandLink>
+                                                  <a href="#" type="button" title="Devolver" onclick="PF('denReintegro').show()"><span class="fa fa-fw fa-rotate-left" aria-hidden="true"></span></a>                                                 
                                                 <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPrestamo)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                             </p:column>
                                         </p:dataTable>
@@ -663,11 +663,15 @@
                             </ui:include>
                         </h:form>   
                     </p:dialog>
-                    <p:dialog id="dlgReintegrar" header="Reintegrar" widgetVar="denReintegrar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="50%" height="450">
-                        <p:ajax event="close" update=":enPrestamo" />
+                    <p:dialog id="dlgReintegro" header="Reintegrar" widgetVar="denReintegro" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="25%" height="100">
+                        <p:ajax event="close" update=":enPrestamo :entrantes" />
                         <h:form>
-                            <ui:include src="reintegrar.xhtml">
-                            </ui:include>
+                            <div>
+                                <p:outputLabel>Para reintegrar el documento debe ingresar al panel control de documentos</p:outputLabel>
+                                <br />  
+                                <br />  
+                                <a type="button" href="controlPrestamos.xhtml">IR A CONTROL DE PRESTAMOS</a>
+                            </div>
                          </h:form>   
                     </p:dialog>
                     <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">

@@ -65,7 +65,7 @@
                                         <h:outputText value="#{pres.documento.tipoDocumento.nombre}" />
                                    </p:column>                                    
                                     <p:column headerText="Acciones" width="90">                                       
-                                        <p:commandLink type="button" title="Reintegrar" action="#{reintegrarBean.loadDocumento(pres.documento)}" update=":dlgReintegrar"  ><span class="fa fa-fw fa-rotate-left" aria-hidden="true"/></p:commandLink>
+                                        <p:commandLink type="button" title="Reintegrar" action="#{reintegrarBean.loadPrestamo(pres)}" update=":dlgReintegrar"  ><span class="fa fa-fw fa-rotate-left" aria-hidden="true"/></p:commandLink>
                                     </p:column>
                                 </p:dataTable>
                             </div>                            

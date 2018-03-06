@@ -48,6 +48,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Prestamo.findByFechaModificacion", query = "SELECT p FROM Prestamo p WHERE p.fechaModificacion = :fechaModificacion")})
 public class Prestamo implements Serializable {
 
+   
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +71,9 @@ public class Prestamo implements Serializable {
     @Column(name = "QueinRecibe")
     private String queinRecibe;
     @Column(name = "Estado")
-    private String estado;
+    private int estado;
+    @Column(name = "EstadoAnterior")
+    private Integer estadoAnterior;
     @Column(name = "FechaCreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -97,6 +101,7 @@ public class Prestamo implements Serializable {
     private Date fechaDevolucion;
 
     public Prestamo() {
+        
     }
 
     public Prestamo(Integer id) {
@@ -159,11 +164,11 @@ public class Prestamo implements Serializable {
         this.queinRecibe = queinRecibe;
     }
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
@@ -262,6 +267,14 @@ public class Prestamo implements Serializable {
 
     public void setFechaDevolucion(Date fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public Integer getEstadoAnterior() {
+        return estadoAnterior;
+    }
+
+    public void setEstadoAnterior(Integer estadoAnterior) {
+        this.estadoAnterior = estadoAnterior;
     }
 
 }

@@ -251,6 +251,18 @@ public class PrestamoJpaController implements Serializable {
             em.close();
         }
    }
+    public List<Prestamo> findByEstado(int estado) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Prestamo.class));
+            Query q = em.createNamedQuery("Prestamo.findByEstado",Integer.class)
+                    .setParameter("estado", estado);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public Prestamo findPrestamo(Integer id) {
         EntityManager em = getEntityManager();

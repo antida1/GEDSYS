@@ -114,36 +114,40 @@ public class PrestamoBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.prestamo.setFechaCreacion(new Date());
             this.prestamo.setCreadoPor(usuario);
-            this.prestamo.setDocumento(this.documento);
+            this.prestamo.setDocumento(this.documento);           
             
             if(null != this.documento.getEstado())switch (this.documento.getEstado()) {
                 case 1:
+                    this.prestamo.setEstadoAnterior(1);
                     this.documento.setEstado(4);
-                    this.prestamo.setEstado("4");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
                     break;
                 case 2:
+                    this.prestamo.setEstadoAnterior(2);
                     this.documento.setEstado(4);
-                    this.prestamo.setEstado("4");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
                     break;
                 case 3:
+                    this.prestamo.setEstadoAnterior(3);
                     this.documento.setEstado(4);
-                    this.prestamo.setEstado("4");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
                     break;
-                case 4:
+                case 4:                    
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento, El docuemnto ya se encuentra previamente prestado!"));
                     break;
                 case 5:
+                    this.prestamo.setEstadoAnterior(5);
                     this.documento.setEstado(6);
-                    this.prestamo.setEstado("6");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
@@ -152,22 +156,25 @@ public class PrestamoBean extends BaseBean implements Serializable {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Prestamo de Documentos", "¡No se puede prestar el documento, El docuemnto ya se encuentra previamente prestado!"));
                     break;
                 case 7:
+                    this.prestamo.setEstadoAnterior(7);
                     this.documento.setEstado(6);
-                    this.prestamo.setEstado("6");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
                     break;
                 case 8:
+                    this.prestamo.setEstadoAnterior(8);
                     this.documento.setEstado(6);
-                    this.prestamo.setEstado("6");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
                     break;
                 case 9:
+                    this.prestamo.setEstadoAnterior(9);
                     this.documento.setEstado(4);
-                    this.prestamo.setEstado("4");
+                    this.prestamo.setEstado(1);
                     dJpa.edit(this.documento);
                     sJpa.create(prestamo);
                     this.listar();
@@ -218,7 +225,7 @@ public class PrestamoBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new PrestamoJpaController(emf);
-            Prestamos = sJpa.findPrestamoEntities();
+            Prestamos = sJpa.findByEstado(1);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Prestamo de documentos", e.getMessage()));
         }
