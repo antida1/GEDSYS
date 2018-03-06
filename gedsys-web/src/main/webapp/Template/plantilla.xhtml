@@ -113,25 +113,33 @@
                                         </h:form>
                                     </ul>
                                 </li>
-                                <li role="presentation" class="dropdown">
-                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i> <span class="badge bg-green">1</span> </a>
-                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                        <li>
-                                            <a> <span class="image">
-                                                    <!-- <h:graphicImage library="images" name="#{login.usuario.foto}"  alt="Profile Image" /> -->
-                                                </span> 
-                                                <span>
-                                                    <span><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></span> <span class="time">Hace 3 minutos</span> </span> <span class="message">
-                                                    Inicio de proceso documental con Gedsys
-                                                </span> </a>
-                                        </li>
-                                        <li>
-                                            <div class="text-center">
-                                                <a> <strong>Ver todas las alertas</strong> <i class="fa fa-angle-right"></i> </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
+                                <h:form>
+                                    <li role="presentation" class="dropdown">
+                                        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i><h:outputText id="counter" value="#{messageBean.couter}" class="badge bg-green"></h:outputText></a>
+                                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                            <p:poll interval="30" listener="#{messageBean.refresh()}" update="messagelist counter" async="true"/>
+                                            <p:panel id="messagelist" >
+                                                <p:repeat value="#{messageBean.notificaciones}" var="message" >
+                                                    <li>
+                                                        <a> <span class="image">
+                                                                <h:graphicImage library="images" name="#{message.responsable.foto}"  alt="Profile Image" />
+                                                            </span> 
+                                                            <span>
+                                                                <span><h:outputText value="#{message.responsable.nombres}"/>&#160;<h:outputText value="#{message.responsable.apelidos}"/></span> <span class="time">Hace 3 minutos</span> </span> <span class="message">
+                                                                <h:outputText value="#{message.asunto}"></h:outputText>
+                                                            </span> 
+                                                        </a>
+                                                    </li>
+                                                </p:repeat>
+                                            </p:panel>
+                                            <li>
+                                                <div class="text-center">
+                                                    <a> <strong>Ver todas las alertas</strong> <i class="fa fa-angle-right"></i> </a>
+                                                </div>
+                                            </li>
+                                        </ul>   
+                                    </li>
+                                </h:form>
                             </ul>
                         </nav>
                     </div>
