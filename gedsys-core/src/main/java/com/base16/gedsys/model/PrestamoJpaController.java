@@ -218,7 +218,7 @@ public class PrestamoJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Prestamo.class));
             Query q = em.createQuery(cq);
-            if (!all) {
+            if (!all) {                
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
@@ -251,11 +251,36 @@ public class PrestamoJpaController implements Serializable {
             em.close();
         }
    }
+    public List<Prestamo> findByEstado(int estado) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Prestamo.class));
+            Query q = em.createNamedQuery("Prestamo.findByEstado",Integer.class)
+                    .setParameter("estado", estado);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public Prestamo findPrestamo(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Prestamo.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    public Prestamo findByDocumento(Documento documento) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Prestamo.class));
+            Query q = em.createNamedQuery("Prestamo.findByDocumento", Documento.class)
+                    .setParameter("documento", documento);
+            
+            return (Prestamo) q.getSingleResult();
         } finally {
             em.close();
         }

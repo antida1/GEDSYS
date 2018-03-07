@@ -104,6 +104,7 @@ public class Carta implements Serializable {
     private Documento documentoPadre;
 
     public Carta() {
+        this.fecha= new Date();
     }
 
     public Carta(Integer id) {

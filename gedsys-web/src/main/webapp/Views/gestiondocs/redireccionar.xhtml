@@ -37,7 +37,7 @@
 
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{redireccionarBean.guadarDocumento()}" update="lstDocsEntrantes messages"/>
+            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{redireccionarBean.guadarDocumento()}" update=":entrantes:lstDocsEntrantes messages"/>
             <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denRedireccionar').hide()"></p:commandButton>
         </div>
     </h:body>

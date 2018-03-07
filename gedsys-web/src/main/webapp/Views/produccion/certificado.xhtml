@@ -13,7 +13,7 @@
         <div class="col-xs-12">
             <p:outputLabel value="Fecha" for="fechaCertificado" class="control-label col-md-4"/>
             <div class="col-md-8">
-                <p:calendar id="fechaCertificado" value="#{certificadoBean.certificado.fecha}" showOn="button" locale="es" style="width: 100%"  />
+                <p:calendar id="fechaCertificado" mask="true" pattern="dd-MM-yyyy" value="#{certificadoBean.certificado.fecha}" showOn="button" locale="es" style="width: 100%"  />
             </div>
         </div>
         <div class="col-xs-12">

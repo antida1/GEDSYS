@@ -8,9 +8,11 @@ package com.base16.gedsys.bean;
 import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.SignaturaTopografica;
+import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ComentarioJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
+import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.logging.Level;
@@ -66,6 +68,7 @@ public class RedireccionarBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         DocumentoJpaController dJpa;
         ComentarioJpaController cJpa;
+        Usuario usuario = (Usuario) SessionUtils.getUsuario();
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
@@ -75,6 +78,9 @@ public class RedireccionarBean extends BaseBean implements Serializable {
             comentario.setComentario(mensaje);
             comentario.setFechaCreacion(new Date());
             comentario.setDocumento(documento);
+            comentario.setCreadoPor(usuario);
+            comentario.setModificadoPor(usuario);
+            comentario.setFechaModificacion(new Date());
             cJpa.create(comentario);
             dJpa.edit(documento);
             

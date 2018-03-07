@@ -54,7 +54,8 @@
                                     <!--<button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>-->
                                 </ul>
                                 <div class="tab-content">
-                                    <div id="menuTab0" class="col-xs-12 tab-pane fade in active">
+                                    <div id="menuTab0" class="col-xs-12 tab-pane fade in active"> 
+                                        <h:form id="entrantes" enctype="multipart/form-data">
                                         <p:dataTable widgetVar="entrantes" id="lstDocsEntrantes" var="docsEntrantes" value="#{documentosBean.recibidos}" style="margin-bottom:0" rows="15"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15,30,50"  emptyMessage="¡No se encontraron documentos entrantes!"
@@ -89,19 +90,24 @@
                                             </p:column>
                                             <p:column headerText="Acciones" width="150">
                                                 <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsEntrantes)}" disabled="#{not docsEntrantes.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantes)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantes)}" update=":dlgPrestamo :enPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                 <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                                 <p:commandLink type="button" title="Redireccionar" action="#{redireccionarBean.loadDocumento(docsEntrantes)}" update=":dlgDevolver"  ><span class="glyphicon fa fa-fw fa-random" aria-hidden="true"/></p:commandLink>
                                             </p:column>
-                                        </p:dataTable>
+                                        </p:dataTable> 
+                                        </h:form>
                                     </div>
                                     <div id="menuTab1" class="col-xs-12 tab-pane fade in inactive">
-                                        <h:form>
+                                         <h:form id="porEnviar" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="porEnviar" id="lstDocsPorEnviar" var="docPorEnviar" value="#{documentosBean.porEnviar}" style="margin-bottom:0" 
-                                                         emptyMessage="¡No se encontraron documentos entrantes!"
-                                                         sortBy="#{docPorEnviar.id}" sortOrder="descending">
-
+                                                         emptyMessage="¡No se encontraron documentos entrantes!" rows="10"
+                                                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15" sortBy="#{docPorEnviar.id}" sortOrder="descending">
+                                                <f:facet name="header">
+                                                    <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                    <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
+                                                </f:facet>
                                                 <p:column headerText="Consecutivo">
                                                     <h:outputText value="#{docPorEnviar.consecutivo}" />
                                                 </p:column>
@@ -136,13 +142,14 @@
                                                     <h:outputText value="#{docPorEnviar.medioEnvio.nombre}" />
                                                 </p:column>
                                                 <p:column headerText="Acciones" width="150">
-                                                    <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docPorEnviar)}" update=":dlgVisor" ><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docPorEnviar)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()" ><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Completar" action="#{envioBean.loadDocumento(docPorEnviar)}"  rendered="#{docPorEnviar.radicadoEnvio eq null}"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                 </p:column>
                                             </p:dataTable>
                                         </h:form>
                                     </div>
                                     <div id="menuTab2" class="col-xs-12 tab-pane fade">
+                                        <h:form id="enviados" enctype="multipart/form-data">
                                         <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docsEnviados" value="#{documentosBean.enviados}" style="margin-bottom:0" rows="10"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos enviados!">
@@ -195,19 +202,21 @@
                                             </p:column>
                                             <p:column headerText="Acciones">
                                                 <p:commandLink type="button" disabled="#{docsEnviados.rutaComprobante == null}" title="Archivar" action="#{archivarBean.loadDocumento(docsEnviados)}" update=":dlgArchivar"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Prestamo" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();"  action="#{documentViewerBean.showDocument(docsEnviados)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEnviados)}" update=":dlgPrestamo :enPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                 <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEnviados)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                                        
                                             </p:column>                                               
                                         </p:dataTable>
+                                        </h:form>
                                     </div>
                                     <div id="menuTab3" class="col-xs-12 tab-pane fade">
-                                        <p:dataTable widgetVar="En Prestamos" id="lstDocsPrestamo" var="docsPrestamo" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
+                                        <h:form id="enPrestamo" enctype="multipart/form-data">
+                                        <p:dataTable widgetVar="En Prestamos" id="lstControl" var="docsPrestamo" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos en prestamo!">
                                             <f:facet name="header">
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                                <p:columnToggler datasource="lstDocsPrestamo" trigger="toggler" />
+                                                <p:columnToggler datasource="lstControl" trigger="toggler" />
                                             </f:facet>
                                             <p:column headerText="Radicado">
                                                 <h:outputText value="#{docsPrestamo.consecutivo}" />
@@ -230,13 +239,15 @@
                                                 <h:outputText value="#{docsPrestamo.detalle}" />
                                             </p:column>
                                             <p:column headerText="Acciones">
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Devolver" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
+                                                 <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsPrestamo)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                  <a href="#" type="button" title="Devolver" onclick="PF('denReintegro').show()"><span class="fa fa-fw fa-rotate-left" aria-hidden="true"></span></a>                                                 
+                                                <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPrestamo)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                             </p:column>
                                         </p:dataTable>
+                                        </h:form>
                                     </div>
                                     <div id="menuTab4" class="col-xs-12 tab-pane fade">
+                                        <h:form id="porVencer" enctype="multipart/form-data">
                                         <p:dataTable widgetVar="PorVencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="50"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos por vencer!">
@@ -285,12 +296,13 @@
                                             </p:column>
                                             <p:column headerText="Acciones">
                                                 <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsPorVencer)}" disabled="#{not docsPorVencer.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsPorVencer)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorVencer)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsPorVencer)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorVencer)}" update=":dlgPrestamo :enPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                 <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPorVencer)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                                 <p:commandLink type="button" title="Redireccionar" action="#{redireccionarBean.loadDocumento(docsPorVencer)}" update=":dlgDevolver"  ><span class="glyphicon fa fa-fw fa-random" aria-hidden="true"/></p:commandLink>
                                             </p:column>
                                         </p:dataTable>
+                                        </h:form>
                                     </div>
                                     <div id="menuTab5" class="col-xs-12 tab-pane fade">
                                         <ul class="nav nav-tabs">
@@ -304,6 +316,7 @@
                                         </ul>
                                         <div class="tab-content">
                                             <div id="pmenuTab0" class="col-xs-12 tab-pane fade">
+                                                <h:form id="actaPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="actaPorFirmar" id="actas" var="acta" value="#{documentosBean.actasPorFirmar}" style="margin-bottom:0" 
                                                              rows="10"
                                                              paginator="true"  
@@ -314,7 +327,7 @@
                                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                         <p:columnToggler datasource="actas" trigger="toggler" />
                                                     </f:facet>
-                                                    <p:column headerText="Redicado">
+                                                    <p:column headerText="Radicado">
                                                         <h:outputText value="#{acta.consecutivo}" />
                                                     </p:column>
                                                     <p:column headerText="Fecha de creación">
@@ -332,24 +345,26 @@
                                                         <h:outputText value="#{acta.presidente.nombres} #{acta.presidente.apelidos}" />
                                                     </p:column>
                                                     <p:column headerText="Acciones">
-                                                        <a href="#" type="button" title="Comentar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
+                                                        <a href="#" type="button" title="Comentar" onclick="PF('denComentar').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Editar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
-                                                        <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{actaViewBean.showDocument(acta)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <a href="#" type="button" title="Firmar"  onclick="PF('denFirmar').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{actaViewBean.showDocument(acta)}" update=":dlgVisorActa messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con"  action="#{compartirBean.loadActa(acta)}" update=":dlgCompartirActa messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab1" class="col-xs-12 tab-pane fade">
+                                                <h:form id="cartaPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="cartasPorFirmar" id="cartas" var="carta" value="#{documentosBean.cartaPorFirmar}" style="margin-bottom:0" 
                                                              rows="15"
                                                              paginator="true"  
                                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron cartas por firmar!">
-                                                    <!--                                                        <f:facet name="header">
-                                                                                                                <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
-                                                                                                                <p:columnToggler datasource="cartas" trigger="toggler" />
-                                                                                                            </f:facet>-->
+                                                    <f:facet name="header">
+                                                        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                        <p:columnToggler datasource="cartas" trigger="toggler" />
+                                                    </f:facet>
                                                     <p:column headerText="Radicado">
                                                         <h:outputText value="#{carta.consecutivo}" />
                                                     </p:column>
@@ -369,14 +384,16 @@
                                                     </p:column>
                                                     <p:column headerText="Acciones">
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
-                                                        <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                        <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{cartaViewBean.showDocument(carta)}" update=":dlgVisorCarta messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCarta(carta)}" update=":dlgCompartirCarta messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab2" class="col-xs-12 tab-pane fade">
+                                                <h:form id="certificadoPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="certificadosPorFirmar" id="certificados" var="cert" value="#{documentosBean.certificadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron certificados por firmar!">
@@ -397,14 +414,16 @@
                                                     </p:column>
                                                     <p:column headerText="Acciones">
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
-                                                        <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                        <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{certificadoViewBean.showDocument(cert)}" update=":dlgVisorCertificado messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCertificado(cert)}" update=":dlgCompartirCertificado messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab3" class="col-xs-12 tab-pane fade">
+                                                <h:form id="circularPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="circularesPorFirmar" id="circulares" var="cir" value="#{documentosBean.circularPorFirmar}" style="margin-bottom:0" rows="10"
                                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!">
@@ -430,12 +449,14 @@
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{circularViewBean.showDocument(cir)}" update=":dlgVisorCircular messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCircular(cir)}" update=":dlgCompartirCircular messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab4" class="col-xs-12 tab-pane fade">
+                                                <h:form id="comunicacionPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="comunicadosPorFirmas" id="comunicaciones" var="com" value="#{documentosBean.comunicadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!">
@@ -444,7 +465,7 @@
                                                         <p:columnToggler datasource="comunicaciones" trigger="toggler" />
                                                     </f:facet>
                                                     <p:column headerText="Radicado">
-                                                        <h:outputText value="#{null}" />
+                                                        <h:outputText value="#{com.consecutivo}" />
                                                     </p:column>
                                                     <p:column headerText="Fecha de creación">
                                                         <h:outputText value="#{com.fechaCreacion}" >
@@ -464,12 +485,14 @@
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{comunicacionViewBean.showDocument(com)}" update="dlgVisorComunicacion messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadComunicacion(com)}" update=":dlgCompartirComunicacion messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab5" class="col-xs-12 tab-pane fade">
+                                                <h:form id="constanciaPorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="constanciasPorFirmar" id="constancias" var="cons" value="#{documentosBean.constanciaPorFirmar}" style="margin-bottom:0" rows="10"
                                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron constancias por firmar!">
@@ -477,7 +500,7 @@
                                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                         <p:columnToggler datasource="constancias" trigger="toggler" />
                                                     </f:facet>
-                                                    <p:column headerText="Redicado">
+                                                    <p:column headerText="Radicado">
                                                         <h:outputText value="#{cons.consecutivo}" />
                                                     </p:column>
                                                     <p:column headerText="Fecha de creación">
@@ -492,12 +515,14 @@
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{constanciaViewBean.showDocument(cons)}" update="dlgVisorConstancia messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadConstancia(cons)}" update=":dlgCompartirConstancia messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                             <div id="pmenuTab6" class="col-xs-12 tab-pane fade">
+                                                <h:form id="informePorFirmar" enctype="multipart/form-data">
                                                 <p:dataTable widgetVar="informesPorFirmar" id="informes" var="inf" value="#{documentosBean.informePorFirmar}" style="margin-bottom:0" rows="10"
                                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron informes por firmar!">
@@ -505,7 +530,7 @@
                                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                         <p:columnToggler datasource="informes" trigger="toggler" />
                                                     </f:facet>
-                                                    <p:column headerText="Redicado">
+                                                    <p:column headerText="Radicado">
                                                         <h:outputText value="#{inf.consecutivo}" />
                                                     </p:column>
                                                     <p:column headerText="Fecha de creación">
@@ -524,14 +549,16 @@
                                                         <a href="#" type="button" title="Comentar" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                         <a href="#" type="button" title="Firmar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil-square-o" aria-hidden="true"></span></a>
-                                                        <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                        <a href="#" type="button" title="Compartir con" onclick="PF('denPrestamo').show()"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></a>
+                                                        <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{informeViewBean.showDocument(inf)}" update="dlgVisorInforme messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                        <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadInforme(inf)}" update=":dlgCompartirInforme messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
                                                     </p:column>
                                                 </p:dataTable>
+                                                </h:form>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="menuTab6" class="col-xs-12 tab-pane fade">
+                                        <h:form id="porArchivar" enctype="multipart/form-data">
                                         <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.sinArchivar}" style="margin-bottom:0" rows="50"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos sin archivar!">
@@ -539,7 +566,7 @@
                                                 <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                 <p:columnToggler datasource="lstDocsPorArchivados" trigger="toggler" />
                                             </f:facet>
-                                            <p:column headerText="Redicado">
+                                            <p:column headerText="Radicado">
                                                 <h:outputText value="#{docsPorArchivar.consecutivo}" />
                                             </p:column>
                                             <p:column headerText="Fecha de recepción">
@@ -560,14 +587,16 @@
                                                 <h:outputText value="#{docsPorArchivar.detalle}" />
                                             </p:column>
                                             <p:column headerText="Acciones">
-                                                <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar" disabled="#{docsPorArchivar.estado eq 10 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(docsPorArchivar)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorArchivar)}" update=":dlgPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
-                                                <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPorArchivar)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
+                                                <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar messages" disabled="#{docsPorArchivar.estado eq 10 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{documentViewerBean.showDocument(docsPorArchivar)}" update=":dlgVisor messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsPorArchivar)}" update=":dlgPrestamo messages"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsPorArchivar)}" update=":dlgCompartir messages" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                             </p:column>
                                         </p:dataTable>
+                                        </h:form>
                                     </div>
                                     <div id="menuTab7" class="col-xs-12 tab-pane fade">
+                                        <h:form id="compartido" enctype="multipart/form-data">
                                         <p:dataTable widgetVar="Compartido" id="lstDocsCompartidos" var="docsCompartidos" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
                                                      paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos compartidos!">
@@ -596,44 +625,116 @@
                                                 <h:outputText value="#{docsCompartidos.detalle}" />
                                             </p:column>
                                             <p:column headerText="Acciones">
-                                                <p:commandLink type="button" title="Ver" action="#{documentViewerBean.showDocument(doc)}" update=":dlgVisor"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsCompartidos)}" update=":dlgVisor messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                 <p:commandLink type="button" title="Comentar" onclick="PF('denComentar').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"/></p:commandLink>
                                             </p:column>
                                         </p:dataTable>
+                                        </h:form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <p:dialog id="dlgArchivar" header="Archivar" widgetVar="denArchivar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true">
+                        <p:ajax event="close" update=":enviados :porArchivar"/>
                         <h:form>
                             <ui:include src="archivar.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":entrantes :enviados :enPrestamo :porVencer :porArchivar" />
                         <h:form>
                             <ui:include src="prestamo.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" height="400" maximizable="true">
+                    <p:dialog id="dlgResponder" header="Responder" widgetVar="denResponder" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" rendered="true" dynamic="true" width="60%" height="400" maximizable="true">
+                        <p:ajax event="close" update=":entrantes :porVencer" />
                         <h:form>
                             <ui:include src="../produccion/carta.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgDevolver" header="Redireccionar" widgetVar="denRedireccionar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":entrantes :porVencer" />
                         <h:form>
                             <ui:include src="redireccionar.xhtml">
                             </ui:include>
                         </h:form>   
                     </p:dialog>
+                    <p:dialog id="dlgReintegro" header="Reintegrar" widgetVar="denReintegro" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="25%" height="100">
+                        <p:ajax event="close" update=":enPrestamo :entrantes" />
+                        <h:form>
+                            <div>
+                                <p:outputLabel>Para reintegrar el documento debe ingresar al panel control de documentos</p:outputLabel>
+                                <br />  
+                                <br />  
+                                <a type="button" href="controlPrestamos.xhtml">IR A CONTROL DE PRESTAMOS</a>
+                            </div>
+                         </h:form>   
+                    </p:dialog>
                     <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":entrantes :enviados :porVencer :porArchivar" />
                         <h:form>
                             <ui:include src="compartir.xhtml">
                             </ui:include>
                         </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirActa" header="Compartir Acta" widgetVar="denCompartirActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":actaPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirActa.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirCarta" header="Compartir Carta" widgetVar="denCompartirCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":cartaPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCarta.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirCertificado" header="Compartir Certificado" widgetVar="denCompartirCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":certificadoPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCertificado.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirCircular" header="Compartir Circular" widgetVar="denCompartirCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":circularPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCircular.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirComunicacion" header="Compartir Comunicación" widgetVar="denCompartirComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":comunicacionPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirComunicacion.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirConstancia" header="Compartir Constancia" widgetVar="denCompartirConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":constanciaPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirConstancia.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirInforme" header="Compartir Informe" widgetVar="denCompartirInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":informePorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirInforme.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgFirmar" header="FIRMAR" widgetVar="denFirmar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">           
+                        <h:form>
+                            <ui:include src="firmar.xhtml">
+                            </ui:include>
+                        </h:form>         
                     </p:dialog>
                     <p:dialog id="dlgComentar" header="Comentar" widgetVar="denComentar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
                         <h:form>
@@ -642,6 +743,7 @@
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true"  >
+                        <p:ajax event="close" update=":entrantes :porEnviar :enviados :porVencer :porArchivar :compartido" />
                         <h:form>
                             <c:if test='#{documentViewerBean.content.contentType.equals("application/pdf")}'>
                                 <pe:documentViewer id="documentCtl" height="800" cache="false" value="#{documentViewerBean.content}" />  
@@ -658,6 +760,7 @@
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorActa" header="Visor de Actas" widgetVar="denVisorActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                        <p:ajax event="close" update=":actaPorFirmar" />
                         <h:form>
                             <pe:documentViewer id="documentCtlAct" height="800" value="#{actaViewBean.content}" />  
                             <div>
@@ -666,10 +769,56 @@
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorCarta" header="Visor de Cartas" widgetVar="denVisorCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":cartaPorFirmar" />
                         <h:form>
                             <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />  
                             <div>
                                 <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCarta').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorCertificado" header="Visor de Certificados" widgetVar="denVisorCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":certificadoPorFirmar" />
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCertificado').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorCircular" header="Visor de Circulares" widgetVar="denVisorCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":circularPorFirmar" />
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCircular" height="800" value="#{circularViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorComunicacion" header="Visor de Comunicaciones" widgetVar="denVisorComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":comunicacionPorFirmar" />
+                        <h:form>
+                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorConstancia" header="Visor de Constancias" widgetVar="denVisorConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":constanciaPorFirmar" />
+                        <h:form>
+                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorConstancia').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorInforme" header="Visor de Informes" widgetVar="denVisorInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
+                         <p:ajax event="close" update=":informePorFirmar" />
+                        <h:form>
+                            <pe:documentViewer id="documentCtlInforme" height="800" value="#{informeViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorInforme').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
@@ -678,10 +827,10 @@
 
                         </ui:include>
                     </p:dialog>
-                    <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="100%" dynamic="true" style="overflow:auto;">
+                    <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
+                        <p:ajax event="close" update=":porEnviar" />                        
                         <ui:include src="../procesos/envio.xhtml">
-
-                        </ui:include>
+                        </ui:include>                       
                     </p:dialog>
                     <p:dialog id="dlgPlanillaEnvio" header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
                         <p:outputPanel id="planillaEnvio" style="text-align:center;" >
@@ -726,6 +875,12 @@
                                 </p:dataTable>
                             </h:form>
                         </p:outputPanel>
+                    </p:dialog>                    
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="../../images/ajaxloading.gif"/>
+                    </p:dialog>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="../../images/ajaxloading.gif"/>
                     </p:dialog>
                 </c:if>
                 <c:if test="#{autorizationBean.hasAccess('paneldocumentos') == false}">

@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,6 +54,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono")
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
+
+    @OneToMany(mappedBy = "creadoPor")
+    private List<Comentario> comentarioList;
+    @OneToMany(mappedBy = "modificadoPor")
+    private List<Comentario> comentarioList1;
+
 
     @OneToMany(mappedBy = "creadoPor")
     private List<PlanillaEnvio> planillaEnvioList;
@@ -1806,6 +1813,26 @@ public class Usuario implements Serializable {
 
     public void setPlanillaEnvioDocumentoList1(List<PlanillaEnvioDocumento> planillaEnvioDocumentoList1) {
         this.planillaEnvioDocumentoList1 = planillaEnvioDocumentoList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comentario> getComentarioList() {
+        return comentarioList;
+    }
+
+    public void setComentarioList(List<Comentario> comentarioList) {
+        this.comentarioList = comentarioList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Comentario> getComentarioList1() {
+        return comentarioList1;
+    }
+
+    public void setComentarioList1(List<Comentario> comentarioList1) {
+        this.comentarioList1 = comentarioList1;
     }
     
 }

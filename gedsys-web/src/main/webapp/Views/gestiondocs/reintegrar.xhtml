@@ -12,20 +12,20 @@
         <div class="form-group row">
             <p:outputLabel value="Documento:" for="documento" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:outputLabel id="documento" style="width: 100%" value="#{reintegrarBean.documento.asunto}">
+                <p:outputLabel id="documento" style="width: 100%" value="#{reintegrarBean.prestamo.documento.asunto}">
                 </p:outputLabel>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel for="fecha" value="Fecha:" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:calendar id="fecha" value="#{reintegrarBean.documento.fechaModificacion}" showOn="button" style="width: 100%"/>
+                <p:calendar id="fecha" value="#{reintegrarBean.prestamo.fechaDevolucion}" pattern="dd-MM-yyyy" showOn="button" locale="es" style="width: 100%"/>
             </div>
         </div>
         <div class="form-group row">
             <p:outputLabel value="Nombre del responsable" for="responsable" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">               
-                <p:selectOneMenu id="responsable" value="#{reintegrarBean.documento.destinatario}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="responsable" value="#{reintegrarBean.prestamo.creadoPor}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione responsable" itemValue="#{null}" />-                    
                     <f:selectItems value="#{usuarioBean.usuarios}" var="responsable" itemLabel="#{responsable.nombres} #{responsable.apelidos}" itemValue="#{responsable}"/>
                  </p:selectOneMenu>
@@ -34,7 +34,7 @@
         <div class="form-group row">
             <p:outputLabel value="Nombre de quien devuelve" for="devuelve" class="col-xs-3 col-form-label"/>
             <div class="col-xs-9">
-                <p:selectOneMenu id="devuelve" value="#{reintegrarBean.documento.remitente}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
+                <p:selectOneMenu id="devuelve" value="#{reintegrarBean.prestamo.prestadoA}" converter="omnifaces.SelectItemsConverter" required="false" style="width: 100%">
                     <f:selectItem noSelectionOption="true" itemLabel="Seleccione quien devuelve" itemValue="#{null}" />
                     <f:selectItems value="#{usuarioBean.usuarios}" var="devuelve" itemLabel="#{devuelve.nombres} #{devuelve.apelidos}" itemValue="#{devuelve}"/>
                 </p:selectOneMenu>
@@ -48,7 +48,7 @@
         </div>
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update="messages" />
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update=":enPrestamo:lstControl" />
             <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denReintegrar').hide()"></p:commandButton>
         </div>
     </h:body>

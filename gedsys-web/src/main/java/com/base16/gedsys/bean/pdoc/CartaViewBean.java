@@ -111,25 +111,41 @@ public class CartaViewBean extends BaseBean implements Serializable {
             cargo = new TextNavigation("@cargo", odt);
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
-                item.replaceWith(carta.getCargo());
+                if(carta.getCargo() == null || carta.getCargo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getCargo());
+                }                 
             }
 
             empresa = new TextNavigation("@empresa", odt);
             while (empresa.hasNext()) {
                 TextSelection item = (TextSelection) empresa.nextSelection();
-                item.replaceWith(carta.getEmpresa());
+                if(carta.getEmpresa() == null || carta.getEmpresa() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getEmpresa());
+                }                
             }
 
             direccion = new TextNavigation("@direccion", odt);
             while (direccion.hasNext()) {
                 TextSelection item = (TextSelection) direccion.nextSelection();
-                item.replaceWith(carta.getDireccion());
+                if(carta.getDireccion() == null || carta.getDireccion() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getDireccion());
+                }               
             }
 
             ciudad = new TextNavigation("@ciudad", odt);
             while (ciudad.hasNext()) {
                 TextSelection item = (TextSelection) ciudad.nextSelection();
-                item.replaceWith(carta.getCiudad().getNombre());
+                if(carta.getCiudad() == null){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getCiudad().getNombre());
+                }  
             }            
 
             asunto = new TextNavigation("@asunto", odt);

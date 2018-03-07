@@ -75,6 +75,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class Documento implements Serializable {
 
     @OneToMany(mappedBy = "documento")
+    private List<Prestamo> prestamoList;
+
+    @OneToMany(mappedBy = "documento")
     private List<PlanillaEnvioDocumento> planillaEnvioDocumentoList;
     
     private static final long serialVersionUID = 1L;
@@ -365,7 +368,7 @@ public class Documento implements Serializable {
     }
 
     public Date getFechaModificacion() {
-        return fechaModificacion;
+        return new Date();
     }
 
     public void setFechaModificacion(Date fechaModificacion) {
@@ -715,6 +718,16 @@ public class Documento implements Serializable {
 
     public void setPlanillaEnvioDocumentoList(List<PlanillaEnvioDocumento> planillaEnvioDocumentoList) {
         this.planillaEnvioDocumentoList = planillaEnvioDocumentoList;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Prestamo> getPrestamoList() {
+        return prestamoList;
+    }
+
+    public void setPrestamoList(List<Prestamo> prestamoList) {
+        this.prestamoList = prestamoList;
     }
 
 }

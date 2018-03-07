@@ -18,7 +18,7 @@
                     <c:if test="#{!prestamoBean.currentUser.isAdmin}">
                         <f:event type="preRenderView" listener="#{prestamoBean.listarByUsuario()}" />
                     </c:if>
-                    <h:form class="col-xs-12 x_panel" id="form">
+                    <h:form class="col-xs-12 x_panel" id="enPrestamo">
                         <div class="x_title">
                             <h2>Control de préstamos</h2>
                             <div class="clear"></div>
@@ -65,7 +65,7 @@
                                         <h:outputText value="#{pres.documento.tipoDocumento.nombre}" />
                                    </p:column>                                    
                                     <p:column headerText="Acciones" width="90">                                       
-                                        <p:commandLink type="button" title="Reintegrar" action="#{reintegrarBean.loadDocumento(pres.documento)}" update=":dlgReintegrar"  ><span class="fa fa-fw fa-rotate-left" aria-hidden="true"/></p:commandLink>
+                                        <p:commandLink type="button" title="Reintegrar" action="#{reintegrarBean.loadPrestamo(pres)}" update=":dlgReintegrar"  ><span class="fa fa-fw fa-rotate-left" aria-hidden="true"/></p:commandLink>
                                     </p:column>
                                 </p:dataTable>
                             </div>                            

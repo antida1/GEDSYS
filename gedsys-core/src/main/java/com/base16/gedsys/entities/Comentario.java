@@ -18,6 +18,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,14 +54,16 @@ public class Comentario implements Serializable {
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;
-    @Column(name = "CreadoPor")
-    private Integer creadoPor;
-    @Column(name = "ModificadoPor")
-    private Integer modificadoPor;
+    private Date fechaModificacion;    
     @JoinColumn(name = "Documento", referencedColumnName = "Id")
     @ManyToOne
     private Documento documento;
+    @JoinColumn(name = "CreadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario creadoPor;
+    @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario modificadoPor; 
 
     public Comentario() {
     }
@@ -101,28 +104,28 @@ public class Comentario implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Integer getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Integer creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public Integer getModificadoPor() {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(Integer modificadoPor) {
-        this.modificadoPor = modificadoPor;
-    }
-
     public Documento getDocumento() {
         return documento;
     }
 
     public void setDocumento(Documento documento) {
         this.documento = documento;
+    }
+    
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getModificadoPor() {
+        return modificadoPor;
+    }
+
+    public void setModificadoPor(Usuario modificadoPor) {
+        this.modificadoPor = modificadoPor;
     }
 
     @Override
@@ -148,6 +151,6 @@ public class Comentario implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Comentario[ id=" + id + " ]";
-    }
+    }     
     
 }
