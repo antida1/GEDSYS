@@ -5,6 +5,7 @@
  */
 package com.base16.gedsys.messages;
 
+import com.base16.gedsys.entities.Usuario;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -26,21 +27,28 @@ public class MessageGlowBean {
     private String channel;
     
     @ManagedProperty(value = "#{channelsBean}")
-    private ChannelBean channels;
+    private ChannelBean channels = new ChannelBean();
     
-    private String sendMessageUser;
+    //private Usuario sendMessageUser;
     
-    private String user;
+    //private Usuario usuario;
     
+    /*
     @PostConstruct
     public void doPostConstruction() {
         channel = "/" + UUID.randomUUID().toString();
-        channels.addChannel(user, channel);
+        channels.addChannel(usuario, channel);
+    }
+    */
+    
+    public void addUser(Usuario usuario){
+        channel = "/" + UUID.randomUUID().toString();
+        channels.addChannel(usuario, channel);
     }
     
-    public void  send(String sMessage){
+    public void  send(Usuario usuario, String sMessage){
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(channels.getChannel(sendMessageUser), StringEscapeUtils.escapeHtml(sMessage));
+        eventBus.publish(channels.getChannel(usuario), StringEscapeUtils.escapeHtml(sMessage));
         
     }
 }

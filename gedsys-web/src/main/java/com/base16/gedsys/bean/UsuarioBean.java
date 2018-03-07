@@ -267,6 +267,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             usrJpa = new UsuarioJpaController(emf);
             usrJpa.destroy(usuario.getId());
             this.listar();
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "Usuario Eliminada"));
         } catch (Exception e) {
             throw e;
         }

@@ -5,6 +5,7 @@
  */
 package com.base16.gedsys.messages;
 
+import com.base16.gedsys.entities.Usuario;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ApplicationScoped;
@@ -17,13 +18,13 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 @ApplicationScoped
 public class ChannelBean {
-    Map<String, String>  channels = new HashMap<String, String>();
+    Map<Usuario, String>  channels = new HashMap<Usuario, String>();
     
-    public void addChannel(String user, String channel ){
+    public void addChannel(Usuario user, String channel ){
         channels.put(user, channel);
     }
     
-    public String getChannel(String user){
+    public String getChannel(Usuario user){
         return channels.get(user);
     }
     
