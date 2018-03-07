@@ -46,18 +46,15 @@
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="allDay" value="Todo el día:" />
-                                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
+                                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />                                   
 
-                                    <p:outputLabel for="byEmail" value="Notificar por correo:" />
-                                    <h:selectBooleanCheckbox id="byEmail" value="#{scheduleView.event.notificacion.notificacionCorreo}" />
-
-                                    <p:outputLabel for="Period" value="Notificacion Periodica:" />
+                                    <p:outputLabel for="Period" value="Notificacion Periódica:" />
                                     <h:selectBooleanCheckbox id="Period" value="#{scheduleView.event.notificacion.notificacionPeriodica}" />
 
-                                    <p:outputLabel for="popup" value="Notificacion Popup" />
+                                    <p:outputLabel for="popup" value="Notificacion por Pantalla:" />
                                     <h:selectBooleanCheckbox id="popup" value="#{scheduleView.event.notificacion.notificacionPopup}" />
 
-                                    <p:outputLabel for="push" value="Notificacion Push" />
+                                    <p:outputLabel for="push" value="Notificacion por el móvil:" />
                                     <h:selectBooleanCheckbox id="push" value="#{scheduleView.event.notificacion.notificacionPush}" />                                  
 
                                     <p:commandButton id="remove" value="Eliminar" actionListener="#{scheduleView.delete()}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" >
