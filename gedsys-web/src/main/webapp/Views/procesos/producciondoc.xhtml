@@ -23,7 +23,7 @@
                             </div>
                             <div class="x_content">
                                 <br />
-                                <h:form>
+                                <h:form id="produccion">
                                     <div class="form-group col-xs-12">
                                         <div class="col-xs-12">
                                             <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="control-label col-md-4"/>
@@ -79,6 +79,7 @@
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorActa" header="Visor de Actas" widgetVar="denVisorActa" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                         <p:ajax event="close" update="produccion" />
                         <h:form> 
                             <pe:documentViewer id="documentCtlActa" height="800" value="#{actaViewBean.content}" />
                             <div>

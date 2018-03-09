@@ -75,9 +75,9 @@ public class RecepcionBean extends BaseBean implements Serializable {
         this.canPrint = true;
         this.canSave = true;
         this.documento.setFechaDocumento(new Date());
+        this.init();
     }
 
-    @PostConstruct
     public void init() {
         try {
 

@@ -238,6 +238,19 @@ public class CircularJpaController implements Serializable {
             }
         }
     }
+    
+    public List<Circular> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Circular.class));
+            Query q = em.createNamedQuery("Circular.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public List<Circular> findCircularEntities() {
         return findCircularEntities(true, -1, -1);

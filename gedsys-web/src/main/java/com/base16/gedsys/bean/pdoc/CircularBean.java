@@ -49,6 +49,7 @@ import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -101,6 +102,11 @@ public class CircularBean extends BaseBean implements Serializable {
 
     public void setAccion(String accion) {
         this.accion = accion;
+    }
+    
+    public void firmarCircular(Circular circular) {
+        this.circular = circular;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarCircular').show()");
     }
 
     public void procesar() {
@@ -177,7 +183,7 @@ public class CircularBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.circular.setModificadoPor(usuario);
             this.circular.setFechaFirma(new Date());
-            this.circular.setEstado(3);
+            this.circular.setEstado(0);
             caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
             cvb.showDocument(this.circular);
@@ -198,7 +204,7 @@ public class CircularBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.circular.getAsunto());
             documento.setDireccion("");
-            documento.setEstado(8);
+            documento.setEstado(9);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             
@@ -252,12 +258,32 @@ public class CircularBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.circular.setModificadoPor(usuario);
             this.circular.setFechaFirma(new Date());
-            this.circular.setEstado(3);
-            caJpa.edit(this.circular);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento generado correctamente!"));
+            this.circular.setEstado(0);
+            caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
             cvb.showDocument(this.circular);
             
+             // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno(this.circular.getGrupoDestinatario());
+            documento.setDestinatario(this.circular.getRemitente());
+            documento.setAsunto(this.circular.getAsunto());
+            documento.setFechaDocumento(this.circular.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.circular.getAsunto());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circular", "¡Documento generado correctamente!"));            
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);

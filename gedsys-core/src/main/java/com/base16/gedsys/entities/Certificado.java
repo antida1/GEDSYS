@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Certificado.findByFechaCreacion", query = "SELECT c FROM Certificado c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Certificado.findByFechaModificacion", query = "SELECT c FROM Certificado c WHERE c.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "Certificado.findByFechaFirma", query = "SELECT c FROM Certificado c WHERE c.fechaFirma = :fechaFirma")
+    , @NamedQuery(name = "Certificado.findByEstadoYUsuario", query = "SELECT c FROM Certificado c WHERE c.estado = :estado AND c.remitente = :usuario")
     , @NamedQuery(name = "Certificado.findByEstado", query = "SELECT c FROM Certificado c WHERE c.estado = :estado")})
 public class Certificado implements Serializable {
 

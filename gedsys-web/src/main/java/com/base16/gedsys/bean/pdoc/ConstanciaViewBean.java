@@ -89,7 +89,7 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
                 if(constancia.getRemitente().getCargo() != null){
-                    item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos() + " " + constancia.getRemitente().getCargo().getNombre());
+                    item.replaceWith(constancia.getRemitente().getCargo().getNombre());
                 }else{
                     item.replaceWith(" ");
                 }

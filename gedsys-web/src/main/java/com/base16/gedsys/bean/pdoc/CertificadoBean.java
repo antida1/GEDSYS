@@ -48,6 +48,7 @@ import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -101,7 +102,11 @@ public class CertificadoBean extends BaseBean implements Serializable {
         this.accion = accion;
     }
     
-    
+    public void firmarCertificado(Certificado certificado) {
+        this.certificado = certificado;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarCertificado').show()");
+    }
+
     
     public void procesar() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -176,7 +181,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.certificado.setModificadoPor(usuario);
             this.certificado.setFechaFirma(new Date());
-            this.certificado.setEstado(3);
+            this.certificado.setEstado(0);
             caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
             cvb.showDocument(this.certificado);
@@ -197,7 +202,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.certificado.getContenido());
             documento.setDireccion("");
-            documento.setEstado(8);
+            documento.setEstado(9);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             
@@ -250,17 +255,37 @@ public void imprimir() {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.certificado.setModificadoPor(usuario);
             this.certificado.setFechaFirma(new Date());
-            this.certificado.setEstado(3);
-            caJpa.edit(this.certificado);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento generado correctamente!"));
+            this.certificado.setEstado(0);
+            caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
             cvb.showDocument(this.certificado);
+            
+            // TODO: Crear el nuevo documento certificado
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.certificado.getRemitente());
+            documento.setAsunto(this.certificado.getContenido());
+            documento.setFechaDocumento(this.certificado.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.certificado.getContenido());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento generado correctamente!"));
             
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Certificado", "No existe el consecutivo para certificados en la Entidad Consecutivo"));
-            em.getTransaction().rollback();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Certificado", "No existe el consecutivo para certificados en la Entidad Consecutivo"));           
         }
     }    
         
