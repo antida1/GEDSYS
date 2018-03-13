@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Constancia.findByFechaCreacion", query = "SELECT c FROM Constancia c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Constancia.findByFechaModificacion", query = "SELECT c FROM Constancia c WHERE c.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "Constancia.findByFechaFirma", query = "SELECT c FROM Constancia c WHERE c.fechaFirma = :fechaFirma")
+    , @NamedQuery(name = "Constancia.findByEstadoYUsuario", query = "SELECT c FROM Constancia c WHERE c.estado = :estado AND c.remitente = :usuario")
     , @NamedQuery(name = "Constancia.findByEstado", query = "SELECT c FROM Constancia c WHERE c.estado = :estado")})
 public class Constancia implements Serializable {
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.base16.gedsys.entities.Actaasistente;
 import com.base16.gedsys.entities.Actainvitado;
+import com.base16.gedsys.entities.Prestamo;
 import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import javax.persistence.EntityManager;
@@ -398,6 +399,19 @@ public class ActaJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Acta> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Acta.class));
+            Query q = em.createNamedQuery("Acta.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public Acta findActa(Integer id) {
         EntityManager em = getEntityManager();

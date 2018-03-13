@@ -71,17 +71,7 @@
                     </p:column>
                 </p:selectManyMenu>
             </div>
-        </div>
-        <div class="col-xs-12">
-            <p:outputLabel value="Tipo de Comunicación" for="tipoComunicacionComu" class="col-xs-4 col-form-label" />
-            <div class="col-xs-8">
-                <p:selectOneMenu id="tipoComunicacionComu" value="#{tipoDocumentoBean.tipoDocumento.tipoComunicacion}"                                                          required="true"  requiredMessage="¡Error! Debe seleccionar el tipo de comunicación" >
-                <f:selectItem itemLabel="Seleccione el tipo de comunicación" itemValue="#{null}" noSelectionOption="true" />
-                <f:selectItem itemLabel="Interna" itemValue="interna" />
-                <f:selectItem itemLabel="Externa" itemValue="externa" />
-                </p:selectOneMenu>
-            </div>       
-        </div>
+        </div>        
         <p:spacer/>
          <div> 
             <p:commandButton icon="glyphicon fa fa-fw fa-save" value="Guardar" actionListener="#{comunicacionBean.procesar()}" update="anuncio clViewComunicacion firComu dlgFirmarComu" />
@@ -95,26 +85,15 @@
             <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{comunicacionBean.enviar()}" />
             -->
         </div>
-        <p:dialog id="dlgFirmarComu" header="Firmar" widgetVar="denFirmarComu" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
-            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
-                <div class="form-group row">
-                    <p:outputLabel value="Firma:" for="firmaComu" class="col-xs-4 col-form-label"></p:outputLabel>
-                    <div class="col-xs-8">
-                        <p:signature id="firmaComu" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
-                    </div> 
-                </div>
-                <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
-                <p:commandButton value="Guardar Firma" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>
-            </c:if>
-            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
-                <div class="form-group row">
-                    <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
-                    <p:outputLabel class="col-xs-12" value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="font-size: 24px; font-weight: bolder; align-content: center;"/>
-                </div>
-                <div align="center">
-                    <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.imprimir()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>
-                </div>
-            </c:if>    
+        <p:dialog id="dlgFirmarComu" header="Firmar" widgetVar="denFirmarComu" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">            
+            <div class="form-group row">
+                <p:outputLabel value="Firma:" for="firmaComu" class="col-xs-4 col-form-label"></p:outputLabel>
+                <div class="col-xs-8">
+                    <p:signature id="firmaComu" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                </div> 
+            </div>
+            <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+            <p:commandButton value="Guardar Firma" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>                          
         </p:dialog> 
         <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
             <p:graphicImage value="../../images/ajaxloading.gif"/>

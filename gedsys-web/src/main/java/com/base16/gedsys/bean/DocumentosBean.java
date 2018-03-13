@@ -384,7 +384,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             aJpa = new ActaJpaController(emf);
-            actasPorFirmar = aJpa.findActaEntities();
+            actasPorFirmar = aJpa.findByEstadoYUsuario(1,this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -406,7 +406,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new CartaJpaController(emf);
-            cartaPorFirmar = cJpa.findCartaEntities();
+            cartaPorFirmar = cJpa.findByEstadoYUsuario("1",this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -417,7 +417,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new CertificadoJpaController(emf);
-            certificadoPorFirmar = cJpa.findCertificadoEntities();
+            certificadoPorFirmar = cJpa.findByEstadoYUsuario(1,this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -428,7 +428,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new CircularJpaController(emf);
-            circularPorFirmar = cJpa.findCircularEntities();
+            circularPorFirmar = cJpa.findByEstadoYUsuario(1,this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -439,7 +439,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new ComunicacionJpaController(emf);
-            comunicadoPorFirmar = cJpa.findComunicacionEntities();
+            comunicadoPorFirmar = cJpa.findByEstadoYUsuario("1",this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -450,7 +450,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new ConstanciaJpaController(emf);
-            constanciaPorFirmar = cJpa.findConstanciaEntities();
+            constanciaPorFirmar = cJpa.findByEstadoYUsuario(1,this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -461,7 +461,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             iJpa = new InformeJpaController(emf);
-            informePorFirmar = iJpa.findInformeEntities();
+            informePorFirmar = iJpa.findByEstadoYUsuario(1,this.getCurrentUser());
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }

@@ -174,7 +174,20 @@ public class CertificadoJpaController implements Serializable {
             }
         }
     }
-
+    
+    public List<Certificado> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Certificado.class));
+            Query q = em.createNamedQuery("Certificado.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
+    
     public List<Certificado> findCertificadoEntities() {
         return findCertificadoEntities(true, -1, -1);
     }

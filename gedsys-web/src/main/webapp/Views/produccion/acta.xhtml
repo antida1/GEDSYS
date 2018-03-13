@@ -134,28 +134,28 @@
             <p:commandButton icon="glyphicon fa fa-fw fa-pencil-square-o " id="firActa" value="Firmar" onclick="PF('denFirmarActa').show()" 
                              disabled="#{not(actaBean.acta.presidente.id eq actaBean.currentUser.id)}"/>            
         </div>    
-        <p:dialog id="dlgFirmarActa" header="FIRMAR" widgetVar="denFirmarActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
-            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
-                <div class="form-group row">
-                    <p:outputLabel value="Firma:" for="firmaActa" class="col-xs-4 col-form-label"></p:outputLabel>
-                    <div class="col-xs-8">
-                        <p:signature id="firmaActa" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
-                    </div> 
-                </div>
-                <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
-                <p:commandButton value="Guardar Firma" onstart="PF('denFirmar').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="mensaje :dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>
-            </c:if>
-            <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
-                <div class="form-group row">
-                    <p:outputLabel value="NOTA:" class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
-                    <p:outputLabel class="col-xs-12" value="¡Debido a que el documento es externo debera imprimirlo, firmarlo manuscritamente y entregarlo en ventanilla única!" style="font-size: 24px; font-weight: bolder; align-content: center;"/>
-                </div>
-                <div align="center">
-                    <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmar').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.imprimir()}" update="mensaje :dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>
-                </div>
-            </c:if>                
+            <p:dialog id="dlgFirmarActa" header="FIRMAR" widgetVar="denFirmarActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
+                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="Firma:" for="firmaActa" class="col-xs-4 col-form-label"></p:outputLabel>
+                        <div class="col-xs-8">
+                            <p:signature id="firmaActa" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                        </div> 
+                    </div>
+                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+                    <p:commandButton value="Guardar Firma" onstart="PF('denFirmarActa').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.firmar()}" update="mensaje :dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>
+                </c:if>
+                <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>
+                    <div class="form-group row">
+                        <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
+                        <p:outputLabel class="col-xs-12" value="¡Debido a que el documento es externo debera imprimirlo y firmarlo de modo manuscrito!" style="font-size: 24px; font-weight: bolder; align-content: center;"/>
+                    </div>
+                     <div align="center">
+                        <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarActa').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.imprimir()}" update="mensaje :dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>
+                    </div>
+                </c:if>
         </p:dialog>
-        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+         <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
             <p:graphicImage value="../../images/ajaxloading.gif"/>
         </p:dialog>
     </h:body>

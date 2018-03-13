@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Carta.findByFechaModificacion", query = "SELECT c FROM Carta c WHERE c.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "Carta.findByFechaFirma", query = "SELECT c FROM Carta c WHERE c.fechaFirma = :fechaFirma"),
     @NamedQuery(name = "Carta.findByEstado", query = "SELECT c FROM Carta c WHERE c.estado = :estado"),
+    @NamedQuery(name="Carta.findByEstadoYUsuario", query="SELECT c FROM Carta c WHERE c.estado = :estado AND c.remitente = :usuario"),
     @NamedQuery(name = "Carta.findByDocumentoPadre", query = "SELECT c FROM Carta c WHERE c.documentoPadre = :documentoPadre")})
 public class Carta implements Serializable {
 

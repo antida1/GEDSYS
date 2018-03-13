@@ -44,6 +44,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Acta.findByFechaCreacion", query = "SELECT a FROM Acta a WHERE a.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Acta.findByFechaModificacion", query = "SELECT a FROM Acta a WHERE a.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "Acta.findByFechaFirma", query = "SELECT a FROM Acta a WHERE a.fechaFirma = :fechaFirma")
+    , @NamedQuery(name = "Acta.findByEstadoYUsuario", query = "SELECT a FROM Acta a WHERE a.estado = :estado AND a.presidente = :usuario")
     , @NamedQuery(name = "Acta.findByEstado", query = "SELECT a FROM Acta a WHERE a.estado = :estado")})
 public class Acta implements Serializable {
 

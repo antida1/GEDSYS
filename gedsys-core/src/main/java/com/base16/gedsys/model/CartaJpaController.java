@@ -175,6 +175,18 @@ public class CartaJpaController implements Serializable {
             }
         }
     }
+    public List<Carta> findByEstadoYUsuario(String estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Carta.class));
+            Query q = em.createNamedQuery("Carta.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public List<Carta> findCartaEntities() {
         return findCartaEntities(true, -1, -1);

@@ -47,6 +47,7 @@ import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -100,7 +101,10 @@ public class ConstanciaBean extends BaseBean implements Serializable{
         this.accion = accion;
     }
     
-    
+    public void firmarConstancia(Constancia constancia) {
+        this.constancia = constancia;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarConstancia').show()");
+    }
     
     public void procesar() {
         try {
@@ -175,13 +179,12 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.constancia.setModificadoPor(usuario);
             this.constancia.setFechaFirma(new Date());
-            this.constancia.setEstado(3);
-            caJpa.edit(this.constancia);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento Firmado exitosamente!"));
+            this.constancia.setEstado(0);
+            caJpa.edit(this.constancia);            
             ConstanciaViewBean cvb = new ConstanciaViewBean();
             cvb.showDocument(this.constancia);
 
-            // TODO: Crear el nuevo documento carta
+            // TODO: Crear el nuevo documento constancia
             Documento documento = new Documento();
             UploadDocument uDoc = new UploadDocument();
             File file = new File(cvb.getFilePath());
@@ -197,9 +200,11 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.constancia.getContenido());
             documento.setDireccion("");
-            documento.setEstado(8);
+            documento.setEstado(9);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento Firmado exitosamente!"));
 
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {
@@ -248,13 +253,33 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.constancia.setModificadoPor(usuario);
             this.constancia.setFechaFirma(new Date());
-            this.constancia.setEstado(3);
+            this.constancia.setEstado(0);
             caJpa.edit(this.constancia);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento generado correctamente!"));
             ConstanciaViewBean cvb = new ConstanciaViewBean();
             cvb.showDocument(this.constancia);
             
-
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.constancia.getRemitente());
+            documento.setAsunto(this.constancia.getContenido());
+            documento.setFechaDocumento(this.constancia.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.constancia.getContenido());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Constancia", "¡Documento generado correctamente!"));
+            
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Constancia", "No existe el consecutivo para constancias en la Entidad Consecutivo"));

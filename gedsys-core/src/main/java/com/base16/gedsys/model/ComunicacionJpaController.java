@@ -266,7 +266,20 @@ public class ComunicacionJpaController implements Serializable {
             }
         }
     }
-
+    
+    public List<Comunicacion> findByEstadoYUsuario(String estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Comunicacion.class));
+            Query q = em.createNamedQuery("Comunicacion.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
+    
     public List<Comunicacion> findComunicacionEntities() {
         return findComunicacionEntities(true, -1, -1);
     }

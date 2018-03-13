@@ -65,6 +65,7 @@ import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -262,9 +263,8 @@ public class ActaBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.acta.setModificadoPor(usuario);
             this.acta.setFechaFirma(new Date());
-            this.acta.setEstado(3);
-            caJpa.edit(this.acta);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento Firmado exitosamente!"));
+            this.acta.setEstado(0);
+            caJpa.edit(this.acta);            
             ActaViewBean cvb = new ActaViewBean();
             cvb.showDocument(this.acta);
 
@@ -284,7 +284,7 @@ public class ActaBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.acta.getDesarrollo());
             documento.setDireccion(this.acta.getLugar());
-            documento.setEstado(8);
+            documento.setEstado(9);
 
             // Crea la colección de asistentes para llenar la colección de destinatarios del documento
             Collection<DestinatariosDoc> destinatariosDocCollection = new ArrayList<>();
@@ -300,15 +300,18 @@ public class ActaBean extends BaseBean implements Serializable {
 
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
-
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento Firmado exitosamente!"));
+            
+            em.getTransaction().commit();
+            
+            
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {
                 this.documentoRelacionado.setDocumentoRelacionado(documento);
                 this.documentoRelacionado.setEstado(3);
                 djc.edit(this.documentoRelacionado);
-            }
-
-            em.getTransaction().commit();
+            } 
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -321,6 +324,11 @@ public class ActaBean extends BaseBean implements Serializable {
 //        this.acta.setModificadoPor(usuario);
 //        this.acta.setFechaFirma(new Date());
 //        this.acta.setEstado(3);
+    }
+    
+    public void firmarActa(Acta acta) {
+        this.acta = acta;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarActa').show()");
     }
     
     public void imprimir() {
@@ -352,12 +360,32 @@ public class ActaBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.acta.setModificadoPor(usuario);
             this.acta.setFechaFirma(new Date());
-            this.acta.setEstado(3);
-            caJpa.edit(this.acta);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento generado correctamente!"));
+            this.acta.setEstado(0);
+            caJpa.edit(this.acta);            
             ActaViewBean cvb = new ActaViewBean();
             cvb.showDocument(this.acta);
             
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.acta.getPresidente());
+            documento.setAsunto(this.acta.getOrden());
+            documento.setFechaDocumento(this.acta.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.acta.getDesarrollo());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento generado correctamente!"));
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);

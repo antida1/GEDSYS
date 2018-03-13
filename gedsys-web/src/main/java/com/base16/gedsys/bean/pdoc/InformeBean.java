@@ -47,6 +47,7 @@ import javax.persistence.EntityManagerFactory;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -98,6 +99,11 @@ public class InformeBean extends BaseBean implements Serializable {
 
     public void setAccion(String accion) {
         this.accion = accion;
+    }
+    
+    public void firmarInforme(Informe informe) {
+        this.informe = informe;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarInforme').show()");
     }
     
     public void procesar() {
@@ -173,9 +179,8 @@ public class InformeBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.informe.setModificadoPor(usuario);
             this.informe.setFechaFirma(new Date());
-            this.informe.setEstado(3);
-            caJpa.edit(this.informe);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", "¡Documento Firmado exitosamente!"));
+            this.informe.setEstado(0);
+            caJpa.edit(this.informe);            
             InformeViewBean cvb = new InformeViewBean();
             cvb.showDocument(this.informe);
 
@@ -195,9 +200,11 @@ public class InformeBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.informe.getConclusiones());
             documento.setDireccion("");
-            documento.setEstado(8);
+            documento.setEstado(9);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", "¡Documento Firmado exitosamente!"));
 
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {
@@ -247,12 +254,32 @@ public class InformeBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.informe.setModificadoPor(usuario);
             this.informe.setFechaFirma(new Date());
-            this.informe.setEstado(3);
-            caJpa.edit(this.informe);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", "¡Documento generado correctamente!"));
+            this.informe.setEstado(0);
+            caJpa.edit(this.informe);            
             InformeViewBean cvb = new InformeViewBean();
             cvb.showDocument(this.informe);
             
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.informe.getRemitente());
+            documento.setAsunto(this.informe.getObjetivo());
+            documento.setFechaDocumento(this.informe.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.informe.getConclusiones());
+            documento.setDireccion("");
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informe", "¡Documento generado correctamente!"));            
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);

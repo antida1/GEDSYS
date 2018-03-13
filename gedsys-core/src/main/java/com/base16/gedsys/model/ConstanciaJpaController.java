@@ -174,7 +174,20 @@ public class ConstanciaJpaController implements Serializable {
             }
         }
     }
-
+    
+    public List<Constancia> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Constancia.class));
+            Query q = em.createNamedQuery("Constancia.findByEstado",Integer.class)
+                    .setParameter("estado", estado);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
+    
     public List<Constancia> findConstanciaEntities() {
         return findConstanciaEntities(true, -1, -1);
     }

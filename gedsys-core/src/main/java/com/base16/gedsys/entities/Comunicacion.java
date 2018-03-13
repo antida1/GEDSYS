@@ -44,6 +44,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comunicacion.findByFechaCreacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Comunicacion.findByFechaModificacion", query = "SELECT c FROM Comunicacion c WHERE c.fechaModificacion = :fechaModificacion"),
     @NamedQuery(name = "Comunicacion.findByFechaFirma", query = "SELECT c FROM Comunicacion c WHERE c.fechaFirma = :fechaFirma"),
+    @NamedQuery(name = "Comunicacion.findByEstadoYUsuario", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado AND c.remitente = :usuario"),
     @NamedQuery(name = "Comunicacion.findByEstado", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado")})
 public class Comunicacion implements Serializable {
 

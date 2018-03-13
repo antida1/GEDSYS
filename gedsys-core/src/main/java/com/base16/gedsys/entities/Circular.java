@@ -45,6 +45,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Circular.findByFechaCreacion", query = "SELECT c FROM Circular c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Circular.findByFechaModifiacion", query = "SELECT c FROM Circular c WHERE c.fechaModifiacion = :fechaModifiacion")
     , @NamedQuery(name = "Circular.findByFechaFirma", query = "SELECT c FROM Circular c WHERE c.fechaFirma = :fechaFirma")
+    , @NamedQuery(name = "Circular.findByEstadoYUsuario", query = "SELECT c FROM Circular c WHERE c.estado = :estado AND c.remitente = :usuario")
     , @NamedQuery(name = "Circular.findByEstado", query = "SELECT c FROM Circular c WHERE c.estado = :estado")})
 public class Circular implements Serializable {
 

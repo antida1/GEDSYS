@@ -174,7 +174,20 @@ public class InformeJpaController implements Serializable {
             }
         }
     }
-
+    
+    public List<Informe> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Informe.class));
+            Query q = em.createNamedQuery("Informe.findByEstadoYUsuario",Integer.class)
+                    .setParameter("estado", estado).setParameter("usuario", usuario);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
+    
     public List<Informe> findInformeEntities() {
         return findInformeEntities(true, -1, -1);
     }

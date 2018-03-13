@@ -94,6 +94,11 @@ public class CartaBean extends BaseBean implements Serializable {
     public Documento getDocumentoRelacionado() {
         return documentoRelacionado;
     }
+    
+    public void firmarCarta(Carta carta) {
+        this.carta = carta;
+        RequestContext.getCurrentInstance().execute("PF('denFirmarCarta').show()");
+    }
 
     public void setDocumentoRelacionado(Documento documentoRelacionado) {
         this.documentoRelacionado = documentoRelacionado;
@@ -162,7 +167,7 @@ public class CartaBean extends BaseBean implements Serializable {
         this.carta.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.carta.setModificadoPor(usuario);
-        this.carta.setEstado("2");
+        this.carta.setEstado("1");
         cJpa.edit(this.carta);
 
     }
@@ -196,7 +201,7 @@ public class CartaBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.carta.setModificadoPor(usuario);
             this.carta.setFechaFirma(new Date());
-            this.carta.setEstado("3");
+            this.carta.setEstado("0");
             caJpa.edit(this.carta);                       
             CartaViewBean cvb = new CartaViewBean();            
             cvb.showDocument(this.carta); 
@@ -217,7 +222,7 @@ public class CartaBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.carta.getAsunto());
             documento.setDireccion(this.carta.getDireccion());
-            documento.setEstado(8);
+            documento.setEstado(9);
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);   
             
@@ -266,11 +271,33 @@ public class CartaBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.carta.setModificadoPor(usuario);
             this.carta.setFechaFirma(new Date());
-            this.carta.setEstado("3");
-            caJpa.edit(this.carta);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento generado correctamente!"));
+            this.carta.setEstado("0");
+            caJpa.edit(this.carta);            
             CartaViewBean cvb = new CartaViewBean();
             cvb.showDocument(this.carta);
+            
+            // TODO: Crear el nuevo documento carta
+            Documento documento = new Documento();
+            UploadDocument uDoc = new UploadDocument();
+            File file = new File(cvb.getFilePath());
+            uDoc.upload(file, this.getDocumenstSavePath());
+            
+            // TODO: Crea nuevo registro de documento
+            documento.setRutaArchivo(uDoc.getFileName(file));
+            documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setRemitenteExteno("");
+            documento.setDestinatario(this.carta.getCreadoPor());
+            documento.setAsunto(this.carta.getAsunto());
+            documento.setFechaDocumento(this.carta.getFecha());
+            documento.setFechaCreacion(new Date());
+            documento.setDetalle(this.carta.getContenido());
+            documento.setDireccion(this.carta.getDireccion());            
+            documento.setEstado(8);
+            DocumentoJpaController djc = new DocumentoJpaController(emf);
+            djc.create(documento);
+            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento generado correctamente!"));
+            
             
 
         } catch (Exception ex) {
