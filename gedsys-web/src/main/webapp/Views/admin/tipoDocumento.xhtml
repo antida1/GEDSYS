@@ -98,6 +98,7 @@
                             </div>
                         </h:form>
                         <p:dialog id="dlgDetalle" header="Tipos de documento" widgetVar="tipoDocumentoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="350" width="70%">
+                             <p:ajax event="close" update=":form"/>
                             <h:form>
                                 <h:inputHidden id="id" value="#{tipoDocumentoBean.tipoDocumento.id}" />
                                 <div class="form-group row">
@@ -131,7 +132,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo Calendario" for="tipoCalendario" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
+                                    <div class="col-xs-9">                                        
                                         <p:selectOneMenu id="tipoCalendario" value="#{tipoDocumentoBean.tipoDocumento.tipoCalendario}" onchange="PF('tipoDocumentoTabla').filter()" 
                                                          required="true"  requiredMessage="Error, debe seleccionar el tipo de calendario">
                                             <f:selectItem itemLabel="Seleccione el tipo de calendario" itemValue="#{null}" noSelectionOption="true" />
@@ -143,7 +144,7 @@
 
                                 <p:spacer/>
                                 <div> 
-                                    <p:commandButton update=":form:lstTipoDocumento messages" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" />
+                                    <p:commandButton update="messages :form:lstTipoDocumento" process="@form" icon="ui-icon-disk" value="#{tipoDocumentoBean.accion}" actionListener="#{tipoDocumentoBean.procesar()}" />
                                     <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('tipoDocumentoDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

@@ -61,10 +61,10 @@
                         </div>
                     </div>
                     <div class="col-xs-12">
-                        <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería <span class="required">*</span>
+                        <label class="col-xs-4" for="tercero">Empresa/Tercero de mensajería <span></span>
                         </label>
                         <div class="col-xs-8">
-                            <p:selectOneMenu id="tercero" value="#{envioBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="¡Error! Debe seleccionar una empresa de mensajería">
+                            <p:selectOneMenu id="tercero" value="#{envioBean.documento.transportador}" filter="true" filterMatchMode="startsWith" style="width: 100%" converter="omnifaces.SelectItemsConverter" >
                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione una empresa/tercero " itemValue="#{null}" />
                                 <f:selectItems value="#{transportadorBean.transportadores}" var="transportador" itemLabel="#{transportador.nombre}" itemValue="#{transportador}" />
                             </p:selectOneMenu>
@@ -111,7 +111,7 @@
                         <p:commandButton  widgetVar="printRad" update=":form" class="btn-info" style="margin-left: 10px;"  icon="ui-icon-pencil" type="button" title="Imprimr radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false"  disabled="#{envioBean.canPrint}" ></p:commandButton>
                         <p:commandButton  widgetVar="saveDoc" update=":form imessages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px;" disabled="#{envioBean.canSave}"/>
                         <p:commandButton class="btn-default" style="float: right;" value="Cancelar" immediate="true"></p:commandButton>
-                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="550" maximizable="true" closable="true" closeOnEscape="true">
+                        <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="40%" height="500" maximizable="true" closable="true" closeOnEscape="true">
                             <ui:include src="newRadicadoSalida.xhtml">
                                 <ui:param name="tipoRadicado" value="externo" />
                                 <ui:param name="consectivoExterno" value="#{envioBean.documento.consecutivo}" />
