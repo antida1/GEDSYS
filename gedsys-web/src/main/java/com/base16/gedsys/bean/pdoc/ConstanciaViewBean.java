@@ -32,6 +32,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.jsoup.Jsoup;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
@@ -98,7 +99,7 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
             contenido = new TextNavigation("@contenido", odt);
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(constancia.getContenido());
+                item.replaceWith(Jsoup.parse(constancia.getContenido()).text());
             }
 
             remitente = new TextNavigation("@remitente", odt);

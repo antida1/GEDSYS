@@ -78,6 +78,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
         this.init();
     }
 
+    //@PostConstruct
     public void init() {
         try {
 

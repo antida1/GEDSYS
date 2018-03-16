@@ -32,6 +32,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.jsoup.Jsoup;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
@@ -105,7 +106,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             contenido = new TextNavigation("@contenido", odt);
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) contenido.nextSelection();
-                item.replaceWith(circular.getContenido());
+                item.replaceWith(Jsoup.parse(circular.getContenido()).text());
             }
 
             despedida = new TextNavigation("@despedida", odt);
@@ -133,7 +134,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
              anexos = new TextNavigation("@anexos", odt);
             while (anexos.hasNext()) {
                 TextSelection item = (TextSelection) anexos.nextSelection();
-                item.replaceWith("Anexos:" + circular.getAnexos());
+                item.replaceWith("Anexos:" + Jsoup.parse(circular.getAnexos()).text());
             }
             
              copia = new TextNavigation("@copia", odt);

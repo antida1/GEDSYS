@@ -25,7 +25,7 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable id="lstDias" var="festivo" value="#{diaFestivoBean.diaFestivos}" style="margin-bottom:0" rows="10" reflow="true"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                             paginator="true" scrollable="true" scrollHeight=""
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                     
@@ -77,11 +77,9 @@
                                 </div>
                             </div>
                             <p:spacer/>
-                            <div>
-                                <div class="col-xs-7"></div>
-                                <p:commandButton update=":form:lstDias messages" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}"/>
+                            <div align="center">                                
+                                <p:commandButton update=":form:lstDias messages" process="@form" icon="ui-icon-disk" value="#{diaFestivoBean.accion}" actionListener="#{diaFestivoBean.procesar()}"/>
                                 <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('diaDialog').hide()"></p:commandButton>
-
                             </div>
                         </h:form>
                     </p:dialog>

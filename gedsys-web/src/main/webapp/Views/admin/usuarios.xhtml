@@ -67,11 +67,37 @@
                                                              title="Borrar"
                                                              actionListener="#{usuarioBean.eliminar(usuario)}" 
                                                              update=":form:lstUsuarios messages"/>
+                                            <p:commandButton icon="ui-icon-key" 
+                                                             title="Restablecer Contraseña"
+                                                             actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
+                                                             oncomplete="PF('resetPasswordDialog').show()"
+                                                             update=":form:lstUsuarios messages"/>
                                         </p:column>
                                     </p:dataTable>
                                 </div>
                             </h:form>
+                            <p:dialog id="dlgReset" header="Cambiar contraseña" widgetVar="resetPasswordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="40%" >
+                                <h:form>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Contraseña" for="changePassword" class="col-xs-6 col-form-label" />
+                                        <div class="col-xs-6">
+                                            <p:password id="changePassword" value="#{usuarioBean.password}" match="changePassword2" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel value="Confirmación de contraseña" for="changePassword2" class="col-xs-6 col-form-label" />
+                                        <div class="col-xs-6">
+                                            <p:password id="changePassword2" value="#{usuarioBean.password}"/>
+                                        </div>
+                                    </div>
+                                    <p:spacer/>
+                                    <div align="center"> 
+                                        <p:commandButton update="messages" icon="ui-icon-disk" value="Guardar" actionListener="#{usuarioBean.resetPassword() }" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
+                                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
 
+                                    </div>
+                                </h:form>
+                            </p:dialog>
                             <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="60%" >
                                 <h:form enctype="multipart/form-data">
                                     <f:event type="preRenderView" listener="#{signaturaTree.loadCheckedByCurrentUser(usuarioBean.usuario)}" />
@@ -138,18 +164,20 @@
                                                     <p:inputText id="Usuario" required="true" value="#{usuarioBean.usuario.usuario}" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <p:outputLabel value="Contraseña" for="password" class="col-xs-3 col-form-label" />
-                                                <div class="col-xs-9">
-                                                    <p:password id="password" value="#{usuarioBean.password}" match="password2" />
+                                            <c:if test="#{usuarioBean.accion == 'Crear'}">
+                                                <div class="form-group row">
+                                                    <p:outputLabel value="Contraseña" for="password" class="col-xs-3 col-form-label" />
+                                                    <div class="col-xs-9">
+                                                        <p:password id="password" value="#{usuarioBean.password}" match="password2" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <p:outputLabel value="Confirmación de contraseña" for="password" class="col-xs-3 col-form-label" />
-                                                <div class="col-xs-9">
-                                                    <p:password id="password2" value="#{usuarioBean.password}"/>
+                                                <div class="form-group row">
+                                                    <p:outputLabel value="Confirmación de contraseña" for="password" class="col-xs-3 col-form-label" />
+                                                    <div class="col-xs-9">
+                                                        <p:password id="password2" value="#{usuarioBean.password}"/>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </c:if>
                                             <div class="form-group row">
                                                 <p:outputLabel value="Grupo" for="grupo" class="col-md-3 col-form-label"></p:outputLabel>
                                                 <div class="col-xs-9">
@@ -187,7 +215,7 @@
                                         <div> 
                                             <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
                                             <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
-                                            
+
                                         </div>
                                     </div>
                                 </h:form>

@@ -29,7 +29,7 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="departamentoTabla" id="lstDepartamentos" var="departamento" value="#{departamentoBean.departamentos}" style="margin-bottom:0" rows="10" reflow="true"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                             paginator="true" scrollable="true" scrollHeight=""
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">
                                    <p:column headerText="País" filterBy="#{departamento.pais}" filterMatchMode="exact">
@@ -120,8 +120,8 @@
                                 </div>
                             </div>
                             <p:spacer/>
-                            <div> 
-                                <p:commandButton update=":form:lstDepartamentos messages" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}"  />
+                            <div align="center"> 
+                                <p:commandButton update=":form:lstDepartamentos messages" process="@form" icon="ui-icon-disk" value="#{departamentoBean.accion}" actionListener="#{departamentoBean.procesar()}"  />
                                 <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('departamentoDialog').hide()"></p:commandButton>
                             </div>
                         </h:form>

@@ -56,6 +56,7 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
+        this.limpiar();
         this.accion = accion;
     }
     
@@ -165,11 +166,6 @@ public class MunicipioBean extends BaseBean implements Serializable {
     }
     
     public void limpiar(){
-        this.municipio.setCodigo("");
-        this.municipio.setCreadoPor(null);
-        this.municipio.setModificadoPor(null);
-        this.municipio.setNombre("");
-        this.municipio.setFechaCreacion(new Date());
-        this.municipio.setFechaModificacion(new Date());
+        this.municipio = new Municipio();
     }
 }

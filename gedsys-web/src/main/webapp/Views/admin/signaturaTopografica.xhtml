@@ -49,7 +49,7 @@
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog> 
                     </div>
-                    <p:dialog id="dlgDetalle" header="Signatura topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="190" width="500">
+                    <p:dialog id="dlgDetalle" header="Signatura topográfica" widgetVar="signaturaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="170" width="500">
                         <h:form>
                             <div class="row">
                                 <div class="col-xs-12">
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <p:spacer/>
-                                    <div>
+                                    <div align="center">
                                         <p:commandButton update=":form:signaturaTree messages" icon="ui-icon-disk" value="#{signaturaTopograficaBean.accion}" actionListener="#{signaturaTopograficaBean.procesar()}" oncomplete="PF('signaturaDialog').hide()" />
                                         <p:commandButton icon="ui-icon-circle-close"  value="Cancelar" immediate="true" oncomplete="PF('signaturaDialog').hide()"></p:commandButton>
                                     </div>

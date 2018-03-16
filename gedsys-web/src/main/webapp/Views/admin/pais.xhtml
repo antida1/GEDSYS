@@ -31,7 +31,7 @@
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="paisTabla" id="lstPaises" var="pais" value="#{paisBean.paises}" style="margin-bottom:0" rows="10" reflow="true"
-                                             paginator="true" scrollable="true" scrollHeight="250"
+                                             paginator="true" scrollable="true" scrollHeight=""
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15">                               
                                     <p:column headerText="Código" filterBy="#{pais.codigo}" filterMatchMode="contains">
@@ -103,8 +103,8 @@
                                     </div>
                                 </div>
                                 <p:spacer/>
-                                <div> 
-                                    <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
+                                <div align="center"> 
+                                    <p:commandButton update=":form:lstPaises messages" process="@form" icon="ui-icon-disk" value="#{paisBean.accion}" actionListener="#{paisBean.procesar()}" oncomplete="PF('paisDialog').hide()" />
                                     <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('paisDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

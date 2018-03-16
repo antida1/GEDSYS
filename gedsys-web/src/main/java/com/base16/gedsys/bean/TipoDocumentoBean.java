@@ -60,21 +60,19 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
         try {
             switch(accion){
                 case "Crear":
-                    crear();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento creado exitoxamente!"));
+                    crear();                    
                     break;
                 case "Modificar":
-                    modificar();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento modificado exitoxamente!"));
+                    modificar();                    
                     break;
-            }
-            RequestContext.getCurrentInstance().execute("PF('tipoDocumentoDialog').hide()");
+            }            
         } catch (Exception e) {
             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo Documento", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
+       
     private void crear() throws Exception{
         TipoDocumentoJpaController sJpa;
         try {
@@ -88,6 +86,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             this.tipoDocumento.setCreadoPor(usuario);
             sJpa.create(tipoDocumento);
             this.listar();
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento creado exitoxamente!"));
         } catch (Exception e) {
             throw e;
         }
@@ -98,11 +97,13 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             sJpa = new TipoDocumentoJpaController(emf);
+            
             this.tipoDocumento.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.tipoDocumento.setModificadoPor(usuario);
             sJpa.edit(tipoDocumento);
             this.listar();
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento modificado exitoxamente!"));
         } catch (Exception e) {
             throw e;
         }
@@ -115,7 +116,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             sJpa = new TipoDocumentoJpaController(emf);
             sJpa.destroy(tipoDocumento.getId());
             this.listar();
-             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "Tipo Documento Eliminado"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "Tipo Documento Eliminado"));
         } catch (Exception e) {
              this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo Documento", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());

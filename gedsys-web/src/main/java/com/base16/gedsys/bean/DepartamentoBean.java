@@ -57,6 +57,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
+        this.limpiar();
         this.accion = accion;
     }
 
@@ -169,6 +170,10 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public void limpiar(){
+        this.departamento = new Departamento();
     }
 
 }

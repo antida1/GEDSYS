@@ -37,6 +37,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.jsoup.Jsoup;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
@@ -148,19 +150,19 @@ public class ActaViewBean extends BaseBean implements Serializable {
             searchOrden = new TextNavigation("@orden", odt);
             while (searchOrden.hasNext()) {
                 TextSelection item = (TextSelection) searchOrden.nextSelection();
-                item.replaceWith(acta.getOrden());
+                item.replaceWith(Jsoup.parse(acta.getOrden()).text());
             }
 
             searchDesarrollo = new TextNavigation("@desarrollo", odt);
             while (searchDesarrollo.hasNext()) {
                 TextSelection item = (TextSelection) searchDesarrollo.nextSelection();
-                item.replaceWith(acta.getDesarrollo());
+                item.replaceWith(Jsoup.parse(acta.getDesarrollo()).text());
             }
 
             searchConvocatoria = new TextNavigation("@convocatoria", odt);
             while (searchConvocatoria.hasNext()) {
                 TextSelection item = (TextSelection) searchConvocatoria.nextSelection();
-                item.replaceWith(acta.getConvocatoria());
+                item.replaceWith(Jsoup.parse(acta.getConvocatoria()).text());
             }
 
             searchPresidente = new TextNavigation("@presidente", odt);

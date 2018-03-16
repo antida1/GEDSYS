@@ -14,6 +14,7 @@ import com.base16.gedsys.entities.Usuariosignaturas;
 import com.base16.gedsys.model.GrupoUsuarioJpaController;
 import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.model.UsuariosignaturasJpaController;
+import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import com.base16.gedsys.security.Authentication;
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
     private TreeNode[] selectedSignaturas;
     private TreeNode[] signaturas;
-    
+
     public UploadedFile getPhotoFile() {
         return photoFile;
     }
@@ -134,7 +135,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
     }
 
     public UsuarioBean() {
-        
+
     }
 
     public void procesar() {
@@ -204,7 +205,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
         UsuarioJpaController usrJpa;
         GrupoUsuarioJpaController guJpa;
         UsuariosignaturasJpaController usJpa;
-        
+
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             usrJpa = new UsuarioJpaController(emf);
@@ -229,9 +230,6 @@ public class UsuarioBean extends BaseBean implements Serializable {
             //    uploadFirma();
             //}
             uploadPhoto();
-            if (!this.usuario.getClave().equals(Authentication.md5(this.password))) {
-                this.usuario.setClave(Authentication.md5(this.password));
-            }
             if (this.getPhotoName().equals("user.png")) {
                 this.usuario.setFoto(this.usuario.getFoto());
             } else {
@@ -240,9 +238,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
             this.usuario.setGrupoUsuarioCollection2(grupoUsuarioCollection);
             usrJpa.edit(usuario);
-            
-            
-            
+
             //Eliminar las Signaturas por usuario
             //Recrear las signaturas asignadas al ausuario.
             for (TreeNode selectedSignatura : selectedSignaturas) {
@@ -252,7 +248,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
                 usuarioSignatura.setUsuario(this.usuario);
                 usJpa.create(usuarioSignatura);
             }
-            
+
             emf.getCache().evictAll();
             this.listar();
         } catch (Exception e) {
@@ -267,7 +263,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             usrJpa = new UsuarioJpaController(emf);
             usrJpa.destroy(usuario.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "Usuario Eliminada"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "Usuario Eliminada"));
         } catch (Exception e) {
             throw e;
         }
@@ -301,7 +297,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
                     break;
                 }
                 //TODO: Cargar Signaturas topograficas.
-                
+
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
@@ -364,6 +360,21 @@ public class UsuarioBean extends BaseBean implements Serializable {
             return fileName + "." + extension;
         }
         return "user.png";
+    }
+
+    public void resetPassword() {
+        try {
+            UsuarioJpaController usrJpa;
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            usrJpa = new UsuarioJpaController(emf);
+            this.usuario.setClave(Authentication.md5(this.password));
+            usrJpa.edit(this.usuario);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void limpiar() {
