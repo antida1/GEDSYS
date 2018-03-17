@@ -37,7 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Comentario.findByFechaCreacion", query = "SELECT c FROM Comentario c WHERE c.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Comentario.findByFechaModificacion", query = "SELECT c FROM Comentario c WHERE c.fechaModificacion = :fechaModificacion")
     , @NamedQuery(name = "Comentario.findByCreadoPor", query = "SELECT c FROM Comentario c WHERE c.creadoPor = :creadoPor")
+    , @NamedQuery(name = "Comentario.findByDocumento", query = "SELECT c FROM Comentario c WHERE c.documento = :documento")
+    , @NamedQuery(name = "Comentario.findByTipoComProd", query = "SELECT c FROM Comentario c WHERE c.tipoComentario = :tipoComentario and c.idDocProduccion = :idDocProduccion")
     , @NamedQuery(name = "Comentario.findByModificadoPor", query = "SELECT c FROM Comentario c WHERE c.modificadoPor = :modificadoPor")})
+
 public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +57,7 @@ public class Comentario implements Serializable {
     private Date fechaCreacion;
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;    
+    private Date fechaModificacion;
     @JoinColumn(name = "Documento", referencedColumnName = "Id")
     @ManyToOne
     private Documento documento;
@@ -63,7 +66,7 @@ public class Comentario implements Serializable {
     private Usuario creadoPor;
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
-    private Usuario modificadoPor; 
+    private Usuario modificadoPor;
 
     public Comentario() {
     }
@@ -111,7 +114,7 @@ public class Comentario implements Serializable {
     public void setDocumento(Documento documento) {
         this.documento = documento;
     }
-    
+
     public Usuario getCreadoPor() {
         return creadoPor;
     }
@@ -151,6 +154,6 @@ public class Comentario implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Comentario[ id=" + id + " ]";
-    }     
-    
+    }
+
 }

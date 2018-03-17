@@ -165,4 +165,55 @@ public class ComentarioJpaController implements Serializable {
         }
     }
     
+    public List<Comentario> findComentarioByDocumento(Documento documento) {
+        return findComentarioByDocumento(documento, true, -1, -1);
+    }
+
+    public List<Comentario> findComentarioByDocumento(Documento documento, int maxResults, int firstResult) {
+        return findComentarioByDocumento(documento, false, maxResults, firstResult);
+    }
+
+    private List<Comentario> findComentarioByDocumento(Documento documento, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Comentario.class));
+            Query q = em.createNamedQuery("Comentario.findByDocumento", Comentario.class)
+                    .setParameter("documento", documento);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Comentario> findByTipoComProd(int tipoComentario, int idDocProduccion) {
+        return findByTipoComProd(tipoComentario, idDocProduccion, true, -1, -1);
+    }
+
+    public List<Comentario> findByTipoComProd(int tipoComentario, int idDocProduccion, int maxResults, int firstResult) {
+        return findByTipoComProd(tipoComentario, idDocProduccion, false, maxResults, firstResult);
+    }
+
+    private List<Comentario> findByTipoComProd(int tipoComentario, int idDocProduccion, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Comentario.class));
+            Query q = em.createNamedQuery("Comentario.findByTipoComProd", Comentario.class)
+                    .setParameter("tipoComentario", tipoComentario)
+                    .setParameter("idDocProduccion", idDocProduccion);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }
