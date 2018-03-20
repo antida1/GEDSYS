@@ -43,6 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public class Comentario implements Serializable {
 
+
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,7 +69,12 @@ public class Comentario implements Serializable {
     @JoinColumn(name = "ModificadoPor", referencedColumnName = "Id")
     @ManyToOne
     private Usuario modificadoPor;
+    @Column(name = "TipoComentario")
+    private Integer tipoComentario;
+    @Column(name = "IdDocProduccion")
+    private Integer idDocProduccion;
 
+    
     public Comentario() {
     }
 
@@ -154,6 +161,22 @@ public class Comentario implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Comentario[ id=" + id + " ]";
+    }
+
+    public Integer getTipoComentario() {
+        return tipoComentario;
+    }
+
+    public void setTipoComentario(Integer tipoComentario) {
+        this.tipoComentario = tipoComentario;
+    }
+
+    public Integer getIdDocProduccion() {
+        return idDocProduccion;
+    }
+
+    public void setIdDocProduccion(Integer idDocProduccion) {
+        this.idDocProduccion = idDocProduccion;
     }
 
 }
