@@ -65,6 +65,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
+        this.limpiar();
         this.accion = accion;
     }
 
@@ -162,5 +163,9 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
+    }
+    
+    public void limpiar(){
+        this.consecutivo = new Consecutivo();
     }
 }

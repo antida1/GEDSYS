@@ -150,8 +150,6 @@ public class TransportadorBean extends BaseBean implements Serializable {
     }
     
     public void limpiar(){
-        this.transportador.setNombre("");
-        this.transportador.setCreadoPor(null);
-        this.transportador.setId(0);
+        this.transportador = new Transportador();
     }
 }

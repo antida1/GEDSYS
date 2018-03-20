@@ -21,7 +21,7 @@
                     <div class="col-xs-12 x_panel">
                         <h:form id="form">
                             <div class="x_title">
-                                <h2>Países</h2>
+                                <h2>Medios de Recepción</h2>
                                 <div class="clear"></div>
                             </div>
                             <div class="x_content">
@@ -110,8 +110,8 @@
                                     </div>
                                 </div>
                                 <p:spacer/>
-                                <div> 
-                                    <p:commandButton update=":form:lstPaises messages" icon="ui-icon-disk" value="#{mediosRepEnvBean.accion}" actionListener="#{mediosRepEnvBean.procesar()}" />
+                                <div align="center"> 
+                                    <p:commandButton update=":form:lstPaises messages" process="@form" icon="ui-icon-disk" value="#{mediosRepEnvBean.accion}" actionListener="#{mediosRepEnvBean.procesar()}" />
                                     <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('medioRecepcionDialog').hide()"></p:commandButton>
                                 </div>
                             </h:form>

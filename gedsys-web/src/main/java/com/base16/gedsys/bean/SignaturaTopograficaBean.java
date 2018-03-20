@@ -59,7 +59,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
-        //this.limpiar();
+        this.limpiar();
         this.accion = accion;
     }
     

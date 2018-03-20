@@ -127,6 +127,7 @@ public class PlanillaEnvioBean extends BaseBean implements Serializable {
             this.planillaEnvio.setFechaCreacion(new Date());
             this.planillaEnvio.setFechaModificacion(new Date());
             this.planillaEnvio.setCreadoPor(usuario);
+            this.planillaEnvio.setModificadoPor(usuario);
             List<PlanillaEnvioDocumento> planillaEnvioDocumentoList = new ArrayList<>();
             for (Documento documentosSeleccionado : documentosSeleccionados) {
                 PlanillaEnvioDocumento ped = new PlanillaEnvioDocumento();

@@ -28,7 +28,7 @@
                                 <p:separator/>
                                 
                                 <p:dataTable widgetVar="transportadorTabla" id="lstTransportadores" var="transportador" value="#{transportadorBean.transportadores}" style="margin-bottom:0" rows="10" reflow="true"
-                                paginator="true" scrollable="true" scrollHeight="250"
+                                paginator="true" scrollable="true" scrollHeight=""
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                 rowsPerPageTemplate="5,10,15">                                  
                                     <p:column headerText="Tipo de documento" filterBy="#{transportador.tipoDocumento}" filterMatchMode="exact">
@@ -80,13 +80,13 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Transportadores" widgetVar="transportadorDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="360" width="500">
+                        <p:dialog id="dlgDetalle" header="Transportadores" widgetVar="transportadorDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="300" width="600">
                             <h:form>
                                 <h:inputHidden id="id" value="#{transportadorBean.transportador.id}" />
                                 <div class="form-group row">
                                     <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-5 col-form-label"/>
                                     <div class="col-xs-7">
-                                        <p:selectOneMenu id="tipoDocumento" value="#{transportadorBean.transportador.tipoDocumento}" required="true" requiredMessage="Error, debe seleccionar un tipo de documento">
+                                        <p:selectOneMenu id="tipoDocumento" value="#{transportadorBean.transportador.tipoDocumento}"  required="true" requiredMessage="Error, debe seleccionar un tipo de documento">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                             <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
@@ -129,7 +129,7 @@
                                 </div>
 
                                 <p:spacer/>
-                                <div> 
+                                <div align="center"> 
                                     <p:commandButton update=":form:lstTransportadores messages" icon="ui-icon-disk" value="#{transportadorBean.accion}" actionListener="#{transportadorBean.procesar()}" />
                                     <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('transportadorDialog').hide()"></p:commandButton>
                                 </div>

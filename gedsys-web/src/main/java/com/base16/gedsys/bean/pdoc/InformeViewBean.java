@@ -33,6 +33,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.jsoup.Jsoup;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.common.navigation.TextNavigation;
 import org.odftoolkit.simple.common.navigation.TextSelection;
@@ -100,13 +101,13 @@ public class InformeViewBean extends BaseBean implements Serializable {
             objetivo = new TextNavigation("@objetivo", odt);
             while (objetivo.hasNext()) {
                 TextSelection item = (TextSelection) objetivo.nextSelection();
-                item.replaceWith(informe.getObjetivo());
+                item.replaceWith(Jsoup.parse(informe.getObjetivo()).text());
             }
             
             conclusiones = new TextNavigation("@conclusiones", odt);
             while (conclusiones.hasNext()) {
                 TextSelection item = (TextSelection) conclusiones.nextSelection();
-                item.replaceWith(informe.getConclusiones());
+                item.replaceWith(Jsoup.parse(informe.getConclusiones()).text());
             }
 
              remitente = new TextNavigation("@remitente", odt);
