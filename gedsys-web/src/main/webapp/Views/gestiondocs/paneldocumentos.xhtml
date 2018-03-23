@@ -86,7 +86,9 @@
                                             </p:column>
                                             <p:column headerText="Detalle">
                                                 <h:outputText value="#{docsEntrantes.detalle}" />
-
+                                            </p:column>
+                                            <p:column headerText="Comentarios" style="text-align: center;">
+                                                <h:outputText value="#{comentarioBean.coutComents(docsEntrantes)}" />
                                             </p:column>
                                             <p:column headerText="Acciones" width="150">
                                                 <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsEntrantes)}" disabled="#{not docsEntrantes.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
@@ -623,6 +625,9 @@
                                             </p:column>
                                             <p:column headerText="Detalle">
                                                 <h:outputText value="#{docsCompartidos.detalle}" />
+                                            </p:column>
+                                             <p:column headerText="Comentarios" style="text-align: center;">
+                                                <h:outputText value="#{comentarioBean.coutComents(docsCompartidos)}" />
                                             </p:column>
                                             <p:column headerText="Acciones">
                                                 <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsCompartidos)}" update=":dlgVisor messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>

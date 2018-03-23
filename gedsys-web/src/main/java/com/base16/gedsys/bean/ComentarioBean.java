@@ -42,17 +42,24 @@ import org.primefaces.model.StreamedContent;
 @ViewScoped
 public class ComentarioBean extends BaseBean implements Serializable {
 
-    
     private StreamedContent content;
     private String filePath = "";
     private List<Comentario> comentarios;
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
     /**
      * Creates a new instance of ComentarioBean
      */
     public ComentarioBean() {
     }
 
-    
     @PostConstruct
     public void init() {
 
@@ -107,11 +114,30 @@ public class ComentarioBean extends BaseBean implements Serializable {
             default:
 
         }
-       
+
         ComentarioJpaController comentarioJpac = new ComentarioJpaController(emf);
         comentarios = comentarioJpac.findByTipoComProd(TipoDocumento, IdDocumentoProduccion);
-        
-        
+
+    }
+
+    public int coutComents(Documento documento) {
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.filePath);
+        ComentarioJpaController cjpa = new ComentarioJpaController(emf);
+        this.comentarios = cjpa.findComentarioByDocumento(documento);
+        if (this.comentarios != null) {
+            return this.comentarios.size();
+        }
+        return 0;
+    }
+    
+     public int coutComentsByTipo(int TipoDocumento, int IdDocumentoProduccion) {
+        EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.filePath);
+        ComentarioJpaController cjpa = new ComentarioJpaController(emf);
+        this.comentarios = cjpa.findByTipoComProd(TipoDocumento, IdDocumentoProduccion);
+        if (this.comentarios != null) {
+            return this.comentarios.size();
+        }
+        return 0;
     }
 
 }
