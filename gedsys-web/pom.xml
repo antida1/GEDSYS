@@ -73,11 +73,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>1.19</version>
-        </dependency>
-        <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>2.4.20</version>
@@ -117,7 +112,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-bundle</artifactId>
-            <version>1.19</version>
+            <version>1.19.4</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -127,12 +122,12 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.19</version>
+            <version>1.19.4</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-core</artifactId>
-            <version>1.19</version>
+            <version>1.19.4</version>
         </dependency> 
     </dependencies>
     <build>
