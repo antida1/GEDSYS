@@ -12,19 +12,34 @@
 
     <body>  
         <p:growl id="messages"  showDetail="true" />
-        <div class="col-xs-7">
-            <pe:documentViewer id="documentCtl" height="800" value="#{documentViewerBean.content}" />
-        </div>
-        <div class="col-xs-5">
-            <p:repeat value="#{comentarioBean.comentarios}" var="comment">
-                
-            </p:repeat>
-            <div class="form-group row">
-                <p:outputLabel value="Comentario" class="col-xs-3 col-form-label" ></p:outputLabel>
-                <div class="col-xs-9">
-                    <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%" value="#{comentarioBean}"/>                 
-                </div>
+        <div class="col-xs-12">
+            <div class="list-group">
+                <p:repeat value="#{commentBean.comentarios}" var="comment" id="comentarios">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start fadeIn">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>#{comment.fechaCreacion}</small>
+                        </div>
+                        <p class="mb-1">#{comment.comentario}</p>
+                        <small>#{comment.creadoPor.nombres}</small>
+                    </a>
+                </p:repeat>
             </div>
+            <h:form>
+                <h:inputHidden value="#{commentBean.documento}"></h:inputHidden>
+                <h:inputHidden value="#{commentBean.tipoDocumento}"></h:inputHidden>
+                <h:inputHidden value="#{commentBean.documentoPrdId}"></h:inputHidden>
+                <div class="form-group row">
+                    <p:outputLabel value="Comentario" class="col-xs-3 col-form-label" ></p:outputLabel>
+                    <div class="col-xs-9">
+                        <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%" value="#{commentBean.comentario}"/>                 
+                    </div>
+                </div>
+                <p:separator></p:separator>
+                <div>
+                    <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{commentBean.addComent()}"></p:commandButton>
+                    <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denComentar').hide()"></p:commandButton>
+                </div>
+            </h:form>
         </div>
     </body>
 </html>

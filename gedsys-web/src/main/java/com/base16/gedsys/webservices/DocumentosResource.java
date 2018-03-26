@@ -60,18 +60,23 @@ public class DocumentosResource extends BaseBean {
         dBean.listarCompartidos(usuario);
         List<Documento> documentos =  dBean.getDocumentos();
         JsonArray docs = new JsonArray();
-        for (Documento documento : documentos) {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", documento.getId());
-            object.addProperty("consecutivo", documento.getConsecutivo());
-            object.addProperty("asunto", documento.getAsunto());
-            object.addProperty("detalle", documento.getDetalle());
-            object.addProperty("nombre", documento.getNombreDocumento());
-            object.addProperty("requiereRespuesta", documento.getRequiereRespuesta());
-            object.addProperty("rutaArchivo", documento.getRutaArchivo());
-            docs.add(object);
+        if(documentos != null){
+            for (Documento documento : documentos) {
+                JsonObject object = new JsonObject();
+                object.addProperty("id", documento.getId());
+                object.addProperty("consecutivo", documento.getConsecutivo());
+                object.addProperty("asunto", documento.getAsunto());
+                object.addProperty("detalle", documento.getDetalle());
+                object.addProperty("nombre", documento.getNombreDocumento());
+                object.addProperty("requiereRespuesta", documento.getRequiereRespuesta());
+                object.addProperty("rutaArchivo", documento.getRutaArchivo());
+                docs.add(object);
+            }
+            return docs.toString();
+        } else {
+            return "";
         }
-        return docs.toString();
+        
     }
 
     /**

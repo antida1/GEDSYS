@@ -35,15 +35,10 @@ public class SignaturaTree extends BaseBean implements Serializable {
      * Creates a new instance of SignaturaTree
      */
     public SignaturaTree() {
+        loadSignaturas();
     }
 
     private TreeNode root;
-
-    @PostConstruct
-    public void init() {
-
-        loadSignaturas();
-    }
 
     private void loadSignaturas() {
         root = new DefaultTreeNode("Ciclo Vital", null);
