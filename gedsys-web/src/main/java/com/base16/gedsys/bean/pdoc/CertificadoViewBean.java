@@ -105,7 +105,7 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();
                 if(certificado.getRemitente().getCargo() != null){
-                    item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos() + " " + certificado.getRemitente().getCargo().getNombre());
+                    item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
                 } else {
                     item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
                 }

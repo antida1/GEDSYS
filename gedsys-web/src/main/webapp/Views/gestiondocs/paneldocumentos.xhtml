@@ -884,10 +884,10 @@
 
                         </ui:include>
                     </p:dialog>
-                    <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;" closable="true" closeOnEscape="true">
-                        <p:ajax event="close" update=":porEnviar" />                        
+                    <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="90%" height="550px" dynamic="true" responsive="true"  closable="true">
+                        <p:ajax event="close" update=":porEnviar" />
                         <ui:include src="../procesos/envio.xhtml">
-                        </ui:include>                       
+                        </ui:include>
                     </p:dialog>
                     <p:dialog id="dlgPlanillaEnvio" header="Planilla de documentos para enviar" widgetVar="planillaEnvioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
                         <p:outputPanel id="planillaEnvio" style="text-align:center;" >
