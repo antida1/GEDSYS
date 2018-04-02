@@ -28,6 +28,7 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -45,6 +46,7 @@ public class ComentarioBean extends BaseBean {
      * Creates a new instance of CommentBean
      */
     public ComentarioBean() {
+        
     }
      private List<Comentario> comentarios;
 
@@ -193,7 +195,9 @@ public class ComentarioBean extends BaseBean {
             coment.setIdDocProduccion(this.documentoPrdId);
         }
         cjpa.create(coment);
-
+        this.comentario ="";
+        this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Comentatio", "Comentario Creado"));
+        RequestContext.getCurrentInstance().execute("PF('denComentar').hide()");
     }   
 }
 

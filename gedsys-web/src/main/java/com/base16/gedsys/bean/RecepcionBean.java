@@ -6,6 +6,7 @@
 package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.ConsecutivosUsuario;
 import com.base16.gedsys.entities.DestinatariosDoc;
 import com.base16.gedsys.entities.DiaFestivo;
 import com.base16.gedsys.entities.Documento;
@@ -16,6 +17,7 @@ import com.base16.gedsys.entities.Entidad;
 import com.base16.gedsys.entities.Notificacion;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.ConsecutivosUsuarioJpaController;
 import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
@@ -210,16 +212,28 @@ public class RecepcionBean extends BaseBean implements Serializable {
 
     public void generarConsectivo() {
         try {
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
             EntityManager em = emf.createEntityManager();
             ConsecutivoJpaController cJpa;
+            ConsecutivosUsuarioJpaController cuJpa;
 
             em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
+            cuJpa = new ConsecutivosUsuarioJpaController(emf);
+            
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("recepcion");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             consec.setConsecutivo(intConsec.toString());
+
+            ConsecutivosUsuario conuser = new ConsecutivosUsuario();
+            conuser.setConsecutivo( consec.getPrefijo()+ consec.getConsecutivo()+consec.getSufijo());
+            conuser.setCreadoPor(usuario);
+            conuser.setFechaCreacion(new Date());
+            conuser.setTipo(consec.getTipoConsecutivo());
+            cuJpa.create(conuser);
+            
             em.merge(consec);
             em.flush();
             em.getTransaction().commit();
@@ -291,7 +305,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
                         this.documento.setFechaVencimiento(fechaRespuesta);
                     }
                     ScheduleView scheduleNotify = new ScheduleView();
-                    
+
                     Notificacion notificacion = new Notificacion();
                     notificacion.setAsunto(this.documento.getAsunto());
                     notificacion.setFechaCreacion(new Date());
@@ -337,7 +351,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
                 Mensajeria mensajeria = new Mensajeria();
                 mensajeria.send(this.documento.getDestinatario(), "Nuevo documento recibido", this.documento.getAsunto());
-                
+
                 em.getTransaction().commit();
                 //TODO: Pendiente registrar notificacion en base de datos acorde a la fecha
                 this.limpiar();
@@ -350,8 +364,8 @@ public class RecepcionBean extends BaseBean implements Serializable {
             }
         }
     }
-    
-    public void onEntidadChange(){
+
+    public void onEntidadChange() {
         this.documento.setDireccion(this.documento.getEntidad().getDireccion());
     }
 

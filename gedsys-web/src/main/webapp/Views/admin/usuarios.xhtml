@@ -63,11 +63,11 @@
                                                              update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
                                                              icon="ui-icon-pencil" title="Editar">
                                             </p:commandButton>
-                                            <p:commandButton icon="ui-icon-trash" 
+                                            <p:commandButton icon="ui-icon-trash" disabled="#{!autorizationBean.canDelete('usuarios')}"
                                                              title="Borrar"
                                                              actionListener="#{usuarioBean.eliminar(usuario)}" 
                                                              update=":form:lstUsuarios messages"/>
-                                            <p:commandButton icon="ui-icon-key" 
+                                            <p:commandButton icon="ui-icon-key" disabled="#{!autorizationBean.canUpdate('usuarios')}"
                                                              title="Restablecer Contraseña"
                                                              actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
                                                              oncomplete="PF('resetPasswordDialog').show()"

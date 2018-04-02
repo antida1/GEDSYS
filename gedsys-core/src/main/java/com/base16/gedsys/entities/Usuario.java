@@ -56,6 +56,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "creadoPor")
+    private List<ConsecutivosUsuario> consecutivosUsuarioList;
+
+    @OneToMany(mappedBy = "creadoPor")
     private List<Comentario> comentarioList;
     @OneToMany(mappedBy = "modificadoPor")
     private List<Comentario> comentarioList1;
@@ -1833,6 +1836,16 @@ public class Usuario implements Serializable {
 
     public void setComentarioList1(List<Comentario> comentarioList1) {
         this.comentarioList1 = comentarioList1;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<ConsecutivosUsuario> getConsecutivosUsuarioList() {
+        return consecutivosUsuarioList;
+    }
+
+    public void setConsecutivosUsuarioList(List<ConsecutivosUsuario> consecutivosUsuarioList) {
+        this.consecutivosUsuarioList = consecutivosUsuarioList;
     }
     
 }
