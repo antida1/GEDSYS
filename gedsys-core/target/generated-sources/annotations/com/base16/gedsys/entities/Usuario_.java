@@ -17,6 +17,7 @@ import com.base16.gedsys.entities.Comentario;
 import com.base16.gedsys.entities.Comunicacion;
 import com.base16.gedsys.entities.Comunicacioncc;
 import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.ConsecutivosUsuario;
 import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.entities.Corregimiento;
 import com.base16.gedsys.entities.Departamento;
@@ -58,7 +59,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-26T11:55:20")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-04-02T11:41:09")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
@@ -119,6 +120,7 @@ public class Usuario_ {
     public static volatile CollectionAttribute<Usuario, Consecutivo> consecutivoCollection;
     public static volatile ListAttribute<Usuario, Certificado> certificadoList;
     public static volatile CollectionAttribute<Usuario, Documento> documentoCollection;
+    public static volatile ListAttribute<Usuario, ConsecutivosUsuario> consecutivosUsuarioList;
     public static volatile CollectionAttribute<Usuario, SignaturaTopografica> signaturaTopograficaCollection;
     public static volatile SingularAttribute<Usuario, Integer> modificadoPor;
     public static volatile CollectionAttribute<Usuario, UnidadDocumental> unidadDocumentalCollection;

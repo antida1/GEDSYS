@@ -1,20 +1,20 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:o="http://omnifaces.org/ui"
-      xmlns:of="http://omnifaces.org/functions">
-
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <body>  
         <p:growl id="messages"  showDetail="true" />
         <div class="col-xs-12">
             <div class="list-group">
-                <p:repeat value="#{commentBean.comentarios}" var="comment" id="comentarios">
+                <p:repeat value="#{comentarioBean.comentarios}" var="comment" id="comentarios">
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start fadeIn">
                         <div class="d-flex w-100 justify-content-between">
                             <small>#{comment.fechaCreacion}</small>
@@ -24,22 +24,24 @@
                     </a>
                 </p:repeat>
             </div>
-            <h:form>
-                <h:inputHidden value="#{commentBean.documento}"></h:inputHidden>
-                <h:inputHidden value="#{commentBean.tipoDocumento}"></h:inputHidden>
-                <h:inputHidden value="#{commentBean.documentoPrdId}"></h:inputHidden>
-                <div class="form-group row">
-                    <p:outputLabel value="Comentario" class="col-xs-3 col-form-label" ></p:outputLabel>
-                    <div class="col-xs-9">
-                        <p:inputTextarea cols="50" rows="8" widgetVar="texto" style="width: 100%" value="#{commentBean.comentario}"/>                 
-                    </div>
+            <h:inputHidden value="#{comentarioBean.documento}"></h:inputHidden>
+            <h:inputHidden value="#{comentarioBean.tipoDocumento}"></h:inputHidden>
+            <h:inputHidden value="#{comentarioBean.documentoPrdId}"></h:inputHidden>
+            <div class="form-group row">
+                <p:outputLabel value="Comentario" class="col-xs-3 col-form-label" ></p:outputLabel>
+                <div class="col-xs-9">
+                    <p:inputTextarea id="texto" cols="50" rows="8" widgetVar="texto" style="width: 100%" value="#{comentarioBean.comentario}"/>                 
                 </div>
-                <p:separator></p:separator>
-                <div>
-                    <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{commentBean.addComent()}"></p:commandButton>
-                    <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denComentar').hide()"></p:commandButton>
-                </div>
-            </h:form>
+            </div>
+            <p:separator></p:separator>
+            <div class="form-group row col-xs-12">
+                <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{comentarioBean.addComent()}" process="@this,texto" update="messages, comentarios"></p:commandButton>
+                <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denComentar').hide()"></p:commandButton>
+            </div>
         </div>
     </body>
 </html>
+
+
+    
+

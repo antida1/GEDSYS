@@ -350,7 +350,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(1, acta.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(1, acta.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(1, acta.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firActa" action="#{actaBean.firmarActa(acta)}"  update=":dlgFirmarActa messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>  
                                                             <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{actaViewBean.showDocument(acta)}" update=":dlgVisorActa messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -391,7 +391,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(2, carta.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(2, carta.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(2, carta.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>                                                        
                                                             <p:commandLink type="button" title="Firmar"  id="firCarta" action="#{cartaBean.firmarCarta(carta)}"  update=":dlgFirmarCarta messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{cartaViewBean.showDocument(carta)}" update=":dlgVisorCarta messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -424,7 +424,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(3, cert.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(3, cert.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(3, cert.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firCert" action="#{certificadoBean.firmarCertificado(cert)}"  update=":dlgFirmarCertificado messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{certificadoViewBean.showDocument(cert)}" update=":dlgVisorCertificado messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -460,7 +460,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(4, cir.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(4, cir.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(4, cir.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firCir" action="#{circularBean.firmarCircular(cir)}"  update=":dlgFirmarCircular messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{circularViewBean.showDocument(cir)}" update=":dlgVisorCircular messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -499,7 +499,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(5, com.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(5, com.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(5, com.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firComu" action="#{comunicacionBean.firmarComunicacion(com)}"  update=":dlgFirmarComunicacion messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{comunicacionViewBean.showDocument(com)}" update="dlgVisorComunicacion messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -532,7 +532,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(6, cons.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(6, cons.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(6, cons.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firConst" action="#{constanciaBean.firmarConstancia(cons)}"  update=":dlgFirmarConstancia messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{constanciaViewBean.showDocument(cons)}" update="dlgVisorConstancia messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -568,7 +568,7 @@
                                                             <h:outputText value="#{comentarioBean.coutComentsByTipo(7, inf.id)}" />
                                                         </p:column>
                                                         <p:column headerText="Acciones">
-                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(7, inf.id)}" update="messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                            <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(7, inf.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                             <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
                                                             <p:commandLink type="button" title="Firmar"  id="firInf" action="#{informeBean.firmarInforme(inf)}"  update=":dlgFirmarInforme messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{informeViewBean.showDocument(inf)}" update="dlgVisorInforme messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -651,7 +651,7 @@
                                                 </p:column>
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsCompartidos)}" update=":dlgVisor messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                    <p:commandLink type="button" title="Comentar" onclick="PF('denComentar').show()"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" title="Comentar" actionListener="#{comentarioBean.loadDocument(docsCompartidos)}" update=":dlgComentar messages" ><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"/></p:commandLink>
                                                 </p:column>
                                             </p:dataTable>
                                         </h:form>
@@ -818,10 +818,10 @@
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarInforme').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{informeBean.imprimir()}" update=":dlgVisorInforme" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
                     </p:dialog>
-                    <p:dialog id="dlgComentar" header="Comentar" widgetVar="denComentar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="90%"  maximizable="true">
+                    <p:dialog id="dlgComentar" header="Comentar" widgetVar="denComentar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%"  maximizable="true">
+                        <p:ajax event="close" update=":entrantes :enviados :porVencer :porArchivar :compartido informePorFirmar :constanciaPorFirmar :comunicacionPorFirmar :circularPorFirmar :certificadoPorFirmar :cartaPorFirmar :actaPorFirmar" />
                         <h:form>
-                            <ui:include src="comentar.xhtml">
-                            </ui:include>
+                            <ui:include src="comentar.xhtml"/>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisor" header="Visor de Documentos" widgetVar="denVisor" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true"  >

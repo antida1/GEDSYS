@@ -6,6 +6,7 @@
 package com.base16.gedsys.bean;
 
 import com.base16.gedsys.entities.Consecutivo;
+import com.base16.gedsys.entities.ConsecutivosUsuario;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Municipio;
 import com.base16.gedsys.entities.TipoDocumento;
@@ -13,6 +14,7 @@ import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.entities.Entidad;
 import com.base16.gedsys.entities.Transportador;
 import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.ConsecutivosUsuarioJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
@@ -196,13 +198,25 @@ public class EnvioBean extends BaseBean implements Serializable {
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(configFilePath);
         EntityManager em = emf.createEntityManager();
         ConsecutivoJpaController cJpa;
+        ConsecutivosUsuarioJpaController cuJpa;
         try {
             em.getTransaction().begin();
             cJpa = new ConsecutivoJpaController(emf);
+            cuJpa = new ConsecutivosUsuarioJpaController(emf);
+
             Consecutivo consec = cJpa.findConsecutivoByTipoConsecutivo("envio");
             Integer intConsec = Integer.parseInt(consec.getConsecutivo());
             intConsec++;
             consec.setConsecutivo(intConsec.toString());
+            Usuario usuario = (Usuario) SessionUtils.getUsuario();
+
+            ConsecutivosUsuario conuser = new ConsecutivosUsuario();
+            conuser.setConsecutivo(consec.getPrefijo() + consec.getConsecutivo() + consec.getSufijo());
+            conuser.setCreadoPor(usuario);
+            conuser.setFechaCreacion(new Date());
+            conuser.setTipo(consec.getTipoConsecutivo());
+            cuJpa.create(conuser);
+
             em.merge(consec);
             em.flush();
             em.getTransaction().commit();
@@ -251,7 +265,7 @@ public class EnvioBean extends BaseBean implements Serializable {
                 this.documento.setNombreDocumento(uDoc.getUuid().toString());
                 sJpa.edit(documento);
 
-            //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
+                //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.
                 //Mensajeria mensajeria = new Mensajeria();
                 //mensajeria.send(this.documento.getDestinatario(), "Nuevo documento recibido", this.documento.getAsunto());
                 em.getTransaction().commit();
