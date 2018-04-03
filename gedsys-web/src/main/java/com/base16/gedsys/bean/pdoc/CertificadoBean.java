@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -184,7 +185,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             this.certificado.setEstado(0);
             caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
-            cvb.showDocument(this.certificado);
+            cvb.showDocumentFinal(this.certificado);
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
@@ -208,12 +209,12 @@ public class CertificadoBean extends BaseBean implements Serializable {
             
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Certificado", "¡Documento Firmado exitosamente!"));
 
-            // TODO: Modificar el documento padre, mover a por archivar.
-            if (this.documentoRelacionado != null) {
-                this.documentoRelacionado.setDocumentoRelacionado(documento);
-                this.documentoRelacionado.setEstado(3);
-                djc.edit(this.documentoRelacionado);
-            }
+//            // TODO: Modificar el documento padre, mover a por archivar.
+//            if (this.documentoRelacionado != null) {
+//                this.documentoRelacionado.setDocumentoRelacionado(documento);
+//                this.documentoRelacionado.setEstado(3);
+//                djc.edit(this.documentoRelacionado);
+//            }
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,7 +225,16 @@ public class CertificadoBean extends BaseBean implements Serializable {
 //        this.certificado.setModificadoPor(usuario);
 //        this.certificado.setFechaFirma(new Date());
 //        this.certificado.setEstado(3);
-    } 
+    }
+    
+    public void limpiar() throws IOException{
+        this.certificado = null;
+        this.certificado = new Certificado();
+        this.certificado.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
 
 public void imprimir() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -258,7 +268,7 @@ public void imprimir() {
             this.certificado.setEstado(0);
             caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
-            cvb.showDocument(this.certificado);
+            cvb.showDocumentFinal(this.certificado);
             
             // TODO: Crear el nuevo documento certificado
             Documento documento = new Documento();

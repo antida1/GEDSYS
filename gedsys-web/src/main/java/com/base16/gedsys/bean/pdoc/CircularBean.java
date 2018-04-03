@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -186,7 +187,7 @@ public class CircularBean extends BaseBean implements Serializable {
             this.circular.setEstado(0);
             caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
-            cvb.showDocument(this.circular);
+            cvb.showDocumentFinal(this.circular);
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
@@ -229,6 +230,15 @@ public class CircularBean extends BaseBean implements Serializable {
 //        this.circular.setEstado(3);
     }
     
+    public void limpiar() throws IOException{
+        this.circular = null;
+        this.circular = new Circular();
+        this.circular.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
+    
     public void imprimir() {
         FacesContext context = FacesContext.getCurrentInstance();
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -261,7 +271,7 @@ public class CircularBean extends BaseBean implements Serializable {
             this.circular.setEstado(0);
             caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
-            cvb.showDocument(this.circular);
+            cvb.showDocumentFinal(this.circular);
             
              // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

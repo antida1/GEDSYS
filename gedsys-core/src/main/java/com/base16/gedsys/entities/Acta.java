@@ -304,4 +304,8 @@ public class Acta implements Serializable {
         this.horaFinalizacion = horaFinalizacion;
     }
 
+    public void limpiar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

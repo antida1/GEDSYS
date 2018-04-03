@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -182,7 +183,7 @@ public class InformeBean extends BaseBean implements Serializable {
             this.informe.setEstado(0);
             caJpa.edit(this.informe);            
             InformeViewBean cvb = new InformeViewBean();
-            cvb.showDocument(this.informe);
+            cvb.showDocumentFinal(this.informe);
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
@@ -225,6 +226,15 @@ public class InformeBean extends BaseBean implements Serializable {
 //        this.informe.setEstado(3);
     }
     
+     public void limpiar() throws IOException{
+        this.informe = null;
+        this.informe = new Informe();
+        this.informe.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
+    
     public void imprimir() {
         FacesContext context = FacesContext.getCurrentInstance();
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -257,7 +267,7 @@ public class InformeBean extends BaseBean implements Serializable {
             this.informe.setEstado(0);
             caJpa.edit(this.informe);            
             InformeViewBean cvb = new InformeViewBean();
-            cvb.showDocument(this.informe);
+            cvb.showDocumentFinal(this.informe);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

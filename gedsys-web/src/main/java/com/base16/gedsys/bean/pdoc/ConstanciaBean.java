@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -182,7 +183,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             this.constancia.setEstado(0);
             caJpa.edit(this.constancia);            
             ConstanciaViewBean cvb = new ConstanciaViewBean();
-            cvb.showDocument(this.constancia);
+            cvb.showDocumentFinal(this.constancia);
 
             // TODO: Crear el nuevo documento constancia
             Documento documento = new Documento();
@@ -224,6 +225,15 @@ public class ConstanciaBean extends BaseBean implements Serializable{
 //        this.constancia.setEstado(3);
     }
     
+    public void limpiar() throws IOException{
+        this.constancia = null;
+        this.constancia = new Constancia();
+        this.constancia.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
+    
     public void imprimir() {
         FacesContext context = FacesContext.getCurrentInstance();
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -256,7 +266,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             this.constancia.setEstado(0);
             caJpa.edit(this.constancia);
             ConstanciaViewBean cvb = new ConstanciaViewBean();
-            cvb.showDocument(this.constancia);
+            cvb.showDocumentFinal(this.constancia);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

@@ -72,50 +72,82 @@
                     </div>
                    <p:dialog id="dlgVisorCarta" header="Visor de Cartas" widgetVar="denVisorCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                         <h:form>
-                            <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />                             
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorCartaFinal" header="Visor de Cartas" widgetVar="denVisorCartaFinal" closable="false" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCarta" height="480" value="#{cartaViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCarta').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" action="#{cartaBean.limpiar()}" oncomplete="PF('denVisorCartaFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorActa" header="Visor de Actas" widgetVar="denVisorActa" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                          <p:ajax event="close" update="produccion" />
                         <h:form> 
-                            <pe:documentViewer id="documentCtlActa" height="800" value="#{actaViewBean.content}" />
+                            <pe:documentViewer id="documentCtlActa" height="800" value="#{actaViewBean.content}" />                            
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorActaFinal" header="Visor de Actas" widgetVar="denVisorActaFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                         <p:ajax event="close" update="produccion" />
+                        <h:form> 
+                            <pe:documentViewer id="documentCtlActa" height="480" value="#{actaViewBean.content}" />
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorActa').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true"  action="#{actaBean.limpiar()}" oncomplete="PF('denVisorActaFinal').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorCertificado" header="Visor de Certificados" widgetVar="denVisorCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                         <h:form>
-                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />                            
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorCertificadoFinal" header="Visor de Certificados" widgetVar="denVisorCertificadoFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="480" value="#{certificadoViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCertificado').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" action="#{certificadoBean.limpiar()}" oncomplete="PF('denVisorCertificadoFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                    <p:dialog id="dlgVisorCircular" header="Visor de Circulares" widgetVar="denVisorCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                         <h:form>
-                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{circularViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{circularViewBean.content}" />                            
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorCircularFinal" header="Visor de Circulares" closable="false" widgetVar="denVisorCircularFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="480" value="#{circularViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true"  action="#{circularBean.limpiar()}" oncomplete="PF('denVisorCircularFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                    <p:dialog id="dlgVisorComunicacion" header="Visor de Comunicaciones Internas" widgetVar="denVisorComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                         <h:form>
-                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" /> 
+                            
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorComunicacionFinal" header="Visor de Comunicaciones Internas" closable="false" widgetVar="denVisorComunicacionFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlComunicacion" height="480" value="#{comunicacionViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorComunicacion').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true"  action="#{comunicacionBean.limpiar()}" oncomplete="PF('denVisorComunicacionFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                    <p:dialog id="dlgVisorConstancia" header="Visor de Constancias" widgetVar="denVisorConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
                         <h:form>
-                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorConstanciaFinal" header="Visor de Constancias" closable="false" widgetVar="denVisorConstanciaFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlConstancia" height="480" value="#{constanciaViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorConstancia').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true"  action="#{constanciaBean.limpiar()}" oncomplete="PF('denVisorConstanciaFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
@@ -124,6 +156,14 @@
                             <pe:documentViewer id="documentCtlInforme" height="800" value="#{informeViewBean.content}" />  
                             <div>
                                 <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorInforme').hide()"></p:commandButton>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                   <p:dialog id="dlgVisorInformeFinal" header="Visor de Informes" closable="false" widgetVar="denVisorInformeFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlInforme" height="480" value="#{informeViewBean.content}" />  
+                            <div>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true"  action="#{informeBean.limpiar()}" oncomplete="PF('denVisorInformeFinal').hide()" update="@form :produccion"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>

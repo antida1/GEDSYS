@@ -151,6 +151,101 @@ public class InformeViewBean extends BaseBean implements Serializable {
             Logger.getLogger(InformeViewBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    public void showDocumentFinal(Informe informe) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "informe.odt");
+            TextNavigation searchFecha;
+            TextNavigation consecutivo;
+            TextNavigation cargo;
+            TextNavigation objetivo;
+            TextNavigation conclusiones;
+            TextNavigation remitente;
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(informe.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(informe.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(informe.getFecha(), "yyyy"));
+            }
+
+            consecutivo = new TextNavigation("@consecutivo", odt);
+           while (consecutivo.hasNext()) {
+                TextSelection item = (TextSelection) consecutivo.nextSelection();
+                if(informe.getConsecutivo() == null || informe.getConsecutivo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(informe.getConsecutivo());
+                }
+            }
+
+            cargo = new TextNavigation("@cargo", odt);
+            while (cargo.hasNext()) {
+                TextSelection item = (TextSelection) cargo.nextSelection();
+                if(informe.getRemitente().getCargo() != null){
+                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                }else{
+                    item.replaceWith(" ");
+                }
+            }
+
+            objetivo = new TextNavigation("@objetivo", odt);
+            while (objetivo.hasNext()) {
+                TextSelection item = (TextSelection) objetivo.nextSelection();
+                item.replaceWith(Jsoup.parse(informe.getObjetivo()).text());
+            }
+            
+            conclusiones = new TextNavigation("@conclusiones", odt);
+            while (conclusiones.hasNext()) {
+                TextSelection item = (TextSelection) conclusiones.nextSelection();
+                item.replaceWith(Jsoup.parse(informe.getConclusiones()).text());
+            }
+
+             remitente = new TextNavigation("@remitente", odt);
+            while (remitente.hasNext()) {
+                TextSelection item = (TextSelection) remitente.nextSelection();
+                if(informe.getRemitente().getCargo() != null){
+                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                } else {
+                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
+                }
+            }
+            
+            cargo = new TextNavigation("@cargo", odt);
+            while (cargo.hasNext()) {
+                TextSelection item = (TextSelection) cargo.nextSelection();
+                if(informe.getRemitente().getCargo() != null){
+                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                }else{
+                    item.replaceWith(" ");
+                }
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
+            odt.close();
+
+            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+            //IContext context =  report.createContext();
+            //context.put("name", "world");
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+
+            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt"));
+            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".pdf"));
+            converter.convert(in, out, options);
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId() + ".pdf";
+            SessionUtils.getSession().setAttribute("filePathInforme", this.filePath);
+            RequestContext.getCurrentInstance().execute("PF('denVisorInformeFinal').show()");
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informe", e.getMessage()));
+            Logger.getLogger(InformeViewBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
 
     private void loadDocument() {
         FacesContext context = FacesContext.getCurrentInstance();

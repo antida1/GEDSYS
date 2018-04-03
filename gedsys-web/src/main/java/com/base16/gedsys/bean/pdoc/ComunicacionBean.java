@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -150,6 +151,14 @@ public class ComunicacionBean extends BaseBean implements Serializable {
         this.comunicacion.setEstado("2");
         cJpa.edit(this.comunicacion);
     }
+    public void limpiar() throws IOException{
+        this.comunicacion = null;
+        this.comunicacion = new Comunicacion();
+        this.comunicacion.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
 
     public void firmar() {
         
@@ -184,7 +193,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
             this.comunicacion.setEstado("0");
             caJpa.edit(this.comunicacion);            
             ComunicacionViewBean cvb = new ComunicacionViewBean();
-            cvb.showDocument(this.comunicacion);
+            cvb.showDocumentFinal(this.comunicacion);
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

@@ -134,6 +134,83 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
         }
     }
 
+    public void showDocumentFinal(Constancia constancia) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "constancia.odt");
+            TextNavigation searchConsecutivo;
+            TextNavigation searchFecha;            
+            TextNavigation cargo;
+            TextNavigation contenido;
+            TextNavigation remitente;
+
+            searchConsecutivo = new TextNavigation("@consecutivo", odt);
+            while (searchConsecutivo.hasNext()) {
+                TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+                if(constancia.getConsecutivo() == null || constancia.getConsecutivo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(constancia.getConsecutivo());
+                }
+            }
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(constancia.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(constancia.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(constancia.getFecha(), "yyyy"));
+            }
+
+            cargo = new TextNavigation("@cargo", odt);
+            while (cargo.hasNext()) {
+                TextSelection item = (TextSelection) cargo.nextSelection();
+                if(constancia.getRemitente().getCargo() != null){
+                    item.replaceWith(constancia.getRemitente().getCargo().getNombre());
+                }else{
+                    item.replaceWith(" ");
+                }
+            }            
+
+            contenido = new TextNavigation("@contenido", odt);
+            while (contenido.hasNext()) {
+                TextSelection item = (TextSelection) contenido.nextSelection();
+                item.replaceWith(Jsoup.parse(constancia.getContenido()).text());
+            }
+
+            remitente = new TextNavigation("@remitente", odt);
+            while (remitente.hasNext()) {
+                TextSelection item = (TextSelection) remitente.nextSelection();
+                if(constancia.getRemitente().getCargo() != null){
+                    item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos());
+                } else {
+                    item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos());
+                }
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".odt");
+            odt.close();
+
+            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+            //IContext context =  report.createContext();
+            //context.put("name", "world");
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+
+            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".odt"));
+            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".pdf"));
+            converter.convert(in, out, options);
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId() + ".pdf";
+            SessionUtils.getSession().setAttribute("filePathConstancia", this.filePath);
+            RequestContext.getCurrentInstance().execute("PF('denVisorConstanciaFinal').show()");
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Constancia", e.getMessage()));
+            Logger.getLogger(ConstanciaViewBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     private void loadDocument() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {

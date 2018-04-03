@@ -132,6 +132,83 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             Logger.getLogger(CertificadoViewBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    public void showDocumentFinal(Certificado certificado) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "certificado.odt");
+            TextNavigation searchConsecutivo;
+            TextNavigation searchFecha;            
+            TextNavigation cargo;
+            TextNavigation contenido;
+            TextNavigation remitente;
+
+            searchConsecutivo = new TextNavigation("@consecutivo", odt);
+            while (searchConsecutivo.hasNext()) {
+                TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+                if(certificado.getConsecutivo() == null || certificado.getConsecutivo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(certificado.getConsecutivo());
+                }
+            }
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(certificado.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(certificado.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(certificado.getFecha(), "yyyy"));
+            }
+
+            cargo = new TextNavigation("@cargo", odt);
+            while (cargo.hasNext()) {
+                TextSelection item = (TextSelection) cargo.nextSelection();
+                if(certificado.getRemitente().getCargo() != null){
+                    item.replaceWith(certificado.getRemitente().getCargo().getNombre());
+                }else{
+                    item.replaceWith(" ");
+                }
+            }            
+
+            contenido = new TextNavigation("@contenido", odt);
+            while (contenido.hasNext()) {
+                TextSelection item = (TextSelection) contenido.nextSelection();
+                item.replaceWith(Jsoup.parse(certificado.getContenido()).text());
+            }
+
+            remitente = new TextNavigation("@remitente", odt);
+            while (remitente.hasNext()) {
+                TextSelection item = (TextSelection) remitente.nextSelection();
+                if(certificado.getRemitente().getCargo() != null){
+                    item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
+                } else {
+                    item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
+                }
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".odt");
+            odt.close();
+
+            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+            //IContext context =  report.createContext();
+            //context.put("name", "world");
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+
+            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".odt"));
+            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".pdf"));
+            converter.convert(in, out, options);
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId() + ".pdf";
+            SessionUtils.getSession().setAttribute("filePathCertificado", this.filePath);
+            RequestContext.getCurrentInstance().execute("PF('denVisorCertificadoFinal').show()");
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Certificado", e.getMessage()));
+            Logger.getLogger(CertificadoViewBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
 
     private void loadDocument() {
         FacesContext context = FacesContext.getCurrentInstance();

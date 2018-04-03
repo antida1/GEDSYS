@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -266,7 +267,7 @@ public class ActaBean extends BaseBean implements Serializable {
             this.acta.setEstado(0);
             caJpa.edit(this.acta);            
             ActaViewBean cvb = new ActaViewBean();
-            cvb.showDocument(this.acta);
+            cvb.showDocumentFinal(this.acta);
 
             // TODO: Crear el nuevo documento acta
             Documento documento = new Documento();
@@ -301,11 +302,9 @@ public class ActaBean extends BaseBean implements Serializable {
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento Firmado exitosamente!"));
-            
-            em.getTransaction().commit();
-            
-            
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta", "¡Documento Firmado exitosamente!"));            
+          
+            em.getTransaction().commit();            
             // TODO: Modificar el documento padre, mover a por archivar.
             if (this.documentoRelacionado != null) {
                 this.documentoRelacionado.setDocumentoRelacionado(documento);
@@ -324,6 +323,15 @@ public class ActaBean extends BaseBean implements Serializable {
 //        this.acta.setModificadoPor(usuario);
 //        this.acta.setFechaFirma(new Date());
 //        this.acta.setEstado(3);
+    }
+    
+    public void limpiar() throws IOException{
+        this.acta = null;
+        this.acta = new Acta();
+        this.acta.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
     }
     
     public void firmarActa(Acta acta) {
@@ -363,7 +371,7 @@ public class ActaBean extends BaseBean implements Serializable {
             this.acta.setEstado(0);
             caJpa.edit(this.acta);            
             ActaViewBean cvb = new ActaViewBean();
-            cvb.showDocument(this.acta);
+            cvb.showDocumentFinal(this.acta);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

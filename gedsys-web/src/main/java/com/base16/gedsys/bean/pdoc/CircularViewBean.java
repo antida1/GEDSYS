@@ -165,6 +165,116 @@ public class CircularViewBean extends BaseBean implements Serializable {
             Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
     }
    }
+    
+    public void showDocumentFinal(Circular circular) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "circular.odt");
+            TextNavigation searchFecha;
+            TextNavigation consecutivo;
+            TextNavigation grupo_destinatario;
+            TextNavigation cargo_remitente;
+            TextNavigation asunto;
+            TextNavigation contenido;
+            TextNavigation despedida;
+            TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(circular.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(circular.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(circular.getFecha(), "yyyy"));
+            }
+
+            consecutivo = new TextNavigation("@consecutivo", odt);
+            while (consecutivo.hasNext()) {
+                TextSelection item = (TextSelection) consecutivo.nextSelection();
+                if(circular.getConsecutivo() == null || circular.getConsecutivo()==""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(circular.getConsecutivo());
+                }
+            }
+
+            grupo_destinatario = new TextNavigation("@grupo_destinatario", odt);
+            while (grupo_destinatario.hasNext()) {
+                TextSelection item = (TextSelection) grupo_destinatario.nextSelection();
+                item.replaceWith(circular.getGrupoDestinatario());
+            }
+
+            asunto = new TextNavigation("@asunto", odt);
+            while (asunto.hasNext()) {
+                TextSelection item = (TextSelection) asunto.nextSelection();
+                item.replaceWith(circular.getAsunto());
+            }
+
+            contenido = new TextNavigation("@contenido", odt);
+            while (contenido.hasNext()) {
+                TextSelection item = (TextSelection) contenido.nextSelection();
+                item.replaceWith(Jsoup.parse(circular.getContenido()).text());
+            }
+
+            despedida = new TextNavigation("@despedida", odt);
+            while (contenido.hasNext()) {
+                TextSelection item = (TextSelection) despedida.nextSelection();
+                item.replaceWith("");
+            }
+
+            remitente = new TextNavigation("@remitente", odt);
+            while (remitente.hasNext()) {
+                TextSelection item = (TextSelection) remitente.nextSelection();
+                item.replaceWith(circular.getRemitente().getNombres() + " " + circular.getRemitente().getApelidos());
+            }
+
+            cargo_remitente = new TextNavigation("@cargo_remitente", odt);
+            while (cargo_remitente.hasNext()) {
+                TextSelection item = (TextSelection) cargo_remitente.nextSelection();
+                if(circular.getRemitente().getCargo() == null){
+                    item.replaceWith("");
+                }else{
+                    item.replaceWith(circular.getRemitente().getCargo().getNombre());
+                }
+            }
+            
+             anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith("Anexos:" + Jsoup.parse(circular.getAnexos()).text());
+            }
+            
+             copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                item.replaceWith("");
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId().toString() + ".odt");
+            odt.close();
+
+            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+            //IContext context =  report.createContext();
+            //context.put("name", "world");
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+
+            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId().toString() + ".odt"));
+            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" +circular.getId().toString() + ".pdf"));
+            converter.convert(in, out, options);
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId() + ".pdf";
+            SessionUtils.getSession().setAttribute("filePathCircular", this.filePath);
+            RequestContext.getCurrentInstance().execute("PF('denVisorCircularFinal').show()");
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Error!", e.getMessage()));
+            Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
+    }
+   }
 
     private void loadDocument() {
         FacesContext context = FacesContext.getCurrentInstance();

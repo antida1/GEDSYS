@@ -20,6 +20,7 @@ import com.base16.utils.UploadDocument;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -141,6 +142,15 @@ public class CartaBean extends BaseBean implements Serializable {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
+    
+    public void limpiar() throws IOException{
+        this.carta = null;
+        this.carta = new Carta();
+        this.carta.setFecha(new Date());
+        Documento documento = new Documento();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect("../../index.xhtml");
+    }
 
     private void crear() throws Exception {
         CartaJpaController cJpa;
@@ -204,7 +214,7 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setEstado("0");
             caJpa.edit(this.carta);                       
             CartaViewBean cvb = new CartaViewBean();            
-            cvb.showDocument(this.carta); 
+            cvb.showDocumentFinal(this.carta); 
 
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
@@ -274,7 +284,7 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setEstado("0");
             caJpa.edit(this.carta);            
             CartaViewBean cvb = new CartaViewBean();
-            cvb.showDocument(this.carta);
+            cvb.showDocumentFinal(this.carta);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
