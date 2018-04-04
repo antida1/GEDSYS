@@ -107,6 +107,12 @@ public class ConstanciaBean extends BaseBean implements Serializable{
         RequestContext.getCurrentInstance().execute("PF('denFirmarConstancia').show()");
     }
     
+    public void editarConstancia(Constancia constancia) {
+        this.constancia = constancia;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarConstancia').show()");
+    }
+    
     public void procesar() {
         try {
             switch (accion) {
@@ -146,7 +152,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
         this.constancia.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.constancia.setModificadoPor(usuario);
-        this.constancia.setEstado(2);
+        this.constancia.setEstado(1);
         cJpa.edit(this.constancia);
     }
 

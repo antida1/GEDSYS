@@ -109,6 +109,11 @@ public class CircularBean extends BaseBean implements Serializable {
         this.circular = circular;
         RequestContext.getCurrentInstance().execute("PF('denFirmarCircular').show()");
     }
+    public void editarCircular(Circular circular) {
+        this.circular = circular;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarCircular').show()");
+    }
 
     public void procesar() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -150,7 +155,7 @@ public class CircularBean extends BaseBean implements Serializable {
         this.circular.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.circular.setModificadoPor(usuario);
-        this.circular.setEstado(2);
+        this.circular.setEstado(1);
         cJpa.edit(this.circular);
     }
 

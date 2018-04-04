@@ -103,9 +103,14 @@ public class ComunicacionBean extends BaseBean implements Serializable {
         this.accion = accion;
     }
     
-    public void firmarActa(Comunicacion comunicacion) {
+    public void firmarComunicacion(Comunicacion comunicacion) {
         this.comunicacion = comunicacion;
         RequestContext.getCurrentInstance().execute("PF('denFirmarComunicacion').show()");
+    }
+    public void editarComunicacion(Comunicacion comunicacion) {
+        this.comunicacion = comunicacion;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarComunicacion').show()");
     }
        
     public void procesar() {
@@ -148,7 +153,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
         this.comunicacion.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.comunicacion.setModificadoPor(usuario);
-        this.comunicacion.setEstado("2");
+        this.comunicacion.setEstado("1");
         cJpa.edit(this.comunicacion);
     }
     public void limpiar() throws IOException{

@@ -226,7 +226,7 @@ public class ActaBean extends BaseBean implements Serializable {
         this.acta.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.acta.setModificadoPor(usuario);
-        this.acta.setEstado(2);
+        this.acta.setEstado(1);
         aJpa.edit(this.acta);
     }
 
@@ -338,7 +338,11 @@ public class ActaBean extends BaseBean implements Serializable {
         this.acta = acta;
         RequestContext.getCurrentInstance().execute("PF('denFirmarActa').show()");
     }
-    
+    public void editarActa(Acta acta) {
+        this.acta = acta;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarActa').show()");
+    }
     public void imprimir() {
         FacesContext context = FacesContext.getCurrentInstance();
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());

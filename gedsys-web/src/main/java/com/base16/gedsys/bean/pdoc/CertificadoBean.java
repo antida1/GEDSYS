@@ -107,6 +107,12 @@ public class CertificadoBean extends BaseBean implements Serializable {
         this.certificado = certificado;
         RequestContext.getCurrentInstance().execute("PF('denFirmarCertificado').show()");
     }
+    
+    public void editarCertificado(Certificado certificado) {
+        this.certificado = certificado;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarCertificado').show()");
+    }
 
     
     public void procesar() {
@@ -146,10 +152,10 @@ public class CertificadoBean extends BaseBean implements Serializable {
         CertificadoJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new CertificadoJpaController(emf);
-        this.certificado.setFechaCreacion(new Date());
+        this.certificado.setFechaModificacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.certificado.setModificadoPor(usuario);
-        this.certificado.setEstado(2);
+        this.certificado.setEstado(1);
         cJpa.edit(this.certificado);
     }
 

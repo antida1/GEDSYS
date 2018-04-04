@@ -351,7 +351,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(1, acta.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denResponder').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar"  action="#{actaBean.editarActa(acta)}"  update=":dlgEditarActa messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>  
                                                             <p:commandLink type="button" title="Firmar"  id="firActa" action="#{actaBean.firmarActa(acta)}"  update=":dlgFirmarActa messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>  
                                                             <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{actaViewBean.showDocument(acta)}" update=":dlgVisorActa messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con"  action="#{compartirBean.loadActa(acta)}" update=":dlgCompartirActa messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -392,7 +392,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(2, carta.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>                                                        
+                                                            <p:commandLink type="button" title="Editar" action="#{cartaBean.editarCarta(carta)}"  update=":dlgEditarCarta messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firCarta" action="#{cartaBean.firmarCarta(carta)}"  update=":dlgFirmarCarta messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{cartaViewBean.showDocument(carta)}" update=":dlgVisorCarta messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCarta(carta)}" update=":dlgCompartirCarta messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -425,7 +425,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(3, cert.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar" action="#{certificadoBean.editarCertificado(cert)}" update=":dlgEditarCertificado messages" ><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firCert" action="#{certificadoBean.firmarCertificado(cert)}"  update=":dlgFirmarCertificado messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{certificadoViewBean.showDocument(cert)}" update=":dlgVisorCertificado messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCertificado(cert)}" update=":dlgCompartirCertificado messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -461,7 +461,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(4, cir.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar" action="#{circularBean.editarCircular(cir)}"  update=":dlgEditarCircular messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firCir" action="#{circularBean.firmarCircular(cir)}"  update=":dlgFirmarCircular messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{circularViewBean.showDocument(cir)}" update=":dlgVisorCircular messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadCircular(cir)}" update=":dlgCompartirCircular messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -500,7 +500,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(5, com.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar"  action="#{comunicacionBean.editarComunicacion(com)}"  update=":dlgEditarComunicacion messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firComu" action="#{comunicacionBean.firmarComunicacion(com)}"  update=":dlgFirmarComunicacion messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{comunicacionViewBean.showDocument(com)}" update="dlgVisorComunicacion messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadComunicacion(com)}" update=":dlgCompartirComunicacion messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -533,7 +533,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(6, cons.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar" action="#{constanciaBean.editarConstancia(cons)}"  update=":dlgEditarConstancia messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firConst" action="#{constanciaBean.firmarConstancia(cons)}"  update=":dlgFirmarConstancia messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{constanciaViewBean.showDocument(cons)}" update="dlgVisorConstancia messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadConstancia(cons)}" update=":dlgCompartirConstancia messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -569,7 +569,7 @@
                                                         </p:column>
                                                         <p:column headerText="Acciones">
                                                             <p:commandLink type="button" title="Comentar" action="#{comentarioBean.loadDocumentPrd(7, inf.id)}" update=":dlgVisor messages"><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
-                                                            <a href="#" type="button" title="Editar" onclick="PF('denArchivar').show()"><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"></span></a>
+                                                            <p:commandLink type="button" title="Editar" action="#{informeBean.editarInforme(inf)}"  update=":dlgEditarInforme messages"><span class="glyphicon fa fa-fw fa-pencil" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Firmar"  id="firInf" action="#{informeBean.firmarInforme(inf)}"  update=":dlgFirmarInforme messages"><span class="glyphicon fa fa-fw fa-pencil-square-o " aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{informeViewBean.showDocument(inf)}" update="dlgVisorInforme messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
                                                             <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadInforme(inf)}" update=":dlgCompartirInforme messages"><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"></span></p:commandLink>
@@ -713,45 +713,10 @@
                             </ui:include>
                         </h:form>
                     </p:dialog>
-                    <p:dialog id="dlgCompartirCarta" header="Compartir Carta" widgetVar="denCompartirCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":cartaPorFirmar" />
+                    <p:dialog id="dlgEditarActa" header="Editar Acta" widgetVar="denEditarActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":actaPorFirmar" />
                         <h:form>
-                            <ui:include src="compartirCarta.xhtml">
-                            </ui:include>
-                        </h:form>
-                    </p:dialog>
-                    <p:dialog id="dlgCompartirCertificado" header="Compartir Certificado" widgetVar="denCompartirCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":certificadoPorFirmar" />
-                        <h:form>
-                            <ui:include src="compartirCertificado.xhtml">
-                            </ui:include>
-                        </h:form>
-                    </p:dialog>
-                    <p:dialog id="dlgCompartirCircular" header="Compartir Circular" widgetVar="denCompartirCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":circularPorFirmar" />
-                        <h:form>
-                            <ui:include src="compartirCircular.xhtml">
-                            </ui:include>
-                        </h:form>
-                    </p:dialog>
-                    <p:dialog id="dlgCompartirComunicacion" header="Compartir Comunicación" widgetVar="denCompartirComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":comunicacionPorFirmar" />
-                        <h:form>
-                            <ui:include src="compartirComunicacion.xhtml">
-                            </ui:include>
-                        </h:form>
-                    </p:dialog>
-                    <p:dialog id="dlgCompartirConstancia" header="Compartir Constancia" widgetVar="denCompartirConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":constanciaPorFirmar" />
-                        <h:form>
-                            <ui:include src="compartirConstancia.xhtml">
-                            </ui:include>
-                        </h:form>
-                    </p:dialog>
-                    <p:dialog id="dlgCompartirInforme" header="Compartir Informe" widgetVar="denCompartirInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
-                        <p:ajax event="close" update=":informePorFirmar" />
-                        <h:form>
-                            <ui:include src="compartirInforme.xhtml">
+                            <ui:include src="editarActa.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
@@ -764,6 +729,20 @@
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarActa').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{actaBean.imprimir()}" update=":dlgVisorActa" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
                     </p:dialog>
+                    <p:dialog id="dlgCompartirCarta" header="Compartir Carta" widgetVar="denCompartirCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":cartaPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCarta.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgEditarCarta" header="Editar Carta" widgetVar="denEditarCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":cartaPorFirmar" />
+                        <h:form>
+                            <ui:include src="editarCarta.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
                     <p:dialog id="dlgFirmarCarta" header="FIRMAR" widgetVar="denFirmarCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
                             <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
@@ -773,7 +752,21 @@
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarCarta').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{cartaBean.imprimir()}" update=":dlgVisorCarta" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
                     </p:dialog>
-                    <p:dialog id="dlgFirmarCertificado" header="FIRMAR" widgetVar="denFirmarCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
+                    <p:dialog id="dlgCompartirCertificado" header="Compartir Certificado" widgetVar="denCompartirCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":certificadoPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCertificado.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgEditarCertificado" header="Editar Certificado" widgetVar="denEditarCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":certificadoPorFirmar" />
+                        <h:form>
+                            <ui:include src="editarCertificado.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                     <p:dialog id="dlgFirmarCertificado" header="FIRMAR" widgetVar="denFirmarCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
                             <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
                             <p:outputLabel class="col-xs-12" value="¡Debera imprimirlo, firmarlo de modo manuscrito y entregarlo en ventanilla única!" style="font-size: 24px; font-weight: bolder; align-content: center;"/>
@@ -781,6 +774,20 @@
                         <div align="center">
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarCertificado').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{certificadoBean.imprimir()}" update=":dlgVisorCertificado" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirCircular" header="Compartir Circular" widgetVar="denCompartirCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":circularPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirCircular.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgEditarCircular" header="Editar Circular" widgetVar="denEditarCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":circularPorFirmar" />
+                        <h:form>
+                            <ui:include src="editarCircular.xhtml">
+                            </ui:include>
+                        </h:form>
                     </p:dialog>
                     <p:dialog id="dlgFirmarCircular" header="FIRMAR" widgetVar="denFirmarCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
@@ -791,6 +798,20 @@
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarCircular').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{circularBean.imprimir()}" update=":dlgVisorCircular" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
                     </p:dialog>
+                    <p:dialog id="dlgCompartirComunicacion" header="Compartir Comunicación" widgetVar="denCompartirComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":comunicacionPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirComunicacion.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgEditarComunicacion" header="Editar Circular" widgetVar="denEditarComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":comunicacionPorFirmar" />
+                        <h:form>
+                            <ui:include src="editarComunicacion.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
                     <p:dialog id="dlgFirmarComunicacion" header="FIRMAR" widgetVar="denFirmarComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
                             <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
@@ -800,6 +821,20 @@
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarComunicacion').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.imprimir()}" update=":dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
                     </p:dialog>
+                    <p:dialog id="dlgCompartirConstancia" header="Compartir Constancia" widgetVar="denCompartirConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":constanciaPorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirConstancia.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgEditarConstancia" header="Editar Constancia" widgetVar="denEditarConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":constanciaPorFirmar" />
+                        <h:form>
+                            <ui:include src="editarConstancia.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
                     <p:dialog id="dlgFirmarConstancia" header="FIRMAR" widgetVar="denFirmarConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
                             <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color: orange"></p:outputLabel> 
@@ -808,6 +843,20 @@
                         <div align="center">
                             <p:commandButton value="IMPRIMIR DOCUMENTO" style="background-color:#d9534f; width: 30%; height: 60px; color: #ffffff;" onstart="PF('denFirmarConstancia').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{constanciaBean.imprimir()}" update=":dlgVisorConstancia" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                         </div>                    
+                    </p:dialog>
+                    <p:dialog id="dlgCompartirInforme" header="Compartir Informe" widgetVar="denCompartirInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":informePorFirmar" />
+                        <h:form>
+                            <ui:include src="compartirInforme.xhtml">
+                            </ui:include>
+                        </h:form>
+                    </p:dialog>
+                     <p:dialog id="dlgEditarInforme" header="Editar Informe" widgetVar="denEditarInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":informePorFirmar" />
+                        <h:form>
+                            <ui:include src="editarInforme.xhtml">
+                            </ui:include>
+                        </h:form>
                     </p:dialog>
                     <p:dialog id="dlgFirmarInforme" header="FIRMAR" widgetVar="denFirmarInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                         <div class="form-group row">
@@ -844,69 +893,105 @@
                     <p:dialog id="dlgVisorActa" header="Visor de Actas" widgetVar="denVisorActa" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":actaPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlAct" height="800" value="#{actaViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlAct" height="800" value="#{actaViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorActaFinal" header="Visor de Actas" widgetVar="denVisorActaFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                         <p:ajax event="close" update=":actaPorFirmar" />
+                        <h:form> 
+                            <pe:documentViewer id="documentCtlActa" height="480" value="#{actaViewBean.content}" />
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('dlgVisorActa').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorActaFinal').hide(); PF('denEditarActa').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorCarta" header="Visor de Cartas" widgetVar="denVisorCarta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":cartaPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCarta" height="800" value="#{cartaViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorCartaFinal" header="Visor de Cartas" widgetVar="denVisorCartaFinal" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                         <p:ajax event="close" update=":cartaPorFirmar" />
+                        <h:form> 
+                            <pe:documentViewer id="documentCtlCarta" height="480" value="#{cartaViewBean.content}" />
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCarta').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCartaFinal').hide(); PF('denEditarCarta').hide()"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorCertificado" header="Visor de Certificados" widgetVar="denVisorCertificado" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":certificadoPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCertificado" height="800" value="#{certificadoViewBean.content}" />                           
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorCertificadoFinal" header="Visor de Certificados" widgetVar="denVisorCertificadoFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCertificado" height="480" value="#{certificadoViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCertificado').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCertificadoFinal').hide(); PF('denEditarCertificado').hide()" update="@form :certificadoPorFirmar"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorCircular" header="Visor de Circulares" widgetVar="denVisorCircular" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":circularPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlCircular" height="800" value="#{circularViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlCircular" height="800" value="#{circularViewBean.content}" />                            
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorCircularFinal" header="Visor de Circulares" widgetVar="denVisorCircularFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlCircular" height="480" value="#{circularViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircularFinal').hide(); PF('denEditarCircular').hide()" update="@form :circularPorFirmar"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorComunicacion" header="Visor de Comunicaciones" widgetVar="denVisorComunicacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":comunicacionPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlComunicacion" height="800" value="#{comunicacionViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorComunicacionFinal" header="Visor de Comunicaciones" widgetVar="denVisorComunicacionFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlComunicacion" height="480" value="#{comunicacionViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorCircular').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorComunicacionFinal').hide(); PF('denEditarComunicacion').hide()" update="@form :comunicacionPorFirmar"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorConstancia" header="Visor de Constancias" widgetVar="denVisorConstancia" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":constanciaPorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlConstancia" height="800" value="#{constanciaViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorConstanciaFinal" header="Visor de Constancias" widgetVar="denVisorConstanciaFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlConstancia" height="480" value="#{constanciaViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorConstancia').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorConstanciaFinal').hide(); PF('denEditarConstancia').hide()" update="@form :constanciaPorFirmar"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgVisorInforme" header="Visor de Informes" widgetVar="denVisorInforme" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true" >
                         <p:ajax event="close" update=":informePorFirmar" />
                         <h:form>
-                            <pe:documentViewer id="documentCtlInforme" height="800" value="#{informeViewBean.content}" />  
+                            <pe:documentViewer id="documentCtlInforme" height="800" value="#{informeViewBean.content}" />
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog id="dlgVisorInformeFinal" header="Visor de Informes" widgetVar="denVisorInformeFinal" modal="true" closable="false" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" height="500" maximizable="true" >
+                        <h:form>
+                            <pe:documentViewer id="documentCtlInforme" height="480" value="#{informeViewBean.content}" />  
                             <div>
-                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorInforme').hide()"></p:commandButton>
+                                <p:commandButton icon="fa fa-fw fa-times" value="Cerrar" immediate="true" oncomplete="PF('denVisorInformeFinal').hide(); PF('denEditarInforme').hide()" update="@form :informePorFirmar"></p:commandButton>
                             </div>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgRadicado" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="80%" height="500px" dynamic="true" style="overflow:auto;">
                         <ui:include src="../procesos/newRadicadoSalida.xhtml">
-
                         </ui:include>
                     </p:dialog>
                     <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="90%" height="550px" dynamic="true" responsive="true"  closable="true">

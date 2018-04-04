@@ -100,6 +100,11 @@ public class CartaBean extends BaseBean implements Serializable {
         this.carta = carta;
         RequestContext.getCurrentInstance().execute("PF('denFirmarCarta').show()");
     }
+    public void editarCarta(Carta carta) {
+        this.carta = carta;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarCarta').show()");
+    }
 
     public void setDocumentoRelacionado(Documento documentoRelacionado) {
         this.documentoRelacionado = documentoRelacionado;

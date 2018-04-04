@@ -106,6 +106,11 @@ public class InformeBean extends BaseBean implements Serializable {
         this.informe = informe;
         RequestContext.getCurrentInstance().execute("PF('denFirmarInforme').show()");
     }
+    public void editarInforme(Informe informe) {
+        this.informe = informe;
+        this.accion = "editar";
+        RequestContext.getCurrentInstance().execute("PF('denEditarInforme').show()");
+    }
     
     public void procesar() {
         try {
@@ -146,7 +151,7 @@ public class InformeBean extends BaseBean implements Serializable {
         this.informe.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.informe.setModificadoPor(usuario);
-        this.informe.setEstado(2);
+        this.informe.setEstado(1);
         cJpa.edit(this.informe);
     }
 
