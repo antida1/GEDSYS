@@ -8,7 +8,7 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-04-03T16:17:06")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-04-05T09:21:17")
 @StaticMetamodel(SeccionSubSeccion.class)
 public class SeccionSubSeccion_ { 
 
