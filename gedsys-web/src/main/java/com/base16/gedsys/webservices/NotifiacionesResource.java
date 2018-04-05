@@ -61,7 +61,7 @@ public class NotifiacionesResource extends BaseBean {
 
         NotificacionJpaController nJpa = new NotificacionJpaController(emf);
         List<Notificacion> notificaciones = nJpa.findNotificacionEntities();
-        
+
         JsonArray notifys = new JsonArray();
         for (Notificacion notificacion : notificaciones) {
             JsonObject object = new JsonObject();
@@ -70,7 +70,9 @@ public class NotifiacionesResource extends BaseBean {
             object.addProperty("fechaFinalizacion", DateTimeUtils.getFormattedTime(notificacion.getFechaFinalizacion(), "yyyy-MM-dd HH:mm:ss.SSS"));
             notifys.add(object);
         }
-        
+        if (notifys.isJsonNull()) {
+            return "[]";
+        }
         //NotificacionBean notificacionBean = new NotificacionBean();
         //notificacionBean.listarPorResponsable(usuario);
         //List<Notificacion> notificaciones =  notificacionBean.getNotificaciones();

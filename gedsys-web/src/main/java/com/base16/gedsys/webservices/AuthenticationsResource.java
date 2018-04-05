@@ -23,6 +23,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -65,7 +66,7 @@ public class AuthenticationsResource extends BaseBean {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String postJson(String data) throws JSONException {
+    public Response postJson(String data) throws JSONException {
         String result = "";
         //JSONObject ret = null;
        try {
@@ -75,13 +76,16 @@ public class AuthenticationsResource extends BaseBean {
             String email = content.getString("email");
             String password = Authentication.md5(content.getString("password"));
             Usuario usuario = uJpa.autheticate(email, password);
-            
+            if(usuario != null){
             JsonObject object = new JsonObject();
             object.addProperty("nombre", usuario.getNombres() );
             object.addProperty("apellido", usuario.getApelidos() );
             object.addProperty("email",usuario.getEmail());
             object.addProperty("foto", usuario.getFoto());
             result = object.toString();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("Usuario not found: " + content.get("email")).build();
+            }
             
         } catch (Exception ex) {
             Logger.getLogger(AuthenticationResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +93,7 @@ public class AuthenticationsResource extends BaseBean {
             object.accumulate("error", ex.getMessage());
             result = object.toString();
         }
-        return result;
+        return Response.ok(result, MediaType.APPLICATION_JSON).build();
     }
 
     /**

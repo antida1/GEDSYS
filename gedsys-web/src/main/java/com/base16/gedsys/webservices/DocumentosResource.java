@@ -74,7 +74,7 @@ public class DocumentosResource extends BaseBean {
             }
             return docs.toString();
         } else {
-            return "";
+            return"[]";
         }
         
     }
