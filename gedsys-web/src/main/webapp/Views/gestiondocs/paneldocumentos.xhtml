@@ -651,7 +651,7 @@
                                                 </p:column>
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsCompartidos)}" update=":dlgVisor messages" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
-                                                    <p:commandLink type="button" title="Comentar" actionListener="#{comentarioBean.loadDocument(docsCompartidos)}" update=":dlgComentar messages" ><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" title="Comentar" actionListener="#{comentarioBean.loadDocument(docsCompartidos)}" update=":dlgComentar messages" ><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                 </p:column>
                                             </p:dataTable>
                                         </h:form>
@@ -868,7 +868,7 @@
                         </div>                    
                     </p:dialog>
                     <p:dialog id="dlgComentar" header="Comentar" widgetVar="denComentar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%"  maximizable="true">
-                        <p:ajax event="close" update=":entrantes :enviados :porVencer :porArchivar :compartido informePorFirmar :constanciaPorFirmar :comunicacionPorFirmar :circularPorFirmar :certificadoPorFirmar :cartaPorFirmar :actaPorFirmar" />
+                        <p:ajax event="close" update=":entrantes :enviados :porVencer :porArchivar :compartido :informePorFirmar :constanciaPorFirmar :comunicacionPorFirmar :circularPorFirmar :certificadoPorFirmar :cartaPorFirmar :actaPorFirmar" />
                         <h:form>
                             <ui:include src="comentar.xhtml"/>
                         </h:form>

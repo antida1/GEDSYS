@@ -28,9 +28,11 @@ import com.base16.gedsys.web.utils.SessionUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 import org.primefaces.context.RequestContext;
 
@@ -38,22 +40,29 @@ import org.primefaces.context.RequestContext;
  *
  * @author robert
  */
+@Named(value = "comentarioBean")
 @ManagedBean
 @ViewScoped
-public class ComentarioBean extends BaseBean {
+public class ComentarioBean extends BaseBean implements Serializable {
 
     /**
      * Creates a new instance of CommentBean
      */
-    public ComentarioBean() {
-        
-    }
-     private List<Comentario> comentarios;
-
-    private String comentario;
+    private static final long SerialVersionUID = 1L;
+    private List<Comentario> comentarios;
+    private String comentario = "";
     private Documento documento;
-    private int tipoDocumento;
-    private int documentoPrdId;
+    private int tipoDocumento = 0;
+    private int documentoPrdId = 0;
+
+    public ComentarioBean() {
+
+    }
+
+    @PostConstruct
+    public void init() {
+        documento = new Documento();
+    }
 
     public String getComentario() {
         return comentario;
@@ -195,9 +204,8 @@ public class ComentarioBean extends BaseBean {
             coment.setIdDocProduccion(this.documentoPrdId);
         }
         cjpa.create(coment);
-        this.comentario ="";
+        this.comentario = "";
         this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Comentatio", "Comentario Creado"));
         RequestContext.getCurrentInstance().execute("PF('denComentar').hide()");
-    }   
+    }
 }
-
