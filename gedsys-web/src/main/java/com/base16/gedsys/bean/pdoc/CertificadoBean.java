@@ -203,6 +203,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setRemitenteExteno("");
+            documento.setConsecutivo(this.certificado.getConsecutivo());
             documento.setDestinatario(this.certificado.getRemitente());
             documento.setAsunto(this.certificado.getContenido());
             documento.setFechaDocumento(this.certificado.getFecha());
@@ -286,6 +287,7 @@ public void imprimir() {
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setRemitenteExteno("");
+            documento.setConsecutivo(this.certificado.getConsecutivo());
             documento.setDestinatario(this.certificado.getRemitente());
             documento.setAsunto(this.certificado.getContenido());
             documento.setFechaDocumento(this.certificado.getFecha());
