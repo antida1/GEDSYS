@@ -37,6 +37,12 @@
             <artifactId>jsoup</artifactId>
             <version>1.11.2</version>
         </dependency>
+        <dependency>
+            <groupId>net.glxn</groupId>
+            <artifactId>qrgen</artifactId>
+            <version>1.4</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

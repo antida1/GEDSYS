@@ -217,6 +217,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
             documento.setDetalle(this.comunicacion.getContenido());
             documento.setDireccion(this.comunicacion.getDestinatario().getEmail());
             documento.setEstado(9);  
+            documento.setConsecutivo(this.comunicacion.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             

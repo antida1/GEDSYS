@@ -234,6 +234,7 @@ public class CartaBean extends BaseBean implements Serializable {
             documento.setDetalle(this.carta.getAsunto());
             documento.setDireccion(this.carta.getDireccion());
             documento.setEstado(9);
+            documento.setConsecutivo(this.carta.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);   
             

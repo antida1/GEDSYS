@@ -13,11 +13,16 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import net.glxn.qrgen.QRCode;
 
 /**
  *
@@ -29,6 +34,7 @@ public class RadicadoImage {
         try {
             File path = new File(logoPath);
             BufferedImage logo = ImageIO.read(new File(path, "logoInstitucion.png"));
+            BufferedImage qrCode = ImageIO.read(GenerarQRCode(numeroRadicado, 100, 100));
             BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             //BufferedImage imageBar = (BufferedImage) this.GenerarCodeBar(numeroRadicado);
             int Ratio = 3;
@@ -36,7 +42,7 @@ public class RadicadoImage {
             Font font = new Font("Monospaced", Font.BOLD, 10);
             g2D.setFont(font);
             FontMetrics fm = g2D.getFontMetrics();
-            int width = fm.stringWidth("------------------------------") + (logo.getWidth() / Ratio);
+            int width = fm.stringWidth("------------------------------") + (logo.getWidth() / Ratio) + 78;
             //int height = Math.max(fm.getHeight() * 5, (logo.getHeight()+imageBar.getHeight() / Ratio));
             int height = Math.max(fm.getHeight() * 6, (logo.getHeight() / Ratio));
             g2D.dispose();
@@ -55,6 +61,7 @@ public class RadicadoImage {
             fm = g2D.getFontMetrics();
             g2D.setColor(Color.black);
             g2D.drawImage(logo, 0, 0, logo.getWidth() / Ratio, logo.getHeight() / Ratio, null);
+            g2D.drawImage(qrCode, width - qrCode.getWidth(), 0, qrCode.getWidth(), qrCode.getHeight(), null);
             
             g2D.drawString(nombreEntidad, logo.getWidth() / Ratio, fm.getAscent());
             font = new Font("Monospaced", Font.BOLD, 12);
@@ -80,6 +87,7 @@ public class RadicadoImage {
             
             ImageIO.write(img, "png", new File(destinationPath + numeroRadicado + ".png"));
         } catch (IOException e) {
+             Logger.getLogger(RadicadoImage.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return numeroRadicado + ".png";
     }
@@ -92,4 +100,9 @@ public class RadicadoImage {
         Image imageEAN = codeEAN.createAwtImage(Color.BLACK, Color.WHITE);
         return imageEAN;
     }
+    
+    public File GenerarQRCode(String data, int width, int height){
+        return QRCode.from(data).withSize(width, height).file();
+    }
+    
 }

@@ -208,6 +208,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             documento.setDetalle(this.constancia.getContenido());
             documento.setDireccion("");
             documento.setEstado(9);
+            documento.setConsecutivo(this.constancia.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             
