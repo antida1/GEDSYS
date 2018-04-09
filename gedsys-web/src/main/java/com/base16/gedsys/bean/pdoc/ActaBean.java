@@ -387,6 +387,7 @@ public class ActaBean extends BaseBean implements Serializable {
             // TODO: Crea nuevo registro de documento
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setConsecutivo(this.acta.getConsecutivo());
             documento.setRemitenteExteno("");
             documento.setDestinatario(this.acta.getPresidente());
             documento.setAsunto(this.acta.getOrden());

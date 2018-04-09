@@ -285,6 +285,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setRemitenteExteno("");
+            documento.setConsecutivo(this.constancia.getConsecutivo());
             documento.setDestinatario(this.constancia.getRemitente());
             documento.setAsunto(this.constancia.getContenido());
             documento.setFechaDocumento(this.constancia.getFecha());

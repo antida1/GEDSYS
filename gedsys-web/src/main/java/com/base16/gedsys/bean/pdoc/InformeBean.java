@@ -285,6 +285,7 @@ public class InformeBean extends BaseBean implements Serializable {
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setRemitenteExteno("");
+            documento.setConsecutivo(this.informe.getConsecutivo());
             documento.setDestinatario(this.informe.getRemitente());
             documento.setAsunto(this.informe.getObjetivo());
             documento.setFechaDocumento(this.informe.getFecha());

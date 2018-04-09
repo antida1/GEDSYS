@@ -288,6 +288,7 @@ public class CircularBean extends BaseBean implements Serializable {
             // TODO: Crea nuevo registro de documento
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
+            documento.setConsecutivo(this.circular.getConsecutivo());
             documento.setRemitenteExteno(this.circular.getGrupoDestinatario());
             documento.setDestinatario(this.circular.getRemitente());
             documento.setAsunto(this.circular.getAsunto());
