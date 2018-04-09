@@ -211,6 +211,7 @@ public class CertificadoBean extends BaseBean implements Serializable {
             documento.setDetalle(this.certificado.getContenido());
             documento.setDireccion("");
             documento.setEstado(9);
+            documento.setConsecutivo(this.certificado.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             

@@ -211,6 +211,7 @@ public class CircularBean extends BaseBean implements Serializable {
             documento.setDetalle(this.circular.getAsunto());
             documento.setDireccion("");
             documento.setEstado(9);
+            documento.setConsecutivo(this.circular.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             

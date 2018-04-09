@@ -40,6 +40,11 @@ a:link:hover, a:visited:hover  {
   height: 29.7cm; 
 }
 
+.page[size="CARTA"] {  
+  width: 21.59cm;
+  height: 27.94cm; 
+}
+
 @media print {
   body, page {
     margin: 0;

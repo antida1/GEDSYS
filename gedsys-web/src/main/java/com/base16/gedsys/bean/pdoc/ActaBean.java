@@ -285,6 +285,7 @@ public class ActaBean extends BaseBean implements Serializable {
             documento.setFechaCreacion(new Date());
             documento.setDetalle(this.acta.getDesarrollo());
             documento.setDireccion(this.acta.getLugar());
+            documento.setConsecutivo(this.acta.getConsecutivo());
             documento.setEstado(9);
 
             // Crea la colección de asistentes para llenar la colección de destinatarios del documento

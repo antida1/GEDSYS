@@ -36,11 +36,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.NativeUploadedFile;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
-import org.primefaces.model.UploadedFileWrapper;
 
 /**
  *
@@ -238,6 +234,7 @@ public class CartaBean extends BaseBean implements Serializable {
             documento.setDetalle(this.carta.getAsunto());
             documento.setDireccion(this.carta.getDireccion());
             documento.setEstado(9);
+            documento.setConsecutivo(this.carta.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);   
             

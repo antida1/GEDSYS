@@ -14,14 +14,12 @@
         <title>Impresión de Radicados</title>
     </h:head>
     <h:body>
-        <p:messages id="imessages" autoUpdate="true" />
         <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" style="display:block;margin-bottom:20px">
             <p:printer target="radic"/>
         </p:commandButton>
-        <div class="page" size="A4"  id="image">
-            <p:outputPanel id="radic" style="width:400px;height:120px; " >
-                <p:graphicImage cache="false" id="radicImg" value="#{radicadoBean.radicadoImg}" />
-                <p:barcode cache="false" id="radicQR" value="#{radicadoBean.radicado}" type="qr" width="110px" height="110px"/>
+        <div class="page" size="CARTA"  id="image">
+            <p:outputPanel id="radic" style="width:100px;height:120px; " >
+                <p:graphicImage cache="false" id="radicImg" value="#{radicadoBean.radicadoImg}"   />
             </p:outputPanel>
         </div>
         <p:draggable for="radic" containment="parent" />
@@ -31,11 +29,11 @@
         </pe:imageRotateAndResize>  
         <br/>  
         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" value="Rotar a la Izquierda"  
-                         onclick="PF('rotateAndResizeWidget').rotateLeft(90);return false;"/>  
+                         onclick="PF('rotateAndResizeWidget').rotateLeft(90);return false;" />  
         <p:commandButton icon="ui-icon-arrowreturnthick-1-e" value="Rotar a la Derecha"  
                          onclick="PF('rotateAndResizeWidget').rotateRight(90);return false;"/>  
         <p:commandButton icon="ui-icon-zoomin" value="Scale +"  
-                         onclick="PF('rotateAndResizeWidget').scale(1.05);return false;"/>  
+                         onclick="PF('rotateAndResizeWidget').scale(1.05);return false;" />  
         <p:commandButton icon="ui-icon-zoomout" value="Scale -"  
                          onclick="PF('rotateAndResizeWidget').scale(0.95);return false;"/> 
 

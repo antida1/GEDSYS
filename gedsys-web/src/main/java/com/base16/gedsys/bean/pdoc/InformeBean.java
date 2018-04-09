@@ -207,6 +207,7 @@ public class InformeBean extends BaseBean implements Serializable {
             documento.setDetalle(this.informe.getConclusiones());
             documento.setDireccion("");
             documento.setEstado(9);
+            documento.setConsecutivo(this.informe.getConsecutivo());
             DocumentoJpaController djc = new DocumentoJpaController(emf);
             djc.create(documento);
             
