@@ -80,10 +80,10 @@ public class LoginBean extends BaseBean implements Serializable {
                 logeado = true;
                 HttpSession session = SessionUtils.getSession();
                 session.setAttribute("usuario", usuario);
-                msg = new FacesMessage("Inicio de sesion completado", "Usted esta logeado");
+                msg = new FacesMessage("¡Inicio de sesión completado!", "¡Usted está logueado!");
             } else {
                 logeado = false;
-                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Acceso denegado", "Credeciales no válidas");
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "¡Acceso denegado!", "¡Credenciales no válidas!");
             }
 
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -92,7 +92,7 @@ public class LoginBean extends BaseBean implements Serializable {
                 context.addCallbackParam("view", "index.xhtml");
             }
         } catch (Exception e) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Inicio de Sesion", e.getMessage());
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Inicio de Sesión", e.getMessage());
         }
     }
 

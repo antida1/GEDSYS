@@ -60,7 +60,7 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "constancia.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "constanciab.odt");
             TextNavigation searchConsecutivo;
             TextNavigation searchFecha;            
             TextNavigation cargo;

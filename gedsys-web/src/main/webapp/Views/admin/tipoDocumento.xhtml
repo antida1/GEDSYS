@@ -35,10 +35,10 @@
                                      <p:column headerText="Tipo de Comunicación" filterBy="#{tipoDocumento.tipoComunicacion}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.tipoComunicacion}" />
                                     </p:column>
-                                     <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.requiereRespuesta?'Si': 'No'}" filterValue="">
-                                        <h:outputText value="#{tipoDocumento.requiereRespuesta ?'Si': 'No'}" />                                        
+                                     <p:column headerText="Requiere Respuesta" filterBy="#{tipoDocumento.requiereRespuesta?'Sí': 'No'}" filterValue="">
+                                        <h:outputText value="#{tipoDocumento.requiereRespuesta ?'Sí': 'No'}" />                                        
                                     </p:column>
-                                     <p:column headerText="Es PQRSF" filterBy="#{tipoDocumento.esPQRSF}" filterValue="">
+                                     <p:column headerText="Es PQRSF" filterBy="#{tipoDocumento.esPQRSF?'Sí': 'No'}" filterValue="">
                                          <h:outputText value="#{tipoDocumento.esPQRSF ?'Sí': 'No'}" />                                        
                                     </p:column>
                                     <p:column headerText="Días de Trámite" filterBy="#{tipoDocumento.diasRespuesta}" filterMatchMode="contains">
@@ -47,17 +47,17 @@
                                     <p:column headerText="Tipo de Calendario" filterBy="#{tipoDocumento.tipoCalendario}" filterMatchMode="contains">
                                         <h:outputText value="#{tipoDocumento.tipoCalendario}" />
                                     </p:column>                                    
-                                    <p:column headerText="Fecha creación">
+                                    <p:column headerText="Fecha Creación">
                                         <h:outputText value="#{tipoDocumento.fechaCreacion}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Fecha modificación">
+                                    <p:column headerText="Fecha Modificación">
                                         <h:outputText value="#{tipoDocumento.fechaModificacion}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" />
                                         </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Creado por" filterBy="#{tipoDocumento.creadoPor}" filterMatchMode="exact">
+                                    <p:column headerText="Creado Por" filterBy="#{tipoDocumento.creadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:105px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
@@ -66,7 +66,7 @@
                                         </f:facet>
                                         <h:outputText value="#{tipoDocumento.creadoPor.nombres} #{tipoDocumento.creadoPor.apelidos}" />
                                     </p:column>
-                                    <p:column headerText="Modificado por" filterBy="#{tipoDocumento.modificadoPor}" filterMatchMode="exact">
+                                    <p:column headerText="Modificado Por" filterBy="#{tipoDocumento.modificadoPor}" filterMatchMode="exact">
                                         <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tipoDocumentoTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:105px;">
                                                 <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
@@ -87,7 +87,7 @@
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>                                        
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>
                                     </p:column>
@@ -116,7 +116,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Requiere respuesta" for="ReqRespuesta" class="col-xs-3 col-form-label" />
+                                    <p:outputLabel value="Requiere Respuesta" for="ReqRespuesta" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
                                         <p:selectBooleanCheckbox id="ReqRespuesta" value="#{tipoDocumentoBean.tipoDocumento.requiereRespuesta}" />
                                     </div>
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Días de trámite" for="diasRespuesta" class="col-xs-3 col-form-label" />
+                                    <p:outputLabel value="Días de Trámite" for="diasRespuesta" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
                                         <p:inputText id="diasRespuesta" required="true"  requiredMessage="Error, los .días de respuesta no pueden estar vacíos" value="#{tipoDocumentoBean.tipoDocumento.diasRespuesta}" class="form-control" />
                                     </div>

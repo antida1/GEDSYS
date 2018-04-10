@@ -66,7 +66,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "acta.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "actab.odt");
 
             TextNavigation searchConsecutivo;
             TextNavigation searchFecha;

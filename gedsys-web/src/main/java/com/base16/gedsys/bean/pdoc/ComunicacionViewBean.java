@@ -61,7 +61,7 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "comunicacion.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "comunicacionb.odt");
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation destinatario;
