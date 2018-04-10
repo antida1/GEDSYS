@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
 import org.primefaces.event.NodeSelectEvent;
 
@@ -28,7 +28,7 @@ import org.primefaces.event.NodeSelectEvent;
  * @author rober
  */ 
 @ViewScoped
-@Named
+@ManagedBean
 public class SignaturaTopograficaBean extends BaseBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,7 +59,6 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
     }
 
     public void setAccion(String accion) {
-        this.limpiar();
         this.accion = accion;
     }
     
@@ -98,7 +97,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             sJpa = new SignaturaTopograficaJpaController(emf);
             
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.signaturaTopografica.setDependeDe(selectNode);
+            this.signaturaTopografica.setDependeDe(this.selectNode);
             this.signaturaTopografica.setFechaCracion(new Date());
             this.signaturaTopografica.setCreadoPor(usuario);
             sJpa.create(signaturaTopografica);

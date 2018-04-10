@@ -85,7 +85,7 @@
                                                     <h:outputText value="#{docsEntrantes.destinatario.nombres} #{docsEntrantes.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsEntrantes.detalle}" />
+                                                    <h:outputText value="#{docsEntrantes.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Comentarios" style="text-align: center;">
                                                     <h:outputText value="#{comentarioBean.coutComents(docsEntrantes)}" />
@@ -135,7 +135,7 @@
                                                     <h:outputText value="#{docPorEnviar.destinatario.nombres} #{docPorEnviar.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docPorEnviar.detalle}" />
+                                                    <h:outputText value="#{docPorEnviar.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Transportador">
                                                     <h:outputText value="#{docPorEnviar.transportador.nombre}" />
@@ -177,7 +177,7 @@
                                                     <h:outputText value="#{docsEnviados.destinatario.nombres} #{docsEnviados.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsEnviados.detalle}" />
+                                                    <h:outputText value="#{docsEnviados.detalle}" escape="false" />
                                                 </p:column>
                                                 <p:column headerText="Medio de Envio">
                                                     <h:outputText value="#{docsEnviados.medioEnvio.nombre}" />
@@ -238,7 +238,7 @@
                                                     <h:outputText value="#{docsPrestamo.destinatario.nombres} #{docsPrestamo.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsPrestamo.detalle}" />
+                                                    <h:outputText value="#{docsPrestamo.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Ver" onstart="PF('statusDialog').show();" action="#{documentViewerBean.showDocument(docsPrestamo)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
@@ -294,7 +294,7 @@
                                                     <h:outputText value="#{docsPorVencer.destinatario.nombres} #{docsPorVencer.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsPorVencer.detalle}" />
+                                                    <h:outputText value="#{docsPorVencer.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsPorVencer)}" disabled="#{not docsPorVencer.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
@@ -606,7 +606,7 @@
                                                     <h:outputText value="#{docsPorArchivar.destinatario.nombres} #{docsPorArchivar.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsPorArchivar.detalle}" />
+                                                    <h:outputText value="#{docsPorArchivar.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Acciones">
                                                     <p:commandLink type="button" title="Archivar" action="#{archivarBean.loadDocumento(docsPorArchivar)}" update=":dlgArchivar messages" disabled="#{docsPorArchivar.estado eq 10 }" ><span class="glyphicon fa fa-fw fa-folder" aria-hidden="true"/></p:commandLink>
@@ -644,7 +644,7 @@
                                                     <h:outputText value="#{docsCompartidos.destinatario.nombres} #{docsArchivados.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
-                                                    <h:outputText value="#{docsCompartidos.detalle}" />
+                                                    <h:outputText value="#{docsCompartidos.detalle}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Comentarios" style="text-align: center;">
                                                     <h:outputText value="#{comentarioBean.coutComents(docsCompartidos)}" />
@@ -1028,7 +1028,7 @@
                                         <h:outputText value="#{docsSelPorEnviar.destinatario.nombres} #{docsSelPorEnviar.destinatario.apelidos}" />
                                     </p:column>
                                     <p:column headerText="Detalle">
-                                        <h:outputText value="#{docsSelPorEnviar.detalle}" />
+                                        <h:outputText value="#{docsSelPorEnviar.detalle}" escape="false"/>
                                     </p:column>
                                     <p:column headerText="Transportador">
                                         <h:outputText value="#{docsSelPorEnviar.transportador.nombre}" />
