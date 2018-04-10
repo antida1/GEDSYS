@@ -78,12 +78,12 @@
                                       <p:column headerText="Acciones">                          
                                         <p:commandButton actionListener="#{tipoDocumentoBean.getTipoDocumentoById(tipoDocumento)}" 
                                                          update=":dlgDetalle" oncomplete="PF('tipoDocumentoDialog').show()" 
-                                                         icon="ui-icon-pencil" title="Editar">
+                                                         icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('tipoDocumento')}">
                                         </p:commandButton>                            
                                         <p:commandButton icon="ui-icon-trash" 
                                                          title="Borrar"
                                                          actionListener="#{tipoDocumentoBean.eliminar(tipoDocumento)}" 
-                                                         update=":form:lstTipoDocumento messages">                                        
+                                                         update=":form:lstTipoDocumento messages" disabled="#{!autorizationBean.canDelete('tipoDocumento')}">                                        
                                             <p:confirm header="Confirmación" message="¿Desea eliminar el registro?" icon="ui-icon-alert"/>
                                         </p:commandButton>                                        
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

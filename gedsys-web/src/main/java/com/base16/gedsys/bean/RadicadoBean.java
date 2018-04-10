@@ -95,7 +95,7 @@ public class RadicadoBean extends BaseBean implements Serializable {
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             String UsuarioName =usuario.getNombres()+ " " + usuario.getApelidos();
-            String name = consec.getPrefijo() + strHoy + consec.getConsecutivo() + consec.getSufijo();
+            String name = consec.getPrefijo() + strHoy + "-" + consec.getConsecutivo() + consec.getSufijo();
             String nombreEntidad = this.nombreEntidad;
             this.radicado = name;
             

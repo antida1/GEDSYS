@@ -21,14 +21,14 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('grupoDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{grupoBean.setAccion('Crear')}" update="dlgDetalle">
+                                    <p:menuitem oncomplete="PF('grupoDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{grupoBean.setAccion('Crear')}" update="dlgDetalle" disabled="#{!autorizationBean.canCreate('grupos')}" >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="50"
                                              paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15,20,30,50">
+                                             rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron grupos!">
                                     <f:facet name="header">
 
 
@@ -38,23 +38,8 @@
                                     <p:column headerText="Nombre" filterBy="#{grupo.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{grupo.nombre}"/>
                                     </p:column>
-                                    <p:column headerText="Estado" filterBy="#{grupo.estado}" filterMatchMode="equals">
-                                        <f:facet name="filter">
-                                            <p:selectOneButton onchange="PF('grupoTable').filter()">
-                                                <f:converter converterId="javax.faces.Boolean" />
-                                                <f:selectItem itemLabel="Todo" itemValue="" />
-                                                <f:selectItem itemLabel="Sí" itemValue="true" />
-                                                <f:selectItem itemLabel="No" itemValue="false" />
-                                            </p:selectOneButton>
-                                        </f:facet>
-                                        <h:outputText value="#{grupo.estado}"/>
-                                        <c:if test="#{grupo.estado == true}">
-                                            <h:outputText value="Activo" />
-                                        </c:if>
-                                        <c:if test="#{grupo.estado == false}">
-                                            <h:outputText value="Inactivo" />
-                                        </c:if>
-
+                                    <p:column headerText="Estado" filterBy="#{grupo.estado ?'Activo': 'Inactivo'}" filterMatchMode="equals">
+                                        <h:outputText value="#{grupo.estado ?'Activo': 'Inactivo'}"/>                                       
                                     </p:column>
                                     <p:column headerText="Fecha creación">
                                         <h:outputText value="#{grupo.fechaCreacion}" >

@@ -23,7 +23,7 @@
                             <h:form id="form">
                                 <div class="x_content">
                                     <p:menubar>
-                                        <p:menuitem oncomplete="PF('usuarioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{usuarioBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                        <p:menuitem oncomplete="PF('usuarioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{usuarioBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('usuarios')}" >
                                         </p:menuitem>
                                     </p:menubar>
                                     <p:separator/>
@@ -61,7 +61,7 @@
                                         <p:column headerText="Acciones">
                                             <p:commandButton actionListener="#{usuarioBean.getUsuarioById(usuario)}" 
                                                              update=":dlgDetalle" oncomplete="PF('usuarioDialog').show()" 
-                                                             icon="ui-icon-pencil" title="Editar">
+                                                             icon="ui-icon-pencil" title="Editar" disabled="#{!autorizationBean.canUpdate('usuarios')}" >
                                             </p:commandButton>
                                             <p:commandButton icon="ui-icon-trash" disabled="#{!autorizationBean.canDelete('usuarios')}"
                                                              title="Borrar"

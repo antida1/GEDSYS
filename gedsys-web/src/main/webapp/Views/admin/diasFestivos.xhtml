@@ -20,7 +20,8 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('diaDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{diaFestivoBean.setAccion('Crear')}" update="dlgDetalle">
+                                    <p:menuitem oncomplete="PF('diaDialog').show()" value="Nuevo" icon="ui-icon-document" actionListener="#{diaFestivoBean.setAccion('Crear')}" update="dlgDetalle"
+                                                disabled="#{!autorizationBean.canCreate('diasFestivos')}">
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>

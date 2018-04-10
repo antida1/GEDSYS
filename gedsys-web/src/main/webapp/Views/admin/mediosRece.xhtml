@@ -26,14 +26,14 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('medioRecepcionDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{mediosRepEnvBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('medioRecepcionDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{mediosRepEnvBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('mediosRecepcion')}" >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="medioRecepcionTabla" id="lstPaises" var="medioRecepcion" value="#{mediosRepEnvBean.mediorecepciones}" style="margin-bottom:0" rows="50"
                                              paginator="true" scrollable="true" 
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15,20,30,50">
+                                             rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron medios de recepción!">
                                     <f:facet name="header">
 
 

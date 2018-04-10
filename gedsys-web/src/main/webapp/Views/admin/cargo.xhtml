@@ -21,7 +21,7 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('cargoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{cargoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('cargoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{cargoBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('cargo')}"  >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
