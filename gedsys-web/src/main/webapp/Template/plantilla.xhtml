@@ -68,14 +68,14 @@
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title text-center" style="border: 0;">
                             <p:link outcome="/index" class="site_title">
-                                <h:graphicImage library="images" width="100%" name="logo2.svg"/>
+                                <h:graphicImage library="images" width="100%" name="logo.svg"/>
                             </p:link>
                         </div>
                         <div class="clearfix"></div>
                         <!-- menu profile quick info -->
                         <div class="profile">
                             <div class="profile_pic">
-                                <h:graphicImage library="images" name="#{login.usuario.foto}" alt="..." class="img-circle profile_img" />
+                                <p:graphicImage value="#{login.image}" alt="..." class="img-circle profile_img" />
                             </div>
                             <div class="profile_info"> <span>Bienvenido,</span>
                                 <h2><h:outputText value="#{login.usuario.nombres}"/>&#160;<h:outputText value="#{login.usuario.apelidos}"/></h2>
@@ -97,7 +97,7 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <h:graphicImage library="images" name="#{login.usuario.foto}" />
+                                        <p:graphicImage value="#{login.image}" />
                                         <h:outputText value="#{login.usuario.nombres}" />&#160;
                                         <h:outputText value="#{login.usuario.apelidos}" /> <span class=" fa fa-angle-down"></span> </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -113,10 +113,10 @@
                                         </h:form>
                                     </ul>
                                 </li>
-                                <h:form>
-                                    <li role="presentation" class="dropdown">
-                                        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i><h:outputText id="counter" value="#{messageBean.couter}" class="badge bg-green"></h:outputText></a>
-                                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                <li role="presentation" class="dropdown" style="top:10px">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i><h:outputText id="counter" value="#{messageBean.couter}" class="badge bg-green"></h:outputText></a>
+                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                        <h:form>
                                             <p:poll interval="30" listener="#{messageBean.refresh()}" update="messagelist counter" async="true"/>
                                             <p:panel id="messagelist" >
                                                 <p:repeat value="#{messageBean.notificaciones}" var="message" >
@@ -132,14 +132,15 @@
                                                     </li>
                                                 </p:repeat>
                                             </p:panel>
-                                            <li>
-                                                <div class="text-center">
-                                                    <a> <strong>Ver todas las alertas</strong> <i class="fa fa-angle-right"></i> </a>
-                                                </div>
-                                            </li>
-                                        </ul>   
-                                    </li>
-                                </h:form>
+                                        </h:form>
+                                        <li>
+                                            <div class="text-center">
+                                                <a> <strong>Ver todas las alertas</strong> <i class="fa fa-angle-right"></i> </a>
+                                            </div>
+                                        </li>
+                                    </ul>   
+                                </li>
+
                             </ul>
                         </nav>
                     </div>
