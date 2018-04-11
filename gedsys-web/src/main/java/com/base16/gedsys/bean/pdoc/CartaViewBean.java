@@ -63,7 +63,7 @@ public class CartaViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "carta.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "cartab.odt");
             TextNavigation searchConsecutivo;
             TextNavigation searchFecha;
             TextNavigation tratamiento;

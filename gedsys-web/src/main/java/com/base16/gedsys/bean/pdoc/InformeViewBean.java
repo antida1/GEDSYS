@@ -61,7 +61,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "informe.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "informeb.odt");
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation cargo;

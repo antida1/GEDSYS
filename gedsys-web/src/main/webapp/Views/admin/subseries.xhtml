@@ -22,14 +22,13 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('subSerieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{subSerieBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('subSerieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{subSerieBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('subseries')}">
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="subserTabla" id="lstSubSerie" var="subser" value="#{subSerieBean.subSeries}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                             paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron subseries!">
                                     <f:facet name="header">
 
 

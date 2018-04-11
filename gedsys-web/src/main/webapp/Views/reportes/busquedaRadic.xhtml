@@ -14,7 +14,7 @@
         <ui:composition template="./../../Template/plantilla.xhtml">
             <ui:define name="content">
                 <c:if test="#{autorizationBean.hasAccess('busquedaRadicados') == true}">
-                    <f:event type="preRenderView" listener="#{consecutivosUsuarioBean.listar()}" />
+                    <f:event type="preRenderView" listener="#{busquedaRadicadosBean.listar()}" />
                     <f:event type="preRenderView" listener="#{busquedaRadicadosBean.buscar()}" />
                     <p:growl id="messages"  showDetail="true" />
                     <div class="col-xs-12 x_panel">
@@ -46,9 +46,9 @@
                                     <div class="form-group row">
                                         <p:outputLabel value="Tipo de Radicado" for="tipoRadicado" class="col-xs-3 col-form-label" />
                                         <div class="col-xs-9">
-                                            <p:selectOneMenu id="tipoRadicado" value="#{busquedaRadicadosBean.tipo}" filter="true" filterMatchMode="startsWith" converter="omnifaces.SelectItemsConverter" >
+                                            <p:selectOneMenu id="tipoRadicado" value="#{busquedaRadicadosBean.tipoConsecutivo}" filter="true" filterMatchMode="startsWith" converter="omnifaces.SelectItemsConverter" >
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de radicado" itemValue="#{null}" />
-                                                <f:selectItems value="#{consecutivosUsuarioBean.tipo}" var="tipoConsec" itemLabel="#{tipoConsec.tipo}" itemValue="#{tipoConsec}" />
+                                                <f:selectItems value="#{busquedaRadicadosBean.tiposC}" var="tipoConsec" itemLabel="#{tipoConsec.tipoConsecutivo}" itemValue="#{tipoConsec.tipoConsecutivo}" />
                                             </p:selectOneMenu>
                                         </div>
                                     </div>
@@ -62,7 +62,8 @@
                                 <div class="col-xs-12">
                                     <p:dataTable widgetVar="radicados" id="lstRadicados" var="radicado" value="#{busquedaRadicadosBean.consecutivos}" style="margin-bottom:0" rows="50"
                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}" 
-                                                 rowsPerPageTemplate="5,10,15,30,50" emptyMessage="¡No se encontraron registros para su búsqueda!">
+                                                 rowsPerPageTemplate="5,10,15,30,50" emptyMessage="¡No se encontraron registros para su búsqueda!" 
+                                                 sortBy="#{radicado.fechaCreacion}" sortOrder="descending">
                                        <f:facet name="{Exporters}">
                                             <h:commandLink>
                                                 <p:graphicImage value="../../images/excel.png" width="30"/>
@@ -92,7 +93,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="Tipo de Consecutivo"/>
                                             </f:facet>
-                                            <h:outputText value="#{radicado.tipoConsecutivo}" />
+                                            <h:outputText value="#{radicado.tipo}" />
                                         </p:column>
                                         <p:column headerText="Usuario">
                                             <f:facet name="header">

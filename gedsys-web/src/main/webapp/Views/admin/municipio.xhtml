@@ -25,7 +25,7 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('municipioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{municipioBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('municipioDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{municipioBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('municipio')}" >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>

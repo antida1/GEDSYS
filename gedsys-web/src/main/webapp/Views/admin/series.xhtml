@@ -22,14 +22,13 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('serieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{serieBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('serieDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{serieBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('series')}">
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
                                 <p:dataTable widgetVar="serTabla" id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0" rows="10"
-                                             paginator="true" scrollable="true" scrollHeight="250"
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             rowsPerPageTemplate="5,10,15">
+                                             paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron series!">
                                     <f:facet name="header">
 
 

@@ -10,6 +10,7 @@ import com.base16.gedsys.entities.ConsecutivosUsuario;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.TipoDocumento;
 import com.base16.gedsys.model.ConsecutivoJpaController;
+import com.base16.gedsys.model.ConsecutivosUsuarioJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import java.io.Serializable;
@@ -31,17 +32,19 @@ import javax.persistence.EntityManagerFactory;
 @ViewScoped
 public class BusquedaRadicadosBean extends BaseBean implements Serializable {
 
-    private List<Consecutivo> consecutivos;
+    private List<ConsecutivosUsuario> consecutivos;
+    private List<Consecutivo> tiposC;
     private String consecutivo;
     private Date startDate;
     private Date endDate;
+    private String tipoConsecutivo;
     private ConsecutivosUsuario tipo;
     
-    public List<Consecutivo> getConsecutivos() {
+    public List<ConsecutivosUsuario> getConsecutivos() {
         return consecutivos;
     }
 
-    public void setConsecutivos(List<Consecutivo> consecutivos) {
+    public void setConsecutivos(List<ConsecutivosUsuario> consecutivos) {
         this.consecutivos = consecutivos;
     }
 
@@ -77,18 +80,45 @@ public class BusquedaRadicadosBean extends BaseBean implements Serializable {
         this.tipo = tipo;
     }
 
+    public String getTipoConsecutivo() {
+        return tipoConsecutivo;
+    }
+
+    public void setTipoConsecutivo(String tipoConsecutivo) {
+        this.tipoConsecutivo = tipoConsecutivo;
+    }
+
+    public List<Consecutivo> getTiposC() {
+        return tiposC;
+    }
+
+    public void setTiposC(List<Consecutivo> tiposC) {
+        this.tiposC = tiposC;
+    }
+    
     /**
      * Creates a new instance of BusquedaRadicadosBean
      */
     public BusquedaRadicadosBean() {
     }
     
-    public void buscar(){
-        ConsecutivoJpaController cJpa;
+    public void listar(){
+        ConsecutivoJpaController sJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            cJpa = new ConsecutivoJpaController(emf);
-            consecutivos = cJpa.findConsecutivos(this.getCurrentUser(), this.consecutivo, this.startDate, this.endDate, this.tipo);
+            sJpa = new ConsecutivoJpaController(emf);
+            tiposC = sJpa.findConsecutivoEntities();
+        } catch (Exception e) {
+            
+        }
+    } 
+    
+    public void buscar(){
+        ConsecutivosUsuarioJpaController cJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            cJpa = new ConsecutivosUsuarioJpaController(emf);
+            consecutivos = cJpa.findConsecutivos(this.getCurrentUser(), this.consecutivo, this.startDate, this.endDate, this.tipoConsecutivo);
             if(consecutivos == null){
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Búsqueda de documentos", "¡El documento solicitado no existe!"));
@@ -100,8 +130,8 @@ public class BusquedaRadicadosBean extends BaseBean implements Serializable {
      public void limpiar(){
         this.consecutivo = "";        
         this.startDate = new Date();
-        this.endDate = new Date();
-        this.tipo = new ConsecutivosUsuario();
+        this.endDate = null;
+        this.tipoConsecutivo = "";
     }
     
 }

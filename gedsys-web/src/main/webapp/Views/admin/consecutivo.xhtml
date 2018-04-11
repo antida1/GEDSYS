@@ -22,7 +22,7 @@
                             </div>
                             <div class="x_content">
                                 <p:menubar>
-                                    <p:menuitem oncomplete="PF('consecutivoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{consecutivoBean.setAccion('Crear')}" update=":dlgDetalle" >
+                                    <p:menuitem oncomplete="PF('consecutivoDialog').show()" value="Nuevo"  icon="ui-icon-document" actionListener="#{consecutivoBean.setAccion('Crear')}" update=":dlgDetalle" disabled="#{!autorizationBean.canCreate('consecutivo')}"  >
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>

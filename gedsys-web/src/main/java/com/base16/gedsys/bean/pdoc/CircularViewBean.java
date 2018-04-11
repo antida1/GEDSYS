@@ -60,7 +60,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
 
-            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "circular.odt");
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "circularb.odt");
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation grupo_destinatario;

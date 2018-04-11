@@ -105,7 +105,8 @@
                                             <p:dataTable widgetVar="porEnviar" id="lstDocsPorEnviar" var="docPorEnviar" value="#{documentosBean.porEnviar}" style="margin-bottom:0" 
                                                          emptyMessage="¡No se encontraron documentos entrantes!" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15" sortBy="#{docPorEnviar.id}" sortOrder="descending">
+                                                         rowsPerPageTemplate="5,10,15" 
+                                                         sortBy="#{docPorEnviar.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorEnviar" trigger="toggler" />
@@ -150,11 +151,13 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab2" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab2" class="col-xs-12 tab-pane fade in inactive">
                                         <h:form id="enviados" enctype="multipart/form-data">
-                                            <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docsEnviados" value="#{documentosBean.enviados}" style="margin-bottom:0" rows="10"
-                                                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos enviados!">
+                                            <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docsEnviados" value="#{documentosBean.enviados}" style="margin-bottom:0" 
+                                                         rows="10"  paginator="true"  
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos enviados!" 
+                                                         sortBy="#{docsEnviados.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsEnviados" trigger="toggler" />
@@ -215,7 +218,8 @@
                                         <h:form id="enPrestamo" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="En Prestamos" id="lstControl" var="docsPrestamo" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos en prestamo!">
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos en prestamo!"
+                                                         sortBy="#{docsPrestamo.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstControl" trigger="toggler" />
@@ -252,7 +256,8 @@
                                         <h:form id="porVencer" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="PorVencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos por vencer!">
+                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos por vencer!" 
+                                                         sortBy="#{docsPorVencer.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorVencer" trigger="toggler" />
@@ -324,7 +329,8 @@
                                                                  paginator="true"  
                                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                                  rowsPerPageTemplate="5,10,15" 
-                                                                 emptyMessage="¡No se encontraron actas por firmar!" >
+                                                                 emptyMessage="¡No se encontraron actas por firmar!" 
+                                                                 sortBy="#{acta.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="actas" trigger="toggler" />
@@ -365,7 +371,8 @@
                                                                  rows="15"
                                                                  paginator="true"  
                                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron cartas por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron cartas por firmar!"
+                                                                 sortBy="#{carta.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="cartas" trigger="toggler" />
@@ -404,7 +411,8 @@
                                                 <h:form id="certificadoPorFirmar" enctype="multipart/form-data">
                                                     <p:dataTable widgetVar="certificadosPorFirmar" id="certificados" var="cert" value="#{documentosBean.certificadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron certificados por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron certificados por firmar!"
+                                                                 sortBy="#{cert.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="certificados" trigger="toggler" />
@@ -437,7 +445,8 @@
                                                 <h:form id="circularPorFirmar" enctype="multipart/form-data">
                                                     <p:dataTable widgetVar="circularesPorFirmar" id="circulares" var="cir" value="#{documentosBean.circularPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron circulares por firmar!"
+                                                                 sortBy="#{cir.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="circulares" trigger="toggler" />
@@ -473,7 +482,8 @@
                                                 <h:form id="comunicacionPorFirmar" enctype="multipart/form-data">
                                                     <p:dataTable widgetVar="comunicadosPorFirmas" id="comunicaciones" var="com" value="#{documentosBean.comunicadoPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron comunicados por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron comunicados por firmar!"
+                                                                 sortBy="#{com.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="comunicaciones" trigger="toggler" />
@@ -512,7 +522,8 @@
                                                 <h:form id="constanciaPorFirmar" enctype="multipart/form-data">
                                                     <p:dataTable widgetVar="constanciasPorFirmar" id="constancias" var="cons" value="#{documentosBean.constanciaPorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron constancias por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron constancias por firmar!"
+                                                                 sortBy="#{cons.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="constancias" trigger="toggler" />
@@ -545,7 +556,8 @@
                                                 <h:form id="informePorFirmar" enctype="multipart/form-data">
                                                     <p:dataTable widgetVar="informesPorFirmar" id="informes" var="inf" value="#{documentosBean.informePorFirmar}" style="margin-bottom:0" rows="10"
                                                                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron informes por firmar!">
+                                                                 rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron informes por firmar!"
+                                                                 sortBy="#{inf.fechaCreacion}" sortOrder="descending">
                                                         <f:facet name="header">
                                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                             <p:columnToggler datasource="informes" trigger="toggler" />
@@ -583,7 +595,8 @@
                                         <h:form id="porArchivar" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.sinArchivar}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos sin archivar!">
+                                                         rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron documentos sin archivar!"
+                                                         sortBy="#{docsPorArchivar.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsPorArchivados" trigger="toggler" />
@@ -621,7 +634,8 @@
                                         <h:form id="compartido" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="Compartido" id="lstDocsCompartidos" var="docsCompartidos" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos compartidos!">
+                                                         rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron documentos compartidos!" 
+                                                         sortBy="#{docsCompartidos.fechaCreacion}" sortOrder="descending">
                                                 <f:facet name="header">
                                                     <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                                     <p:columnToggler datasource="lstDocsCompartidos" trigger="toggler" />

@@ -21,7 +21,7 @@
                     <p:growl id="messages"  showDetail="true" widgetVar="messageGrowl" />
                     <div class="x_panel col-xs-12">
                         <div class="x_title col-xs-12">
-                            <h2>Ventanilla única<small>Digitalización o carga</small></h2>
+                            <h2>Ventanilla Única<small>Digitalización o carga</small></h2>
                             <div class="clear"></div>
                         </div>
 
@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-12">
-                                        <p:commandButton widgetVar="genRad" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success" disabled="#{recepcionBean.canGenRad}"  />
+                                        <p:commandButton widgetVar="genRad" update=":form messages"  value="Generar radicado" icon="ui-icon-disk" actionListener="#{recepcionBean.generarConsectivo()}" ajax="true" partialSubmit="true" class="btn-success" disabled="#{!autorizationBean.canCreate('recepcion')}" />
                                         <p:commandButton widgetVar="printRad" update=":form" icon="ui-icon-pencil" type="button" title="Imprimr Radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false" class="btn-info" style="margin-left: 10px;" disabled="#{recepcionBean.canPrint}" ></p:commandButton>
                                         <p:commandButton widgetVar="saveDoc" update=":form messages"  value="Guardar" icon="ui-icon-disk" actionListener="#{recepcionBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px; " disabled="#{recepcionBean.canSave}" />
                                         <p:commandButton class="btn-default" value="Cancelar" immediate="true" style="float:right;"></p:commandButton>

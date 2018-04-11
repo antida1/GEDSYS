@@ -233,15 +233,15 @@ public class ConsecutivoJpaController implements Serializable {
         }
     }
     
-     public List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, ConsecutivosUsuario tipo) {
+     public List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, String tipo) {
         return findConsecutivos(creadoPor, consecutivo, starDate, endDate, tipo, true, -1, -1);
     }
 
-    public List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, ConsecutivosUsuario tipo, int maxResults, int firstResult) {
+    public List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, String tipo, int maxResults, int firstResult) {
         return findConsecutivos(creadoPor, consecutivo, starDate, endDate, tipo, false, maxResults, firstResult);
     }
 
-    private List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, ConsecutivosUsuario tipo, boolean all, int maxResults, int firstResult) {
+    private List<Consecutivo> findConsecutivos(Usuario creadoPor, String consecutivo, Date starDate, Date endDate, String tipo, boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         List<Consecutivo> consecutivos = null;
         try {
@@ -261,7 +261,7 @@ public class ConsecutivoJpaController implements Serializable {
             }
 
             if (tipo != null) {
-                Expression<ConsecutivosUsuario> eTipoCon = doc.get("tipo");
+                Expression<String> eTipoCon = doc.get("tipo");
                 predicates.add(cb.and(cb.equal(eTipoCon, tipo)));
             }
             
