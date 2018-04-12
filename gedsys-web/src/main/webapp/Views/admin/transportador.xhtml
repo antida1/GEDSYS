@@ -33,7 +33,7 @@
                                 rowsPerPageTemplate="5,10,15">                                  
                                     <p:column headerText="Tipo de documento" filterBy="#{transportador.tipoDocumento}" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('transportadorTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:130px;">
+                                            <p:selectOneMenu onchange="PF('transportadorTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width:90%;">
                                                 <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                                 <f:selectItem itemLabel="Nit" itemValue="Nit"/>
                                                 <f:selectItem itemLabel="Cédula" itemValue="Cédula"/>
@@ -52,7 +52,7 @@
                                     <p:column headerText="Teléfono" filterBy="#{transportador.telefono}" filterMatchMode="contains">
                                         <h:outputText value="#{transportador.telefono}" />
                                     </p:column>
-                                    <p:column headerText="Email" filterBy="#{transportador.email}" filterMatchMode="contains">
+                                    <p:column headerText="Email" filterBy="#{transportador.email}" filterMatchMode="contains" width="250px;">
                                         <h:outputText value="#{transportador.email}" />
                                     </p:column>
                                     <p:column headerText="Fecha de creación">
@@ -84,8 +84,8 @@
                             <h:form>
                                 <h:inputHidden id="id" value="#{transportadorBean.transportador.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-5 col-form-label"/>
-                                    <div class="col-xs-7">
+                                    <p:outputLabel value="Tipo de documento" for="tipoDocumento" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:selectOneMenu id="tipoDocumento" value="#{transportadorBean.transportador.tipoDocumento}"  required="true" requiredMessage="Error, debe seleccionar un tipo de documento">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione el tipo de documento" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Nit" itemValue="Nit"/>
@@ -96,32 +96,32 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-5 col-form-label"/>
-                                    <div class="col-xs-7">
+                                    <p:outputLabel value="Número de documento" for="numeroDocumento" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:inputText id="numeroDocumento" required="true" requiredMessage="Error, el número de documento no puede estar vacío" value="#{transportadorBean.transportador.numeroDocumento}" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Nombre" for="Nombre" class="col-xs-4 col-form-label" />
+                                    <div class="col-xs-8">
                                         <p:inputText id="Nombre" required="true" requiredMessage="Error, el nombre no puede estar vacío" value="#{transportadorBean.transportador.nombre}" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Teléfono" for="telefono" class="col-xs-3 col-form-label"/>
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Teléfono" for="telefono" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:inputText id="telefono" required="true" requiredMessage="Error, el número de teléfono no puede estar vacío" value="#{transportadorBean.transportador.telefono}"  style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Fax" for="fax" class="col-xs-3 col-form-label"/>
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Fax" for="fax" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:inputText id="fax" value="#{transportadorBean.transportador.fax}" style="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Email" for="email" class="col-xs-3 col-form-label"/>
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Email" for="email" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:inputText id="email" required="true" requiredMessage="Error, el correo electrónico no puede estar vacío" validatorMessage="Error, el formato del correo electrónico no es correcto" value="#{transportadorBean.transportador.email}" style="width: 100%">
                                             <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                         </p:inputText>

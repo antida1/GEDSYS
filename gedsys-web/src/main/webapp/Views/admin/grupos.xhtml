@@ -25,16 +25,14 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="50"
+                                <p:dataTable widgetVar="grupoTabla" id="lstGrupos" var="grupo" value="#{grupoBean.grupos}" style="margin-bottom:0" rows="10"
                                              paginator="true" scrollable="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron grupos!">
-                                    <f:facet name="header">
-
-
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstGrupos" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Nombre" filterBy="#{grupo.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{grupo.nombre}"/>
                                     </p:column>

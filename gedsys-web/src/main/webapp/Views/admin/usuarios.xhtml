@@ -27,13 +27,13 @@
                                         </p:menuitem>
                                     </p:menubar>
                                     <p:separator/>
-                                    <p:dataTable widgetVar="usuarioTabla" id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0" rows="50"
+                                    <p:dataTable widgetVar="usuarioTabla" id="lstUsuarios" var="usuario" value="#{usuarioBean.usuarios}" style="margin-bottom:0" rows="10"
                                                  paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                  rowsPerPageTemplate="5,10,15,20,30,50">
-                                        <f:facet name="header">
+<!--                                        <f:facet name="header">
                                             <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                             <p:columnToggler datasource="lstUsuarios" trigger="toggler" />
-                                        </f:facet>
+                                        </f:facet>-->
                                         <p:column headerText="Nombres" filterBy="#{usuario.nombres}" filterMatchMode="contains">
                                             <h:outputText value="#{usuario.nombres}" />
                                         </p:column>
@@ -42,14 +42,14 @@
                                         </p:column>
                                         <p:column headerText="Cargo" filterBy="#{usuario.cargo}" filterMatchMode="exact">
                                             <f:facet name="filter">
-                                                <p:selectOneMenu onchange="PF('usuarioTabla').filter()" converter="omnifaces.SelectItemsConverter" >
+                                                <p:selectOneMenu onchange="PF('usuarioTabla').filter()" converter="omnifaces.SelectItemsConverter" style="width: 90%;">
                                                     <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
                                                     <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}" />
                                                 </p:selectOneMenu>
                                             </f:facet>
                                             <h:outputText value="#{usuario.cargo.nombre}" />
                                         </p:column>
-                                        <p:column headerText="Correo electrónico" filterBy="#{usuario.email}" filterMatchMode="contains">
+                                            <p:column headerText="Correo electrónico" filterBy="#{usuario.email}" filterMatchMode="contains" width="250px;">
                                             <h:outputText value="#{usuario.email}" />
                                         </p:column>
                                         <p:column headerText="Teléfono" filterBy="#{usuario.telefono}" filterMatchMode="contains">
@@ -102,9 +102,9 @@
                                 <h:form enctype="multipart/form-data">
                                     <f:event type="preRenderView" listener="#{signaturaTree.loadCheckedByCurrentUser(usuarioBean.usuario)}" />
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#menuTab0">Datos Basicos</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab1">Asociación de Signaturas Topograficas</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab2">Información Adicional</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#menuTab0">Datos Básicos</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab1">Asociación de Signaturas Topográficas</a></li>
+<!--                                        <li><a data-toggle="tab" href="#menuTab2">Información Adicional</a></li>-->
                                         <!--<button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>-->
                                     </ul>
                                     <div class="tab-content">
@@ -136,7 +136,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <p:outputLabel value="Es Admininistrador" for="isAdmin" class="col-xs-3 col-form-label" />
+                                                <p:outputLabel value="¿Es Admininistrador?" for="isAdmin" class="col-xs-3 col-form-label" />
                                                 <div class="col-xs-9">
                                                     <p:selectBooleanCheckbox id="isAdmin" value="#{usuarioBean.usuario.isAdmin}"  />
                                                 </div>
@@ -144,26 +144,24 @@
                                             <div class="form-group row">
                                                 <p:outputLabel value="Cargo" for="cargo" class="col-xs-3 col-form-label" />
                                                 <div class="col-xs-9">
-                                                    <p:selectOneMenu id="cargo" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                                    <p:selectOneMenu id="cargo" required="true" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
                                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione el cargo" itemValue="#{null}" />
                                                         <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}"/>
                                                     </p:selectOneMenu>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class=" col-md-3">Foto</label>
+                                                <label class=" col-md-3">Foto *</label>
                                                 <div class="col-md-9">
-                                                    <p:fileUpload value="#{usuarioBean.photoFile}" mode="simple" skinSimple="true" />
+                                                    <p:fileUpload value="#{usuarioBean.photoFile}" label="Cargar Foto" mode="simple" skinSimple="true" />
                                                 </div>
-                                            </div>
-                                            <!--
+                                            </div>                                            
                                             <div class="form-group row">
-                                                <label class=" col-md-3">Firma</label>
+                                                <label class=" col-md-3">Firma *</label>
                                                 <div class="col-md-9">
-                                                    <p:fileUpload value="#{usuarioBean.firmaFile}" mode="simple" skinSimple="true" />
+                                                    <p:fileUpload value="#{usuarioBean.firmaFile}" required="true" label="Cargar Firma" mode="simple" skinSimple="true" />
                                                 </div>
                                             </div>
-                                            -->
                                             <div class="form-group row">
                                                 <p:outputLabel value="Usuario" for="Usuario" class="col-xs-3 col-form-label" />
                                                 <div class="col-xs-9">
@@ -187,7 +185,7 @@
                                             <div class="form-group row">
                                                 <p:outputLabel value="Grupo" for="grupo" class="col-md-3 col-form-label"></p:outputLabel>
                                                 <div class="col-xs-9">
-                                                    <p:selectOneMenu id="grupo" value="#{usuarioBean.grupo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                                    <p:selectOneMenu id="grupo" value="#{usuarioBean.grupo}" required="true" converter="omnifaces.SelectItemsConverter" style="width: 100%">
                                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione el grupo del usuario" itemValue="#{null}" />
                                                         <f:selectItems value="#{grupoBean.grupos}" var="grupo" itemLabel="#{grupo.nombre}" itemValue="#{grupo}" />
                                                     </p:selectOneMenu> 
@@ -208,6 +206,7 @@
                                                 </div> 
                                             </div>
                                         </div>
+                                        <!--
                                         <div id="menuTab2" class="col-xs-12 tab-pane fade">
                                             <div class="form-group row">
                                                 <p:outputLabel value="Firma:" for="firma" class="col-xs-4 col-form-label"></p:outputLabel>
@@ -217,6 +216,7 @@
                                             </div>
                                             <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>
                                         </div>
+                                        -->
                                         <p:spacer/>
                                         <div> 
                                             <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />

@@ -30,14 +30,14 @@
 
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="entrantes" id="lstPlanillaEnvio" var="planillaEnvio" value="#{planillaEnvioBean.planillasEnvios}" style="margin-bottom:0" rows="15"
+                                <p:dataTable widgetVar="entrantes" id="lstPlanillaEnvio" var="planillaEnvio" value="#{planillaEnvioBean.planillasEnvios}" style="margin-bottom:0" rows="10"
                                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15,30,50"  emptyMessage="¡No se encontraron plantillas!"
                                              sortBy="#{planillaEnvio.id}" sortOrder="descending">
-                                    <f:facet name="header">
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstPlanillaEnvio" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Radicado">
                                         <h:outputText value="#{planillaEnvio.nombre}" />
                                     </p:column>

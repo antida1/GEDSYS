@@ -30,16 +30,14 @@
                                     </p:menuitem>
                                 </p:menubar>
                                 <p:separator/>
-                                <p:dataTable widgetVar="medioRecepcionTabla" id="lstPaises" var="medioRecepcion" value="#{mediosRepEnvBean.mediorecepciones}" style="margin-bottom:0" rows="50"
+                                <p:dataTable widgetVar="medioRecepcionTabla" id="lstPaises" var="medioRecepcion" value="#{mediosRepEnvBean.mediorecepciones}" style="margin-bottom:0" rows="10"
                                              paginator="true" scrollable="true" 
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15,20,30,50" emptyMessage="¡No se encontraron medios de recepción!">
-                                    <f:facet name="header">
-
-
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstPaises" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Código" filterBy="#{medioRecepcion.codigo}" filterMatchMode="contains">
                                         <h:outputText value="#{medioRecepcion.codigo}" />
                                     </p:column>
@@ -94,7 +92,7 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="País" widgetVar="medioRecepcionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="160" width="450">
+                        <p:dialog id="dlgDetalle" header="Medio de Recepción" widgetVar="medioRecepcionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="160" width="450">
                             <h:form>
                                 <h:inputHidden id="id" value="#{mediosRepEnvBean.mediorecepcion.id}" />
                                 <div class="form-group row">
