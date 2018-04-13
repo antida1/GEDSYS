@@ -225,10 +225,10 @@ public class UsuarioBean extends BaseBean implements Serializable {
             Collection<GrupoUsuario> grupoUsuarioCollection = new ArrayList<>();
             grupoUsuarioCollection.add(grupoUsuario);
             this.usuario.setFoto(this.getPhotoName());
-            //if (firmaFile.getContents().length > 0) {
-            //    this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
-            //    uploadFirma();
-            //}
+            if (firmaFile.getContents().length > 0) {
+                this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
+                uploadFirma();
+            }
             uploadPhoto();
             if (this.getPhotoName().equals("user.png")) {
                 this.usuario.setFoto(this.usuario.getFoto());
