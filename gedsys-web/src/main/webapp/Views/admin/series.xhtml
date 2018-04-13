@@ -29,12 +29,10 @@
                                 <p:dataTable widgetVar="serTabla" id="lstSeries" var="ser" value="#{serieBean.series}" style="margin-bottom:0" rows="10"
                                              paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron series!">
-                                    <f:facet name="header">
-
-
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstSeries" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Subsección" filterBy="#{ser.seccionSubseccion.nombre}" filterMatchMode="contains">
                                               <h:outputText value="#{ser.seccionSubseccion.nombre}" />
                                     </p:column>

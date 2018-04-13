@@ -29,12 +29,10 @@
                                 <p:dataTable widgetVar="subserTabla" id="lstSubSerie" var="subser" value="#{subSerieBean.subSeries}" style="margin-bottom:0" rows="10"
                                              paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron subseries!">
-                                    <f:facet name="header">
-
-
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstSubSerie" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Serie" filterBy="#{subser.serie.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{subser.serie.nombre}" />
                                     </p:column>

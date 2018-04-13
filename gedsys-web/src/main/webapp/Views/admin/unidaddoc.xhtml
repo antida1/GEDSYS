@@ -29,12 +29,10 @@
                                 <p:dataTable widgetVar="udTabla" id="lstUnidadesDocumentales" var="ud" value="#{unidadDocumentalBean.unidadesDocumentales}" style="margin-bottom:0" rows="10"
                                              paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15" emptyMessage="¡No se encontraron unidades documentales!">
-                                    <f:facet name="header">
-
-
+<!--                                    <f:facet name="header">
                                         <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
                                         <p:columnToggler datasource="lstUnidadesDocumentales" trigger="toggler" />
-                                    </f:facet>
+                                    </f:facet>-->
                                     <p:column headerText="Subserie" filterBy="#{ud.subSerie.nombre}" filterMatchMode="contains">
                                         <h:outputText value="#{ud.subSerie.nombre}" />
                                     </p:column>
@@ -89,12 +87,12 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Unidad documental" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
+                        <p:dialog id="dlgDetalle" header="Unidad documental" widgetVar="unidadDocumentalDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="500">
                             <h:form>
                                 <h:inputHidden id="id" value="#{unidadDocumentalBean.unidadDocumental.id}" />
                                 <div class="form-group row">
-                                    <p:outputLabel value="Subserie" for="SubSerie" class="col-xs-3 col-form-label"/>
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Subserie" for="SubSerie" class="col-xs-4 col-form-label"/>
+                                    <div class="col-xs-8">
                                         <p:selectOneMenu id="SubSerie" value="#{unidadDocumentalBean.unidadDocumental.subSerie}" converter="omnifaces.SelectItemsConverter" required="true">
                                             <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
                                             <f:selectItems value="#{subSerieBean.subSeries}" var="subserie" itemLabel="#{subserie.nombre}" itemValue="#{subserie}" />
@@ -102,8 +100,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <p:outputLabel value="Unidad documental" for="Nombre" class="col-xs-3 col-form-label" />
-                                    <div class="col-xs-9">
+                                    <p:outputLabel value="Unidad documental" for="Nombre" class="col-xs-4 col-form-label" />
+                                    <div class="col-xs-8">
                                         <p:inputText id="Nombre" required="true" value="#{unidadDocumentalBean.unidadDocumental.nombre}" />
                                     </div>
                                 </div>
