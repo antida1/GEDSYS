@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -88,6 +89,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             this.serie.setCreadoPor(usuario);
             ssJpa.create(serie);
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha creado la subserie correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -103,6 +105,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             this.serie.setModificadoPor(usuario);
             ssJpa.edit(serie);
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha modificado la subserie correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -115,6 +118,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             ssJpa = new SubSerieJpaController(emf);
             ssJpa.destroy(serie.getId());
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha eliminado la subserie correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
