@@ -58,13 +58,13 @@
         </p:dialog>
          <p:dialog id="dlgFirmarCert" header="FIRMAR" widgetVar="denFirmarCert" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">
                 <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>
-                    <div class="form-group row">
+<!--                    <div class="form-group row">
                         <p:outputLabel value="Firma:" for="firmaCert" class="col-xs-4 col-form-label"></p:outputLabel>
                         <div class="col-xs-8">
                             <p:signature id="firmaCert" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
                         </div> 
                     </div>
-                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
+                    <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  -->
                     <p:commandButton value="Guardar Firma" onstart="PF('denFirmarCert').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{certificadoBean.firmar()}" update="aviso :dlgVisorCertificadoFinal" onsuccess="PF('statusDialog').hide()"></p:commandButton>
                 </c:if>
                 <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("externa")}'>

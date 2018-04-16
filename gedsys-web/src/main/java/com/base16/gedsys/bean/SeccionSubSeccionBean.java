@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManagerFactory;
@@ -85,6 +86,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
             this.seccionSubSeccion.setCreadoPor(usuario);
             sJpa.create(seccionSubSeccion);
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Secciones", "¡Se ha creado la sección correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -100,6 +102,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
             this.seccionSubSeccion.setModificadoPor(usuario);
             sJpa.edit(seccionSubSeccion);
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Secciones", "¡Se ha modificado la sección correctamente!" ));
         } catch (Exception e) {
             Logger.getLogger(SeccionSubSeccionBean.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -112,6 +115,7 @@ public class SeccionSubSeccionBean extends BaseBean implements Serializable {
             sJpa = new SeccionSubSeccionJpaController(emf);
             sJpa.destroy(seccion.getId());
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Secciones", "¡Se ha eliminado la sección correctamente!" ));
         } catch (NonexistentEntityException e) {
             Logger.getLogger(SeccionSubSeccionBean.class.getName()).log(Level.SEVERE, null, e);
         }

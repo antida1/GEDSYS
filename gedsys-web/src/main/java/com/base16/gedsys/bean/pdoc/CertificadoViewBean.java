@@ -9,6 +9,7 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
+import com.lowagie.text.Image;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -142,6 +143,7 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             TextNavigation cargo;
             TextNavigation contenido;
             TextNavigation remitente;
+            TextNavigation firma;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -176,6 +178,16 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) contenido.nextSelection();
                 item.replaceWith(Jsoup.parse(certificado.getContenido()).text());
+            }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();
+                if(certificado.getRemitente().getFirma() != null){
+                    item.replaceWith(certificado.getRemitente().getFirma());
+                } else {
+                    item.replaceWith(" ");
+                }
             }
 
             remitente = new TextNavigation("@remitente", odt);

@@ -117,8 +117,8 @@ public class LoginBean extends BaseBean implements Serializable {
     }
 
     public StreamedContent getImage() throws IOException {
-              // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            String path = this.getDocumenstSavePath() + File.separatorChar + "images" + File.separatorChar;
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String path = this.getDocumenstSavePath() + File.separatorChar + "images" + File.separatorChar; 
             return new DefaultStreamedContent(new FileInputStream(new File(path, this.usuario.getFoto())));
     }
 }

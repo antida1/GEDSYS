@@ -148,7 +148,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
                     break;
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Uauarios", "Ha ocurrido un error: " + e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuarios", "Ha ocurrido un error: " + e.getMessage()));
         }
     }
 
@@ -195,6 +195,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             }
 
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha creado el usuario correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -224,10 +225,10 @@ public class UsuarioBean extends BaseBean implements Serializable {
             Collection<GrupoUsuario> grupoUsuarioCollection = new ArrayList<>();
             grupoUsuarioCollection.add(grupoUsuario);
             this.usuario.setFoto(this.getPhotoName());
-            //if (firmaFile.getContents().length > 0) {
-            //    this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
-            //    uploadFirma();
-            //}
+            if (firmaFile.getContents().length > 0) {
+                this.usuario.setFirma(FilenameUtils.getName(firmaFile.getFileName()));
+                uploadFirma();
+            }
             uploadPhoto();
             if (this.getPhotoName().equals("user.png")) {
                 this.usuario.setFoto(this.usuario.getFoto());
@@ -250,6 +251,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
             emf.getCache().evictAll();
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha modificado el usuario correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -262,7 +264,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             usrJpa = new UsuarioJpaController(emf);
             usrJpa.destroy(usuario.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "Usuario Eliminada"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Secciones", "¡Se ha eliminado el usuario correctamente!" ));
         } catch (Exception e) {
             throw e;
         }
