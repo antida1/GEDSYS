@@ -35,7 +35,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "usuario", catalog = "gedsys", schema = "")
+@Table(name = "usuario", catalog = "", schema = "")
 @XmlRootElement
 @NamedQueries({
      @NamedQuery(name = "Usuario.autheticate", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario and u.clave = :clave")

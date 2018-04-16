@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author rober
  */
 @Entity
-@Table(name = "circularcc", catalog = "gedsys", schema = "")
+@Table(name = "circularcc", catalog = "", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Circularcc.findAll", query = "SELECT c FROM Circularcc c")

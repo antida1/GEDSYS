@@ -33,7 +33,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author rober
  */
 @Entity
-@Table(name = "circular", catalog = "gedsys", schema = "")
+@Table(name = "circular", catalog = "", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Circular.findAll", query = "SELECT c FROM Circular c")
