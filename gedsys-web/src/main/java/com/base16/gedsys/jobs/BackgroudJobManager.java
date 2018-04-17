@@ -5,6 +5,7 @@
  */
 package com.base16.gedsys.jobs;
 
+import com.base16.gedsys.messages.Push;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Schedule;
@@ -34,14 +35,15 @@ public class BackgroudJobManager {
     public void someQuarterlyJob() {
         // Do your job here which should run every 15 minute of hour.
         //PushFCMNotification.PushFCMNotification(sToken, "Mensaje de Prueba", "Hola Desde Gedsys");
-        Logger.getLogger(BackgroudJobManager.class.getName()).log(Level.SEVERE, "Job Run Every 5 Minutes");
+        Logger.getLogger(BackgroudJobManager.class.getName()).log(Level.SEVERE, "Job Run Every 15 Minutes");
     }
     
     @Schedule(hour = "*", minute = "*/1", second = "0", persistent = false)
     public void someMinuteJob() {
         // Do your job here which should run every 15 minute of hour.
         //PushFCMNotification.PushFCMNotification(sToken, "Mensaje de Prueba", "Hola Desde Gedsys");
-        Logger.getLogger(BackgroudJobManager.class.getName()).log(Level.SEVERE, "Job Run Every 5 Minutes");
+        //Push.sendAll("Mensaje desde el Background Job Manager for all Connected Users.");
+        Logger.getLogger(BackgroudJobManager.class.getName()).log(Level.SEVERE, "Job Run Every 1 Minutes");
     }
 
 }

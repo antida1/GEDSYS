@@ -72,7 +72,7 @@ public class RadicadoImage {
             font = new Font("Monospaced", Font.BOLD, 10);
             g2D.setFont(font);
             g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 3);
-            g2D.drawString("GESTIONADO POR -----------------", logo.getWidth() / Ratio, fm.getAscent() * 4);
+            g2D.drawString("GESTIONADO POR --------------", logo.getWidth() / Ratio, fm.getAscent() * 4);
             g2D.drawString(Usuario, logo.getWidth() / Ratio, fm.getAscent() * 5);
             g2D.drawString("------------------------------", logo.getWidth() / Ratio, fm.getAscent() * 6);
 

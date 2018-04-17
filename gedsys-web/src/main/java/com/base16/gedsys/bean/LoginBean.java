@@ -10,6 +10,8 @@ import com.base16.gedsys.model.UsuarioJpaController;
 import com.base16.gedsys.security.Authentication;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -19,10 +21,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -103,11 +108,17 @@ public class LoginBean extends BaseBean implements Serializable {
             session.invalidate();
             ExternalContext context = FacesContext.getCurrentInstance().
                     getExternalContext();
-            
-            context.redirect("/"+ this.getAppName() + "/faces/login.xhtml");
+
+            context.redirect("/" + this.getAppName() + "/faces/login.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         logeado = false;
+    }
+
+    public StreamedContent getImage() throws IOException {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String path = this.getDocumenstSavePath() + File.separatorChar + "images" + File.separatorChar; 
+            return new DefaultStreamedContent(new FileInputStream(new File(path, this.usuario.getFoto())));
     }
 }

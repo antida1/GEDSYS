@@ -214,10 +214,10 @@ public class PlanillaEnvioBean extends BaseBean implements Serializable {
         row.createCell((short) 2).setCellValue("Asunto");
         row.createCell((short) 3).setCellValue("Destinarario");
         row.createCell((short) 4).setCellValue("Remitente");
-        row.createCell((short) 5).setCellValue("Detalle");
-        row.createCell((short) 6).setCellValue("Transportador");
-        row.createCell((short) 7).setCellValue("Medio de Envio");
-        row.createCell((short) 8).setCellValue("Firma");
+        //row.createCell((short) 5).setCellValue("Detalle");
+        row.createCell((short) 5).setCellValue("Transportador");
+        row.createCell((short) 6).setCellValue("Medio de Envio");
+        row.createCell((short) 7).setCellValue("Firma");
         short i = 1;
         for (PlanillaEnvioDocumento planillaEnvioDocumento : planilla.getPlanillaEnvioDocumentoList()) {
             row = sheet.createRow((short) i);
@@ -226,10 +226,10 @@ public class PlanillaEnvioBean extends BaseBean implements Serializable {
             row.createCell((short) 2).setCellValue(planillaEnvioDocumento.getDocumento().getAsunto());
             row.createCell((short) 3).setCellValue(planillaEnvioDocumento.getDocumento().getRemitenteExteno());
             row.createCell((short) 4).setCellValue(planillaEnvioDocumento.getDocumento().getDestinatario().getNombres());
-            row.createCell((short) 5).setCellValue(planillaEnvioDocumento.getDocumento().getDetalle());
-            row.createCell((short) 6).setCellValue(planillaEnvioDocumento.getDocumento().getTransportador().getNombre());
-            row.createCell((short) 7).setCellValue(planillaEnvioDocumento.getDocumento().getMedioEnvio().getNombre());
-            row.createCell((short) 8).setCellValue("");
+            //row.createCell((short) 5).setCellValue(planillaEnvioDocumento.getDocumento().getDetalle());
+            row.createCell((short) 5).setCellValue(planillaEnvioDocumento.getDocumento().getTransportador().getNombre());
+            row.createCell((short) 6).setCellValue(planillaEnvioDocumento.getDocumento().getMedioEnvio().getNombre());
+            row.createCell((short) 7).setCellValue("");
             i++;
         }
        
