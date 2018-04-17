@@ -276,7 +276,7 @@ public void imprimir() {
             this.certificado.setEstado(0);
             caJpa.edit(this.certificado);            
             CertificadoViewBean cvb = new CertificadoViewBean();
-            cvb.showDocumentFinal(this.certificado);
+            cvb.showDocumentFinalImprimir(this.certificado);
             
             // TODO: Crear el nuevo documento certificado
             Documento documento = new Documento();

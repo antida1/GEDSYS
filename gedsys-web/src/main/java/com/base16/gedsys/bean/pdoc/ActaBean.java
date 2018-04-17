@@ -376,7 +376,7 @@ public class ActaBean extends BaseBean implements Serializable {
             this.acta.setEstado(0);
             caJpa.edit(this.acta);            
             ActaViewBean cvb = new ActaViewBean();
-            cvb.showDocumentFinal(this.acta);
+            cvb.showDocumentFinalImprimir(this.acta);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -215,6 +216,7 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation despedida;
+            TextNavigation firma;
             TextNavigation remitente;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
@@ -306,12 +308,171 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith(Jsoup.parse(carta.getDespedida()).text());
             }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();
+                if(carta.getRemitente().getFirma() != null){
+                    File f = new File(this.getDocumenstSavePath() + File.separatorChar + "firmas" + File.separatorChar +carta.getRemitente().getFirma());
+                    URI u = f.toURI();
+                    item.replaceWith(u);
+                } else {
+                    item.replaceWith(" ");
+                }
+            }
 
             remitente = new TextNavigation("@remitente", odt);
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();
                 if(carta.getRemitente().getCargo() != null){
                     item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + " " + carta.getRemitente().getCargo().getNombre());
+                } else {
+                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos());
+                }
+            }
+
+            odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt");
+            odt.close();
+
+            //InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + this.acta.getId() + ".odt"));
+            //IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Velocity);
+            //IContext context =  report.createContext();
+            //context.put("name", "world");
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+
+            InputStream in = new FileInputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt"));
+            OutputStream out = new FileOutputStream(new File(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".pdf"));
+            converter.convert(in, out, options);
+            this.filePath = this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId() + ".pdf";
+            SessionUtils.getSession().setAttribute("filePathCarta", this.filePath);
+            RequestContext.getCurrentInstance().execute("PF('denVisorCartaFinal').show()");
+        } catch (Exception e) {            
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Carta", "Debé guardar la carta para poder visualizarla"));
+            Logger.getLogger(CartaViewBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void showDocumentFinalImprimir(Carta carta) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            TextDocument odt = (TextDocument) TextDocument.loadDocument(this.getDocumenstSavePath() + File.separatorChar + "Formatos" + File.separatorChar + "carta.odt");
+            TextNavigation searchConsecutivo;
+            TextNavigation searchFecha;
+            TextNavigation tratamiento;
+            TextNavigation destinatario;
+            TextNavigation cargo;
+            TextNavigation empresa;
+            TextNavigation direccion;
+            TextNavigation ciudad;
+            TextNavigation asunto;
+            TextNavigation contenido;
+            TextNavigation despedida;
+            TextNavigation firma;
+            TextNavigation remitente;
+
+            searchConsecutivo = new TextNavigation("@consecutivo", odt);
+            while (searchConsecutivo.hasNext()) {
+                TextSelection item = (TextSelection) searchConsecutivo.nextSelection();
+                 if(carta.getConsecutivo() == null || carta.getConsecutivo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getConsecutivo());
+                }
+                
+            }
+
+            searchFecha = new TextNavigation("@fecha", odt);
+            while (searchFecha.hasNext()) {
+                DateFormat df = new SimpleDateFormat();
+                TextSelection item = (TextSelection) searchFecha.nextSelection();
+                item.replaceWith(DateTimeUtils.getFormattedTime(carta.getFecha(), "EEEEE d")+" de "
+                + DateTimeUtils.getFormattedTime(carta.getFecha(), "MMMM") + " de "
+                +DateTimeUtils.getFormattedTime(carta.getFecha(), "yyyy"));
+            }
+
+            tratamiento = new TextNavigation("@tratamiento", odt);
+            while (tratamiento.hasNext()) {
+                TextSelection item = (TextSelection) tratamiento.nextSelection();
+                item.replaceWith(carta.getTratamiento());
+            }
+
+            destinatario = new TextNavigation("@destinatario", odt);
+            while (destinatario.hasNext()) {
+                TextSelection item = (TextSelection) destinatario.nextSelection();
+                item.replaceWith(carta.getDestinatario());
+            }
+
+            cargo = new TextNavigation("@cargo", odt);
+            while (cargo.hasNext()) {
+                TextSelection item = (TextSelection) cargo.nextSelection();
+                if(carta.getCargo() == null || carta.getCargo() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getCargo());
+                }                 
+            }
+
+            empresa = new TextNavigation("@empresa", odt);
+            while (empresa.hasNext()) {
+                TextSelection item = (TextSelection) empresa.nextSelection();
+                if(carta.getEmpresa() == null || carta.getEmpresa() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getEmpresa());
+                }                
+            }
+
+            direccion = new TextNavigation("@direccion", odt);
+            while (direccion.hasNext()) {
+                TextSelection item = (TextSelection) direccion.nextSelection();
+                if(carta.getDireccion() == null || carta.getDireccion() == ""){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getDireccion());
+                }               
+            }
+
+            ciudad = new TextNavigation("@ciudad", odt);
+            while (ciudad.hasNext()) {
+                TextSelection item = (TextSelection) ciudad.nextSelection();
+                if(carta.getCiudad() == null){
+                    item.replaceWith(" ");
+                }else{
+                    item.replaceWith(carta.getCiudad().getNombre());
+                }  
+            }            
+
+            asunto = new TextNavigation("@asunto", odt);
+            while (asunto.hasNext()) {
+                TextSelection item = (TextSelection) asunto.nextSelection();
+                item.replaceWith(carta.getAsunto());
+            }
+
+            contenido = new TextNavigation("@contenido", odt);
+            while (contenido.hasNext()) {
+                TextSelection item = (TextSelection) contenido.nextSelection();
+                item.replaceWith(Jsoup.parse(carta.getContenido()).text());
+            }
+
+            despedida = new TextNavigation("@despedida", odt);
+            while (despedida.hasNext()) {
+                TextSelection item = (TextSelection) despedida.nextSelection();
+                item.replaceWith(Jsoup.parse(carta.getDespedida()).text());
+            }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();
+                item.replaceWith(" ");               
+            }
+
+            remitente = new TextNavigation("@remitente", odt);
+            while (remitente.hasNext()) {
+                TextSelection item = (TextSelection) remitente.nextSelection();
+                if(carta.getRemitente().getCargo() != null){
+                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + "\n " + carta.getRemitente().getCargo().getNombre());
                 } else {
                     item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos());
                 }

@@ -273,7 +273,7 @@ public class ConstanciaBean extends BaseBean implements Serializable{
             this.constancia.setEstado(0);
             caJpa.edit(this.constancia);
             ConstanciaViewBean cvb = new ConstanciaViewBean();
-            cvb.showDocumentFinal(this.constancia);
+            cvb.showDocumentFinalImprimir(this.constancia);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

@@ -286,7 +286,7 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setEstado("0");
             caJpa.edit(this.carta);            
             CartaViewBean cvb = new CartaViewBean();
-            cvb.showDocumentFinal(this.carta);
+            cvb.showDocumentFinalImprimir(this.carta);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

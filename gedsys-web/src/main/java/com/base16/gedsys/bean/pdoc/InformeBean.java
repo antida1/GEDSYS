@@ -273,7 +273,7 @@ public class InformeBean extends BaseBean implements Serializable {
             this.informe.setEstado(0);
             caJpa.edit(this.informe);            
             InformeViewBean cvb = new InformeViewBean();
-            cvb.showDocumentFinal(this.informe);
+            cvb.showDocumentFinalImprimir(this.informe);
             
             // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();
