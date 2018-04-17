@@ -34,10 +34,11 @@ public class DocumentViewerBean extends BaseBean implements Serializable {
     private String filePathGuia = "";
     private String filePathComprobante = "";
 
+    
     @PostConstruct
     public void init() {
 
-    }
+    } 
 
     public void showDocument(Documento doc) {
         SessionUtils.getSession().setAttribute("filePathComprobante", "");
