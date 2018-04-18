@@ -101,6 +101,11 @@
                                                 $(this).children('span').addClass('ui-icon ui-icon-check');
                                                 $(this).children('span').removeClass('ui-icon-blank');
                                             });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
                                         } else {
                                             $('div[id*="check"] > div').each(function() {
                                                 $(this).removeClass('ui-state-active');
@@ -113,39 +118,201 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Leer" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check1" value="#{aclBean.acl.canRead}" />
+                                        <p:selectBooleanCheckbox id="check1" value="#{aclBean.acl.canRead}" onchange="selectThis(this);"/>
                                     </div>
                                 </div>
+                                 <script>
+                                    function selectThis(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check1"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check1"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check1"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group row">
                                     <p:outputLabel value="Crear" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check2" value="#{aclBean.acl.canCreate}" />
+                                        <p:selectBooleanCheckbox id="check2" value="#{aclBean.acl.canCreate}"  onchange="selectThis2(this);"/>
                                     </div>
                                 </div>
+                                <script>
+                                    function selectThis2(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check2"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check2"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check2"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group row">
                                     <p:outputLabel value="Editar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check3" value="#{aclBean.acl.canUpdate}" />
+                                        <p:selectBooleanCheckbox id="check3" value="#{aclBean.acl.canUpdate}" onchange="selectThis3(this);" />
                                     </div>
                                 </div>
+                                <script>
+                                    function selectThis3(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check3"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check3"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check3"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group row">
                                     <p:outputLabel value="Eliminar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check4" value="#{aclBean.acl.canDelete}" />
+                                        <p:selectBooleanCheckbox id="check4" value="#{aclBean.acl.canDelete}" onchange="selectThis4(this);"/>
                                     </div>
                                 </div>
+                                <script>
+                                    function selectThis4(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check4"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check4"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check4"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group row">
                                     <p:outputLabel value="Exportar" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check5" value="#{aclBean.acl.canExport}" />
+                                        <p:selectBooleanCheckbox id="check5" value="#{aclBean.acl.canExport}" onchange="selectThis5(this);"/>
                                     </div>
                                 </div>
+                                <script>
+                                    function selectThis5(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check5"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check5"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check5"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <div class="form-group row">
                                     <p:outputLabel value="Imprimir" class="col-xs-3 col-form-label" />
                                     <div class="col-xs-9">
-                                        <p:selectBooleanCheckbox id="check6" value="#{aclBean.acl.canGeneratePDF}" />
+                                        <p:selectBooleanCheckbox id="check6" value="#{aclBean.acl.canGeneratePDF}" onchange="selectThis6(this);"/>
                                     </div>
                                 </div>
+                                <script>
+                                    function selectThis6(checkThis) {
+                                        var checked = checkThis.checked; 
+
+                                        //to change the checked attribute                
+                                        $(':checkbox[id*="check6"]').attr('checked', checked);
+
+                                        if (checked) {
+                                            $('div[id*="check6"] > div').each(function() {
+                                                $(this).addClass('ui-state-active');
+                                                $(this).children('span').addClass('ui-icon ui-icon-check');
+                                                $(this).children('span').removeClass('ui-icon-blank');
+                                            });
+                                        } else {
+                                            $('div[id*="check6"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                            $('div[id*="selectAll"] > div').each(function() {
+                                                $(this).removeClass('ui-state-active');
+                                                $(this).children('span').removeClass('ui-icon ui-icon-check');
+                                                 $(this).children('span').addClass('ui-icon-blank');
+                                            });
+                                        }
+                                    }
+                                </script>
                                 <p:spacer/>
                                 <div> 
                                     <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="#{aclBean.accion}" actionListener="#{aclBean.procesar()}" oncomplete="PF('aclDialog').hide()" />
