@@ -75,12 +75,12 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Signatura Topográfica creada!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Se ha creado la signatura topográfica exitosamente!"));
                     limpiar();
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Signatura Topográfica modificada!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Se ha modificado la signatura topográfica exitosamente!"));
                     limpiar();
                     break;
             }
@@ -132,7 +132,7 @@ public class SignaturaTopograficaBean extends BaseBean implements Serializable {
             sJpa = new SignaturaTopograficaJpaController(emf);
             sJpa.destroy(signaturaTopografica.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Signatura Topográfica Eliminada!"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Signatura Topográfica", "¡Se ha eliminado la signatura topográfica exitosamente!"));
         } catch (NonexistentEntityException e) {
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Signatura Topográfica", e.getMessage()));
             Logger.getLogger(SignaturaTopograficaBean.class.getName()).log(Level.SEVERE, null, e);

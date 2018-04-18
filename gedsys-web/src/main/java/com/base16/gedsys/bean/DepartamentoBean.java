@@ -69,16 +69,16 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamentos", "¡Se ha creado el departamento exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamentos", "¡Se ha modificado el departamento exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('departamentoDialog').hide()");
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamentos", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -123,7 +123,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             ssJpa = new DepartamentoJpaController(emf);
             ssJpa.destroy(departamento.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamento", "¡Departamento Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Departamentos", "¡Se ha eliminado el departamento exitosamente!"));
 
         } catch (Exception e) {
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
@@ -138,7 +138,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             ssJpa = new DepartamentoJpaController(emf);
             departamentos = ssJpa.findDepartamentoEntities();
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamentos", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -155,7 +155,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamentos", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -167,7 +167,7 @@ public class DepartamentoBean extends BaseBean implements Serializable {
             ssJpa = new DepartamentoJpaController(emf);
             departamentos = ssJpa.findDepartamentosByPais(pais);
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamento", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departamentos", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }

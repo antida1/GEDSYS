@@ -76,7 +76,7 @@
                                     </p:dataTable>
                                 </div>
                             </h:form>
-                            <p:dialog id="dlgReset" header="Cambiar contraseña" widgetVar="resetPasswordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="40%" >
+                            <p:dialog id="dlgReset" header="Cambiar contraseña" widgetVar="resetPasswordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="40%" height="60%" >
                                 <h:form>
                                     <div class="form-group row">
                                         <p:outputLabel value="Contraseña" for="changePassword" class="col-xs-6 col-form-label" />
@@ -93,12 +93,12 @@
                                     <p:spacer/>
                                     <div align="center"> 
                                         <p:commandButton update="messages" icon="ui-icon-disk" value="Guardar" actionListener="#{usuarioBean.resetPassword() }" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
-                                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                                        <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('resetPasswordDialog').hide()"></p:commandButton>
 
                                     </div>
                                 </h:form>
                             </p:dialog>
-                            <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="60%" >
+                            <p:dialog id="dlgDetalle" header="Usuarios" widgetVar="usuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="60%" height="500px">
                                 <h:form enctype="multipart/form-data">
                                     <f:event type="preRenderView" listener="#{signaturaTree.loadCheckedByCurrentUser(usuarioBean.usuario)}" />
                                     <ul class="nav nav-tabs">

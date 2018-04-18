@@ -74,17 +74,17 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha creado el consecutivo exitosamente!"));
 
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha modificado el consecutivo exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('consecutivoDialog').hide()");
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -129,9 +129,9 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             cJpa = new ConsecutivoJpaController(emf);
             cJpa.destroy(consecutivo.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivo", "¡Consecutivo Eliminado!"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha eliminado el consecutivo exitosamente!"));
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
@@ -143,7 +143,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             cJpa = new ConsecutivoJpaController(emf);
             consecutivos = cJpa.findConsecutivoEntities();
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
@@ -160,7 +160,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivo", e.getMessage()));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

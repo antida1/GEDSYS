@@ -68,15 +68,15 @@ public class MunicipioBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipios", "¡Se ha creado el municipio exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipios", "¡Se ha modificado el municipio exitosamente!"));
                     break;
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Municipio", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Municipios", e.getMessage()));
             Logger.getLogger(DepartamentoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -119,7 +119,7 @@ public class MunicipioBean extends BaseBean implements Serializable {
             ssJpa = new MunicipioJpaController(emf);
             ssJpa.destroy(municipio.getId());
             this.listar();
-              this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipio", "¡Municipio Eliminado!"));
+              this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Municipios", "¡Se ha eliminado el municipio exitosamente!"));
         } catch (Exception e) {
             Logger.getLogger(MunicipioBean.class.getName()).log(Level.SEVERE, null, e);
             throw e;

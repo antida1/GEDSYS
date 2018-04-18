@@ -89,7 +89,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             this.serie.setCreadoPor(usuario);
             ssJpa.create(serie);
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha creado la subserie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha creado la subserie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -105,7 +105,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             this.serie.setModificadoPor(usuario);
             ssJpa.edit(serie);
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha modificado la subserie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha modificado la subserie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -118,7 +118,7 @@ public class SubSerieBean extends BaseBean implements Serializable {
             ssJpa = new SubSerieJpaController(emf);
             ssJpa.destroy(serie.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha eliminado la subserie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Subseries", "¡Se ha eliminado la subserie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }

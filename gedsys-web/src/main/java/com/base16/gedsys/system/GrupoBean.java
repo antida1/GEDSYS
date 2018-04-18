@@ -67,11 +67,11 @@ public class GrupoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupo", "Grupo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupos", "¡Se ha creado el grupo exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupo", "Grupo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupos", "¡Se ha modificado el grupo exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('grupoDialog').hide()");
@@ -123,9 +123,9 @@ public class GrupoBean extends BaseBean implements Serializable {
             sJpa = new GrupoJpaController(emf);
             sJpa.destroy(grupo.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupo", "Grupo Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Grupos", "¡Se ha eliminado el grupo exitosamente!"));
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
 
         }
@@ -138,7 +138,7 @@ public class GrupoBean extends BaseBean implements Serializable {
             sJpa = new GrupoJpaController(emf);
             Grupos = sJpa.findGrupoEntities();
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
 
         }
@@ -156,7 +156,7 @@ public class GrupoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
 
         }
@@ -173,7 +173,7 @@ public class GrupoBean extends BaseBean implements Serializable {
                 this.grupo = grupoTemp;
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Grupos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
 
         }

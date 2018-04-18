@@ -69,12 +69,12 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Unidad documental creada exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Se ha creado la unidad documental exitosamente!"));
                     limpiar();
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Unidad documental modificada exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Se ha modificado la unidad documental exitosamente!"));
                     limpiar();
                     break;
             }
@@ -92,7 +92,7 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.unidadDocumental.setCreadoPor(usuario);
             udJpa.create(unidadDocumental);
-            this.listar();
+            this.listar();            
         } catch (Exception e) {
             throw e;
         }
@@ -120,6 +120,7 @@ public class UnidadDocumentalBean extends BaseBean implements Serializable {
             udJpa = new UnidadDocumentalJpaController(emf);
             udJpa.destroy(unidadDocumental.getId());
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Unidad Documental", "¡Se ha eliminado la unidad documental exitosamente!"));
         } catch (Exception e) {
             throw e;
         }

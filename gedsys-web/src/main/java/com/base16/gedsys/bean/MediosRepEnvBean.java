@@ -63,16 +63,16 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Recepcion creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepción - Envio", "¡Se ha creado el medio recepción exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Recepcion modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepción - Envio", "¡Se ha modificado el medio recepción exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('medioRecepcionDialog').hide()");
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Medios de Recepcion - Envio", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Medios de Recepción - Envio", e.getMessage()));
             Logger.getLogger(MediosRepEnvBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -119,7 +119,7 @@ public class MediosRepEnvBean extends BaseBean implements Serializable {
             sJpa = new MediorecepcionJpaController(emf);
             sJpa.destroy(MedioRecepcion.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepcion - Envio", "Medio Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Medios de Recepción - Envio", "Se ha eliminado el medio de recepción exitosamente!"));
 
         } catch (Exception e) {
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));

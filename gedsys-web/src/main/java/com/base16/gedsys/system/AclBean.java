@@ -84,11 +84,11 @@ public class AclBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Control de acceso creado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Control de Acceso", "¡Se ha creado el control de acceso exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "GEDSYS", "¡Control de acceso modificado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Control de Acceso", "¡Se ha modificado el control de acceso exitoxamente!"));
                     break;
             }
         } catch (Exception e) {
@@ -130,6 +130,7 @@ public class AclBean extends BaseBean implements Serializable {
     }
 
     public void eliminar(Acl acl) {
+        FacesContext context = FacesContext.getCurrentInstance();
         AclJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -137,6 +138,7 @@ public class AclBean extends BaseBean implements Serializable {
             cJpa.destroy(acl.getId());
             this.grupo = acl.getGrupo();
             this.onGroupChange();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Control de Acceso", "¡Se ha eliminado el control de acceso exitoxamente!"));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.getMessage()));
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
