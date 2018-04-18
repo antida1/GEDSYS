@@ -76,6 +76,7 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation despedida;
+            TextNavigation firma;
             TextNavigation remitente;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
@@ -166,6 +167,12 @@ public class CartaViewBean extends BaseBean implements Serializable {
             while (despedida.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith(Jsoup.parse(carta.getDespedida()).text());
+            }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();
+                item.replaceWith(" ");               
             }
 
             remitente = new TextNavigation("@remitente", odt);

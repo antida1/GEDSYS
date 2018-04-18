@@ -131,11 +131,11 @@ public class CartaBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento creado exitosamente"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento creado exitosamente!"));
                     break;
                 case "editar":
                     editar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "Documento actualizado exitosamente"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Carta", "¡Documento actualizado exitosamente!"));
                     break;
             }
         } catch (Exception e) {
@@ -315,7 +315,7 @@ public class CartaBean extends BaseBean implements Serializable {
 
         } catch (Exception ex) {
             Logger.getLogger(CartaBean.class.getName()).log(Level.SEVERE, null, ex);
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Carta", "No existe el consecutivo para cartas en la Entidad Consecutivo"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Carta", "¡No existe el consecutivo para cartas en la Entidad Consecutivo!"));
             em.getTransaction().rollback();
         }
     }
