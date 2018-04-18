@@ -42,7 +42,7 @@ public class BackgroudJobManager {
     public void someMinuteJob() {
         // Do your job here which should run every 15 minute of hour.
         //PushFCMNotification.PushFCMNotification(sToken, "Mensaje de Prueba", "Hola Desde Gedsys");
-        Push.sendAll("Mensaje desde el Background Job Manager for all Connected Users.");
+        //Push.sendAll("Mensaje desde el Background Job Manager for all Connected Users.");
         Logger.getLogger(BackgroudJobManager.class.getName()).log(Level.SEVERE, "Job Run Every 1 Minutes");
     }
 
