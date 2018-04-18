@@ -21,7 +21,7 @@
             <p:outputLabel value="Destinatario" for="destinatarioCom" class="control-label col-md-4"/>
             <div class="col-md-8">
                 <p:selectOneMenu required="true" requiredMessage="¡Error! Debe seleccionar el destinatario" value="#{comunicacionBean.comunicacion.destinatario}" id="destinatarioCom" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
-                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos}" itemValue="#{usrDest}"/>
                     <p:column>
                         <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                     </p:column>
@@ -33,7 +33,7 @@
             <p:outputLabel value="Remitente" for="remitenteCom" class="control-label col-md-4"/>
             <div class="col-md-8">
                 <p:selectOneMenu required="true" requiredMessage="¡Error! Debe seleccionar el remitente" value="#{comunicacionBean.comunicacion.remitente}" id="remitenteCom" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
-                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{dest.apelidos}" itemValue="#{usrDest}"/>
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrDest" itemLabel="#{usrDest.nombres} #{usrDest.apelidos}" itemValue="#{usrDest}"/>
                     <p:column>
                         <h:outputText value="#{dest.nombres} #{dest.apelidos} - #{dest.cargo.nombre}"/>
                     </p:column>
@@ -92,15 +92,23 @@
             <h:outputText id="editorAnexosCom" value="#{comunicacionBean.comunicacion.descripcionAnexos}" escape="false" />
         </p:dialog>        
         <p:dialog id="dlgFirmarComu" header="Firmar" widgetVar="denFirmarComu" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">            
-            <div class="form-group row">
+<!--            <div class="form-group row">
                 <p:outputLabel value="Firma:" for="firmaComu" class="col-xs-4 col-form-label"></p:outputLabel>
                 <div class="col-xs-8">
-                    <p:signature id="firmaComu" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value="#{usuarioBean.usuario.firma}"/>
+                    <p:signature id="firmaComu" style="width:500px;height:200px" widgetVar="Firma" required="true" guideline="true" value=""/>
                 </div> 
             </div>
             <p:commandButton value="Limpiar" immediate="true" icon="ui-icon-trash" oncomplete="PF('Firma').clear()"></p:commandButton>  
-            <p:commandButton value="Guardar Firma" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>                          
-        </p:dialog> 
+            <p:commandButton value="Guardar Firma" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>                          
+         -->
+            <div class="form-group row">
+                <p:outputLabel value="NOTA:"  class="col-xs-12" style="font-size: 24px; font-weight: bolder; color:  orangered"></p:outputLabel> 
+                <p:outputLabel class="col-xs-12"  value="Para firmar correctamente el documento: debe darle click al botón Guardar Firma y  se le cargará el documento con la firma registrada!" style="font-size: 18px; color: #000000; font-weight: bolder; align-content: center;"/>
+            </div>
+            <div align="center"> 
+                <p:commandButton value="Guardar Firma" style="background-color:orangered; width: 20%; height: 50px; color: #ffffff;" onstart="PF('denFirmarComu').hide(); PF('statusDialog').show();" immediate="true" icon="ui-icon-disk" actionListener="#{comunicacionBean.firmar()}" update="anuncio :dlgVisorComunicacion" onsuccess="PF('statusDialog').hide()"></p:commandButton>
+            </div>
+        </p:dialog>
         <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
             <p:graphicImage value="../../images/ajaxloading.gif"/>
         </p:dialog>

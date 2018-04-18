@@ -277,7 +277,7 @@ public class CircularBean extends BaseBean implements Serializable {
             this.circular.setEstado(0);
             caJpa.edit(this.circular);            
             CircularViewBean cvb = new CircularViewBean();
-            cvb.showDocumentFinal(this.circular);
+            cvb.showDocumentFinalImprimir(this.circular);
             
              // TODO: Crear el nuevo documento carta
             Documento documento = new Documento();

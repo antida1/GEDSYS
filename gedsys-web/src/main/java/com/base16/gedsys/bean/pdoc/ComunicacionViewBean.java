@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -156,6 +157,7 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
             Logger.getLogger(ActaBean.class.getName()).log(Level.SEVERE, null, e);
     }
    }
+    
     public void showDocumentFinal(Comunicacion comunicacion) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -164,9 +166,10 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation destinatario;
-            TextNavigation firma_remitente;
+            TextNavigation firmaRemitente;
             TextNavigation asunto;
             TextNavigation contenido;
+            TextNavigation firma;
             TextNavigation remitente;
             TextNavigation anexos;
             TextNavigation copia;
@@ -214,10 +217,22 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) remitente.nextSelection();
                 item.replaceWith(comunicacion.getRemitente().getNombres() + " " + comunicacion.getRemitente().getApelidos());
             }
-
-            firma_remitente = new TextNavigation("@firma_remitente", odt);
-            while (firma_remitente.hasNext()) {
-                TextSelection item = (TextSelection) firma_remitente.nextSelection();
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();
+                if(comunicacion.getRemitente().getFirma() != null){
+                    File f = new File(this.getDocumenstSavePath() + File.separatorChar + "firmas" + File.separatorChar +comunicacion.getRemitente().getFirma());
+                    URI u = f.toURI();
+                    item.replaceWith(u);
+                } else {
+                    item.replaceWith(" ");
+                }
+            }
+            
+            firmaRemitente = new TextNavigation("@firmaRemitente", odt);
+            while (firmaRemitente.hasNext()) {
+                TextSelection item = (TextSelection) firmaRemitente.nextSelection();
                 item.replaceWith(comunicacion.getRemitente().getNombres() + " " + comunicacion.getRemitente().getApelidos() + " " );
             }
             

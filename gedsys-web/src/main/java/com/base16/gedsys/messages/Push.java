@@ -5,6 +5,9 @@
  */
 package com.base16.gedsys.messages;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.OnClose;
@@ -19,21 +22,29 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/push")
 public class Push {
     
-    private static final Set<Session> SESSIONS =  ConcurrentHashMap.newKeySet();
+   
+    private static final Map<String, Session> SESSIONS = new HashMap<String, Session>();
     
     @OnOpen
     public void onOpen(Session session){
-        SESSIONS.add(session);
+        Map<String, List<String>> params = session.getRequestParameterMap();        
+        if (params.get("uuid") != null ) {
+            SESSIONS.put(params.get("uuid").toString(), session);
+        }
     }
  
     @OnClose 
     public void onClose(Session session){
-        SESSIONS.remove(session);
+        Map<String, List<String>> params = session.getRequestParameterMap(); 
+        SESSIONS.remove(params.get("uuid"));
     }
     
     public static void sendAll(String text){
         synchronized (SESSIONS) {
-            for(Session session :  SESSIONS){
+            
+            for (Map.Entry<String, Session> entry : SESSIONS.entrySet()) {
+                String key = entry.getKey();
+                Session session = entry.getValue();
                 if(session.isOpen()){
                     session.getAsyncRemote().sendText(text);
                 }

@@ -197,7 +197,7 @@
         </script>
 
         <script type="text/javascript">
-            var host = "ws://localhost:8080/gedsys-web/push";
+            var host = "ws://localhost:8080/gedsys-web/push?uuid=" + "#{login.currentUser.id}";
             var wSocket = new WebSocket(host);
             var browserSupport = ("WebSocket" in window) ? true : false;
 
