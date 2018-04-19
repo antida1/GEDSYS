@@ -38,7 +38,7 @@
                         <label class=" col-xs-2" for="asunto">Asunto <span class="required">*</span>
                         </label>
                         <div class="col-xs-10">
-                            <p:inputText id="asunto" value="#{envioBean.documento.asunto}" style="width: 100%" required="true" requiredMessage="¡Error! El asunto no debe estar vacío"/>
+                            <p:editor id="asunto" widgetVar="asunto" value="#{envioBean.documento.asunto}" width="910" height="70" required="true" requiredMessage="¡Error! El asunto no debe estar vacío"/>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <label class=" col-xs-2" for="detalle">Detalle <span class="required">*</span>
                         </label>
                         <div class="col-xs-10">
-                            <p:inputTextarea id="detalle" value="#{envioBean.documento.detalle}" rows="6" cols="220" style="width: 100%" counter="counter" maxlength="600" counterTemplate="{0} characters remaining." autoResize="false" required="true" requiredMessage="¡Error! El detalle no debe estar vacío" />
+                            <p:editor id="detalle" widgetVar="detalle" value="#{envioBean.documento.detalle}" width="910" required="true" requiredMessage="¡Error! El detalle no debe estar vacío" />
                             <h:outputText id="counter" />
                         </div>
                     </div>
@@ -111,6 +111,12 @@
                         <p:commandButton  widgetVar="printRad" update=":form" class="btn-info" style="margin-left: 10px;"  icon="ui-icon-pencil" type="button" title="Imprimr radicado" value="Imprimir radicado" onclick="PF('denRadicado').show()" partialSubmit="false"  disabled="#{envioBean.canPrint}" ></p:commandButton>
                         <p:commandButton  widgetVar="saveDoc" update=":form imessages"  value="Enviar" icon="ui-icon-disk" actionListener="#{envioBean.radicar()}" ajax="false" partialSubmit="false" class="btn-primary" style="margin-left: 10px;" disabled="#{envioBean.canSave}"/>
                         <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" style="float: right;" action="#{envioBean.limpiar()}" immediate="true" oncomplete="PF('denEnvio').hide()"></p:commandButton>
+                        <p:dialog header="Asunto" widgetVar="dlgAsunto" showEffect="fade" hideEffect="fade">
+                            <h:outputText id="editorAsunto" value="#{envioBean.documento.asunto}" escape="false" />
+                        </p:dialog>
+                        <p:dialog header="Detalle" widgetVar="dlgDetalle" showEffect="fade" hideEffect="fade">
+                            <h:outputText id="editorDetalle" value="#{envioBean.documento.detalle}" escape="false" />
+                        </p:dialog>
                         <p:dialog id="dlgDetalle" header="Radicado" widgetVar="denRadicado" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="70%" height="500" maximizable="false" closable="true" closeOnEscape="true">
                             <ui:include src="newRadicadoSalida.xhtml">
                                 <ui:param name="tipoRadicado" value="externo" />

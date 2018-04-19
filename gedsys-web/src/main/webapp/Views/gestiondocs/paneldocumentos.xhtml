@@ -127,7 +127,7 @@
                                                     <h:outputText value="#{docPorEnviar.tipoDocumento.nombre}" />
                                                 </p:column>
                                                 <p:column headerText="Asunto">
-                                                    <h:outputText value="#{docPorEnviar.asunto}" />
+                                                    <h:outputText value="#{docPorEnviar.asunto}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Destinatario">
                                                     <h:outputText value="#{docPorEnviar.remitenteExteno}" />
@@ -1006,7 +1006,7 @@
                         </ui:include>
                     </p:dialog>
                     <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="90%" height="550px" dynamic="true" responsive="true"  closable="true">
-                        <p:ajax event="close" update=":porEnviar" />
+                        <p:ajax event="close" update="dlgCompletarDoc :porEnviar" />
                         <ui:include src="../procesos/envio.xhtml">
                         </ui:include>
                     </p:dialog>
