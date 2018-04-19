@@ -87,7 +87,7 @@
                                 </p:dataTable>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="Grupo" widgetVar="grupoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="250" width="480">
+                        <p:dialog id="dlgDetalle" header="Grupo" widgetVar="grupoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="150" width="480">
                             <h:form>
                                 <h:inputHidden id="id" value="#{grupoBean.grupo.nombre}"/>
                                 <div class="form-group row">
@@ -110,7 +110,7 @@
                                 </div>
 
                                 <p:spacer/>
-                                <div>
+                                <div align="center">
                                     <p:commandButton update=":form:lstGrupos messages" icon="ui-icon-disk" value="#{grupoBean.accion}" actionListener="#{grupoBean.procesar()}" />
                                     <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('grupoDialog').hide()"></p:commandButton>
                                 </div>

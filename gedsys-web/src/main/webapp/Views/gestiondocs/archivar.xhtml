@@ -88,9 +88,9 @@
             </div>
         </div>
         <p:spacer/>
-        <div class="form-group row col-xs-12">
+        <div class="form-group row col-xs-12" align="center">
             <p:commandButton icon="ui-icon-disk" actionListener="#{archivarBean.guadarDocumento()}" value="Guardar" oncomplete="PF('denArchivar').hide()" update="messages" />
-            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('denArchivar').hide()"></p:commandButton>
+            <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('denArchivar').hide()"></p:commandButton>
         </div>
     </body>
 </html>

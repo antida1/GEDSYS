@@ -228,9 +228,9 @@
                                         </div>
                                         -->
                                         <p:spacer/>
-                                        <div> 
+                                        <div align="center"> 
                                             <p:commandButton update=":form:lstUsuarios messages" icon="ui-icon-disk" value="#{usuarioBean.accion}" actionListener="#{usuarioBean.procesar()}" oncomplete="PF('usuarioDialog').hide()" ajax="false"  />
-                                            <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
+                                            <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('usuarioDialog').hide()"></p:commandButton>
 
                                         </div>
                                     </div>
