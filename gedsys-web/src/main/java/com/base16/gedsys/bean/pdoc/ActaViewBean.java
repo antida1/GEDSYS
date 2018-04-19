@@ -80,6 +80,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation searchOrden;
             TextNavigation searchDesarrollo;
             TextNavigation searchConvocatoria;
+            TextNavigation firma;
             TextNavigation searchPresidente;
             TextNavigation searchSecretaria;
 
@@ -164,6 +165,13 @@ public class ActaViewBean extends BaseBean implements Serializable {
             while (searchConvocatoria.hasNext()) {
                 TextSelection item = (TextSelection) searchConvocatoria.nextSelection();
                 item.replaceWith(Jsoup.parse(acta.getConvocatoria()).text());
+            }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();                
+                item.replaceWith(" ");
+                
             }
 
             searchPresidente = new TextNavigation("@presidente", odt);
