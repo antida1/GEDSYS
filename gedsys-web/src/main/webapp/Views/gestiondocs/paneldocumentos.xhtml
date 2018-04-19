@@ -188,7 +188,7 @@
                                                 <p:column headerText="Adjuntar Guía">  
                                                     <h:form enctype="multipart/form-data">                                                        
                                                         <p:fileUpload fileUploadListener="#{documentosBean.cargarGuia}" mode="advanced"
-                                                                      update="enviados :messages, rutaGuia" auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
+                                                                      update="enviados :messages, rutaGuia :dlgVisor" auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
                                                                       oncomplete="display: none" label="" invalidFileMessage="¡Sólo se permiten documentos tipo PDF!">
                                                             <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
                                                         </p:fileUpload> 
@@ -198,7 +198,7 @@
                                                 <p:column headerText="Adjuntar Comprobante de Entrega"> 
                                                     <h:form enctype="multipart/form-data">
                                                         <p:fileUpload disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#{documentosBean.cargarComprobante}" mode="advanced"
-                                                                      update="enviados :messages, rutaComprobante " auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
+                                                                      update="enviados :messages, rutaComprobante :dlgVisor " auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
                                                                       oncomplete="disabled:true;" label="" invalidFileMessage="¡Sólo se permiten documentos tipo PDF!">
                                                             <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
                                                         </p:fileUpload> 
