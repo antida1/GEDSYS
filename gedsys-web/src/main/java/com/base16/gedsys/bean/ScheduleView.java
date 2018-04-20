@@ -16,20 +16,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManagerFactory;
 
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 @ManagedBean
@@ -43,7 +37,11 @@ public class ScheduleView extends BaseBean implements Serializable {
     private ScheduleBeanEvent event = new ScheduleBeanEvent();
     private List<Notificacion> notificaciones;
 
-    @PostConstruct
+    public ScheduleView(){
+        init();
+    }
+    
+    
     public void init() {
         eventModel = new DefaultScheduleModel();
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -209,6 +207,9 @@ public class ScheduleView extends BaseBean implements Serializable {
             event.getNotificacion().setCreadorPor(usuario.getId());
             event.getNotificacion().setFechaInicio(event.getStartDate());
             event.getNotificacion().setFechaFinalizacion(event.getEndDate());
+            event.getNotificacion().setFechaNotificacion(event.getStartDate());
+            event.getNotificacion().setFechaModificacion(new Date());
+            event.getNotificacion().setMesesNotificacion(event.getStartDate().getMonth());
             nJpa.create(event.getNotificacion());
 
         } catch (Exception e) {
@@ -225,8 +226,11 @@ public class ScheduleView extends BaseBean implements Serializable {
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             event.getNotificacion().setAsunto(event.getTitle());
             event.getNotificacion().setFechaInicio(event.getStartDate());
+            event.getNotificacion().setFechaNotificacion(event.getStartDate());
             event.getNotificacion().setFechaFinalizacion(event.getEndDate());
             event.getNotificacion().setModificadoPor(usuario.getId());
+            event.getNotificacion().setFechaModificacion(new Date());
+            event.getNotificacion().setMesesNotificacion(event.getStartDate().getMonth());
             nJpa.edit(event.getNotificacion());
 
         } catch (Exception e) {

@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Notificacion.findByDiasNotificacion", query = "SELECT n FROM Notificacion n WHERE n.diasNotificacion = :diasNotificacion")
     , @NamedQuery(name = "Notificacion.findByFechaCreacion", query = "SELECT n FROM Notificacion n WHERE n.fechaCreacion = :fechaCreacion")
     , @NamedQuery(name = "Notificacion.findByFechaModificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaModificacion = :fechaModificacion")
-    , @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion")
+    , @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion between :startDate and :endDate")
     , @NamedQuery(name = "Notificacion.findByMesesNotificacion", query = "SELECT n FROM Notificacion n WHERE n.mesesNotificacion = :mesesNotificacion")
     , @NamedQuery(name = "Notificacion.findByModificadoPor", query = "SELECT n FROM Notificacion n WHERE n.modificadoPor = :modificadoPor")
     , @NamedQuery(name = "Notificacion.findByNotificacionCorreo", query = "SELECT n FROM Notificacion n WHERE n.notificacionCorreo = :notificacionCorreo")

@@ -13,9 +13,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TemporalType;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
  *
@@ -167,7 +171,7 @@ public class NotificacionJpaController implements Serializable {
     
     public List<Notificacion> findNotificacionByResponsable(Usuario responsable) {
         return findNotificacionByResponsable(responsable, -1, -1);
-}
+    }
 
     public List<Notificacion> findNotificacionByResponsable(Usuario responsable, int maxResults, int firstResult) {
         return findNotificacionByResponsable(responsable, true, maxResults, firstResult);
@@ -180,6 +184,33 @@ public class NotificacionJpaController implements Serializable {
             cq.select(cq.from(Notificacion.class));
             Query q = em.createNamedQuery("Notificacion.findByResponsable", Notificacion.class)
                     .setParameter("responsable", responsable);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Notificacion> findNotificacionByDateTime(Date startDate, Date endDate) {
+        return findNotificacionByDateTime(startDate, endDate, -1, -1);
+    }
+
+    public List<Notificacion> findNotificacionByDateTime(Date startDate, Date endDate, int maxResults, int firstResult) {
+        return findNotificacionByDateTime(startDate, endDate, true, maxResults, firstResult);
+    }
+    
+    private List<Notificacion> findNotificacionByDateTime(Date startDate, Date endDate ,boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Notificacion.class));
+            Query q = em.createNamedQuery("Notificacion.findByFechaNotificacion", Notificacion.class)
+                    .setParameter("startDate", startDate)
+                    .setParameter("endDate", endDate) ;
+            
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);

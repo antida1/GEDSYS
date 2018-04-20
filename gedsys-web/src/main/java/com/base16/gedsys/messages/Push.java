@@ -8,8 +8,6 @@ package com.base16.gedsys.messages;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -29,7 +27,7 @@ public class Push {
     public void onOpen(Session session){
         Map<String, List<String>> params = session.getRequestParameterMap();        
         if (params.get("uuid") != null ) {
-            SESSIONS.put(params.get("uuid").toString(), session);
+            SESSIONS.put(params.get("uuid").get(0).toString(), session);
         }
     }
  
@@ -51,4 +49,20 @@ public class Push {
             }
         }
     }
+    
+    public static void sendToUser(String text, String UserID){
+        synchronized (SESSIONS) {
+            
+            for (Map.Entry<String, Session> entry : SESSIONS.entrySet()) {
+                String key = entry.getKey();
+                if(key.equals(UserID)){
+                    Session session = entry.getValue();
+                    if(session.isOpen()){
+                        session.getAsyncRemote().sendText(text);
+                    }
+                }
+            }
+        }
+    }
+    
 }
