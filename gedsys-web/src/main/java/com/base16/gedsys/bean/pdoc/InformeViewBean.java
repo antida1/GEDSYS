@@ -189,7 +189,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
                 if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                    item.replaceWith(informe.getRemitente().getCargo().getNombre());
                 }else{
                     item.replaceWith(" ");
                 }
@@ -225,15 +225,6 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
             
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getCargo().getNombre());
-                }else{
-                    item.replaceWith(" ");
-                }
-            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
             odt.close();
@@ -293,7 +284,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
                 if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                    item.replaceWith(informe.getRemitente().getCargo().getNombre());
                 }else{
                     item.replaceWith(" ");
                 }
@@ -323,16 +314,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) remitente.nextSelection();                
                 item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
-            
-            cargo = new TextNavigation("@cargo", odt);
-            while (cargo.hasNext()) {
-                TextSelection item = (TextSelection) cargo.nextSelection();
-                if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getCargo().getNombre());
-                }else{
-                    item.replaceWith(" ");
-                }
-            }
+                        
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
             odt.close();
