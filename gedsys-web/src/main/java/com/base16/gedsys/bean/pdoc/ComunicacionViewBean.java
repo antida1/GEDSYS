@@ -66,7 +66,7 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation destinatario;
-            TextNavigation firma_remitente;
+            TextNavigation abajoRemitente;
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation remitente;
@@ -117,9 +117,9 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
                 item.replaceWith(comunicacion.getRemitente().getNombres() + " " + comunicacion.getRemitente().getApelidos());
             }
 
-            firma_remitente = new TextNavigation("@firma_remitente", odt);
-            while (firma_remitente.hasNext()) {
-                TextSelection item = (TextSelection) firma_remitente.nextSelection();
+            abajoRemitente = new TextNavigation("@abajoRemitente", odt);
+            while (abajoRemitente.hasNext()) {
+                TextSelection item = (TextSelection) abajoRemitente.nextSelection();
                 item.replaceWith(comunicacion.getRemitente().getNombres() + " " + comunicacion.getRemitente().getApelidos() + " " );
             }
             
@@ -166,7 +166,7 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation consecutivo;
             TextNavigation destinatario;
-            TextNavigation firmaRemitente;
+            TextNavigation abajoRemitente;
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation firma;
@@ -230,9 +230,9 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
                 }
             }
             
-            firmaRemitente = new TextNavigation("@firmaRemitente", odt);
-            while (firmaRemitente.hasNext()) {
-                TextSelection item = (TextSelection) firmaRemitente.nextSelection();
+            abajoRemitente = new TextNavigation("@abajoRemitente", odt);
+            while (abajoRemitente.hasNext()) {
+                TextSelection item = (TextSelection) abajoRemitente.nextSelection();
                 item.replaceWith(comunicacion.getRemitente().getNombres() + " " + comunicacion.getRemitente().getApelidos() + " " );
             }
             

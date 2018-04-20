@@ -126,19 +126,15 @@ public class InformeViewBean extends BaseBean implements Serializable {
 
             remitente = new TextNavigation("@remitente", odt);
             while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
-                } else {
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-                }
+                TextSelection item = (TextSelection) remitente.nextSelection();               
+                item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
             
             cargo = new TextNavigation("@cargo", odt);
             while (cargo.hasNext()) {
                 TextSelection item = (TextSelection) cargo.nextSelection();
                 if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos() + " " + informe.getRemitente().getCargo().getNombre());
+                    item.replaceWith(informe.getRemitente().getCargo().getNombre());
                 }else{
                     item.replaceWith(" ");
                 }
@@ -234,12 +230,8 @@ public class InformeViewBean extends BaseBean implements Serializable {
 
              remitente = new TextNavigation("@remitente", odt);
             while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-                } else {
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-                }
+                TextSelection item = (TextSelection) remitente.nextSelection();                
+                item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
             
             cargo = new TextNavigation("@cargo", odt);
@@ -337,12 +329,8 @@ public class InformeViewBean extends BaseBean implements Serializable {
 
              remitente = new TextNavigation("@remitente", odt);
             while (remitente.hasNext()) {
-                TextSelection item = (TextSelection) remitente.nextSelection();
-                if(informe.getRemitente().getCargo() != null){
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-                } else {
-                    item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-                }
+                TextSelection item = (TextSelection) remitente.nextSelection();                
+                item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
             
             cargo = new TextNavigation("@cargo", odt);
