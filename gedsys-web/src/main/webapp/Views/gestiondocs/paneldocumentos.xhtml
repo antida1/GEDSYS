@@ -127,7 +127,7 @@
                                                     <h:outputText value="#{docPorEnviar.tipoDocumento.nombre}" />
                                                 </p:column>
                                                 <p:column headerText="Asunto">
-                                                    <h:outputText value="#{docPorEnviar.asunto}" />
+                                                    <h:outputText value="#{docPorEnviar.asunto}" escape="false"/>
                                                 </p:column>
                                                 <p:column headerText="Destinatario">
                                                     <h:outputText value="#{docPorEnviar.remitenteExteno}" />
@@ -188,7 +188,7 @@
                                                 <p:column headerText="Adjuntar Guía">  
                                                     <h:form enctype="multipart/form-data">                                                        
                                                         <p:fileUpload fileUploadListener="#{documentosBean.cargarGuia}" mode="advanced"
-                                                                      update="enviados :messages, rutaGuia" auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
+                                                                      update="enviados :messages, rutaGuia :dlgVisor" auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
                                                                       oncomplete="display: none" label="" invalidFileMessage="¡Sólo se permiten documentos tipo PDF!">
                                                             <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
                                                         </p:fileUpload> 
@@ -198,7 +198,7 @@
                                                 <p:column headerText="Adjuntar Comprobante de Entrega"> 
                                                     <h:form enctype="multipart/form-data">
                                                         <p:fileUpload disabled="#{docsEnviados.medioEnvio.nombre == 'Entrega Directa'}" fileUploadListener="#{documentosBean.cargarComprobante}" mode="advanced"
-                                                                      update="enviados :messages, rutaComprobante " auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
+                                                                      update="enviados :messages, rutaComprobante :dlgVisor " auto="true" sizeLimit="52428800" allowTypes="/(\.|\/)(pdf)$/"
                                                                       oncomplete="disabled:true;" label="" invalidFileMessage="¡Sólo se permiten documentos tipo PDF!">
                                                             <f:attribute name="consecutivo" value="#{docsEnviados.consecutivo}" />
                                                         </p:fileUpload> 
@@ -671,7 +671,7 @@
                             </div>
                         </div>
                     </div>
-                    <p:dialog id="dlgArchivar" header="Archivar" widgetVar="denArchivar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="80%" maximizable="true">
+                    <p:dialog id="dlgArchivar" header="Archivar" widgetVar="denArchivar" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="80%" maximizable="true">
                         <p:ajax event="close" update=":enviados :porArchivar"/>
                         <h:form>
                             <ui:include src="archivar.xhtml">
@@ -1006,7 +1006,7 @@
                         </ui:include>
                     </p:dialog>
                     <p:dialog id="dlgCompletarDoc" header="Envio de Documentos" widgetVar="denEnvio" modal="true" showEffect="fade" hideEffect="fade" resizable="true" width="90%" height="550px" dynamic="true" responsive="true"  closable="true">
-                        <p:ajax event="close" update=":porEnviar" />
+                        <p:ajax event="close" update="dlgCompletarDoc :porEnviar" />
                         <ui:include src="../procesos/envio.xhtml">
                         </ui:include>
                     </p:dialog>

@@ -62,15 +62,15 @@ public class PaisBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País creado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Países", "¡Se ha creado el país exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País modificado exitoxamente!"));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Países", "¡Se ha modificado el país exitoxamente!"));
                     break;
             }
         } catch (Exception e) {
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "País", e.getMessage()));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Países", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -115,7 +115,7 @@ public class PaisBean extends BaseBean implements Serializable {
             sJpa = new PaisJpaController(emf);
             sJpa.destroy(pais.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "País", "País Eliminado"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Países", "¡Se ha eliminado el país exitosamente!"));
         } catch (Exception e) {
             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "País", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());

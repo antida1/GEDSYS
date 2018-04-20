@@ -195,7 +195,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             }
 
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha creado el usuario correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha creado el usuario exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -251,7 +251,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
 
             emf.getCache().evictAll();
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha modificado el usuario correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha modificado el usuario exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -264,7 +264,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             usrJpa = new UsuarioJpaController(emf);
             usrJpa.destroy(usuario.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Secciones", "¡Se ha eliminado el usuario correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha eliminado el usuario exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -370,6 +370,7 @@ public class UsuarioBean extends BaseBean implements Serializable {
             usrJpa = new UsuarioJpaController(emf);
             this.usuario.setClave(Authentication.md5(this.password));
             usrJpa.edit(this.usuario);
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuarios", "¡Se ha modificado la contraseña exitosamente!" ));
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

@@ -67,7 +67,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
                     break;
             }            
         } catch (Exception e) {
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo Documento", e.getMessage()));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipos de Documentos", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -86,7 +86,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             this.tipoDocumento.setCreadoPor(usuario);
             sJpa.create(tipoDocumento);
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento creado exitoxamente!"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentos", "¡Se ha creado el tipo de documento exitoxamente!"));
         } catch (Exception e) {
             throw e;
         }
@@ -103,7 +103,7 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             this.tipoDocumento.setModificadoPor(usuario);
             sJpa.edit(tipoDocumento);
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "¡Tipo Documento modificado exitoxamente!"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentos", "¡Se ha modificado el tipo de documento exitoxamente!"));
         } catch (Exception e) {
             throw e;
         }
@@ -116,9 +116,9 @@ public class TipoDocumentoBean extends BaseBean implements Serializable {
             sJpa = new TipoDocumentoJpaController(emf);
             sJpa.destroy(tipoDocumento.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipo Documento", "Tipo Documento Eliminado"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentos", "¡Se ha eliminado el tipo de documento exitosamente!"));
         } catch (Exception e) {
-             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo Documento", e.getMessage()));
+             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipos de Documentos", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

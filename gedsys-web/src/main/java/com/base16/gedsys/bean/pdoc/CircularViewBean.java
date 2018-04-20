@@ -69,6 +69,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             TextNavigation asunto;
             TextNavigation contenido;
             TextNavigation despedida;
+            TextNavigation firma;
             TextNavigation remitente;
             TextNavigation anexos;
             TextNavigation copia;
@@ -114,6 +115,12 @@ public class CircularViewBean extends BaseBean implements Serializable {
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith("");
+            }
+            
+            firma = new TextNavigation("@firma", odt);
+            while (firma.hasNext()) {
+                TextSelection item = (TextSelection) firma.nextSelection();                
+                item.replaceWith(" ");
             }
 
             remitente = new TextNavigation("@remitente", odt);

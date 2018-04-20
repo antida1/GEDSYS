@@ -68,11 +68,11 @@ public class DiaFestivoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Se ha creado el día festivo exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Se ha modificado el día festivo exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('diaDialog').hide()");
@@ -121,7 +121,7 @@ public class DiaFestivoBean extends BaseBean implements Serializable {
             ssJpa = new DiaFestivoJpaController(emf);
             ssJpa.destroy(diaFestivo.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Día Festivo Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Día Festivo", "¡Se ha eliminado el día festivo exitosamente!"));
 
         } catch (Exception e) {
             this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Día Festivo", e.getMessage()));

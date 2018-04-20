@@ -69,11 +69,11 @@ public class TipoDocumentalBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Gedsys", "¡Tipo documental creado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentales", "¡Se ha creado el tipo documental exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Gedsys", "¡Tipo documental modificado exitosamente!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentales", "¡Se ha modificado el tipo documental exitosamente!"));
                     break;
             }
         } catch (Exception e) {
@@ -118,6 +118,7 @@ public class TipoDocumentalBean extends BaseBean implements Serializable {
             tpJpa = new TipoDocumentalJpaController(emf);
             tpJpa.destroy(TipoDocumental.getId());
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Tipos de Documentales", "¡Se ha eliminado el tipo documental exitosamente!"));
         } catch (Exception e) {
             throw e;
         }

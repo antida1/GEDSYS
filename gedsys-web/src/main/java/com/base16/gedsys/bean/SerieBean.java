@@ -89,7 +89,7 @@ public class SerieBean extends BaseBean implements Serializable {
             this.serie.setCreadoPor(usuario);
             ssJpa.create(serie);
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha creado la serie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha creado la serie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -105,7 +105,7 @@ public class SerieBean extends BaseBean implements Serializable {
             this.serie.setModificadoPor(usuario);
             ssJpa.edit(serie);
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha modificado la serie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha modificado la serie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }
@@ -118,7 +118,7 @@ public class SerieBean extends BaseBean implements Serializable {
             ssJpa = new SerieJpaController(emf);
             ssJpa.destroy(serie.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha eliminado la serie correctamente!" ));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Series", "¡Se ha eliminado la serie exitosamente!" ));
         } catch (Exception e) {
             throw e;
         }

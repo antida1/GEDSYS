@@ -62,11 +62,11 @@ public class EntidadBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "¡Entidad creada exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidades", "¡Se ha creado la entidad exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "¡Entidad modificada exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidades", "¡Se ha modificado la entidad exitoxamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('entidadDialog').hide()");
@@ -118,7 +118,7 @@ public class EntidadBean extends BaseBean implements Serializable {
             sJpa = new EntidadJpaController(emf);
             sJpa.destroy(entidad.getId());
             this.listar();
-           this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidad", "Entidad Eliminada"));
+           this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Entidades", "¡Se ha eliminado la entidad exitosamente!"));
         } catch (Exception e) {
             this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Entidad", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());

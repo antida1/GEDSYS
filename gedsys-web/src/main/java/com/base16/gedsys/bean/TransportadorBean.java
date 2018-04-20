@@ -61,16 +61,16 @@ public class TransportadorBean extends BaseBean implements Serializable {
             switch(accion){
                 case "Crear":
                     crear();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "¡Transportador creado exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Empresas de Mensajería", "¡Se ha creado la empresa de mensajería exitoxamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "¡Transportador modificado exitoxamente!"));
+                    this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Empresas de Mensajería", "¡Se ha modificado la empresa de mensajería exitoxamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('transportadorDialog').hide()");
         } catch (Exception e) {
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transportador", e.getMessage()));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Empresas de Mensajería", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -115,9 +115,9 @@ public class TransportadorBean extends BaseBean implements Serializable {
             sJpa = new TransportadorJpaController(emf);
             sJpa.destroy(transportador.getId());
             this.listar();
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Transportador", "Transportador Eliminado"));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_INFO, "Empresas de Mensajería", "¡Se ha eliminado la empresa de mensajería exitosamente!"));
         } catch (Exception e) {
-            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transportador", e.getMessage()));
+            this.addMessage( new FacesMessage(FacesMessage.SEVERITY_ERROR, "Empresas de Mensajería", e.getMessage()));
             Logger.getLogger(EntidadBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

@@ -70,16 +70,16 @@ public class CargoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo creado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargos", "¡Se ha creado el cargo exitosamente!"));
                     break;
                 case "Modificar":
                     modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo Modificado!"));
+                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargos", "¡Se ha modificado el cargo exitosamente!"));
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('cargoDialog').hide()");
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -124,10 +124,10 @@ public class CargoBean extends BaseBean implements Serializable {
             cJpa = new CargoJpaController(emf);
             cJpa.destroy(cargo.getId());
             this.listar();
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargo", "Cargo Eliminado!"));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Cargos", "¡Se ha eliminado el cargo exitosamente!"));
 
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }
@@ -157,7 +157,7 @@ public class CargoBean extends BaseBean implements Serializable {
                 this.accion = "Modificar";
             }
         } catch (Exception e) {
-            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargo", e.getMessage()));
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cargos", e.getMessage()));
             Logger.getLogger(CargoBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
     }

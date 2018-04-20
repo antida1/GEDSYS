@@ -64,7 +64,7 @@
                                 <p:spacer/>
                             </div>
                         </h:form>
-                        <p:dialog id="dlgDetalle" header="ACL" widgetVar="aclDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="600" width="580">
+                        <p:dialog id="dlgDetalle" header="ACL" widgetVar="aclDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" height="400px" width="580">
                             <h:form>
                                 <h:inputHidden id="id" value="#{aclBean.acl.id}" />
                                 <div class="form-group row">
@@ -314,7 +314,7 @@
                                     }
                                 </script>
                                 <p:spacer/>
-                                <div> 
+                                <div align="center"> 
                                     <p:commandButton update=":form:lstListas messages" icon="ui-icon-disk" value="#{aclBean.accion}" actionListener="#{aclBean.procesar()}" oncomplete="PF('aclDialog').hide()" />
                                     <p:commandButton icon="ui-icon-circle-close" value="Cancelar" immediate="true" oncomplete="PF('aclDialog').hide()"></p:commandButton>
                                 </div>
