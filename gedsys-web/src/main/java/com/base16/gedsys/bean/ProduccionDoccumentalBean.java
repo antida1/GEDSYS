@@ -14,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @ViewScoped

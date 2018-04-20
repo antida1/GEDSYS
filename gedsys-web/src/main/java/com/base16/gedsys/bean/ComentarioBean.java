@@ -39,6 +39,7 @@ import org.primefaces.context.RequestContext;
 /**
  *
  * @author robert
+ * @author Modificación Lina David
  */
 @Named(value = "comentarioBean")
 @ManagedBean

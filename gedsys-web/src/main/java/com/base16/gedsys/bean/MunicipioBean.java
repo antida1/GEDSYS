@@ -24,6 +24,7 @@ import javax.persistence.EntityManagerFactory;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @ViewScoped

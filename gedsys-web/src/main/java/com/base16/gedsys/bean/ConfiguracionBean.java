@@ -41,6 +41,7 @@ import org.primefaces.model.UploadedFile;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @Named(value = "configuracionBean")
 @SessionScoped

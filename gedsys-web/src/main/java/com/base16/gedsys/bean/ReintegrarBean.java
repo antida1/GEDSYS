@@ -28,7 +28,7 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author rober
+ * @author Lina David
  */
 @Named(value = "reintegrarBean")
 @ViewScoped

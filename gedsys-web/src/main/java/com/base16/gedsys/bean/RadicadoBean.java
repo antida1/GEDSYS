@@ -35,6 +35,7 @@ import org.primefaces.model.StreamedContent;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @RequestScoped

@@ -37,6 +37,7 @@ import org.primefaces.model.UploadedFile;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @ViewScoped
