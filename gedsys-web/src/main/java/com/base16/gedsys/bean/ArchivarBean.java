@@ -32,6 +32,7 @@ import org.primefaces.model.TreeNode;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @ViewScoped

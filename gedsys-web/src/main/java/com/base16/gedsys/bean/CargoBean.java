@@ -26,6 +26,7 @@ import org.primefaces.context.RequestContext;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @ManagedBean
 @ViewScoped

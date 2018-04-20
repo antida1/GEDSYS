@@ -26,7 +26,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author rober
+ * @author Lina David
  */
 @Named(value = "busquedaRadicadosBean")
 @ViewScoped

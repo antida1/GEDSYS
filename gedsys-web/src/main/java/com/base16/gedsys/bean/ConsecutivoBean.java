@@ -27,6 +27,7 @@ import org.primefaces.context.RequestContext;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @Named(value = "consecutivoBean")
 @ViewScoped

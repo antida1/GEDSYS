@@ -18,6 +18,7 @@ import javax.naming.NamingException;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 public class BaseBean {
 

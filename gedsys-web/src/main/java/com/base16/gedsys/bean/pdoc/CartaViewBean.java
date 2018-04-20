@@ -46,7 +46,8 @@ import org.primefaces.model.StreamedContent;
 
 /**
  *
- * @author rober
+ * @author rober 
+ * @author Modificación Lina David
  */
 @ManagedBean
 @RequestScoped
@@ -332,7 +333,7 @@ public class CartaViewBean extends BaseBean implements Serializable {
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();
                 if(carta.getRemitente().getCargo() != null){
-                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + " " + carta.getRemitente().getCargo().getNombre());
+                    item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos() + "\n " + carta.getRemitente().getCargo().getNombre());
                 } else {
                     item.replaceWith(carta.getRemitente().getNombres() + " " + carta.getRemitente().getApelidos());
                 }

@@ -23,6 +23,7 @@ import javax.persistence.EntityManagerFactory;
 /**
  *
  * @author rober
+ * @author Modificación Lina David
  */
 @Named(value = "busquedaDocumentosBean")
 @ViewScoped
