@@ -50,7 +50,7 @@
             </div>
         </div>       
         <div class="aligncenter">
-            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{prestamoBean.procesar()}" update=":form :enPrestamo messages" />
+            <p:commandButton icon="glyphicon fa fa-check-circle" value="Guardar" actionListener="#{prestamoBean.procesar()}" update=":form messages" />
             <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" action="#{prestamoBean.limpiar()}" immediate="true" oncomplete="PF('denPrestamo').hide()"></p:commandButton>
         </div>
     </h:body>
