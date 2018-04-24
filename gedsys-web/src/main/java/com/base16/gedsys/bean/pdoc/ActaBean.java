@@ -389,7 +389,7 @@ public class ActaBean extends BaseBean implements Serializable {
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setConsecutivo(this.acta.getConsecutivo());
-            documento.setRemitenteExteno("");
+            documento.setRemitenteExteno(this.acta.getActaasistenteList().toString());
             documento.setDestinatario(this.acta.getPresidente());
             documento.setAsunto(this.acta.getOrden());
             documento.setFechaDocumento(this.acta.getFecha());

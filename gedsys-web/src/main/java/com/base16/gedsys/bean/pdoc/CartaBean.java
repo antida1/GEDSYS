@@ -298,7 +298,7 @@ public class CartaBean extends BaseBean implements Serializable {
             // TODO: Crea nuevo registro de documento
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
-            documento.setRemitenteExteno("");
+            documento.setRemitenteExteno(this.carta.getDestinatario());
             documento.setConsecutivo(this.carta.getConsecutivo());
             documento.setDestinatario(this.carta.getCreadoPor());
             documento.setAsunto(this.carta.getAsunto());

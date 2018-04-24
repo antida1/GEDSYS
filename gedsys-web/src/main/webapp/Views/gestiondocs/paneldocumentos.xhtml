@@ -175,10 +175,10 @@
                                                     <h:outputText value="#{docsEnviados.asunto}" />
                                                 </p:column>
                                                 <p:column headerText="Remitente">
-                                                    <h:outputText value="#{docsEnviados.remitente}" />
+                                                    <h:outputText value="#{docsEnviados.destinatario.nombres} #{docsEnviados.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Destinarario">
-                                                    <h:outputText value="#{docsEnviados.destinatario.nombres} #{docsEnviados.destinatario.apelidos}" />
+                                                    <h:outputText value="#{docsEnviados.remitenteExteno}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
                                                     <h:outputText value="#{docsEnviados.detalle}" escape="false" />
