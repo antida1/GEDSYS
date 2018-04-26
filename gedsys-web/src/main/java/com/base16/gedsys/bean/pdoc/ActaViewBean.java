@@ -74,6 +74,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation searchHoraInicio;
             TextNavigation searchHoraFinal;
+            TextNavigation searchTitulo;
             TextNavigation searchLugar;
             TextNavigation searchAsistentes;
             TextNavigation searchInvitados;
@@ -84,6 +85,8 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation firma;
             TextNavigation searchPresidente;
             TextNavigation searchSecretaria;
+            TextNavigation searchProyecto;
+            TextNavigation searchElaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -113,6 +116,16 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchHoraFinal.nextSelection();
                 item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
             }
+            
+            searchTitulo = new TextNavigation("@titulo", odt);
+            while (searchTitulo.hasNext()) {
+                TextSelection item = (TextSelection) searchTitulo.nextSelection();
+                if (acta.getTitulo()== null || acta.getTitulo()== "") {
+                    item.replaceWith(" ");
+                } else {
+                    item.replaceWith(acta.getTitulo());
+                }
+            }
 
             searchLugar = new TextNavigation("@lugar", odt);
             while (searchLugar.hasNext()) {
@@ -120,12 +133,16 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 item.replaceWith(acta.getLugar());
             }
 
-            searchAsistentes = new TextNavigation("@asistentes", odt);
+             searchAsistentes = new TextNavigation("@asistentes", odt);
             while (searchAsistentes.hasNext()) {
                 TextSelection item = (TextSelection) searchAsistentes.nextSelection();
                 String sAsistentes = "";
                 for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
-                    sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos() + "\n";
+                    if(actaAsistente.getAsistente().getCargo().getNombre() != ""){
+                       sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+", "+ actaAsistente.getAsistente().getCargo().getNombre() + "\n"; 
+                    }else{
+                        sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+ "\n";
+                    }                    
                 }
                 item.replaceWith(sAsistentes);
             }
@@ -135,7 +152,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchInvitados.nextSelection();
                 String sInvitados = "";
                 for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
-                    sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    if (actaInvitado.getInvitado().getCargo().getNombre() != "") {
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos()+", "+ actaInvitado.getInvitado().getCargo().getNombre() + "\n";
+                    }else{
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sInvitados);
             }
@@ -145,7 +166,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchAusentes.nextSelection();
                 String sAusentes = "";
                 for (Actaausente actaausente : acta.getActaausenteList()) {
-                    sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    if(actaausente.getAusente().getCargo().getNombre() != ""){
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() +", "+ actaausente.getAusente().getCargo().getNombre() + "\n";  
+                    }else{
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sAusentes);
             }
@@ -186,6 +211,18 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchSecretaria.nextSelection();
                 item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " ");
             }
+            
+            searchProyecto = new TextNavigation("@proyecto", odt);
+            while (searchProyecto.hasNext()) {
+                TextSelection item = (TextSelection) searchProyecto.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
+            }
+            
+            searchElaboro = new TextNavigation("@elaboro", odt);
+            while (searchElaboro.hasNext()) {
+                TextSelection item = (TextSelection) searchElaboro.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");
             odt.close();
@@ -219,6 +256,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation searchHoraInicio;
             TextNavigation searchHoraFinal;
+            TextNavigation searchTitulo;
             TextNavigation searchLugar;
             TextNavigation searchAsistentes;
             TextNavigation searchInvitados;
@@ -229,6 +267,8 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation firma;
             TextNavigation searchPresidente;
             TextNavigation searchSecretaria;
+            TextNavigation searchProyecto;
+            TextNavigation searchElaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -258,6 +298,16 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchHoraFinal.nextSelection();
                 item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
             }
+            
+            searchTitulo = new TextNavigation("@titulo", odt);
+            while (searchTitulo.hasNext()) {
+                TextSelection item = (TextSelection) searchTitulo.nextSelection();
+                if (acta.getTitulo()== null || acta.getTitulo()== "") {
+                    item.replaceWith(" ");
+                } else {
+                    item.replaceWith(acta.getTitulo());
+                }
+            }
 
             searchLugar = new TextNavigation("@lugar", odt);
             while (searchLugar.hasNext()) {
@@ -265,12 +315,16 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 item.replaceWith(acta.getLugar());
             }
 
-            searchAsistentes = new TextNavigation("@asistentes", odt);
+             searchAsistentes = new TextNavigation("@asistentes", odt);
             while (searchAsistentes.hasNext()) {
                 TextSelection item = (TextSelection) searchAsistentes.nextSelection();
                 String sAsistentes = "";
                 for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
-                    sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos() + "\n";
+                    if(actaAsistente.getAsistente().getCargo().getNombre() != ""){
+                       sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+", "+ actaAsistente.getAsistente().getCargo().getNombre() + "\n"; 
+                    }else{
+                        sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+ "\n";
+                    }                    
                 }
                 item.replaceWith(sAsistentes);
             }
@@ -280,7 +334,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchInvitados.nextSelection();
                 String sInvitados = "";
                 for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
-                    sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    if (actaInvitado.getInvitado().getCargo().getNombre() != "") {
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos()+", "+ actaInvitado.getInvitado().getCargo().getNombre() + "\n";
+                    }else{
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sInvitados);
             }
@@ -290,11 +348,15 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchAusentes.nextSelection();
                 String sAusentes = "";
                 for (Actaausente actaausente : acta.getActaausenteList()) {
-                    sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    if(actaausente.getAusente().getCargo().getNombre() != ""){
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() +", "+ actaausente.getAusente().getCargo().getNombre() + "\n";  
+                    }else{
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sAusentes);
             }
-
+            
             searchOrden = new TextNavigation("@orden", odt);
             while (searchOrden.hasNext()) {
                 TextSelection item = (TextSelection) searchOrden.nextSelection();
@@ -336,6 +398,18 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchSecretaria.nextSelection();
                 item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " ");
             }
+            
+            searchProyecto = new TextNavigation("@proyecto", odt);
+            while (searchProyecto.hasNext()) {
+                TextSelection item = (TextSelection) searchProyecto.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
+            }
+            
+            searchElaboro = new TextNavigation("@elaboro", odt);
+            while (searchElaboro.hasNext()) {
+                TextSelection item = (TextSelection) searchElaboro.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");
             odt.close();
@@ -369,6 +443,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation searchFecha;
             TextNavigation searchHoraInicio;
             TextNavigation searchHoraFinal;
+            TextNavigation searchTitulo;
             TextNavigation searchLugar;
             TextNavigation searchAsistentes;
             TextNavigation searchInvitados;
@@ -379,6 +454,8 @@ public class ActaViewBean extends BaseBean implements Serializable {
             TextNavigation firma;
             TextNavigation searchPresidente;
             TextNavigation searchSecretaria;
+            TextNavigation searchProyecto;
+            TextNavigation searchElaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -408,6 +485,16 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchHoraFinal.nextSelection();
                 item.replaceWith(DateTimeUtils.getFormattedTime(acta.getFecha(), "hh-mm a"));
             }
+            
+            searchTitulo = new TextNavigation("@titulo", odt);
+            while (searchTitulo.hasNext()) {
+                TextSelection item = (TextSelection) searchTitulo.nextSelection();
+                if (acta.getTitulo()== null || acta.getTitulo()== "") {
+                    item.replaceWith(" ");
+                } else {
+                    item.replaceWith(acta.getTitulo());
+                }
+            }
 
             searchLugar = new TextNavigation("@lugar", odt);
             while (searchLugar.hasNext()) {
@@ -420,7 +507,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchAsistentes.nextSelection();
                 String sAsistentes = "";
                 for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
-                    sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos() + "\n";
+                    if(actaAsistente.getAsistente().getCargo().getNombre() != ""){
+                       sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+", "+ actaAsistente.getAsistente().getCargo().getNombre() + "\n"; 
+                    }else{
+                        sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+ "\n";
+                    }                    
                 }
                 item.replaceWith(sAsistentes);
             }
@@ -430,7 +521,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchInvitados.nextSelection();
                 String sInvitados = "";
                 for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
-                    sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    if (actaInvitado.getInvitado().getCargo().getNombre() != "") {
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos()+", "+ actaInvitado.getInvitado().getCargo().getNombre() + "\n";
+                    }else{
+                        sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sInvitados);
             }
@@ -440,7 +535,11 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchAusentes.nextSelection();
                 String sAusentes = "";
                 for (Actaausente actaausente : acta.getActaausenteList()) {
-                    sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    if(actaausente.getAusente().getCargo().getNombre() != ""){
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() +", "+ actaausente.getAusente().getCargo().getNombre() + "\n";  
+                    }else{
+                        sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
+                    }
                 }
                 item.replaceWith(sAusentes);
             }
@@ -479,6 +578,18 @@ public class ActaViewBean extends BaseBean implements Serializable {
             while (searchSecretaria.hasNext()) {
                 TextSelection item = (TextSelection) searchSecretaria.nextSelection();
                 item.replaceWith(acta.getSecretaria().getNombres() + " " + acta.getSecretaria().getApelidos() + " ");
+            }
+            
+            searchProyecto = new TextNavigation("@proyecto", odt);
+            while (searchProyecto.hasNext()) {
+                TextSelection item = (TextSelection) searchProyecto.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
+            }
+            
+            searchElaboro = new TextNavigation("@elaboro", odt);
+            while (searchElaboro.hasNext()) {
+                TextSelection item = (TextSelection) searchElaboro.nextSelection();
+                item.replaceWith(acta.getCreadoPor().getApelidos()+ " " + acta.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Actas" + File.separatorChar + "acta" + acta.getId() + ".odt");

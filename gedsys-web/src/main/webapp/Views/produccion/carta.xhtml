@@ -89,6 +89,18 @@
             </div>
         </div>
         <div class="col-xs-12">
+            <p:outputLabel value="Anexos" for="anexos" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputText id="anexos" value="#{cartaBean.carta.anexos}" style="width: 100%"/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Copia" for="copia" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:selectBooleanCheckbox id="copia" value="#{cartaBean.carta.copia}" style="width: 100%"></p:selectBooleanCheckbox>
+            </div>
+        </div>
+        <div class="col-xs-12">
             <p:outputLabel value="Remitente" for="remitente" class="control-label col-md-4"/>
             <div class="col-md-8">
                 <p:selectOneMenu value="#{cartaBean.carta.remitente}"  required="true" requiredMessage="¡Error! El remitente no puede estar vacío" id="remitente" var="dest" filter="true" filterMatchMode="contains" style="width: 100%" converter="omnifaces.SelectItemsConverter">
@@ -125,7 +137,7 @@
             <h:outputText id="editorContenidoCarta" value="#{cartaBean.carta.contenido}" escape="false" />
         </p:dialog>
         <p:dialog header="Despedida" widgetVar="dlgDespedida" showEffect="fade" hideEffect="fade" width="auto">
-            <h:outputText id="editorDespedida" value="#{artaBean.carta.despedida}" escape="false" />
+            <h:outputText id="editorDespedida" value="#{cartaBean.carta.despedida}" escape="false" />
         </p:dialog>
         <p:dialog id="dlgFirmar" header="FIRMAR" widgetVar="denFirmar" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="40%" maximizable="true">
             <c:if test='#{tipoDocumentoBean.tipoDocumento.tipoComunicacion.equals("interna")}'>

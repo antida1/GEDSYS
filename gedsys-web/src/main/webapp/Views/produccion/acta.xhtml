@@ -34,6 +34,12 @@
                                widgetVar="horaFinal" label="Hora Final" required="true" requiredMessage="La hora de finalización es requerida"/>
             </div>
         </div>
+        <div class="col-xs-12">
+            <p:outputLabel value="Título y Caracter de la reunión" for="titulo" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:inputText id="titulo" required="true" requiredMessage="¡Error! Debe indicar el titulo y caracter de la reunión" value="#{actaBean.acta.titulo}" style="width: 100%"/>
+            </div>
+        </div>
 
         <div class="col-xs-12">
             <p:outputLabel value="Lugar" for="lugar" class="control-label col-md-4"/>

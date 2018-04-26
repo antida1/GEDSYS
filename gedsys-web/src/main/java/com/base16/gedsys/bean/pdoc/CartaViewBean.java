@@ -79,6 +79,10 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation despedida;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -185,6 +189,34 @@ public class CartaViewBean extends BaseBean implements Serializable {
                     item.replaceWith(carta.getRemitente().getNombres() + "" + carta.getRemitente().getApelidos());
                 }
             }
+            
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(carta.getAnexos());
+            }
+            
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(carta.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt");
             odt.close();
@@ -226,6 +258,10 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation despedida;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -338,6 +374,34 @@ public class CartaViewBean extends BaseBean implements Serializable {
                     item.replaceWith(carta.getRemitente().getNombres() + "" + carta.getRemitente().getApelidos());
                 }
             }
+            
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(carta.getAnexos());
+            }
+            
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(carta.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt");
             odt.close();
@@ -379,6 +443,10 @@ public class CartaViewBean extends BaseBean implements Serializable {
             TextNavigation despedida;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -484,6 +552,34 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 } else {
                     item.replaceWith(carta.getRemitente().getNombres() + "" + carta.getRemitente().getApelidos());
                 }
+            }
+            
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(carta.getAnexos());
+            }
+            
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(carta.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(carta.getCreadoPor().getApelidos()+ " " + carta.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Cartas" + File.separatorChar + "carta" + carta.getId().toString() + ".odt");

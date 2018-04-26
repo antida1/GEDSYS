@@ -48,6 +48,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Acta.findByEstado", query = "SELECT a FROM Acta a WHERE a.estado = :estado")})
 public class Acta implements Serializable {
 
+   
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +60,9 @@ public class Acta implements Serializable {
     private String consecutivo;
     @Column(name = "Fecha")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
+    private Date fecha;    
+    @Column(name = "Titulo")
+    private String titulo;
     @Column(name = "Lugar")
     private String lugar;
     @Lob
@@ -135,6 +139,14 @@ public class Acta implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+    
+     public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getLugar() {
@@ -307,5 +319,7 @@ public class Acta implements Serializable {
     public void limpiar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+   
 
 }
