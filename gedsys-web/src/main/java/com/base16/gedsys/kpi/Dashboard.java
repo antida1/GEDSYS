@@ -6,27 +6,16 @@
 package com.base16.gedsys.kpi;
 
 import com.base16.gedsys.bean.BaseBean;
-import com.base16.gedsys.bean.RadicadoBean;
-import com.base16.gedsys.entities.Documento;
-import com.base16.gedsys.model.DocumentoJpaController;
-import com.base16.gedsys.utils.JpaUtils;
 import java.io.Serializable;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
  * @author rober
  */
-@Named(value = "dashboard")
+
+@ManagedBean
 @ViewScoped
 public class Dashboard extends BaseBean implements Serializable {
 
