@@ -54,6 +54,12 @@
                 <p:editor id="contenidoCom" widgetVar="editorContenidoCom" value="#{comunicacionBean.comunicacion.contenido}" required="true" requiredMessage="¡Error! El contenido no puede estar vacío" height="200"/>
             </div>
         </div>
+         <div class="col-xs-12">
+            <p:outputLabel value="Texto de despedida" for="despedidaCom" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:editor id="despedidaCom" widgetVar="editorDespedidaCom" value="#{comunicacionBean.comunicacion.despedida}" required="true" requiredMessage="¡Error! La despedida no puede estar vacía" height="100"/>
+            </div>
+        </div>        
         <div class="col-xs-12">
             <p:outputLabel value="Descripción Anexos" for="anexosCom" class="control-label col-md-4"/>
             <div class="col-xs-8">
@@ -87,6 +93,9 @@
         </div>
         <p:dialog header="Contenido" widgetVar="dlgContenidoCom" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorContenidoCom" value="#{comunicacionBean.comunicacion.contenido}" escape="false" />
+        </p:dialog>
+        <p:dialog header="Despedida" widgetVar="dlgDespedidaCom" showEffect="fade" hideEffect="fade" width="auto">
+            <h:outputText id="editorDespedidaCom" value="#{comunicacionBean.comunicacion.despedida}" escape="false" />
         </p:dialog>
         <p:dialog header="Anexos" widgetVar="dlgAnexosCom" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorAnexosCom" value="#{comunicacionBean.comunicacion.descripcionAnexos}" escape="false" />

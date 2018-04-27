@@ -37,9 +37,9 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <p:outputLabel value="Texto de despedida" for="despedida" class="control-label col-md-4"/>
+            <p:outputLabel value="Texto de despedida" for="despedidaCir" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:editor id="despedida" widgetVar="editorDespedida" value="#{circularBean.circular.despedida}" required="true" requiredMessage="¡Error! La despedida no puede estar vacía" height="100"/>
+                <p:editor id="despedidaCir" widgetVar="editorDespedidaCir" value="#{circularBean.circular.despedida}" required="true" requiredMessage="¡Error! La despedida no puede estar vacía" height="100"/>
             </div>
         </div>
         <div class="col-xs-12">
@@ -93,8 +93,8 @@
         <p:dialog header="Contenido" widgetVar="dlgContenido" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorContenido" value="#{circularBean.circular.contenido}" escape="false" />
         </p:dialog>
-        <p:dialog header="Despedida" widgetVar="dlgDespedida" showEffect="fade" hideEffect="fade" width="auto">
-            <h:outputText id="editorDespedida" value="#{circularBean.circular.despedida}" escape="false" />
+        <p:dialog header="Despedida" widgetVar="dlgDespedidaCir" showEffect="fade" hideEffect="fade" width="auto">
+            <h:outputText id="editorDespedidaCir" value="#{circularBean.circular.despedida}" escape="false" />
         </p:dialog>
         <p:dialog header="Anexos" widgetVar="dlgAnexos" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorAnexos" value="#{circularBean.circular.anexos}" escape="false" />
