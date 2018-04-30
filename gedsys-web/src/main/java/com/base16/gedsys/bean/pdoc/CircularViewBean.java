@@ -115,7 +115,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             }
 
             despedida = new TextNavigation("@despedida", odt);
-            while (contenido.hasNext()) {
+            while (despedida.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith(circular.getDespedida());
             }
@@ -246,7 +246,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             }
 
             despedida = new TextNavigation("@despedida", odt);
-            while (contenido.hasNext()) {
+            while (despedida.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith(circular.getDespedida());
             }
@@ -381,7 +381,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             }
 
             despedida = new TextNavigation("@despedida", odt);
-            while (contenido.hasNext()) {
+            while (despedida.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
                 item.replaceWith(circular.getDespedida());
             }
