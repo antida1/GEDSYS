@@ -70,6 +70,10 @@ public class InformeViewBean extends BaseBean implements Serializable {
             TextNavigation conclusiones;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -128,7 +132,35 @@ public class InformeViewBean extends BaseBean implements Serializable {
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();               
                 item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
-            }            
+            } 
+            
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(informe.getAnexos());
+            }
+            
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(informe.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
            
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
@@ -165,6 +197,10 @@ public class InformeViewBean extends BaseBean implements Serializable {
             TextNavigation conclusiones;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -223,8 +259,35 @@ public class InformeViewBean extends BaseBean implements Serializable {
             while (remitente.hasNext()) {
                 TextSelection item = (TextSelection) remitente.nextSelection();                
                 item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
+            }           
+            
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(informe.getAnexos());
             }
             
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(informe.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
             odt.close();
@@ -260,6 +323,10 @@ public class InformeViewBean extends BaseBean implements Serializable {
             TextNavigation conclusiones;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation anexos;
+            TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -314,7 +381,34 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) remitente.nextSelection();                
                 item.replaceWith(informe.getRemitente().getNombres() + " " + informe.getRemitente().getApelidos());
             }
-                        
+             
+            anexos = new TextNavigation("@anexos", odt);
+            while (anexos.hasNext()) {
+                TextSelection item = (TextSelection) anexos.nextSelection();
+                item.replaceWith(informe.getAnexos());
+            }
+            
+            copia = new TextNavigation("@copia", odt);
+            while (copia.hasNext()) {
+                TextSelection item = (TextSelection) copia.nextSelection();
+                if(informe.getCopia()){
+                    item.replaceWith("Sí");
+                }else{
+                    item.replaceWith("No");
+                }                
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(informe.getCreadoPor().getApelidos()+ " " + informe.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Informes" + File.separatorChar + "informe" + informe.getId().toString() + ".odt");
             odt.close();

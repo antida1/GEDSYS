@@ -42,6 +42,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Informe.findByEstado", query = "SELECT i FROM Informe i WHERE i.estado = :estado")})
 public class Informe implements Serializable {
 
+    @Column(name = "Anexos")
+    private String anexos;
+    @Column(name = "Copia")
+    private Boolean copia;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -206,6 +211,22 @@ public class Informe implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Informe[ id=" + id + " ]";
+    }
+
+    public String getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(String anexos) {
+        this.anexos = anexos;
+    }
+
+    public Boolean getCopia() {
+        return copia;
+    }
+
+    public void setCopia(Boolean copia) {
+        this.copia = copia;
     }
     
 }

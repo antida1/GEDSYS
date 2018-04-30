@@ -6,7 +6,6 @@
 package com.base16.gedsys.bean.pdoc;
 
 import com.base16.gedsys.bean.BaseBean;
-import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
@@ -67,6 +66,8 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
             TextNavigation cargo;
             TextNavigation contenido;
             TextNavigation remitente;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -112,6 +113,18 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
                     item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos());
                 }
             }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".odt");
             odt.close();
@@ -146,6 +159,8 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
             TextNavigation contenido;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -197,6 +212,18 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
                     item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos());
                 }
             }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".odt");
             odt.close();
@@ -231,6 +258,8 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
             TextNavigation contenido;
             TextNavigation firma;
             TextNavigation remitente;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -287,6 +316,18 @@ public class ConstanciaViewBean extends BaseBean implements Serializable {
                 } else {
                     item.replaceWith(constancia.getRemitente().getNombres() + " " + constancia.getRemitente().getApelidos());
                 }
+            }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(constancia.getCreadoPor().getApelidos()+ " " + constancia.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Constancias" + File.separatorChar + "constancia" + constancia.getId().toString() + ".odt");

@@ -67,6 +67,8 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             TextNavigation cargo;
             TextNavigation contenido;
             TextNavigation remitente;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -112,6 +114,18 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
                     item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
                 }
             }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".odt");
             odt.close();
@@ -146,6 +160,8 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             TextNavigation contenido;
             TextNavigation remitente;
             TextNavigation firma;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -203,6 +219,18 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
                     item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
                 }
             }
+            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".odt");
             odt.close();
@@ -237,6 +265,8 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
             TextNavigation contenido;
             TextNavigation remitente;
             TextNavigation firma;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchConsecutivo = new TextNavigation("@consecutivo", odt);
             while (searchConsecutivo.hasNext()) {
@@ -287,6 +317,17 @@ public class CertificadoViewBean extends BaseBean implements Serializable {
                 } else {
                     item.replaceWith(certificado.getRemitente().getNombres() + " " + certificado.getRemitente().getApelidos());
                 }
+            }            
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(certificado.getCreadoPor().getApelidos()+ " " + certificado.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Certificados" + File.separatorChar + "certificado" + certificado.getId().toString() + ".odt");

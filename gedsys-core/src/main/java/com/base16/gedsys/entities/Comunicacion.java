@@ -48,6 +48,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comunicacion.findByEstado", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado")})
 public class Comunicacion implements Serializable {
 
+    @Column(name = "FechaFirma")
+    private Date fechaFirma;
+    @Column(name = "Despedida")
+    private String despedida;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,9 +77,6 @@ public class Comunicacion implements Serializable {
     @Column(name = "FechaModificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @Column(name = "FechaFirma")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFirma;
     @Column(name = "Estado")
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comunicacion")
@@ -155,13 +157,6 @@ public class Comunicacion implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Date getFechaFirma() {
-        return fechaFirma;
-    }
-
-    public void setFechaFirma(Date fechaFirma) {
-        this.fechaFirma = fechaFirma;
-    }
 
     public String getEstado() {
         return estado;
@@ -244,6 +239,22 @@ public class Comunicacion implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Comunicacion[ id=" + id + " ]";
+    }
+
+    public Date getFechaFirma() {
+        return fechaFirma;
+    }
+
+    public void setFechaFirma(Date fechaFirma) {
+        this.fechaFirma = fechaFirma;
+    }
+
+    public String getDespedida() {
+        return despedida;
+    }
+
+    public void setDespedida(String despedida) {
+        this.despedida = despedida;
     }
 
 }

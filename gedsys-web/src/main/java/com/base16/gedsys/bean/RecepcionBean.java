@@ -347,6 +347,7 @@ public class RecepcionBean extends BaseBean implements Serializable {
                 }
 
                 this.documento.setDestinatariosDocCollection(destinatariosDocCollection);
+                this.documento.setRemitenteExteno(this.documento.getRemitente());
                 sJpa.create(documento);
 
                 //TODO: Verificar preferencias del usuario para envio de Mensajes PUSH.

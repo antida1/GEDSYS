@@ -48,6 +48,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Carta.findByDocumentoPadre", query = "SELECT c FROM Carta c WHERE c.documentoPadre = :documentoPadre")})
 public class Carta implements Serializable {
 
+    @Column(name = "Anexos")
+    private String anexos;
+    @Column(name = "Copia")
+    private Boolean copia;    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -296,5 +301,22 @@ public class Carta implements Serializable {
     public void setDocumentoPadre(Documento documentoPadre) {
         this.documentoPadre = documentoPadre;
     }
+
+    public String getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(String anexos) {
+        this.anexos = anexos;
+    }
+
+    public Boolean getCopia() {
+        return copia;
+    }
+
+    public void setCopia(Boolean copia) {
+        this.copia = copia;
+    }
+
 
 }

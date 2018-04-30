@@ -78,7 +78,6 @@
         </div>
         <div class="col-xs-4">
             <f:event type="preRenderView" listener="#{signaturaTree.loadRootByCurrentUserAccess()}" />
-
             <div class="form-group row">
                 <p:tree value="#{signaturaTree.root}" var="signatura" selectionMode="single" selection="#{archivarBean.selectedNodeSignatura}">
                     <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">

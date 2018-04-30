@@ -73,6 +73,9 @@ public class CircularViewBean extends BaseBean implements Serializable {
             TextNavigation remitente;
             TextNavigation anexos;
             TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
+            
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -114,7 +117,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             despedida = new TextNavigation("@despedida", odt);
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith("");
+                item.replaceWith(circular.getDespedida());
             }
             
             firma = new TextNavigation("@firma", odt);
@@ -149,6 +152,18 @@ public class CircularViewBean extends BaseBean implements Serializable {
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
                 item.replaceWith("");
+            }
+            
+             proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId().toString() + ".odt");
@@ -190,6 +205,8 @@ public class CircularViewBean extends BaseBean implements Serializable {
             TextNavigation remitente;
             TextNavigation anexos;
             TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -231,7 +248,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             despedida = new TextNavigation("@despedida", odt);
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith("");
+                item.replaceWith(circular.getDespedida());
             }
             
             firma = new TextNavigation("@firma", odt);
@@ -273,6 +290,17 @@ public class CircularViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) copia.nextSelection();
                 item.replaceWith("");
             }
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
+            }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId().toString() + ".odt");
             odt.close();
@@ -312,6 +340,8 @@ public class CircularViewBean extends BaseBean implements Serializable {
             TextNavigation remitente;
             TextNavigation anexos;
             TextNavigation copia;
+            TextNavigation proyecto;
+            TextNavigation elaboro;
 
             searchFecha = new TextNavigation("@fecha", odt);
             while (searchFecha.hasNext()) {
@@ -353,7 +383,7 @@ public class CircularViewBean extends BaseBean implements Serializable {
             despedida = new TextNavigation("@despedida", odt);
             while (contenido.hasNext()) {
                 TextSelection item = (TextSelection) despedida.nextSelection();
-                item.replaceWith("");
+                item.replaceWith(circular.getDespedida());
             }
             
             firma = new TextNavigation("@firma", odt);
@@ -388,6 +418,18 @@ public class CircularViewBean extends BaseBean implements Serializable {
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
                 item.replaceWith("");
+            }
+             
+            proyecto = new TextNavigation("@proyecto", odt);
+            while (proyecto.hasNext()) {
+                TextSelection item = (TextSelection) proyecto.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
+            }
+            
+            elaboro = new TextNavigation("@elaboro", odt);
+            while (elaboro.hasNext()) {
+                TextSelection item = (TextSelection) elaboro.nextSelection();
+                item.replaceWith(circular.getCreadoPor().getApelidos()+ " " + circular.getCreadoPor().getNombres());
             }
 
             odt.save(this.getDocumenstSavePath() + File.separatorChar + "Circulares" + File.separatorChar + "circular" + circular.getId().toString() + ".odt");

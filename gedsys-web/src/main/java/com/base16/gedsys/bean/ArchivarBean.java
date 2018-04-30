@@ -58,10 +58,11 @@ public class ArchivarBean extends BaseBean implements Serializable {
     private List<TipoDocumental> tiposDocumentales;
 
     public ArchivarBean() {
+        init();
 
     }
 
-    @PostConstruct
+    
     public void init() {
         SeccionSubSeccionBean ssb = new SeccionSubSeccionBean();
         ssb.listar();

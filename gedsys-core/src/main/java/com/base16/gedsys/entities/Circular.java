@@ -49,6 +49,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Circular.findByEstado", query = "SELECT c FROM Circular c WHERE c.estado = :estado")})
 public class Circular implements Serializable {
 
+    @Column(name = "Despedida")
+    private String despedida;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -245,6 +248,14 @@ public class Circular implements Serializable {
     @Override
     public String toString() {
         return "com.base16.gedsys.entities.Circular[ id=" + id + " ]";
+    }
+
+    public String getDespedida() {
+        return despedida;
+    }
+
+    public void setDespedida(String despedida) {
+        this.despedida = despedida;
     }
     
 }

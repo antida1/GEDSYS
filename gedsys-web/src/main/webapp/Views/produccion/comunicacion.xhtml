@@ -51,13 +51,19 @@
         <div class="col-xs-12">
             <p:outputLabel value="Texto de Contenido" for="contenidoCom" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:editor id="contenidoCom" widgetVar="editorContenidoCom" value="#{comunicacionBean.comunicacion.contenido}" required="true" requiredMessage="¡Error! El contenido no puede estar vacío" width="570" height="200"/>
+                <p:editor id="contenidoCom" widgetVar="editorContenidoCom" value="#{comunicacionBean.comunicacion.contenido}" required="true" requiredMessage="¡Error! El contenido no puede estar vacío" height="200"/>
             </div>
         </div>
+         <div class="col-xs-12">
+            <p:outputLabel value="Texto de despedida" for="despedidaCom" class="control-label col-md-4"/>
+            <div class="col-xs-8">
+                <p:editor id="despedidaCom" widgetVar="editorDespedidaCom" value="#{comunicacionBean.comunicacion.despedida}" required="true" requiredMessage="¡Error! La despedida no puede estar vacía" height="100"/>
+            </div>
+        </div>        
         <div class="col-xs-12">
             <p:outputLabel value="Descripción Anexos" for="anexosCom" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:editor id="anexosCom" widgetVar="editorAnexosCom" value="#{comunicacionBean.comunicacion.descripcionAnexos}" width="570" height="100"/>                
+                <p:editor id="anexosCom" widgetVar="editorAnexosCom" value="#{comunicacionBean.comunicacion.descripcionAnexos}" height="100"/>                
             </div>
         </div>
         
@@ -85,10 +91,13 @@
             <p:commandButton icon="glyphicon fa fa-fw fa-envelope" value="Enviar" actionListener="#{comunicacionBean.enviar()}" />
             -->
         </div>
-        <p:dialog header="Contenido" widgetVar="dlgContenidoCom" showEffect="fade" hideEffect="fade">
+        <p:dialog header="Contenido" widgetVar="dlgContenidoCom" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorContenidoCom" value="#{comunicacionBean.comunicacion.contenido}" escape="false" />
         </p:dialog>
-        <p:dialog header="Anexos" widgetVar="dlgAnexosCom" showEffect="fade" hideEffect="fade">
+        <p:dialog header="Despedida" widgetVar="dlgDespedidaCom" showEffect="fade" hideEffect="fade" width="auto">
+            <h:outputText id="editorDespedidaCom" value="#{comunicacionBean.comunicacion.despedida}" escape="false" />
+        </p:dialog>
+        <p:dialog header="Anexos" widgetVar="dlgAnexosCom" showEffect="fade" hideEffect="fade" width="auto">
             <h:outputText id="editorAnexosCom" value="#{comunicacionBean.comunicacion.descripcionAnexos}" escape="false" />
         </p:dialog>        
         <p:dialog id="dlgFirmarComu" header="Firmar" widgetVar="denFirmarComu" modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" width="60%" maximizable="true">            

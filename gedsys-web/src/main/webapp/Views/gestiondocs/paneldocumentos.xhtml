@@ -90,9 +90,10 @@
                                                 <p:column headerText="Comentarios" style="text-align: center;">
                                                     <h:outputText value="#{comentarioBean.coutComents(docsEntrantes)}" />
                                                 </p:column>
-                                                <p:column headerText="Acciones" width="150">
+                                                <p:column headerText="Acciones" width="180">                                                    
                                                     <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsEntrantes)}" disabled="#{not docsEntrantes.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantes)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Comentar" actionListener="#{comentarioBean.loadDocument(docsEntrantes)}" update=":dlgComentar messages" ><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
                                                     <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantes)}" update=":dlgPrestamo :enPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
                                                     <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantes)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
                                                     <p:commandLink type="button" title="Redireccionar" action="#{redireccionarBean.loadDocumento(docsEntrantes)}" update=":dlgDevolver"  ><span class="glyphicon fa fa-fw fa-random" aria-hidden="true"/></p:commandLink>
@@ -174,10 +175,10 @@
                                                     <h:outputText value="#{docsEnviados.asunto}" />
                                                 </p:column>
                                                 <p:column headerText="Remitente">
-                                                    <h:outputText value="#{docsEnviados.remitente}" />
+                                                    <h:outputText value="#{docsEnviados.destinatario.nombres} #{docsEnviados.destinatario.apelidos}" />
                                                 </p:column>
                                                 <p:column headerText="Destinarario">
-                                                    <h:outputText value="#{docsEnviados.destinatario.nombres} #{docsEnviados.destinatario.apelidos}" />
+                                                    <h:outputText value="#{docsEnviados.remitenteExteno}" />
                                                 </p:column>
                                                 <p:column headerText="Detalle">
                                                     <h:outputText value="#{docsEnviados.detalle}" escape="false" />

@@ -122,18 +122,21 @@
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgPrestamo" header="Préstamo de documentos" widgetVar="denPrestamo" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" rendered="true" width="60%" height="500">
+                       <p:ajax event="close" update=":form:lstDocsEntrantes"/>
                         <h:form>
                             <ui:include src="prestamo.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgCompartir" header="Compartir documento" widgetVar="denCompartir" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="60%" height="400">
+                        <p:ajax event="close" update=":form:lstDocsEntrantes"/>
                         <h:form>
                             <ui:include src="compartir.xhtml">
                             </ui:include>
                         </h:form>
                     </p:dialog>
                     <p:dialog id="dlgInfoDoc" header="Información del documento" widgetVar="denInfoDoc" modal="true" showEffect="fade" hideEffect="fade" resizable="true" dynamic="true" width="60%" height="500">
+                        <p:ajax event="close" update=":form:lstDocsEntrantes"/>
                         <h:form>
                             <ui:include src="infoDocumento.xhtml">
                             </ui:include>
