@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Prestamo.findByNombreDocumento", query = "SELECT p FROM Prestamo p WHERE p.nombreDocumento = :nombreDocumento")
     , @NamedQuery(name = "Prestamo.findByTipoDocumento", query = "SELECT p FROM Prestamo p WHERE p.tipoDocumento = :tipoDocumento")
     , @NamedQuery(name = "Prestamo.findByPrestadoA", query = "SELECT p FROM Prestamo p WHERE p.prestadoA = :prestadoA")
+    , @NamedQuery(name = "Prestamo.findByPrestados", query = "SELECT p FROM Prestamo p WHERE p.prestadoA = :prestadoA AND p.estado = :estado")
     , @NamedQuery(name = "Prestamo.findByFechaDevolucion", query = "SELECT p FROM Prestamo p WHERE p.fechaDevolucion = :fechaDevolucion")
     , @NamedQuery(name = "Prestamo.findByQuienDevuelve", query = "SELECT p FROM Prestamo p WHERE p.quienDevuelve = :quienDevuelve")
     , @NamedQuery(name = "Prestamo.findByQueinRecibe", query = "SELECT p FROM Prestamo p WHERE p.queinRecibe = :queinRecibe")

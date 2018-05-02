@@ -227,6 +227,32 @@ public class PrestamoJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Prestamo> findPrestados(Usuario usuario) {
+        return findPrestados(usuario, true, -1, -1);
+    }
+
+    public List<Prestamo> findPrestados(Usuario usuario, int maxResults, int firstResult) {
+        return findPrestados(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Prestamo> findPrestados(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Prestamo.class));
+            Query q = em.createNamedQuery("Prestamo.findByPrestados", Usuario.class)
+                    .setParameter("prestadoA", usuario).setParameter("estado", 1);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
      public List<Prestamo> findByCreadoPor(Usuario usuario) {
          return findByCreadoPor(usuario, true, -1, -1);
     }

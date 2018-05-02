@@ -48,7 +48,7 @@
         </div>
         <p:separator></p:separator>
         <div>
-            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update=":enPrestamo:lstControl" />
+            <p:commandButton icon="ui-icon-disk" value="Guardar" actionListener="#{reintegrarBean.guadarDocumento()}" update=":enPrestamo:lstControl :messages" />
             <p:commandButton icon="glyphicon fa fa-ban" value="Cancelar" immediate="true" oncomplete="PF('denReintegrar').hide()"></p:commandButton>
         </div>
     </h:body>

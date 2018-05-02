@@ -133,12 +133,12 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 item.replaceWith(acta.getLugar());
             }
 
-             searchAsistentes = new TextNavigation("@asistentes", odt);
+            searchAsistentes = new TextNavigation("@asistentes", odt);
             while (searchAsistentes.hasNext()) {
                 TextSelection item = (TextSelection) searchAsistentes.nextSelection();
                 String sAsistentes = "";
                 for (Actaasistente actaAsistente : acta.getActaasistenteList()) {
-                    if(actaAsistente.getAsistente().getCargo().getNombre() != ""){
+                    if(actaAsistente.getAsistente().getCargo().getNombre() != "" || actaAsistente.getAsistente().getCargo().getNombre() != null){
                        sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+", "+ actaAsistente.getAsistente().getCargo().getNombre() + "\n"; 
                     }else{
                         sAsistentes += actaAsistente.getAsistente().getNombres() + " " + actaAsistente.getAsistente().getApelidos()+ "\n";
@@ -152,7 +152,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchInvitados.nextSelection();
                 String sInvitados = "";
                 for (Actainvitado actaInvitado : acta.getActainvitadoList()) {
-                    if (actaInvitado.getInvitado().getCargo().getNombre() != "") {
+                    if (actaInvitado.getInvitado().getCargo().getNombre() != "" || actaInvitado.getInvitado().getCargo().getNombre() != null) {
                         sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos()+", "+ actaInvitado.getInvitado().getCargo().getNombre() + "\n";
                     }else{
                         sInvitados += actaInvitado.getInvitado().getNombres() + " " + actaInvitado.getInvitado().getApelidos() + "\n";
@@ -166,7 +166,7 @@ public class ActaViewBean extends BaseBean implements Serializable {
                 TextSelection item = (TextSelection) searchAusentes.nextSelection();
                 String sAusentes = "";
                 for (Actaausente actaausente : acta.getActaausenteList()) {
-                    if(actaausente.getAusente().getCargo().getNombre() != ""){
+                    if(actaausente.getAusente().getCargo().getNombre() != "" || actaausente.getAusente().getCargo().getNombre() != null){
                         sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() +", "+ actaausente.getAusente().getCargo().getNombre() + "\n";  
                     }else{
                         sAusentes += actaausente.getAusente().getNombres() + " " + actaausente.getAusente().getApelidos() + "\n";
