@@ -272,16 +272,6 @@ public class Usuario implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Comunicacion> comunicacionList3;
 
-    @XmlTransient
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creadoPor")
-    private Collection<Campos> camposCollection;
-    
-    @XmlTransient
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
-    private Collection<Campos> camposCollection1;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -1359,26 +1349,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.sucomunicacion.gedsys.entities.Usuario[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Campos> getCamposCollection() {
-        return camposCollection;
-    }
-
-    public void setCamposCollection(Collection<Campos> camposCollection) {
-        this.camposCollection = camposCollection;
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Campos> getCamposCollection1() {
-        return camposCollection1;
-    }
-
-    public void setCamposCollection1(Collection<Campos> camposCollection1) {
-        this.camposCollection1 = camposCollection1;
     }
 
     @XmlTransient
