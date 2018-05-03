@@ -139,7 +139,6 @@ public class CircularBean extends BaseBean implements Serializable {
         CircularJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new CircularJpaController(emf);
-
         this.circular.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
         this.circular.setCreadoPor(usuario);

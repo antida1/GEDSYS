@@ -13,6 +13,7 @@ import com.base16.gedsys.entities.Comunicacion;
 import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Informe;
+import com.base16.gedsys.entities.Prestamo;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.CartaJpaController;
@@ -23,6 +24,7 @@ import com.base16.gedsys.model.ConstanciaJpaController;
 import com.base16.gedsys.model.DestinatariosDocJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.model.InformeJpaController;
+import com.base16.gedsys.model.PrestamoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.Mensajeria;
@@ -54,6 +56,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
     private List<Documento> recibidos;
     private List<Documento> enviados;
     private List<Documento> prestamo;
+    private List<Prestamo> prestado;
     private List<Documento> porVencer;
     private List<Documento> radicados;
     private List<Documento> sinArchivar;
@@ -223,6 +226,14 @@ public class DocumentosBean extends BaseBean implements Serializable {
         this.seleccionadosPorEnviar = seleccionadosPorEnviar;
         RequestContext.getCurrentInstance().execute("PF('denEnvio').show()");
     }
+
+    public List<Prestamo> getPrestado() {
+        return prestado;
+    }
+
+    public void setPrestado(List<Prestamo> prestado) {
+        this.prestado = prestado;
+    }
     
     public void cargarGuia(FileUploadEvent event){             
         FacesContext context = FacesContext.getCurrentInstance();
@@ -347,12 +358,39 @@ public class DocumentosBean extends BaseBean implements Serializable {
         }
     }
 
-    public void listarDocumentosPrestados() {
+    public void listarDocumentosEnPrestamo() {
         DocumentoJpaController dJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             dJpa = new DocumentoJpaController(emf);
             prestamo = dJpa.findEnPrestamo(this.getCurrentUser());
+        } catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+    
+    public void listarDocumentosPrestados(){
+        PrestamoJpaController pJpa;
+        try{
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            pJpa = new  PrestamoJpaController(emf);
+            prestado = pJpa.findPrestados(this.getCurrentUser());
+        }catch (Exception e) {
+            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+        }
+    }
+    
+    public void listarCompartidos(Usuario destinatario) {
+        DocumentoJpaController dJpa;
+        try {
+            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+            dJpa = new DocumentoJpaController(emf);
+            if (destinatario != null) {
+                documentos = dJpa.findByCompartidos(destinatario);
+            } else {
+                documentos = dJpa.findByCompartidos(this.getCurrentUser());
+            }
+
         } catch (Exception e) {
             Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
         }
@@ -479,20 +517,6 @@ public class DocumentosBean extends BaseBean implements Serializable {
         }
     }
 
-    public void listarCompartidos(Usuario destinatario) {
-        DocumentoJpaController dJpa;
-        try {
-            EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
-            dJpa = new DocumentoJpaController(emf);
-            if (destinatario != null) {
-                documentos = dJpa.findByCompartidos(destinatario);
-            } else {
-                documentos = dJpa.findByCompartidos(this.getCurrentUser());
-            }
-
-        } catch (Exception e) {
-            Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
-        }
-    }
+    
 
 }
