@@ -56,6 +56,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")})
 public class Usuario implements Serializable {
 
+    
+
     @OneToMany(mappedBy = "creadoPor")
     private List<ConsecutivosUsuario> consecutivosUsuarioList;
 
@@ -216,6 +218,11 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modificadoPor")
     private List<Informe> informeList2;
+    
+    @XmlTransient
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conCopiaA")
+    private List<Informecc> informeccList;   
     
     @XmlTransient
     @JsonIgnore
@@ -1520,6 +1527,16 @@ public class Usuario implements Serializable {
     public void setInformeList2(List<Informe> informeList2) {
         this.informeList2 = informeList2;
     }
+    
+    @XmlTransient
+    @JsonIgnore
+    public List<Informecc> getInformeccList() {
+        return informeccList;
+    }
+
+    public void setInformeccList(List<Informecc> informeccList) {
+        this.informeccList = informeccList;
+    }         
 
     @XmlTransient
     @JsonIgnore
@@ -1818,5 +1835,7 @@ public class Usuario implements Serializable {
     public void setConsecutivosUsuarioList(List<ConsecutivosUsuario> consecutivosUsuarioList) {
         this.consecutivosUsuarioList = consecutivosUsuarioList;
     }
+
+    
     
 }

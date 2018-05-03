@@ -6,8 +6,11 @@
 package com.base16.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +21,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -42,10 +48,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Informe.findByEstado", query = "SELECT i FROM Informe i WHERE i.estado = :estado")})
 public class Informe implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "informe")
+    private Collection<Informecc> informeccCollection;
+
     @Column(name = "Anexos")
     private String anexos;
-    @Column(name = "Copia")
-    private Boolean copia;
+   
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,6 +83,8 @@ public class Informe implements Serializable {
     private Date fechaFirma;
     @Column(name = "Estado")
     private Integer estado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "informe")
+    private List<Informecc> informeccList;
     @JoinColumn(name = "Remitente", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Usuario remitente;
@@ -188,6 +198,18 @@ public class Informe implements Serializable {
         this.modificadoPor = modificadoPor;
     }
 
+    @XmlTransient
+    @JsonIgnore
+    public List<Informecc> getInformeccList() {
+        return informeccList;
+    }
+
+    public void setInformeccList(List<Informecc> informeccList) {
+        this.informeccList = informeccList;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -221,12 +243,14 @@ public class Informe implements Serializable {
         this.anexos = anexos;
     }
 
-    public Boolean getCopia() {
-        return copia;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Informecc> getInformeccCollection() {
+        return informeccCollection;
     }
 
-    public void setCopia(Boolean copia) {
-        this.copia = copia;
+    public void setInformeccCollection(Collection<Informecc> informeccCollection) {
+        this.informeccCollection = informeccCollection;
     }
     
 }

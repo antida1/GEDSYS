@@ -12,14 +12,18 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.base16.gedsys.entities.Usuario;
+import com.base16.gedsys.entities.Informecc;
+import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author rober
+ * @author programacion01
  */
 public class InformeJpaController implements Serializable {
 
@@ -33,6 +37,12 @@ public class InformeJpaController implements Serializable {
     }
 
     public void create(Informe informe) {
+        if (informe.getInformeccList() == null) {
+            informe.setInformeccList(new ArrayList<Informecc>());
+        }
+        if (informe.getInformeccCollection() == null) {
+            informe.setInformeccCollection(new ArrayList<Informecc>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -52,6 +62,18 @@ public class InformeJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 informe.setModificadoPor(modificadoPor);
             }
+            List<Informecc> attachedInformeccList = new ArrayList<Informecc>();
+            for (Informecc informeccListInformeccToAttach : informe.getInformeccList()) {
+                informeccListInformeccToAttach = em.getReference(informeccListInformeccToAttach.getClass(), informeccListInformeccToAttach.getId());
+                attachedInformeccList.add(informeccListInformeccToAttach);
+            }
+            informe.setInformeccList(attachedInformeccList);
+            Collection<Informecc> attachedInformeccCollection = new ArrayList<Informecc>();
+            for (Informecc informeccCollectionInformeccToAttach : informe.getInformeccCollection()) {
+                informeccCollectionInformeccToAttach = em.getReference(informeccCollectionInformeccToAttach.getClass(), informeccCollectionInformeccToAttach.getId());
+                attachedInformeccCollection.add(informeccCollectionInformeccToAttach);
+            }
+            informe.setInformeccCollection(attachedInformeccCollection);
             em.persist(informe);
             if (remitente != null) {
                 remitente.getInformeList().add(informe);
@@ -65,6 +87,24 @@ public class InformeJpaController implements Serializable {
                 modificadoPor.getInformeList().add(informe);
                 modificadoPor = em.merge(modificadoPor);
             }
+            for (Informecc informeccListInformecc : informe.getInformeccList()) {
+                Informe oldInformeOfInformeccListInformecc = informeccListInformecc.getInforme();
+                informeccListInformecc.setInforme(informe);
+                informeccListInformecc = em.merge(informeccListInformecc);
+                if (oldInformeOfInformeccListInformecc != null) {
+                    oldInformeOfInformeccListInformecc.getInformeccList().remove(informeccListInformecc);
+                    oldInformeOfInformeccListInformecc = em.merge(oldInformeOfInformeccListInformecc);
+                }
+            }
+            for (Informecc informeccCollectionInformecc : informe.getInformeccCollection()) {
+                Informe oldInformeOfInformeccCollectionInformecc = informeccCollectionInformecc.getInforme();
+                informeccCollectionInformecc.setInforme(informe);
+                informeccCollectionInformecc = em.merge(informeccCollectionInformecc);
+                if (oldInformeOfInformeccCollectionInformecc != null) {
+                    oldInformeOfInformeccCollectionInformecc.getInformeccCollection().remove(informeccCollectionInformecc);
+                    oldInformeOfInformeccCollectionInformecc = em.merge(oldInformeOfInformeccCollectionInformecc);
+                }
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -73,7 +113,7 @@ public class InformeJpaController implements Serializable {
         }
     }
 
-    public void edit(Informe informe) throws NonexistentEntityException, Exception {
+    public void edit(Informe informe) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -85,6 +125,30 @@ public class InformeJpaController implements Serializable {
             Usuario creadoPorNew = informe.getCreadoPor();
             Usuario modificadoPorOld = persistentInforme.getModificadoPor();
             Usuario modificadoPorNew = informe.getModificadoPor();
+            List<Informecc> informeccListOld = persistentInforme.getInformeccList();
+            List<Informecc> informeccListNew = informe.getInformeccList();
+            Collection<Informecc> informeccCollectionOld = persistentInforme.getInformeccCollection();
+            Collection<Informecc> informeccCollectionNew = informe.getInformeccCollection();
+            List<String> illegalOrphanMessages = null;
+            for (Informecc informeccListOldInformecc : informeccListOld) {
+                if (!informeccListNew.contains(informeccListOldInformecc)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Informecc " + informeccListOldInformecc + " since its informe field is not nullable.");
+                }
+            }
+            for (Informecc informeccCollectionOldInformecc : informeccCollectionOld) {
+                if (!informeccCollectionNew.contains(informeccCollectionOldInformecc)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Informecc " + informeccCollectionOldInformecc + " since its informe field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (remitenteNew != null) {
                 remitenteNew = em.getReference(remitenteNew.getClass(), remitenteNew.getId());
                 informe.setRemitente(remitenteNew);
@@ -97,6 +161,20 @@ public class InformeJpaController implements Serializable {
                 modificadoPorNew = em.getReference(modificadoPorNew.getClass(), modificadoPorNew.getId());
                 informe.setModificadoPor(modificadoPorNew);
             }
+            List<Informecc> attachedInformeccListNew = new ArrayList<Informecc>();
+            for (Informecc informeccListNewInformeccToAttach : informeccListNew) {
+                informeccListNewInformeccToAttach = em.getReference(informeccListNewInformeccToAttach.getClass(), informeccListNewInformeccToAttach.getId());
+                attachedInformeccListNew.add(informeccListNewInformeccToAttach);
+            }
+            informeccListNew = attachedInformeccListNew;
+            informe.setInformeccList(informeccListNew);
+            Collection<Informecc> attachedInformeccCollectionNew = new ArrayList<Informecc>();
+            for (Informecc informeccCollectionNewInformeccToAttach : informeccCollectionNew) {
+                informeccCollectionNewInformeccToAttach = em.getReference(informeccCollectionNewInformeccToAttach.getClass(), informeccCollectionNewInformeccToAttach.getId());
+                attachedInformeccCollectionNew.add(informeccCollectionNewInformeccToAttach);
+            }
+            informeccCollectionNew = attachedInformeccCollectionNew;
+            informe.setInformeccCollection(informeccCollectionNew);
             informe = em.merge(informe);
             if (remitenteOld != null && !remitenteOld.equals(remitenteNew)) {
                 remitenteOld.getInformeList().remove(informe);
@@ -122,6 +200,28 @@ public class InformeJpaController implements Serializable {
                 modificadoPorNew.getInformeList().add(informe);
                 modificadoPorNew = em.merge(modificadoPorNew);
             }
+            for (Informecc informeccListNewInformecc : informeccListNew) {
+                if (!informeccListOld.contains(informeccListNewInformecc)) {
+                    Informe oldInformeOfInformeccListNewInformecc = informeccListNewInformecc.getInforme();
+                    informeccListNewInformecc.setInforme(informe);
+                    informeccListNewInformecc = em.merge(informeccListNewInformecc);
+                    if (oldInformeOfInformeccListNewInformecc != null && !oldInformeOfInformeccListNewInformecc.equals(informe)) {
+                        oldInformeOfInformeccListNewInformecc.getInformeccList().remove(informeccListNewInformecc);
+                        oldInformeOfInformeccListNewInformecc = em.merge(oldInformeOfInformeccListNewInformecc);
+                    }
+                }
+            }
+            for (Informecc informeccCollectionNewInformecc : informeccCollectionNew) {
+                if (!informeccCollectionOld.contains(informeccCollectionNewInformecc)) {
+                    Informe oldInformeOfInformeccCollectionNewInformecc = informeccCollectionNewInformecc.getInforme();
+                    informeccCollectionNewInformecc.setInforme(informe);
+                    informeccCollectionNewInformecc = em.merge(informeccCollectionNewInformecc);
+                    if (oldInformeOfInformeccCollectionNewInformecc != null && !oldInformeOfInformeccCollectionNewInformecc.equals(informe)) {
+                        oldInformeOfInformeccCollectionNewInformecc.getInformeccCollection().remove(informeccCollectionNewInformecc);
+                        oldInformeOfInformeccCollectionNewInformecc = em.merge(oldInformeOfInformeccCollectionNewInformecc);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -139,7 +239,7 @@ public class InformeJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -150,6 +250,24 @@ public class InformeJpaController implements Serializable {
                 informe.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The informe with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            List<Informecc> informeccListOrphanCheck = informe.getInformeccList();
+            for (Informecc informeccListOrphanCheckInformecc : informeccListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Informe (" + informe + ") cannot be destroyed since the Informecc " + informeccListOrphanCheckInformecc + " in its informeccList field has a non-nullable informe field.");
+            }
+            Collection<Informecc> informeccCollectionOrphanCheck = informe.getInformeccCollection();
+            for (Informecc informeccCollectionOrphanCheckInformecc : informeccCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Informe (" + informe + ") cannot be destroyed since the Informecc " + informeccCollectionOrphanCheckInformecc + " in its informeccCollection field has a non-nullable informe field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Usuario remitente = informe.getRemitente();
             if (remitente != null) {
@@ -174,20 +292,7 @@ public class InformeJpaController implements Serializable {
             }
         }
     }
-    
-    public List<Informe> findByEstadoYUsuario(int estado, Usuario usuario) {
-       EntityManager em = getEntityManager();
-       try {
-           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-           cq.select(cq.from(Informe.class));
-            Query q = em.createNamedQuery("Informe.findByEstadoYUsuario",Integer.class)
-                    .setParameter("estado", estado).setParameter("usuario", usuario);           
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-   }
-    
+
     public List<Informe> findInformeEntities() {
         return findInformeEntities(true, -1, -1);
     }
@@ -220,6 +325,19 @@ public class InformeJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Informe> findByEstadoYUsuario(int estado, Usuario usuario) {
+       EntityManager em = getEntityManager();
+       try {
+           CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+           cq.select(cq.from(Informe.class));
+            Query q = em.createNamedQuery("Informe.findByEstado",Integer.class)
+                    .setParameter("estado", estado);           
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+   }
 
     public int getInformeCount() {
         EntityManager em = getEntityManager();

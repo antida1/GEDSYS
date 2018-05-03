@@ -9,6 +9,7 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.entities.Constancia;
 import com.base16.gedsys.entities.Informe;
+import com.base16.gedsys.entities.Informecc;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
@@ -143,11 +144,19 @@ public class InformeViewBean extends BaseBean implements Serializable {
             copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(informe.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Informecc informecc : informe.getInformeccList()){
+                    if(informecc != null){
+                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);
@@ -270,11 +279,19 @@ public class InformeViewBean extends BaseBean implements Serializable {
             copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(informe.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Informecc informecc : informe.getInformeccList()){
+                    if(informecc != null){
+                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);
@@ -388,14 +405,22 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 item.replaceWith(informe.getAnexos());
             }
             
-            copia = new TextNavigation("@copia", odt);
+           copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(informe.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Informecc informecc : informe.getInformeccList()){
+                    if(informecc != null){
+                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);

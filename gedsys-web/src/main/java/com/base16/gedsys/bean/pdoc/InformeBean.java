@@ -9,12 +9,14 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Informe;
+import com.base16.gedsys.entities.Informecc;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.fcm.PushFCMNotification;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.ConstanciaJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.model.InformeJpaController;
+import com.base16.gedsys.model.InformeccJpaController;
 import com.base16.gedsys.utils.JpaUtils;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
@@ -34,6 +36,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -67,6 +70,7 @@ public class InformeBean extends BaseBean implements Serializable {
     private static final long SerialVersionUID = 1L;
     private Informe informe = new Informe();
     private List<Informe> informes;
+    private List<Usuario> copias;
     private String accion;
     
     private Documento documentoRelacionado;
@@ -94,6 +98,32 @@ public class InformeBean extends BaseBean implements Serializable {
     public void setInformes(List<Informe> informes) {
         this.informes = informes;
     }
+
+    public List<Usuario> getCopias() {
+        return copias;
+    }
+
+    public void setCopias(List<Usuario> copias) {
+        this.copias = copias;
+    }
+
+    public Documento getDocumentoRelacionado() {
+        return documentoRelacionado;
+    }
+
+    public void setDocumentoRelacionado(Documento documentoRelacionado) {
+        this.documentoRelacionado = documentoRelacionado;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+    
+    
 
     public String getAccion() {
         return accion;
@@ -132,9 +162,11 @@ public class InformeBean extends BaseBean implements Serializable {
     }
 
     private void crear() throws Exception {
+        InformeccJpaController ccJpa;
         InformeJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new InformeJpaController(emf);
+        ccJpa = new InformeccJpaController(emf);
 
         this.informe.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -143,6 +175,17 @@ public class InformeBean extends BaseBean implements Serializable {
         this.informe.setFechaModificacion(new Date());
         this.informe.setEstado(1);
         cJpa.create(this.informe);
+        
+        List<Informecc> informeccList = new ArrayList<>();
+        for(Usuario conCopiaA : copias){
+            Informecc cc = new Informecc();
+            cc.setConCopiaA(conCopiaA);
+            cc.setInforme(informe);
+            ccJpa.create(cc);
+            informeccList.add(cc);
+        }
+        
+        this.informe.setInformeccList(informeccList);
     }
 
     private void editar() throws Exception {

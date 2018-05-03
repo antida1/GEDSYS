@@ -60,6 +60,7 @@
     <class>com.base16.gedsys.entities.PlanillaEnvioDocumento</class>
     <class>com.base16.gedsys.entities.PlanillaEnvio</class>
     <class>com.base16.gedsys.entities.ConsecutivosUsuario</class>
+    <class>com.base16.gedsys.entities.Informecc</class>
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=gedsys"/>
