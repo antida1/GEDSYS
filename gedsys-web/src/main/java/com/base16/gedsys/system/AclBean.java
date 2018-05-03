@@ -180,7 +180,7 @@ public class AclBean extends BaseBean implements Serializable {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
             cJpa = new AclJpaController(emf);
             acls = cJpa.findAclByGrupo(this.grupo);
-            if (acls.isEmpty()) {
+            if (!acls.isEmpty()) {
                 populateAcl(this.grupo);
             }
         } catch (Exception e) {
@@ -207,7 +207,7 @@ public class AclBean extends BaseBean implements Serializable {
     public void populateAcl(Grupo grupo) {
         List<Modulo> modulos;
         ModuloBean moduloBean = new ModuloBean();
-        moduloBean.listar();;
+        moduloBean.listar();
         modulos = moduloBean.getModulos();
         AclJpaController cJpa;
         for (Modulo modulo : modulos) {
