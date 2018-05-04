@@ -6,6 +6,7 @@
 package com.base16.gedsys.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -47,7 +48,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comunicacion.findByEstadoYUsuario", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado AND c.remitente = :usuario"),
     @NamedQuery(name = "Comunicacion.findByEstado", query = "SELECT c FROM Comunicacion c WHERE c.estado = :estado")})
 public class Comunicacion implements Serializable {
-
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comunicacion")
+    private Collection<Comunicacioncc> comunicacionccCollection;
+    
     @Column(name = "FechaFirma")
     private Date fechaFirma;
     @Column(name = "Despedida")
@@ -215,6 +219,18 @@ public class Comunicacion implements Serializable {
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
     }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Comunicacioncc> getComunicacionccCollection() {
+        return comunicacionccCollection;
+    }
+
+    public void setComunicacionccCollection(Collection<Comunicacioncc> comunicacionccCollection) {
+        this.comunicacionccCollection = comunicacionccCollection;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -8,12 +8,14 @@ package com.base16.gedsys.bean.pdoc;
 import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.entities.Comunicacion;
+import com.base16.gedsys.entities.Comunicacioncc;
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.ActaJpaController;
 import com.base16.gedsys.model.CircularJpaController;
 import com.base16.gedsys.model.ComunicacionJpaController;
+import com.base16.gedsys.model.ComunicacionccJpaController;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
@@ -35,6 +37,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -68,6 +71,7 @@ public class ComunicacionBean extends BaseBean implements Serializable {
     private static final long SerialVersionUID = 1L;
     private Comunicacion comunicacion = new Comunicacion();
     private List<Comunicacion> comunicaciones;
+    private List<Usuario> copias;
     private String accion;
     
     private Documento documentoRelacionado;
@@ -103,6 +107,32 @@ public class ComunicacionBean extends BaseBean implements Serializable {
     public void setAccion(String accion) {
         this.accion = accion;
     }
+
+    public List<Usuario> getCopias() {
+        return copias;
+    }
+
+    public void setCopias(List<Usuario> copias) {
+        this.copias = copias;
+    }
+
+    public Documento getDocumentoRelacionado() {
+        return documentoRelacionado;
+    }
+
+    public void setDocumentoRelacionado(Documento documentoRelacionado) {
+        this.documentoRelacionado = documentoRelacionado;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+    
+    
     
     public void firmarComunicacion(Comunicacion comunicacion) {
         this.comunicacion = comunicacion;
@@ -134,9 +164,11 @@ public class ComunicacionBean extends BaseBean implements Serializable {
     }
 
     private void crear() throws Exception {
+        ComunicacionccJpaController ccJpa;
         ComunicacionJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new ComunicacionJpaController(emf);
+        ccJpa = new ComunicacionccJpaController(emf);
 
         this.comunicacion.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -145,6 +177,16 @@ public class ComunicacionBean extends BaseBean implements Serializable {
         this.comunicacion.setFechaModificacion(new Date());
         this.comunicacion.setEstado("1");
         cJpa.create(this.comunicacion);
+        
+        List<Comunicacioncc> comunicacionccList = new ArrayList<>();
+        for(Usuario conCopiaA : copias){
+            Comunicacioncc cc = new Comunicacioncc();
+            cc.setConCopiaA(conCopiaA);
+            cc.setComunicacion(comunicacion);
+            ccJpa.create(cc);
+            comunicacionccList.add(cc);
+        }
+        this.comunicacion.setComunicacionccList(comunicacionccList);
     }
 
     private void editar() throws Exception {

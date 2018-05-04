@@ -16,6 +16,7 @@ import com.base16.gedsys.entities.Comunicacioncc;
 import com.base16.gedsys.model.exceptions.IllegalOrphanException;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,6 +39,9 @@ public class ComunicacionJpaController implements Serializable {
     public void create(Comunicacion comunicacion) {
         if (comunicacion.getComunicacionccList() == null) {
             comunicacion.setComunicacionccList(new ArrayList<Comunicacioncc>());
+        }
+        if(comunicacion.getComunicacionccCollection() == null){
+            comunicacion.setComunicacionccCollection(new ArrayList<Comunicacioncc>());
         }
         EntityManager em = null;
         try {
@@ -69,6 +73,12 @@ public class ComunicacionJpaController implements Serializable {
                 attachedComunicacionccList.add(comunicacionccListComunicacionccToAttach);
             }
             comunicacion.setComunicacionccList(attachedComunicacionccList);
+            Collection<Comunicacioncc> attachedComunicacionccCollection = new ArrayList<Comunicacioncc>();
+            for (Comunicacioncc comunicacionccCollectionComunicacionccToAttach : comunicacion.getComunicacionccCollection()) {
+                comunicacionccCollectionComunicacionccToAttach = em.getReference(comunicacionccCollectionComunicacionccToAttach.getClass(), comunicacionccCollectionComunicacionccToAttach.getId());
+                attachedComunicacionccCollection.add(comunicacionccCollectionComunicacionccToAttach);
+            }
+            comunicacion.setComunicacionccCollection(attachedComunicacionccCollection);
             em.persist(comunicacion);
             if (destinatario != null) {
                 destinatario.getComunicacionList().add(comunicacion);
@@ -93,6 +103,15 @@ public class ComunicacionJpaController implements Serializable {
                 if (oldComunicacionOfComunicacionccListComunicacioncc != null) {
                     oldComunicacionOfComunicacionccListComunicacioncc.getComunicacionccList().remove(comunicacionccListComunicacioncc);
                     oldComunicacionOfComunicacionccListComunicacioncc = em.merge(oldComunicacionOfComunicacionccListComunicacioncc);
+                }
+            }
+            for (Comunicacioncc comunicacionccCollectionComunicacioncc : comunicacion.getComunicacionccCollection()) {
+                Comunicacion oldComunicacionOfComunicacionccCollectionComunicacioncc = comunicacionccCollectionComunicacioncc.getComunicacion();
+                comunicacionccCollectionComunicacioncc.setComunicacion(comunicacion);
+                comunicacionccCollectionComunicacioncc = em.merge(comunicacionccCollectionComunicacioncc);
+                if (oldComunicacionOfComunicacionccCollectionComunicacioncc != null) {
+                    oldComunicacionOfComunicacionccCollectionComunicacioncc.getComunicacionccCollection().remove(comunicacionccCollectionComunicacioncc);
+                    oldComunicacionOfComunicacionccCollectionComunicacioncc = em.merge(oldComunicacionOfComunicacionccCollectionComunicacioncc);
                 }
             }
             em.getTransaction().commit();
