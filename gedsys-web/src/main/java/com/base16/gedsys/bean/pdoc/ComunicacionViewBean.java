@@ -9,6 +9,7 @@ import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.entities.Certificado;
 import com.base16.gedsys.entities.Circular;
 import com.base16.gedsys.entities.Comunicacion;
+import com.base16.gedsys.entities.Comunicacioncc;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
@@ -137,10 +138,22 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
                 item.replaceWith(Jsoup.parse(comunicacion.getDescripcionAnexos()).text());
             }
             
-             copia = new TextNavigation("@copia", odt);
+            copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                item.replaceWith("");
+                String copias = "";
+                for(Comunicacioncc comunicacioncc : comunicacion.getComunicacionccList()){
+                    if(comunicacioncc != null){
+                        if(!"".equals(comunicacioncc.getConCopiaA().getCargo().getNombre()) || comunicacioncc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += comunicacioncc.getConCopiaA().getNombres() + "" + comunicacioncc.getConCopiaA().getApelidos() + ", " + comunicacioncc.getConCopiaA().getCargo().getNombre()+ "\n";
+                        }else{
+                            copias += comunicacioncc.getConCopiaA().getNombres() + "" + comunicacioncc.getConCopiaA().getApelidos()+ "\n";
+                        }
+                    }else{
+                        copias = "";
+                    }
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);
@@ -270,10 +283,22 @@ public class ComunicacionViewBean extends BaseBean implements Serializable {
                 item.replaceWith(Jsoup.parse(comunicacion.getDescripcionAnexos()).text());
             }
             
-             copia = new TextNavigation("@copia", odt);
+            copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                item.replaceWith("");
+                String copias = "";
+                for(Comunicacioncc comunicacioncc : comunicacion.getComunicacionccList()){
+                    if(comunicacioncc != null){
+                        if(!"".equals(comunicacioncc.getConCopiaA().getCargo().getNombre()) || comunicacioncc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += comunicacioncc.getConCopiaA().getNombres() + "" + comunicacioncc.getConCopiaA().getApelidos() + ", " + comunicacioncc.getConCopiaA().getCargo().getNombre()+ "\n";
+                        }else{
+                            copias += comunicacioncc.getConCopiaA().getNombres() + "" + comunicacioncc.getConCopiaA().getApelidos()+ "\n";
+                        }
+                    }else{
+                        copias = "";
+                    }
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);

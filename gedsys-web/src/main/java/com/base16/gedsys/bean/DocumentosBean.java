@@ -54,6 +54,7 @@ public class DocumentosBean extends BaseBean implements Serializable {
 
     private List<Documento> documentos;
     private List<Documento> recibidos;
+    private List<Documento> entrantesI;
     private List<Documento> enviados;
     private List<Documento> prestamo;
     private List<Prestamo> prestado;
@@ -234,7 +235,15 @@ public class DocumentosBean extends BaseBean implements Serializable {
     public void setPrestado(List<Prestamo> prestado) {
         this.prestado = prestado;
     }
-    
+
+    public List<Documento> getEntrantesI() {
+        return entrantesI;
+    }
+
+    public void setEntrantesI(List<Documento> entrantesI) {
+        this.entrantesI = entrantesI;
+    }    
+        
     public void cargarGuia(FileUploadEvent event){             
         FacesContext context = FacesContext.getCurrentInstance();
         DocumentoJpaController dJpa;
@@ -347,6 +356,16 @@ public class DocumentosBean extends BaseBean implements Serializable {
       }
     }
 
+   public void listarDocumentosEntrantesI() {
+       DocumentoJpaController dJpa;
+      try {
+           EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
+           dJpa = new DocumentoJpaController(emf);
+           entrantesI = dJpa.findEntrantesI(this.getCurrentUser());
+       } catch (Exception e) {
+           Logger.getLogger(DocumentosBean.class.getName()).log(Level.SEVERE, e.getMessage());
+      }
+    }
     public void listarDocumentosEnviados() {
         DocumentoJpaController dJpa;
         try {

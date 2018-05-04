@@ -211,7 +211,9 @@ public class ComunicacionBean extends BaseBean implements Serializable {
             documento.setRutaArchivo(uDoc.getFileName(file));
             documento.setNombreDocumento(uDoc.getUuid().toString());
             documento.setRemitenteExteno(this.comunicacion.getDestinatario().getNombres() + " " + this.comunicacion.getDestinatario().getApelidos());
+            documento.setRemitente(this.comunicacion.getRemitente().getNombres() + " " + this.comunicacion.getRemitente().getApelidos());
             documento.setDestinatario(this.comunicacion.getRemitente());
+            documento.setDestinatarioInterno(this.comunicacion.getDestinatario());
             documento.setAsunto(this.comunicacion.getAsunto());
             documento.setFechaDocumento(this.comunicacion.getFecha());
             documento.setFechaCreacion(new Date());

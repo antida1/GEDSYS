@@ -147,7 +147,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 String copias = "";
                 for(Informecc informecc : informe.getInformeccList()){
                     if(informecc != null){
-                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                        if(!"".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";
@@ -282,7 +282,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 String copias = "";
                 for(Informecc informecc : informe.getInformeccList()){
                     if(informecc != null){
-                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                        if(!"".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";
@@ -411,7 +411,7 @@ public class InformeViewBean extends BaseBean implements Serializable {
                 String copias = "";
                 for(Informecc informecc : informe.getInformeccList()){
                     if(informecc != null){
-                        if("".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
+                        if(!"".equals(informecc.getConCopiaA().getCargo().getNombre()) || informecc.getConCopiaA().getCargo().getNombre() != null){
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + ", " + informecc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
                             copias += informecc.getConCopiaA().getNombres() + "" + informecc.getConCopiaA().getApelidos() + "\n";

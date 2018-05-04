@@ -46,7 +46,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Documento.findByCodigoPostal", query = "SELECT d FROM Documento d WHERE d.codigoPostal = :codigoPostal")
     , @NamedQuery(name = "Documento.findByConsecutivo", query = "SELECT d FROM Documento d WHERE d.consecutivo = :consecutivo")
     , @NamedQuery(name = "Documento.findByCompartidos", query = "SELECT d FROM Documento d JOIN d.destinatariosDocCollection c WHERE c.destinatarioId = :destinatario")
-    , @NamedQuery(name = "Documento.findEntrantes", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 1 or d.estado = 7 )")
+    , @NamedQuery(name = "Documento.findEntrantes", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 1 or d.estado = 7)")
+    , @NamedQuery(name = "Documento.findEntrantesInternos", query = "SELECT d FROM Documento d WHERE d.destinatarioInterno = :destinatarioInterno and d.estado = 9")
     , @NamedQuery(name = "Documento.findPorEnviar", query = "SELECT d FROM Documento d WHERE (d.estado = 2 or d.estado = 8 )")
     , @NamedQuery(name = "Documento.findEnviados", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and d.estado = 9")
     , @NamedQuery(name = "Documento.findEnPrestamo", query = "SELECT d FROM Documento d WHERE d.destinatario = :destinatario and (d.estado = 4 or d.estado = 6)")
@@ -157,6 +158,12 @@ public class Documento implements Serializable {
     @JoinColumn(name = "Destinatario", referencedColumnName = "Id")
     @ManyToOne
     private Usuario destinatario;  
+    
+    @XmlTransient
+    @JsonIgnore
+    @JoinColumn(name = "DestinatarioInterno", referencedColumnName = "Id")
+    @ManyToOne
+    private Usuario destinatarioInterno;  
     
     @XmlTransient
     @JsonIgnore
@@ -622,7 +629,15 @@ public class Documento implements Serializable {
     public void setProcesodocumentalCollection(Collection<ProcesoDocumental> procesodocumentalCollection) {
         this.procesodocumentalCollection = procesodocumentalCollection;
     }
-    
+
+    public Usuario getDestinatarioInterno() {
+        return destinatarioInterno;
+    }
+
+    public void setDestinatarioInterno(Usuario destinatarioInterno) {
+        this.destinatarioInterno = destinatarioInterno;
+    } 
+     
     
 
     @Override

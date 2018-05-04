@@ -813,6 +813,31 @@ public class DocumentoJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Documento> findEntrantesI(Usuario usuario) {
+        return findEntrantesI(usuario, true, -1, -1);
+    }
+
+    public List<Documento> findEntrantesI(Usuario usuario, int maxResults, int firstResult) {
+        return findEntrantesI(usuario, false, maxResults, firstResult);
+    }
+
+    private List<Documento> findEntrantesI(Usuario usuario, boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Documento.class));
+            Query q = em.createNamedQuery("Documento.findEntrantesInternos", Usuario.class)
+                    .setParameter("destinatarioInterno", usuario);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     public List<Documento> findEnviados(Usuario usuario) {
         return findEnviados(usuario, true, -1, -1);

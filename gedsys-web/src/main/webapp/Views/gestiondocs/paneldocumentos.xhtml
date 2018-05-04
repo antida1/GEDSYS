@@ -21,6 +21,7 @@
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosEnPrestamo()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPrestados()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosRecibidos()}"></f:event>
+                    <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosEntrantesI()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosSinArchivar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarDocumentosPorEnviar()}"></f:event>
                     <f:event type="preRenderView" listener="#{documentosBean.listarActasPorFirmar()}"></f:event>
@@ -39,20 +40,21 @@
                             <div class='x_content'> 
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#menuTab0">Entrantes</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab1">Entrantes Internos</a></li>
                                     <c:if test="#{autorizationBean.canCreate('recepcion')== false}">
-                                        <li><a data-toggle="tab" href="#menuTab1" style="display: none;">Por Enviar</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Enviados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2" style="display: none;">Por Enviar</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab3" style="display: none;">Enviados</a></li>
                                     </c:if>
                                     <c:if test="#{autorizationBean.canCreate('recepcion')== true}">
-                                        <li><a data-toggle="tab" href="#menuTab1">Por Enviar</a></li>
-                                        <li><a data-toggle="tab" href="#menuTab2">Enviados</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab2">Por Enviar</a></li>
+                                        <li><a data-toggle="tab" href="#menuTab3">Enviados</a></li>
                                     </c:if>
-                                    <li><a data-toggle="tab" href="#menuTab3">En Prestamo</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab4">Prestados</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab5">Por Vencer</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab6">Por Firmar</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab7">Por Archivar</a></li>
-                                    <li><a data-toggle="tab" href="#menuTab8">Compartidos</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab4">En Prestamo</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab5">Prestados</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab6">Por Vencer</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab7">Por Firmar</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab8">Por Archivar</a></li>
+                                    <li><a data-toggle="tab" href="#menuTab9">Compartidos</a></li>
                                     <!--<button data-toggle="collapse" data-target="#Collapse" class="btn btn-success pull-right"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>-->
                                 </ul>
                                 <div class="tab-content">
@@ -102,8 +104,52 @@
                                                 </p:column>
                                             </p:dataTable> 
                                         </h:form>
+                                    </div>                                       
+                                    <div id="menuTab1" class="col-xs-12 tab-pane fade in inactive"> 
+                                        <h:form id="entrantesI" enctype="multipart/form-data">
+                                            <p:dataTable widgetVar="entrantesI" id="lstDocsEntrantesI" var="docsEntrantesI" value="#{documentosBean.entrantesI}" style="margin-bottom:0" rows="10"
+                                                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15,30,50"  emptyMessage="¡No se encontraron documentos entrantes!"
+                                                         sortBy="#{docsEntrantesI.id}" sortOrder="descending">
+<!--                                                <f:facet name="header">
+                                                    <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+                                                    <p:columnToggler datasource="lstDocsEntrantes" trigger="toggler" />
+                                                </f:facet>-->
+                                                <p:column headerText="Radicado">
+                                                    <h:outputText value="#{docsEntrantesI.consecutivo}" />
+                                                </p:column>
+                                                <p:column headerText="Fecha de recepción">
+                                                    <h:outputText value="#{docsEntrantesI.fechaCreacion}" >
+                                                        <f:convertDateTime type="date" locale="es"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Tipo Documento">
+                                                    <h:outputText value="#{docsEntrantesI.tipoDocumento.nombre}" />
+                                                </p:column>
+                                                <p:column headerText="Asunto">
+                                                    <h:outputText value="#{docsEntrantes.asunto}" />
+                                                </p:column>
+                                                <p:column headerText="Remitente">
+                                                    <h:outputText value="#{docsEntrantesI.remitente}" />
+                                                </p:column>                                                
+                                                <p:column headerText="Detalle">
+                                                    <h:outputText value="#{docsEntrantesI.detalle}" escape="false"/>
+                                                </p:column>
+                                                <p:column headerText="Comentarios" style="text-align: center;">
+                                                    <h:outputText value="#{comentarioBean.coutComents(docsEntrantesI)}" />
+                                                </p:column>
+                                                <p:column headerText="Acciones" width="180">                                                    
+                                                    <p:commandLink type="button" title="Responder" action="#{cartaBean.loadDocumento(docsEntrantesI)}" disabled="#{not docsEntrantesI.tipoDocumento.requiereRespuesta}" update=":dlgResponder"><span class="glyphicon fa fa-fw fa-reply" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" onstart="PF('statusDialog').show();" title="Ver" action="#{documentViewerBean.showDocument(docsEntrantesI)}" update=":dlgVisor" onsuccess="PF('statusDialog').hide()"><span class="glyphicon fa fa-fw fa-eye" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Comentar" actionListener="#{comentarioBean.loadDocument(docsEntrantesI)}" update=":dlgComentar messages" ><span class="glyphicon fa fa-fw fa-comments" aria-hidden="true"></span></p:commandLink>
+                                                    <p:commandLink type="button" title="Prestamo" action="#{prestamoBean.loadDocumento(docsEntrantesI)}" update=":dlgPrestamo :enPrestamo"><span class="glyphicon fa fa-fw fa-share-alt" aria-hidden="true"/></p:commandLink>
+                                                    <p:commandLink type="button" title="Compartir con" action="#{compartirBean.loadDocumento(docsEntrantesI)}" ><span class="glyphicon fa fa-fw fa-users" aria-hidden="true"/></p:commandLink>                                               
+                                                    <p:commandLink type="button" title="Redireccionar" action="#{redireccionarBean.loadDocumento(docsEntrantesI)}" update=":dlgDevolver"  ><span class="glyphicon fa fa-fw fa-random" aria-hidden="true"/></p:commandLink>
+                                                </p:column>
+                                            </p:dataTable> 
+                                        </h:form>
                                     </div>
-                                    <div id="menuTab1" class="col-xs-12 tab-pane fade in inactive">
+                                    <div id="menuTab2" class="col-xs-12 tab-pane fade in inactive">
                                         <h:form id="porEnviar" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="porEnviar" id="lstDocsPorEnviar" var="docPorEnviar" value="#{documentosBean.porEnviar}" style="margin-bottom:0" 
                                                          emptyMessage="¡No se encontraron documentos entrantes!" rows="10"
@@ -154,7 +200,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab2" class="col-xs-12 tab-pane fade in inactive">
+                                    <div id="menuTab3" class="col-xs-12 tab-pane fade in inactive">
                                         <h:form id="enviados" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="Enviados" id="lstDocsEnviados" var="docsEnviados" value="#{documentosBean.enviados}" style="margin-bottom:0" 
                                                          rows="10"  paginator="true"  
@@ -217,7 +263,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab3" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab4" class="col-xs-12 tab-pane fade">
                                         <h:form id="enPrestamo" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="En Prestamos" id="lstControl" var="docsPrestamo" value="#{documentosBean.prestamo}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -255,7 +301,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab4" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab5" class="col-xs-12 tab-pane fade">
                                         <h:form id="prestado" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="Prestados" id="lstControlP" var="docsPrestado" value="#{documentosBean.prestado}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -293,7 +339,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab5" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab6" class="col-xs-12 tab-pane fade">
                                         <h:form id="porVencer" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="PorVencer" id="lstDocsPorVencer" var="docsPorVencer" value="#{documentosBean.porVencer}" style="margin-bottom:0" rows="50"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -352,7 +398,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab6" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab7" class="col-xs-12 tab-pane fade">
                                         <ul class="nav nav-tabs">
                                             <li><a data-toggle="tab" href="#pmenuTab0">Actas</a></li>
                                             <li><a data-toggle="tab" href="#pmenuTab1">Cartas</a></li>
@@ -629,7 +675,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="menuTab7" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab8" class="col-xs-12 tab-pane fade">
                                         <h:form id="porArchivar" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="PorArchivar" id="lstDocsPorArchivados" var="docsPorArchivar" value="#{documentosBean.sinArchivar}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -668,7 +714,7 @@
                                             </p:dataTable>
                                         </h:form>
                                     </div>
-                                    <div id="menuTab8" class="col-xs-12 tab-pane fade">
+                                    <div id="menuTab9" class="col-xs-12 tab-pane fade">
                                         <h:form id="compartido" enctype="multipart/form-data">
                                             <p:dataTable widgetVar="Compartido" id="lstDocsCompartidos" var="docsCompartidos" value="#{documentosBean.documentos}" style="margin-bottom:0" rows="10"
                                                          paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
