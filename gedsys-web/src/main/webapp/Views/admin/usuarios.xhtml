@@ -144,7 +144,8 @@
                                             <div class="form-group row">
                                                 <p:outputLabel value="Cargo" for="cargo" class="col-xs-3 col-form-label" />
                                                 <div class="col-xs-9">
-                                                    <p:selectOneMenu id="cargo" required="true" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                                    <p:selectOneMenu id="cargo" required="true" value="#{usuarioBean.usuario.cargo}" converter="omnifaces.SelectItemsConverter" style="width: 100%"
+                                                                     requiredMessage="¡Debe seleccionar un cargo para el usuario!">
                                                         <f:selectItem noSelectionOption="true" itemLabel="Seleccione el cargo" itemValue="#{null}" />
                                                         <f:selectItems value="#{cargoBean.cargos}" var="cargo" itemLabel="#{cargo.nombre}" itemValue="#{cargo}"/>
                                                     </p:selectOneMenu>

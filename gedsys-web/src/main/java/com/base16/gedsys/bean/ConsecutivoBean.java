@@ -75,12 +75,9 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             switch (accion) {
                 case "Crear":
                     crear();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha creado el consecutivo exitosamente!"));
-
                     break;
                 case "Modificar":
-                    modificar();
-                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha modificado el consecutivo exitosamente!"));
+                    modificar();                    
                     break;
             }
             RequestContext.getCurrentInstance().execute("PF('consecutivoDialog').hide()");
@@ -90,7 +87,7 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
         }
     }
 
-    private void crear() {
+    private void crear() throws Exception {
         ConsecutivoJpaController cJpa;
         try {
             EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
@@ -98,9 +95,24 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             this.consecutivo.setFechaCreacion(new Date());
             this.consecutivo.setFechaModificacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
-            this.consecutivo.setCreadoPor(usuario);
-            cJpa.create(consecutivo);
-            this.listar();
+            this.consecutivo.setCreadoPor(usuario);  
+            String aux = consecutivo.getTipoConsecutivo();
+            consecutivos = cJpa.findConsecutivoEntities();
+            for(Consecutivo consec : consecutivos){
+               if(consec.getTipoConsecutivo() == aux){
+                   try{
+                   cJpa.destroy(consecutivo.getId());
+                   this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", "¡El consecutivo: " + consecutivo.getTipoConsecutivo()+" ya se encuentra creado!"));
+                   return;
+                   }catch(Exception e){
+                    Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
+                    throw e;
+                   }
+               }
+           }
+           cJpa.create(consecutivo);
+           this.listar();
+           this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha creado el consecutivo exitosamente!"));
         } catch (Exception e) {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             throw e;
@@ -115,8 +127,17 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             this.consecutivo.setFechaCreacion(new Date());
             Usuario usuario = (Usuario) SessionUtils.getUsuario();
             this.consecutivo.setModificadoPor(usuario);
-            cJpa.edit(consecutivo);
+            String aux = consecutivo.getTipoConsecutivo();
+            consecutivos = cJpa.findConsecutivoEntities();
+            for(Consecutivo consec : consecutivos){
+               if(consec.getTipoConsecutivo().equals(aux)){                                   
+                   this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", "¡El consecutivo: " + consecutivo.getTipoConsecutivo()+" ya se encuentra generado!"));
+                   return;                   
+               }
+            }
+            cJpa.edit(consecutivo);            
             this.listar();
+            this.addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Consecutivos", "¡Se ha modificado el consecutivo exitosamente!"));
         } catch (Exception e) {
             Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
             throw e;
