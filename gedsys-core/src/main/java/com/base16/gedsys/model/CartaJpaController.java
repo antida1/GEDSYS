@@ -6,6 +6,7 @@
 package com.base16.gedsys.model;
 
 import com.base16.gedsys.entities.Carta;
+import com.base16.gedsys.entities.Cartacc;
 import com.base16.gedsys.entities.Documento;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -14,6 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.exceptions.NonexistentEntityException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,6 +37,12 @@ public class CartaJpaController implements Serializable {
     }
 
     public void create(Carta carta) {
+        if(carta.getCartaccList() == null){
+            carta.setCartaccList(new ArrayList<Cartacc>());
+        }
+        if(carta.getCartaccCollection() == null){
+            carta.setCartaccCollection(new ArrayList<Cartacc>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -53,6 +62,18 @@ public class CartaJpaController implements Serializable {
                 modificadoPor = em.getReference(modificadoPor.getClass(), modificadoPor.getId());
                 carta.setModificadoPor(modificadoPor);
             }
+            List<Cartacc> attachedCartaccList = new ArrayList<Cartacc>();
+            for (Cartacc cartaccListCartaccToAttach : carta.getCartaccList()) {
+                cartaccListCartaccToAttach = em.getReference(cartaccListCartaccToAttach.getClass(), cartaccListCartaccToAttach.getId());
+                attachedCartaccList.add(cartaccListCartaccToAttach);
+            }
+            carta.setCartaccList(attachedCartaccList);
+            Collection<Cartacc> attachedCartaccCollection = new ArrayList<Cartacc>();
+            for (Cartacc cartaccCollectionCartaccToAttach : carta.getCartaccCollection()) {
+                cartaccCollectionCartaccToAttach = em.getReference(cartaccCollectionCartaccToAttach.getClass(), cartaccCollectionCartaccToAttach.getId());
+                attachedCartaccCollection.add(cartaccCollectionCartaccToAttach);
+            }
+            carta.setCartaccCollection(attachedCartaccCollection);
             em.persist(carta);
             if (remitente != null) {
                 remitente.getCartaList().add(carta);
@@ -65,6 +86,24 @@ public class CartaJpaController implements Serializable {
             if (modificadoPor != null) {
                 modificadoPor.getCartaList().add(carta);
                 modificadoPor = em.merge(modificadoPor);
+            }
+            for (Cartacc cartaccListCartacc : carta.getCartaccList()) {
+                Carta oldCartaOfCartaccListCartacc = cartaccListCartacc.getCarta();
+                cartaccListCartacc.setCarta(carta);
+                cartaccListCartacc = em.merge(cartaccListCartacc);
+                if (oldCartaOfCartaccListCartacc != null) {
+                    oldCartaOfCartaccListCartacc.getCartaccList().remove(cartaccListCartacc);
+                    oldCartaOfCartaccListCartacc = em.merge(oldCartaOfCartaccListCartacc);
+                }
+            }
+            for (Cartacc cartaccCollectionCartacc : carta.getCartaccCollection()) {
+                Carta oldCartaOfCartaccCollectionCartacc = cartaccCollectionCartacc.getCarta();
+                cartaccCollectionCartacc.setCarta(carta);
+                cartaccCollectionCartacc = em.merge(cartaccCollectionCartacc);
+                if (oldCartaOfCartaccCollectionCartacc != null) {
+                    oldCartaOfCartaccCollectionCartacc.getCartaccCollection().remove(cartaccCollectionCartacc);
+                    oldCartaOfCartaccCollectionCartacc = em.merge(oldCartaOfCartaccCollectionCartacc);
+                }
             }
             em.getTransaction().commit();
         } finally {

@@ -8,10 +8,12 @@ package com.base16.gedsys.bean.pdoc;
 import com.base16.gedsys.bean.BaseBean;
 import com.base16.gedsys.bean.ConsecutivoBean;
 import com.base16.gedsys.entities.Carta;
+import com.base16.gedsys.entities.Cartacc;
 import com.base16.gedsys.entities.Consecutivo;
 import com.base16.gedsys.entities.Documento;
 import com.base16.gedsys.entities.Usuario;
 import com.base16.gedsys.model.CartaJpaController;
+import com.base16.gedsys.model.CartaccJpaController;
 import com.base16.gedsys.model.ConsecutivoJpaController;
 import com.base16.gedsys.model.DocumentoJpaController;
 import com.base16.gedsys.utils.JpaUtils;
@@ -23,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,6 +56,7 @@ public class CartaBean extends BaseBean implements Serializable {
     private static final long SerialVersionUID = 1L;
     private Carta carta = new Carta();
     private List<Carta> cartas;
+    private List<Usuario> copias;
     private String accion;
 
     private Documento documentoRelacionado;
@@ -92,6 +96,22 @@ public class CartaBean extends BaseBean implements Serializable {
     public Documento getDocumentoRelacionado() {
         return documentoRelacionado;
     }
+
+    public List<Usuario> getCopias() {
+        return copias;
+    }
+
+    public void setCopias(List<Usuario> copias) {
+        this.copias = copias;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }   
     
     public void firmarCarta(Carta carta) {
         this.carta = carta;
@@ -155,9 +175,11 @@ public class CartaBean extends BaseBean implements Serializable {
     }
 
     private void crear() throws Exception {
+        CartaccJpaController ccJpa;
         CartaJpaController cJpa;
         EntityManagerFactory emf = JpaUtils.getEntityManagerFactory(this.getConfigFilePath());
         cJpa = new CartaJpaController(emf);
+        ccJpa = new CartaccJpaController(emf);
 
         this.carta.setFechaCreacion(new Date());
         Usuario usuario = (Usuario) SessionUtils.getUsuario();
@@ -169,6 +191,16 @@ public class CartaBean extends BaseBean implements Serializable {
             this.carta.setDocumentoPadre(this.documentoRelacionado);
         }
         cJpa.create(this.carta);
+        
+        List<Cartacc> cartaccList = new ArrayList<>();
+        for(Usuario conCopiaA : copias){
+            Cartacc cc = new Cartacc();
+            cc.setConCopiaA(conCopiaA);
+            cc.setCarta(carta);
+            ccJpa.create(cc);
+            cartaccList.add(cc);
+        }
+        this.carta.setCartaccList(cartaccList);
 
     }
 

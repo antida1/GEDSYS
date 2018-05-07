@@ -11,6 +11,7 @@ import com.base16.gedsys.entities.Actaasistente;
 import com.base16.gedsys.entities.Actaausente;
 import com.base16.gedsys.entities.Actainvitado;
 import com.base16.gedsys.entities.Carta;
+import com.base16.gedsys.entities.Cartacc;
 import com.base16.gedsys.web.utils.SessionUtils;
 import com.base16.utils.DateTimeUtils;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
@@ -199,11 +200,19 @@ public class CartaViewBean extends BaseBean implements Serializable {
             copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(carta.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Cartacc cartacc : carta.getCartaccList()){
+                    if(cartacc != null){
+                        if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);
@@ -384,11 +393,19 @@ public class CartaViewBean extends BaseBean implements Serializable {
             copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(carta.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Cartacc cartacc : carta.getCartaccList()){
+                    if(cartacc != null){
+                        if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);
@@ -563,11 +580,19 @@ public class CartaViewBean extends BaseBean implements Serializable {
             copia = new TextNavigation("@copia", odt);
             while (copia.hasNext()) {
                 TextSelection item = (TextSelection) copia.nextSelection();
-                if(carta.getCopia()){
-                    item.replaceWith("Sí");
-                }else{
-                    item.replaceWith("No");
-                }                
+                String copias = "";
+                for(Cartacc cartacc : carta.getCartaccList()){
+                    if(cartacc != null){
+                        if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                        }else{
+                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                        }
+                    }else{
+                       copias = "";
+                    }                    
+                }
+                item.replaceWith(copias);
             }
             
             proyecto = new TextNavigation("@proyecto", odt);

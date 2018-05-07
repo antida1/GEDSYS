@@ -95,9 +95,14 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <p:outputLabel value="Copia" for="copia" class="control-label col-md-4"/>
+            <p:outputLabel value="Con Copia a" for="concopiaaCart" class="control-label col-md-4"/>
             <div class="col-xs-8">
-                <p:selectBooleanCheckbox id="copia" value="#{cartaBean.carta.copia}" style="width: 100%"></p:selectBooleanCheckbox>
+                <p:selectManyMenu value="#{cartaBean.copias}" id="concopiaaCart" var="copCar" filter="true" filterMatchMode="contains" showCheckbox="true" style="width: 100%" scrollHeight="50" converter="omnifaces.SelectItemsConverter">
+                    <f:selectItems value="#{usuarioBean.usuarios}" var="usrCopC" itemLabel="#{usrCopC.nombres} #{usrCopC.apelidos}" itemValue="#{usrCopC}"/>
+                    <p:column>
+                        <h:outputText value="#{copCar.nombres} #{copCar.apelidos} - #{copCar.cargo.nombre}"/>
+                    </p:column>
+                </p:selectManyMenu>
             </div>
         </div>
         <div class="col-xs-12">

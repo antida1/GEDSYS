@@ -7,8 +7,11 @@ package com.base16.gedsys.entities;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,10 +22,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -48,10 +54,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Carta.findByDocumentoPadre", query = "SELECT c FROM Carta c WHERE c.documentoPadre = :documentoPadre")})
 public class Carta implements Serializable {
 
+       
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carta")
+    private Collection<Cartacc> cartaccCollection;
+
     @Column(name = "Anexos")
-    private String anexos;
-    @Column(name = "Copia")
-    private Boolean copia;    
+    private String anexos;       
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +101,8 @@ public class Carta implements Serializable {
     private Date fechaFirma;
     @Column(name = "Estado")
     private String estado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carta")
+    private List<Cartacc> cartaccList;
     @JoinColumn(name = "Remitente", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Usuario remitente;
@@ -244,6 +254,16 @@ public class Carta implements Serializable {
     public void setModificadoPor(Usuario modificadoPor) {
         this.modificadoPor = modificadoPor;
     }
+    
+    @XmlTransient
+    @JsonIgnore
+    public List<Cartacc> getCartaccList() {
+        return cartaccList;
+    }
+
+    public void setCartaccList(List<Cartacc> cartaccList) {
+        this.cartaccList = cartaccList;
+    }
 
     @Override
     public int hashCode() {
@@ -309,14 +329,18 @@ public class Carta implements Serializable {
     public void setAnexos(String anexos) {
         this.anexos = anexos;
     }
+  
 
-    public Boolean getCopia() {
-        return copia;
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Cartacc> getCartaccCollection() {
+        return cartaccCollection;
     }
 
-    public void setCopia(Boolean copia) {
-        this.copia = copia;
-    }
+    public void setCartaccCollection(Collection<Cartacc> cartaccCollection) {
+        this.cartaccCollection = cartaccCollection;
+    } 
 
+    
 
 }

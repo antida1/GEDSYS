@@ -38,7 +38,7 @@ public class JpaUtils {
                 properties.put(EntityManagerProperties.JDBC_PASSWORD, prop.getProperty("jdbc_password"));
                 emf = Persistence.createEntityManagerFactory("com.sucomunicacion_gedsys-core_jar_1.0-SNAPSHOTPU", properties);
             } catch (Throwable t) {
-                throw new ExceptionInInitializerError();
+                 throw new ExceptionInInitializerError();
             }
         }
         return emf;
