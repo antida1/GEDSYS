@@ -204,9 +204,9 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 for(Cartacc cartacc : carta.getCartaccList()){
                     if(cartacc != null){
                         if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + "\n";
                         }
                     }else{
                        copias = "";
@@ -397,9 +397,9 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 for(Cartacc cartacc : carta.getCartaccList()){
                     if(cartacc != null){
                         if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + "\n";
                         }
                     }else{
                        copias = "";
@@ -584,9 +584,9 @@ public class CartaViewBean extends BaseBean implements Serializable {
                 for(Cartacc cartacc : carta.getCartaccList()){
                     if(cartacc != null){
                         if(!"".equals(cartacc.getConCopiaA().getCargo().getNombre()) || cartacc.getConCopiaA().getCargo().getNombre() != null){
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + ", " + cartacc.getConCopiaA().getCargo().getNombre() + "\n";
                         }else{
-                            copias += cartacc.getConCopiaA().getNombres() + "" + cartacc.getConCopiaA().getApelidos() + "\n";
+                            copias += cartacc.getConCopiaA().getNombres() + " " + cartacc.getConCopiaA().getApelidos() + "\n";
                         }
                     }else{
                        copias = "";

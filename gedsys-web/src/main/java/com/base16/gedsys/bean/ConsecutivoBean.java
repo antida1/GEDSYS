@@ -99,15 +99,9 @@ public class ConsecutivoBean extends BaseBean implements Serializable {
             String aux = consecutivo.getTipoConsecutivo();
             consecutivos = cJpa.findConsecutivoEntities();
             for(Consecutivo consec : consecutivos){
-               if(consec.getTipoConsecutivo() == aux){
-                   try{
-                   cJpa.destroy(consecutivo.getId());
+               if(consec.getTipoConsecutivo().equals(aux)){                  
                    this.addMessage(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Consecutivos", "¡El consecutivo: " + consecutivo.getTipoConsecutivo()+" ya se encuentra creado!"));
                    return;
-                   }catch(Exception e){
-                    Logger.getLogger(ConsecutivoBean.class.getName()).log(Level.SEVERE, e.getMessage());
-                    throw e;
-                   }
                }
            }
            cJpa.create(consecutivo);
